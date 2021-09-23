@@ -7,6 +7,7 @@ import javax.ws.rs.NotFoundException;
 import java.sql.*; //TODO figure out if we're using SQL or MongoDB
 import java.util.ArrayList;
 
+//TODO This is a work in progress class. Many methods do nothing currently.
 /**
  * @author Phoenix
  * This class is intended to connect with the database server in a way such that login credentials
