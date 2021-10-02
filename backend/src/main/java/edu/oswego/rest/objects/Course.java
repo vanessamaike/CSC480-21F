@@ -15,9 +15,12 @@ public class Course {
 
     private final int courseID;
     private final String name;
+    private final String title;
     private final String code;
     private final Date endDate;
     private String settings;
+
+
 
     /**
      * This constructor is used to generate a course that does not yet exist in the database.
@@ -29,8 +32,9 @@ public class Course {
      * @param endDate The date the course ends.
      * @param settings A string representation of the settings for the course.
      */
-    public Course(int courseID, String name, String code, Date endDate, String settings){
+    public Course(int courseID, String title, String name, String code, Date endDate, String settings){
         this.name = name;
+        this.title = title;
         this.code = code;
         this.endDate = endDate;
         this.settings = settings;
@@ -46,6 +50,7 @@ public class Course {
         Course c = dbi.getCourse(courseID);
         if(c!=null){
             this.courseID = courseID;
+            this.title = c.title;
             this.name = c.name;
             this.code = c.code;
             this.endDate = c.endDate;
@@ -53,6 +58,7 @@ public class Course {
         }
         else {
             this.courseID = 0;
+            this.title = "";
             this.name = "";
             this.code = "";
             this.endDate = null;
@@ -76,6 +82,9 @@ public class Course {
         return endDate;
     }
 
+    public String getTitle() {
+        return title;
+    }
     /**
      * This returns the entire set of user settings.
      * @return The string that represents the user settings.
