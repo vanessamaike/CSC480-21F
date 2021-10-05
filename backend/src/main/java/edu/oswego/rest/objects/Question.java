@@ -6,6 +6,13 @@ public class Question {
     private String question;
     private int value;
 
+    public Question () {
+        this.questionID = 0;
+        this.assignmentID = 0;
+        this.question = "";
+        this.value = 0;
+    }
+
     public Question(int questionID, int assignmentID, String question, int value) {
         this.questionID = questionID;
         this.assignmentID = assignmentID;

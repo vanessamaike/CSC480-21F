@@ -17,24 +17,12 @@ public class Submission {
         this.submissionID = submissionID;
     }
 
-    /**
-     * This constructor is used to generate a submission that already exists in the database.
-     * @param submissionID The submission ID for the submission.
-     */
-    public Submission(int submissionID){
-        Submission submission = null ;
-        if(submission!=null){
-            this.submissionID = submissionID;
-            this.pdfDoc = submission.pdfDoc;
-            this.signOff = submission.signOff;
-            this.teamID = submission.teamID;
-        }
-        else {
-            this.submissionID = 1;
-            this.teamID = 0;
-            this.signOff = "";
-            this.pdfDoc = "";
-        }
+
+    public Submission(){
+        this.submissionID = 1;
+        this.teamID = 0;
+        this.signOff = "";
+        this.pdfDoc = "";
     }
 
     public int getSubmissionID() {

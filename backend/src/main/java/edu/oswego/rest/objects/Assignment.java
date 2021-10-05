@@ -24,28 +24,14 @@ public class Assignment {
                 this.courseID = courseID;
                 this.pdfDoc = pdfDoc;
                 this.settings = settings;
-                if(assignmentID<=0) this.assignmentID = generateAssignmentID();
-                else this.assignmentID = assignmentID;
+                this.assignmentID = assignmentID;
         }
 
-        /**
-         * This constructor is used to generate an assignment that already exists in the database.
-         * @param assignmentID The assignment ID for the assignment.
-         */
-        public Assignment(int assignmentID){
-                Assignment assignment = null ;//dbi.getAssignment(assignmentID);
-                if(assignment!=null){
-                        this.assignmentID = assignmentID;
-                        this.pdfDoc = assignment.pdfDoc;
-                        this.courseID = assignment.courseID;
-                        this.settings = assignment.settings;
-                }
-                else {
-                        this.assignmentID = 1;
-                        this.courseID = 0;
-                        this.pdfDoc = "";
-                        this.settings = "";
-                }
+        public Assignment(){
+                this.assignmentID = 1;
+                this.courseID = 0;
+                this.pdfDoc = "";
+                this.settings = "";
         }
 
         public int getAssignmentID() {

@@ -10,7 +10,16 @@ public class Student {
     private float score;
     private int courseID;
 
-
+    public Student() {
+        this.userID = 0;
+        this.studentID = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.teamID = 0;
+        this.score = 0.0f;
+        this.courseID = 0;
+    }
 
     public Student(String studentID, int userID, String firstName, String lastName, String email, int teamID, float score, int courseID) {
         this.userID = userID;

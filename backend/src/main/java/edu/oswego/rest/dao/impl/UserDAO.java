@@ -34,7 +34,7 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
     @Override
     public void update(User user) {
         StringBuilder sql = new StringBuilder("UPDATE user SET email = ?, role = ? WHERE userID = ?");
-        update(sql.toString(), user.getEmail(),user.getRole());
+        update(sql.toString(), user.getEmail(),user.getRole(), user.getUserID());
     }
 
     @Override

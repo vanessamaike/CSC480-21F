@@ -33,7 +33,7 @@ public class CourseCreator {
      * @return A GSON JSON with the boolean value of the result.
      */
     @PUT
-    public JsonObject putRequest(String id, String name, String code, String end, String set){
+    public JsonObject putRequest(String id, String title, String name, String code, String end, String set){
         //TODO This method needs to ensure authentication
         JsonObject result = new JsonObject();
         try{
@@ -43,7 +43,7 @@ public class CourseCreator {
             Date courseEnd = Date.valueOf(LocalDate.parse(end));
             if(set.length()!=settingsLength) throw new StringIndexOutOfBoundsException();
             //Then creates a new course object
-            Course c = new Course(cid, name, code, courseEnd, set);
+            Course c = new Course(cid,title, name, code, courseEnd, set);
             //And tells the course to insert itself.
             if(c.insertCourse()) result.addProperty("result", "true");
             else result.addProperty("result", "false");

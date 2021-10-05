@@ -34,8 +34,8 @@ public class AnswerDAO extends AbstractDAO<Answer> implements IAnswerDAO {
     @Override
     public void update(Answer answer) {
         StringBuilder sql = new StringBuilder("UPDATE answer SET submissionId = ?, questionId = ?, score = ?, " +
-                "possible = ?, answer = ?, WHERE answerID = ?");
-        update(sql.toString(), answer.getSubmissionID(),answer.getQuestionID() ,answer.getScore(),answer.getPossible(), answer.getAnswer());
+                "possible = ?, answer = ? WHERE answerID = ?");
+        update(sql.toString(), answer.getSubmissionID(),answer.getQuestionID() ,answer.getScore(),answer.getPossible(), answer.getAnswer(), answer.getAnswerID());
     }
 
     @Override

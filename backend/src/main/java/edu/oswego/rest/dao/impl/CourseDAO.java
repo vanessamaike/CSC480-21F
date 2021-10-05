@@ -35,7 +35,7 @@ public class CourseDAO extends AbstractDAO<Course> implements ICourseDAO {
     public void update(Course course) {
         StringBuilder sql = new StringBuilder("UPDATE course SET title = ?, code = ?, ends = ?, " +
                 "settings = ? WHERE courseID = ?");
-        update(sql.toString(), course.getTitle(),course.getCode() ,course.getEndDate(),course.getSettings());
+        update(sql.toString(), course.getTitle(),course.getCode() ,course.getEndDate(),course.getSettings(),course.getCourseID());
     }
 
     @Override

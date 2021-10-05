@@ -35,7 +35,7 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public void update(Review review) {
         StringBuilder sql = new StringBuilder("UPDATE review SET pdfDoc = ?, signOff = ?, teamId = ? WHERE reviewID = ?");
-        update(sql.toString(), review.getPdfDoc(),review.getSignOff() ,review.getTeamID());
+        update(sql.toString(), review.getPdfDoc(),review.getSignOff() ,review.getTeamID(),review.getReviewID());
     }
 
     @Override

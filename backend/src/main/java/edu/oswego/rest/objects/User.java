@@ -11,18 +11,10 @@ public class User {
         this.role = role;
     }
 
-    public User(int userID){
-        User user = null ;//dbi.getAssignment(assignmentID);
-        if(user!=null){
-            this.userID = userID;
-            this.email = user.email;
-            this.role = user.role;
-        }
-        else {
-            this.userID = 1;
-            this.email = "";
-            this.role = "";
-        }
+    public User(){
+        this.userID = 1;
+        this.email = "";
+        this.role = "";
     }
 
     public int getUserID() {

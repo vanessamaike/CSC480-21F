@@ -33,7 +33,7 @@ public class QuestionDAO extends AbstractDAO<Question> implements IQuestionDAO {
     @Override
     public void update(Question question) {
         StringBuilder sql = new StringBuilder("UPDATE question SET question = ?, assignmentId = ?, value = ? WHERE questionID = ?");
-        update(sql.toString(), question.getQuestion(),question.getAssignmentID() ,question.getValue());
+        update(sql.toString(), question.getQuestion(),question.getAssignmentID() ,question.getValue(),question.getQuestionID());
     }
 
     @Override

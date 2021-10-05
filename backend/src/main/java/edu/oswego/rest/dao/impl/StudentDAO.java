@@ -35,7 +35,7 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     public void update(Student student) {
         StringBuilder sql = new StringBuilder("UPDATE student SET userId = ?, firstName = ?, lastName = ?, " +
                 "email = ? , teamID = ?, score = ?,courseId = ? WHERE studentID = ?");
-        update(sql.toString(), student.getUserID(),student.getFirstName() ,student.getLastName(), student.getEmail(), student.getTeamID(), student.getScore(), student.getCourseID());
+        update(sql.toString(), student.getUserID(),student.getFirstName() ,student.getLastName(), student.getEmail(), student.getTeamID(), student.getScore(), student.getCourseID(),student.getStudentID());
     }
 
     @Override

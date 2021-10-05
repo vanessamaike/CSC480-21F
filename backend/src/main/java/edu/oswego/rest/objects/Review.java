@@ -14,24 +14,11 @@ public class Review {
         this.reviewID = reviewID;
     }
 
-    /**
-     * This constructor is used to generate a submission that already exists in the database.
-     * @param reviewID The submission ID for the submission.
-     */
-    public Review(int reviewID){
-        Review review = null ;
-        if(review!=null){
-            this.reviewID = reviewID;
-            this.pdfDoc = review.pdfDoc;
-            this.signOff = review.signOff;
-            this.teamID = review.teamID;
-        }
-        else {
-            this.reviewID = 1;
-            this.teamID = 0;
-            this.signOff = "";
-            this.pdfDoc = "";
-        }
+    public Review(){
+        this.reviewID = 0;
+        this.teamID = 0;
+        this.signOff = "";
+        this.pdfDoc = "";
     }
 
     public int getReviewID() {

@@ -130,4 +130,21 @@ public class DatabaseInterface {
         return ids;
     }
 
+
+    //======================ASSIGNMENT OBJECT==============================
+
+    /**
+     * Returns a course object from the database.
+     * @param assignmentID The integer ID of the assignment to be retrieved.
+     * @return The assignment object generated from the database information.
+     */
+    public Assignment getAssignment(int assignmentID) throws NotFoundException {
+        //TODO sanitize?
+        //"SELECT * FROM courses WHERE CourseID="+courseID
+        //TODO
+        //This line can be deleted once the database lookup is done.
+        Assignment c = null;
+        return c;
+    }
+
 }

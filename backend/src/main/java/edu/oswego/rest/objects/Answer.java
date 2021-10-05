@@ -9,6 +9,15 @@ public class Answer {
     private float score;
     private float possible;
 
+    public Answer(){
+        this.answerID = 0;
+        this.questionID = 0;
+        this.submissionID = 0;
+        this.answer = "";
+        this.score = 0.0f;
+        this.possible = 0.0f;
+    }
+
     public Answer(int answerID, int questionID, int submissionID, String answer, float score, float possible) {
         this.answerID = answerID;
         this.questionID = questionID;
