@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // @mui components
 import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
@@ -28,7 +29,10 @@ function NavBar() {
       }}
       className={nav.appBar}
     >
-      <div className={nav.logo}>logo</div>
+      <Link to="/login" style={{ textDecoration: "none" }}>
+        <div className={nav.logo}>logo</div>
+      </Link>
+      
       <div className={nav.link}>Course</div>
       <div className={nav.link}>Assignment</div>
       <StyledBadge badgeContent={4} color="secondary">

@@ -1,8 +1,16 @@
 import * as React from "react";
-
+import classNames from "classnames";
 import Button from "@mui/material/Button";
+
 import { secondaryColor, primaryColor, fontColor } from "../styles/Style";
-export default function BasicButtons() {
+import ButtonStyle from "../styles/ButtonStyle";
+
+
+function Buttons({text}) {
+  const button = ButtonStyle();
+  const btnClasses = classNames({
+    
+  });
   return (
     <Button
       style={{
@@ -12,7 +20,9 @@ export default function BasicButtons() {
       }}
       variant="contained"
     >
-      See all
+      {text}
     </Button>
   );
 }
+
+export default Buttons;
