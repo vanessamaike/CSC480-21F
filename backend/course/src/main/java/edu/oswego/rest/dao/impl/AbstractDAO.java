@@ -1,11 +1,7 @@
 package edu.oswego.rest.dao.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,7 +16,7 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/CSC480database";
             String user = "root";
-            String password = "your password";
+            String password = "your_password";
             Connection con =  DriverManager.getConnection(url,user,password);
             return con;
         } catch (ClassNotFoundException | SQLException e) {
@@ -196,6 +192,10 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                     statement.setInt(index, (Integer) parameter);
                 } else if (parameter instanceof Float) {
                     statement.setFloat(index, (Float) parameter);
+                }
+                else if (parameter instanceof LocalDate)
+                {
+                    statement.setDate(index, (Date.valueOf((LocalDate) parameter)));
                 }
 
             }

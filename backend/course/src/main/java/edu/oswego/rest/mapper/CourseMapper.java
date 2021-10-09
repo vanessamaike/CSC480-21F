@@ -5,6 +5,7 @@ import edu.oswego.rest.objects.Course;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class CourseMapper implements RowMapper<Course>{
     @Override
@@ -14,7 +15,7 @@ public class CourseMapper implements RowMapper<Course>{
                     rs.getInt("courseID"),
                     rs.getString("title"),
                     rs.getString("code"),
-                    rs.getObject("endDate", Date.class),
+                    rs.getObject("endDate", LocalDate.class),
                     rs.getString("settings")
             );
             return course;

@@ -1,5 +1,6 @@
 package edu.oswego.rest.objects;
 
+import java.time.LocalDate;
 import java.util.Date;
 import com.google.gson.*;
 
@@ -15,10 +16,10 @@ public class Course {
     private  int courseID;
     private  String title;
     private  String code;
-    private  Date endDate;
+    private  LocalDate endDate;
     private String settings;
 
-    public Course(int courseID, String title, String code, Date endDate, String settings){
+    public Course(int courseID, String title, String code, LocalDate endDate, String settings){
         this.title = title;
         this.code = code;
         this.endDate = endDate;
@@ -32,7 +33,7 @@ public class Course {
         this.title = "";
         //this.name = "";
         this.code = "";
-        this.endDate = new Date();
+        this.endDate = LocalDate.now();
         this.settings = "";
     }
 
@@ -52,7 +53,7 @@ public class Course {
         this.code = code;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -66,7 +67,7 @@ public class Course {
         return code;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
