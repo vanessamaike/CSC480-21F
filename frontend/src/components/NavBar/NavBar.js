@@ -30,7 +30,7 @@ function NavBar() {
       className={nav.appBar}
     >
       <Link to="/login" style={{ textDecoration: "none" }}>
-        <div className={nav.logo}>logo</div>
+        <div className={nav.logo}>CPR Logo</div>
       </Link>
       
       <div className={nav.link}>Home</div>
