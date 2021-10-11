@@ -1,16 +1,16 @@
 import { makeStyles } from "@mui/styles";
 import { secondaryColor, primaryColor, fontColor } from "./Style";
 const ButtonStyle = makeStyles((theme) => ({
-  seeAll: {
-    backgroundColor: "#000000",
+  type1: {
+    backgroundColor: primaryColor,
     color: primaryColor,
   },
-  status: {
+  type2: {
     backgroundColor: primaryColor,
     color: "#000000",
     border: "1px solid #000000"
   },
-  view: {
+  type3: {
     backgroundColor: primaryColor,
     color: "#000000",
     border: "1px solid #000000"

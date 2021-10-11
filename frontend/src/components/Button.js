@@ -2,7 +2,7 @@ import * as React from "react";
 import classNames from "classnames";
 import Button from "@mui/material/Button";
 
-import { secondaryColor, primaryColor, fontColor } from "../styles/Style";
+import { secondaryColor, primaryColor, darkColor } from "../styles/Style";
 import ButtonStyle from "../styles/ButtonStyle";
 
 
@@ -14,7 +14,7 @@ function Buttons({text}) {
   return (
     <Button
       style={{
-        backgroundColor: fontColor,
+        backgroundColor: darkColor,
         color: secondaryColor,
         borderRadius: "25px",
       }}
