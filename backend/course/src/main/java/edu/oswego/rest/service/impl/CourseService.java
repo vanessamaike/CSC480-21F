@@ -14,10 +14,16 @@ public class CourseService implements ICourseService {
     {
         courseDao = new CourseDAO();
     }
+
+    @Override
+    public int generateUniqueRandomId(){
+        return courseDao.generateUniqueRandomId();
+    }
+
     @Override
     public Course save(Course course) {
-        courseDao.save(course);
-        return courseDao.findOne(course.getCourseID());
+       int id =  courseDao.save(course);
+        return courseDao.findOne(id);
     }
     @Override
     public List<Course> findAll() {

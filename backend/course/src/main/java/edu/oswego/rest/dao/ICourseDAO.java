@@ -11,4 +11,5 @@ public interface ICourseDAO {
     void update(Course course);
     void delete(Course course);
     void deleteAll();
+    int generateUniqueRandomId();
 }

@@ -106,6 +106,7 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
+                System.out.println(id);
             }
             connection.commit();
             return id;
@@ -201,6 +202,41 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Integer> generateUniqueRandomId(String sql, Object... parameters){
+        List<Integer> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            setParameter(statement, parameters);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int generateUniqueRandomId = resultSet.getInt("random_number");
+                results.add(generateUniqueRandomId);
+            }
+            return results;
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                return null;
+            }
         }
     }
 

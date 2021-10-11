@@ -11,4 +11,5 @@ public interface ICourseService {
     Course update(Course course);
     Course delete(Course course);
     void deleteAll();
+    int generateUniqueRandomId();
 }

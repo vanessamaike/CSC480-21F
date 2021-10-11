@@ -10,11 +10,24 @@ import java.util.List;
 public class CourseDAO extends AbstractDAO<Course> implements ICourseDAO {
 
     @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM course " +
+                "WHERE \"random_number\" NOT IN (SELECT courseID FROM course) " +
+                "LIMIT 1;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
+    @Override
     public int save(Course course) {
         StringBuilder sql = new StringBuilder("INSERT INTO course (courseId, title, code,endDate, settings)");
         sql.append(" VALUES(?, ?, ?, ?, ? )");
-        return insert(sql.toString(), course.getCourseID(), course.getTitle(),course.getCode(),
+        int UniqueRandomId = generateUniqueRandomId();
+        insert(sql.toString(), UniqueRandomId, course.getTitle(),course.getCode(),
                 course.getEndDate(),course.getSettings());
+        return UniqueRandomId;
     }
 
     @Override

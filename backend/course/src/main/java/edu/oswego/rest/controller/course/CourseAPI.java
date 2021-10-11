@@ -12,16 +12,25 @@ import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 // JAX-RS
 import javax.ws.rs.*;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Path("/course")
 public class CourseAPI {
+
+
     private static final long serialVersionUID = 1L;
     private ICourseService courseService;
     private Jsonb jsonb = JsonbBuilder.create();
 
     public CourseAPI() {
         courseService = new CourseService();
+    }
+
+    @GET
+    @Path("/generateUniqueRandomId")
+    public int  getGenerateUniqueRandomId(){
+        return courseService.generateUniqueRandomId();
     }
 
     @GET
@@ -58,7 +67,7 @@ public class CourseAPI {
     public String postCourse(String payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Course course = jsonb.fromJson(payload, Course.class);
-        courseService.save(course);
+        course = courseService.save(course);
         String res =  jsonb.toJson(course);
         return res;
     }
