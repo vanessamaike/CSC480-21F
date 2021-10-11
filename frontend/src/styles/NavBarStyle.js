@@ -22,15 +22,16 @@ const NavBarStyle = makeStyles((theme) => ({
     zIndex: "unset",
   },
   logo: {
-    width: "50em",
+    width: "30em",
     display: "flex",
     justifyContent: "start",
   },
   link: {
     cursor: "pointer",
-    width: "8em",
+    width: "15em",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     '&:hover': {
       color: primaryColor,
   },

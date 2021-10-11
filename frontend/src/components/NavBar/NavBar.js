@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // @mui components
 import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
@@ -6,7 +7,7 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
-import { secondaryColor, primaryColor, fontColor } from "../../styles/Style";
+import { secondaryColor, primaryColor, darkColor } from "../../styles/Style";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -23,17 +24,21 @@ function NavBar() {
     <AppBar
       style={{
         backgroundColor: secondaryColor,
-        color: fontColor,
+        color: darkColor,
         flexDirection: "row",
       }}
       className={nav.appBar}
     >
-      <div className={nav.logo}>logo</div>
-      <div className={nav.link}>Course</div>
-      <div className={nav.link}>Assignment</div>
-      <StyledBadge badgeContent={4} color="secondary">
+      <Link to="/login" style={{ textDecoration: "none" }}>
+        <div className={nav.logo}>logo</div>
+      </Link>
+      
+      <div className={nav.link}>Home</div>
+      <div className={nav.link}>Course and Assignment</div>
+      <div className={nav.link}>Results</div>
+      {/* <StyledBadge badgeContent={4} color="secondary">
         <div className={nav.link}>Results</div>
-      </StyledBadge>
+      </StyledBadge> */}
     </AppBar>
   );
 }
