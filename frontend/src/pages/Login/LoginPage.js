@@ -9,11 +9,17 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
+import GoogleLogin from 'react-google-login'
+import axios from 'axios'
+
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import Button from "../../components/Button";
 
+
+
 function LoginPage() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleChangeEmail = (event) => {
@@ -22,7 +28,13 @@ function LoginPage() {
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
   };
+  const responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj)
+    axios.post("http://9080", response)
+  }
   return (
+
     <div>
       <NavBar fixed></NavBar>
       <div style={{ marginTop: "150px" }}></div>
@@ -34,7 +46,7 @@ function LoginPage() {
           margin: "0 12em",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", width: "496px"}}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", width: "496px" }}>
           <Typography
             style={{ fontWeight: "600" }}
             variant="h4"
@@ -50,7 +62,7 @@ function LoginPage() {
           </Typography>
         </div>
         <Card
-          style={{display:"flex",flexDirection: "column", margin: "0 1em",width: "422px",  height: "397px", padding: "0.5em"}}
+          style={{ display: "flex", flexDirection: "column", margin: "0 1em", width: "422px", height: "397px", padding: "0.5em" }}
         >
           <CardContent>
             <CardHeader
@@ -94,6 +106,13 @@ function LoginPage() {
             </FormControl>
           </CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+            <GoogleLogin
+              clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
             <Button></Button>
           </Box>
         </Card>
