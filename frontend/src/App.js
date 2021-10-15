@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 //Custom Pages
 import HomePage from "./pages/Home/HomePage"
@@ -9,7 +9,11 @@ import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
 import TestingPage from './pages/TestingPage';
 import Test from './pages/Test';
 
+
+
 function App() {
+
+  
   return (
     <Router>
         <Switch>
