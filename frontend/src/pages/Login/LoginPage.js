@@ -8,12 +8,46 @@ import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
+import GoogleLogin from "react-google-login";
+import axios from "axios";
+
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import Button from "../../components/Button";
+import { Stack } from "@mui/material";
+
+function RoleButton() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        direction: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "90%",
+        overflow: "hidden",
+        px: 2,
+        py: 1,
+        cursor: "pointer",
+        borderRadius: 10,
+        color: "#ffffff",
+        bgcolor: "#000000",
+        "&:hover": {
+          backgroundColor: "#000000",
+          opacity: [0.9, 0.8, 0.7],
+        },
+      }}
+    >
+      <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
+        Professor
+      </Typography>
+    </Box>
+  );
+}
 
 function LoginPage() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleChangeEmail = (event) => {
@@ -22,7 +56,13 @@ function LoginPage() {
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
   };
+  const responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+    axios.post("http://localhost9080", response);
+  };
   return (
+
     <div>
       <NavBar fixed></NavBar>
       <div style={{ marginTop: "150px" }}></div>
@@ -34,7 +74,15 @@ function LoginPage() {
           margin: "0 12em",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", width: "496px"}}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "start",
+            width: "496px",
+          }}
+        >
           <Typography
             style={{ fontWeight: "600" }}
             variant="h4"
@@ -42,28 +90,39 @@ function LoginPage() {
           >
             Aliquam pulvinar nunc eget consectetur facilisis.
           </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-          >
+          <Typography variant="h6" component="div">
             Nulla ullamcorper efficitur nisl eget aliquet.
           </Typography>
         </div>
         <Card
-          style={{display:"flex",flexDirection: "column", margin: "0 1em",width: "422px",  height: "397px", padding: "0.5em"}}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 1em",
+            width: "422px",
+            height: "397px",
+            padding: "0.5em",
+          }}
         >
+          <CardHeader
+            title={
+              <Typography
+                style={{ fontWeight: "600" }}
+                variant="h5"
+                component="div"
+              >
+                Google Login
+              </Typography>
+            }
+          ></CardHeader>
           <CardContent>
-            <CardHeader
-              title={
-                <Typography
-                  style={{ fontWeight: "600" }}
-                  variant="h5"
-                  component="div"
-                >
-                  User Login
-                </Typography>
-              }
-            ></CardHeader>
+            <Typography
+              style={{ fontWeight: "400" }}
+              variant="h6"
+              component="div"
+            >
+              Select your role to begin
+            </Typography>
           </CardContent>
           <CardContent
             style={{
@@ -72,30 +131,23 @@ function LoginPage() {
               justifyContent: "center",
             }}
           >
-            <FormControl style={{ margin: "1em 0" }}>
-              <InputLabel htmlFor="component-outlined">Email</InputLabel>
-              <OutlinedInput
-                id="component-outlined"
-                value={email}
-                onChange={handleChangeEmail}
-                label="email"
-                style={{ borderRadius: "10px" }}
+            <Stack spacing={2}>
+              <GoogleLogin
+                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
+                buttonText="Professor"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
               />
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="component-outlined">Password</InputLabel>
-              <OutlinedInput
-                id="component-outlined"
-                value={password}
-                onChange={handleChangePassword}
-                label="password"
-                style={{ borderRadius: "10px" }}
+              <GoogleLogin
+                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
+                buttonText="Student"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
               />
-            </FormControl>
+            </Stack>
           </CardContent>
-          <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-            <Button></Button>
-          </Box>
         </Card>
       </div>
     </div>

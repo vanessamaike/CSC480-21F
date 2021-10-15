@@ -7,7 +7,7 @@ import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
 import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
 import TestingPage from './pages/TestingPage';
-import ProfessorCourse from './pages/Professor/ProfessorCourse';
+import Test from './pages/Test';
 
 function App() {
   return (
@@ -16,8 +16,6 @@ function App() {
           <Route exact path="/login" component={LoginPage}></Route>
           <Route exact path="/home" component={ProfessorHomeDashboard}></Route>
           <Route exact path="/testing" component={TestingPage}></Route>
-          <Route exact path="/course" component={ProfessorCourse}></Route>
-          <Route exact path="/result" component={TestingPage}></Route>
         </Switch>
     </Router>
   );

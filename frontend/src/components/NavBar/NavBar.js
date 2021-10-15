@@ -8,7 +8,6 @@ import { styled } from "@mui/material/styles";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
 import { secondaryColor, primaryColor, darkColor } from "../../styles/Style";
-import Button from "../CustomizedButtons";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: 20,
