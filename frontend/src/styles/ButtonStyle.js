@@ -1,20 +1,20 @@
 import { makeStyles } from "@mui/styles";
 import { secondaryColor, primaryColor, fontColor } from "./Style";
-const ButtonStyle = makeStyles((theme) => ({
+const ButtonStyle = {
   type1: {
     backgroundColor: primaryColor,
-    color: primaryColor,
+    color: "red",
   },
   type2: {
     backgroundColor: primaryColor,
-    color: "#000000",
+    color: "blue",
     border: "1px solid #000000"
   },
   type3: {
     backgroundColor: primaryColor,
-    color: "#000000",
+    color: "green",
     border: "1px solid #000000"
   }
-}));
+};
 
 export default ButtonStyle;

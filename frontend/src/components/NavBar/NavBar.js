@@ -8,7 +8,6 @@ import { styled } from "@mui/material/styles";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
 import { secondaryColor, primaryColor, darkColor } from "../../styles/Style";
-
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: 20,
@@ -18,8 +17,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-function NavBar() {
+function NavBar({ history }) {
   const nav = NavBarStyle();
+
   return (
     <AppBar
       style={{
@@ -29,13 +29,20 @@ function NavBar() {
       }}
       className={nav.appBar}
     >
-      <Link to="/login" style={{ textDecoration: "none" }}>
-        <div className={nav.logo}>logo</div>
+      <Link to="/login" style={{ textDecoration: "none", color: "#000"  }}>
+        <div className={nav.logo}>CPR Logo</div>
       </Link>
-      
-      <div className={nav.link}>Home</div>
-      <div className={nav.link}>Course and Assignment</div>
-      <div className={nav.link}>Results</div>
+      <Link to="/home" style={{ textDecoration: "none", color: "#000" }}>
+        <div className={nav.link}>Home</div>
+      </Link>
+      <Link to="/course" style={{ textDecoration: "none", color: "#000" }}>
+        <div className={nav.link}>
+          Course and Assignment
+        </div>
+      </Link>
+      <Link to="/result" style={{ textDecoration: "none", color: "#000" }}>
+        <div className={nav.link}>Results</div>
+      </Link>
       {/* <StyledBadge badgeContent={4} color="secondary">
         <div className={nav.link}>Results</div>
       </StyledBadge> */}
