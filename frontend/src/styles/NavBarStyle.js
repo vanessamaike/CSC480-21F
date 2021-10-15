@@ -12,8 +12,8 @@ const NavBarStyle = makeStyles((theme) => ({
     width: "100%",
     height: "80px",
     backgroundColor: "red",
-    boxShadow:
-      "0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15)",
+    // boxShadow:
+    //   "0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15)",
     transition: "all 150ms ease 0s",
     alignItems: "center",
     flexFlow: "collumn nowrap",
@@ -22,12 +22,15 @@ const NavBarStyle = makeStyles((theme) => ({
     zIndex: "unset",
   },
   logo: {
+    cursor: "pointer",
+    userSelect: "none",
     width: "30em",
     display: "flex",
     justifyContent: "start",
   },
   link: {
     cursor: "pointer",
+    userSelect: "none",
     width: "15em",
     display: "flex",
     justifyContent: "center",

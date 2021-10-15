@@ -14,7 +14,6 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import NavBar from "../../components/NavBar/NavBar";
 import Button from "../../components/Button";
 import Stack from "@mui/material/Stack";
-import { Paper } from "@mui/material";
 import Container from "@mui/material/Container";
 import { primaryColor, fontColor } from "../../styles/Style";
 
