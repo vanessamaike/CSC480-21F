@@ -16,6 +16,7 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import bg from '../../images/multi_background_dashboard.jpg'
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -122,8 +123,8 @@ function ReviewBar() {
 
 function ProfessorHomeDashBoard() {
   return (
-    <div
-    >
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
+    >    
       <NavBar></NavBar>
       <div style={{ marginTop: "110px" }}></div>
       <Container maxWidth="lg" >

@@ -11,6 +11,8 @@ import Container from "@mui/material/Container";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
+import bg from '../../images/multi_background_dashboard.jpg'
+
 
 function FilterAssignment() {
   return (
@@ -101,7 +103,8 @@ function ProfessorCourse({ history }) {
   };
 
   return (
-    <div>
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
+    > 
       <NavBar fixed history={history}></NavBar>
       <div style={{ marginTop: "150px" }}></div>
       <Container

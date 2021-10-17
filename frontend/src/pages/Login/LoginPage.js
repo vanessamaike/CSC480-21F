@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
+import bg from '../../images/multi_background_login.jpg'
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -63,9 +64,11 @@ function LoginPage() {
   };
   return (
 
-    <div>
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
+    >    
+
       <NavBar></NavBar>
-      <div
+      <div 
         style={{
           display: "flex",
           justifyContent: "space-around",
