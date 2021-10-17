@@ -1,0 +1,16 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      3   10/7/21, 11:04:12:846 EDT   10/7/21, 11:07:21:952 EDT java.lang.NoClassDefFoundError com.ibm.ws.injectionengine.InjectionProcessorManager.getAllDeclaredFields 249
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.12.0.log
+     1      3   10/7/21, 11:04:13:341 EDT   10/7/21, 11:07:22:042 EDT org.jboss.weld.resources.spi.ResourceLoadingException com.ibm.ws.cdi.impl.weld.BeanDeploymentArchiveImpl 946
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.13.0.log
+     2      1   10/7/21, 11:04:44:568 EDT   10/7/21, 11:04:44:568 EDT com.ibm.wsspi.injectionengine.InjectionException com.ibm.ws.webcontainer.servlet.ServletWrapper.loadServlet 228
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.44.0.log
+     3      1   10/7/21, 11:04:44:626 EDT   10/7/21, 11:04:44:626 EDT javax.servlet.UnavailableException com.ibm.ws.webcontainer.servlet.ServletWrapper.handleRequest() 302
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.44.1.log
+     4      2   10/7/21, 11:04:44:629 EDT   10/7/21, 11:04:44:806 EDT com.ibm.ws.webcontainer.webapp.WebAppErrorReport com.ibm.ws.webcontainer.filter.WebAppFilterChain.doFilter 82
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.44.2.log
+     5      1   10/7/21, 11:04:44:767 EDT   10/7/21, 11:04:44:767 EDT com.ibm.ws.webcontainer.webapp.WebAppErrorReport com.ibm.ws.webcontainer.filter.FilterInstanceWrapper.doFilter 144
+                                                                            - /home/johnojacob84/480/SocialLogIn/backend/socialLogin/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_11.04.44.3.log
+------+------+---------------------------+---------------------------+---------------------------

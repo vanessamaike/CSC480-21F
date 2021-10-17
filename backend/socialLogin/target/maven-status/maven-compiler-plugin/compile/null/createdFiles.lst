@@ -1,0 +1,5 @@
+io/openliberty/guides/sociallogin/logout/GoogleLogout.class
+io/openliberty/guides/sociallogin/LogoutServlet.class
+io/openliberty/guides/sociallogin/logout/ILogout.class
+io/openliberty/guides/sociallogin/logout/LogoutHandler.class
+io/openliberty/guides/sociallogin/HelloServlet.class
