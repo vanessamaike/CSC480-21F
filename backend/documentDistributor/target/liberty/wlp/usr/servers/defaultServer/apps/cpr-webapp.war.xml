@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+    <dir sourceOnDisk="/home/johnojacob84/480/Updated_480/CSC480-21F-backend/backend/teamManager/src/main/webapp" targetInArchive="/"/>
+    <dir sourceOnDisk="/home/johnojacob84/480/Updated_480/CSC480-21F-backend/backend/teamManager/target/classes" targetInArchive="/WEB-INF/classes"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/org/json/json/20190722/json-20190722.jar" targetInArchive="/WEB-INF/lib/json-20190722.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/mysql/mysql-connector-java/8.0.25/mysql-connector-java-8.0.25.jar" targetInArchive="/WEB-INF/lib/mysql-connector-java-8.0.25.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar" targetInArchive="/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.12.4/jackson-databind-2.12.4.jar" targetInArchive="/WEB-INF/lib/jackson-databind-2.12.4.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.12.4/jackson-annotations-2.12.4.jar" targetInArchive="/WEB-INF/lib/jackson-annotations-2.12.4.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.12.4/jackson-core-2.12.4.jar" targetInArchive="/WEB-INF/lib/jackson-core-2.12.4.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/.m2/repository/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar" targetInArchive="/WEB-INF/lib/gson-2.8.8.jar"/>
+    <file sourceOnDisk="/home/johnojacob84/480/Updated_480/CSC480-21F-backend/backend/teamManager/target/tmp/META-INF/MANIFEST.MF" targetInArchive="/META-INF/MANIFEST.MF"/>
+</archive>
