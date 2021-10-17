@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState, useEffect} from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,33 +10,22 @@ import TableRow from "@mui/material/TableRow";
 import { secondaryColor, primaryColor, fontColor } from "../styles/Style";
 import { borderRadius } from "@mui/system";
 
-export default function StickyHeadTable({CSVData}) {
+export default function StickyHeadTable({jsonData}) {
+  console.log(jsonData)
+  const [arrayData, setarrayData] = useState([]);
+  useEffect(() => {
+      var result = [];
+      for(var i in jsonData){
+        var row = [];
+        for(var j in jsonData[i]){
+          row.push(jsonData[i][j]);
+        }
+        result.push(row)
+      }
+      setarrayData(result)
+  }, [jsonData])
+  console.log(arrayData)
 
-  const csv = [""]
-
-  // const rows = [
-  //   ["An98Wi00", "0", "15", "0", "0", "0", "15", "0", "14", "0", "14.67"],
-  //   ["Br00Mi99", "9", "0", "14.25", "0", "12.5", "0", "0", "0", "0", "11.92"],
-  //   ["Br99Da99", "0", "0", "0", "0", "0", "0", "14.25", "10.5", "13", "12.58"],
-  //   ["Ch99Sa00", "0", "15", "10.5", "0", "0", " 14.5", "0", "0", "0", "13.33"],
-  //   ["D099", "0", "0", "13", "10", "0", "0", "11.5", "0", "0", "11.50"],
-  //   ["Na99Ma96", "15", "0", "0", "12.5", "0", "0", "0", "0", "14", "13.83"],
-  //   ["Pa99Mi99", "0", "0", "0", "13", "15", "0", "0", "0", "13.75", "14.08"],
-  //   ["Po04Ch97", "8.5", "15", "0", "0", "0", "0", "13", "0", "12.17"],
-  //   [
-  //     "Avg Grade GIVEN",
-  //     "10.83",
-  //     "15.00",
-  //     "12.58",
-  //     "12.00",
-  //     "14.17",
-  //     "13.42",
-  //     "12.50",
-  //     "13.58",
-  //     "0",
-  //   ],
-  // ];
-  console.log(CSVData)
   const label_1 = [
     { id: "name", label: "Team Name", align: "center", minWidth: 50 },
   ];
@@ -48,8 +37,9 @@ export default function StickyHeadTable({CSVData}) {
       minWidth: 50,
     },
   ];
-  const headers = CSVData.map((index) => {
+  const headers = arrayData.map((index, i) => {
     return {
+      key: i,
       id: index[0],
       label: index[0],
       minWidth: 50,
@@ -57,62 +47,75 @@ export default function StickyHeadTable({CSVData}) {
       format: (value) => value.toLocaleString("en-US"),
     };
   });
-  // headers.pop();
 
-  const columns = label_1.concat(headers.concat(label_2));
-  console.log(columns)
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
+  const columns = label_1.concat(headers);
   return (
     <Paper elevation={1} sx={{ width: "70%", overflow: "hidden", p: 2 }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
-                <TableCell
+              {columns.map((column, indexCol) => {
+                let bgColor;
+                let color;
+                if (indexCol == columns.length - 1) {
+                  bgColor = "#0DC38D"
+                  color = "#fff"
+                }
+                else{
+                  bgColor = primaryColor
+                  color = "#000";
+                }
+                return <TableCell
                   key={column.id}
                   align={column.align}
                   style={{
                     minWidth: column.minWidth,
                     border: "0.01px solid #000000",
-                    backgroundColor: primaryColor,
+                    backgroundColor: bgColor,
+                    color: color,
                   }}
                 >
                   {column.label}
                 </TableCell>
-              ))}
+              })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {CSVData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            {arrayData
               .map((row, indexRow) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column, indexCol) => {
                       let value = row[indexCol];
                       let bgColor;
+                      let color;
                       {
-                        indexCol == indexRow + 1 || indexCol == 0
-                          ? (bgColor = primaryColor)
-                          : (bgColor = secondaryColor);
+                        if(indexCol == indexRow + 1 || indexCol == 0 && indexRow != arrayData.length - 1){
+                          bgColor = primaryColor
+                        }
+                        else {
+                          if (indexCol == columns.length - 1 && indexRow != arrayData.length - 1) {
+                            bgColor = "#0DC38D"
+                            color = "#fff"
+                          }
+                          else {
+                            if (indexRow == arrayData.length - 1 && indexCol != columns.length - 1) {
+                              bgColor = "#347DEB"
+                              color = "#fff"
+                            }
+                            else {
+                              bgColor = secondaryColor
+                            }
+                          }
+                        }
                       }
                       return (
                         <TableCell
                           key={column.id}
                           align={column.align}
                           style={{
+                            color: color,
                             backgroundColor: bgColor,
                             border: "0.01px solid #000000",
                           }}

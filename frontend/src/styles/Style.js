@@ -1,6 +1,9 @@
 const primaryColor = "#E5E5E5"
 const secondaryColor = "#FFFFFF"
 const darkColor = "#000000"
+const blueColor = "#347DEB"
+const greenColor = "#0DC38D"
+const purpleColor = "#6F40DC"
 const boxShadow = {
     boxShadow:
       "0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
@@ -26,6 +29,9 @@ export {
     primaryColor,
     secondaryColor,
     darkColor,
+    blueColor,
+    greenColor,
+    purpleColor,
     boxShadow,
     defaultBoxShadow
 }

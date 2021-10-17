@@ -14,9 +14,7 @@ import axios from "axios";
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import Button from "../../components/Button";
 import { Stack } from "@mui/material";
-
 function RoleButton() {
   return (
     <Box
@@ -66,8 +64,7 @@ function LoginPage() {
   return (
 
     <div>
-      <NavBar fixed></NavBar>
-      <div style={{ marginTop: "150px" }}></div>
+      <NavBar></NavBar>
       <div
         style={{
           display: "flex",

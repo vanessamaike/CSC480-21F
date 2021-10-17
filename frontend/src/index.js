@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { StyledEngineProvider } from '@mui/material/styles';
 //Whole website color
-document.body.style = "background: #E5E5E5"
+//document.body.style = "background: #E5E5E5"
 
 ReactDOM.render(
   <React.StrictMode>
+  <StyledEngineProvider injectFirst>
     <App />
+    </StyledEngineProvider>,
   </React.StrictMode>,
   document.getElementById('root')
 );

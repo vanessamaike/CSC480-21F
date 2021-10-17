@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Card from "@mui/material/Card";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import Button from "../../components/Button";
-import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
-import { primaryColor, fontColor } from "../../styles/Style";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
+import CustomizedTabs from "../../components/CustomizedTabs";
 
 function FilterAssignment() {
   return (
@@ -96,46 +92,6 @@ function TabPanel(props) {
   );
 }
 
-const StyledTabs = styled((props) => (
-  <Tabs
-    {...props}
-    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-  />
-))({
-  "& .MuiTabs-indicator": {
-    display: "flex",
-    height: "100%",
-    justifyContent: "center",
-    backgroundColor: "transparent",
-  },
-  "& .MuiTabs-indicatorSpan": {
-    // maxWidth: 40
-    width: "100%",
-    backgroundColor: "#347DEB",
-    // borderRadius: "10px 10px 0 0",
-  },
-});
-
-const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
-  ({ theme }) => ({
-    textTransform: "none",
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.pxToRem(15),
-    marginRight: theme.spacing(0.5),
-    color: "#000",
-    fontWeight: "600",
-    zIndex: 1,
-    outline: "none",
-    // borderRadius: "10px 10px 0 0",
-    backgroundColor: "rgba(207, 225, 255, 0.32)",
-    "&.Mui-selected": {
-      color: "#fff",
-    },
-    "&.Mui-focusVisible": {
-      backgroundColor: "rgba(100, 95, 228, 0.32)",
-    },
-  })
-);
 
 function ProfessorCourse({ history }) {
   const [value, setValue] = React.useState(0);
@@ -171,22 +127,9 @@ function ProfessorCourse({ history }) {
           >
             Courses and Assignments
           </Typography>
-          <CustomizedButtons type1 model="model2">
-            ss
-          </CustomizedButtons>
         </Box>
         <Card sx={{ width: "100%", bgcolor: "#fff", borderRadius: "10px" }}>
-          <StyledTabs
-            value={value}
-            variant="fullWidth"
-            onChange={handleChange}
-            aria-label="styled tabs example"
-          >
-            <StyledTab label="Course 1" />
-            <StyledTab label="Course 2" />
-            <StyledTab label="Course 3" />
-            <StyledTab label="Course 4" />
-          </StyledTabs>
+          <CustomizedTabs type2 setValue={setValue} value={value}></CustomizedTabs>
           <TabPanel value={value} index={0}>
             <Box
               sx={{

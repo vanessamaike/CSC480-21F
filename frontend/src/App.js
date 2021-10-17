@@ -7,20 +7,19 @@ import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
 import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
 import TestingPage from './pages/TestingPage';
-import Test from './pages/Test';
-import ProfessorCourse from './pages/Professor/ProfessorCourse';
-
+import ProfessorCoursePage from './pages/Professor/ProfessorCoursePage';
+import AddCoursePage from './pages/Professor/AddCoursePage';
 
 function App() {
-
-  
   return (
+    
     <Router>
         <Switch>
           <Route exact path="/login" component={LoginPage}></Route>
           <Route exact path="/home" component={ProfessorHomeDashboard}></Route>
           <Route exact path="/testing" component={TestingPage}></Route>
-          <Route exact path="/course" component={TestingPage}></Route>
+          <Route exact path="/course" component={ProfessorCoursePage}></Route>
+          <Route exact path="/addcourse" component={AddCoursePage}></Route>
         </Switch>
     </Router>
   );

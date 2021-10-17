@@ -1,17 +1,16 @@
 import React from "react";
 import { CSVReader } from "react-papaparse";
 
-function CSVReader2({ setCSVData }) {
-
+function CSVReader2({ setjsonData }) {
   const handleOnDrop = (data) => {
     console.log("---------------------------");
-    
+
     //console.log(data)
     const combinedData = data.map((object) => {
-      return object.data
-    })
+      return object.data;
+    });
     //console.log(combinedData);
-    setCSVData(combinedData);
+    setjsonData(combinedData);
     console.log("---------------------------");
   };
 
@@ -21,7 +20,7 @@ function CSVReader2({ setCSVData }) {
 
   const handleOnRemoveFile = (data) => {
     console.log("---------------------------");
-    setCSVData([]);
+    setjsonData([]);
     console.log("---------------------------");
   };
   return (
@@ -29,33 +28,28 @@ function CSVReader2({ setCSVData }) {
       <CSVReader
         onDrop={handleOnDrop}
         onError={handleOnError}
-        config={{header: true}}
-        addRemoveButton
-        onRemoveFile={handleOnRemoveFile}
+        noDrag
         style={{
           dropArea: {
-            borderColor: "pink",
-            borderRadius: 20,
+            width: "87px",
+            height: "33px",
+            backgroundColor: "#000",
+            borderRadius: 30,
           },
           dropAreaActive: {
             borderColor: "red",
           },
           dropFile: {
-            width: 100,
-            height: 120,
-            background: "#ccc",
+            width: 87,
+            height: 33,
+            background: "#000",
           },
           fileSizeInfo: {
-            color: "#fff",
             backgroundColor: "#000",
-            borderRadius: 3,
-            lineHeight: 1,
-            marginBottom: "0.5em",
-            padding: "0 0.4em",
           },
           fileNameInfo: {
             color: "#fff",
-            backgroundColor: "#eee",
+            backgroundColor: "transparent",
             borderRadius: 3,
             fontSize: 14,
             lineHeight: 1,
@@ -64,12 +58,12 @@ function CSVReader2({ setCSVData }) {
           removeButton: {
             color: "blue",
           },
-          progressBar: {
-            backgroundColor: "pink",
-          },
         }}
+        config={{ header: true }}
+        addRemoveButton
+        onRemoveFile={handleOnRemoveFile}
       >
-        <span>Click to upload.</span>
+        <span>Upload.</span>
       </CSVReader>
     </div>
   );

@@ -1,6 +1,9 @@
 import { makeStyles } from "@mui/styles";
 import { secondaryColor, primaryColor, fontColor } from "./Style";
 const NavBarStyle = makeStyles((theme) => ({
+  root: {
+    flexGrow: "1"
+  },
   appBar: {
     display: "flex",
     flexDirection: "row",
@@ -18,13 +21,13 @@ const NavBarStyle = makeStyles((theme) => ({
     alignItems: "center",
     flexFlow: "collumn nowrap",
     justifyContent: "start",
-    position: "relative",
-    zIndex: "unset",
+    position: "fixed",
+    zIndex: "2",
   },
   logo: {
     cursor: "pointer",
     userSelect: "none",
-    width: "30em",
+    width: "15em",
     display: "flex",
     justifyContent: "start",
   },
