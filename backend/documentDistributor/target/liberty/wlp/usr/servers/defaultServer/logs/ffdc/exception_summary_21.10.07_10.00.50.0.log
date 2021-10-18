@@ -1,0 +1,6 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      2   10/7/21, 10:00:50:889 EDT   10/7/21, 10:09:59:647 EDT java.lang.NoClassDefFoundError com.ibm.ws.injectionengine.InjectionProcessorManager.getAllDeclaredFields 249
+                                                                            - /home/johnojacob84/480/branches/document-collector/CSC480-21F-backend/backend/csvParser/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.07_10.00.50.0.log
+------+------+---------------------------+---------------------------+---------------------------
