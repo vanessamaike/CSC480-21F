@@ -11,8 +11,8 @@ import Container from "@mui/material/Container";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
-import bg from '../../images/multi_background_dashboard.jpg'
-
+import bg from "../../images/multi_background_dashboard.jpg";
+import { Grid } from "@mui/material";
 
 function FilterAssignment() {
   return (
@@ -25,7 +25,6 @@ function FilterAssignment() {
           justifyContent: "space-between",
           overflow: "hidden",
           px: 2,
-          py: 1,
           cursor: "pointer",
           borderRadius: 10,
           color: "#000",
@@ -33,9 +32,7 @@ function FilterAssignment() {
           backgroundColor: "#ddd",
         }}
       >
-        <div style={{marginRight: "40px"}}>
-          Filter Assignments
-        </div>
+        <div style={{ marginRight: "40px" }}>Filter Assignments</div>
         <CustomizedRadios></CustomizedRadios>
       </Box>
     </div>
@@ -94,7 +91,6 @@ function TabPanel(props) {
   );
 }
 
-
 function ProfessorCourse({ history }) {
   const [value, setValue] = React.useState(0);
 
@@ -103,10 +99,15 @@ function ProfessorCourse({ history }) {
   };
 
   return (
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
-    > 
+    <div
+      style={{
+        backgroundImage: `url(${bg})`,
+        height: "80vh",
+        backgroundSize: "cover",
+        paddingTop: "150px",
+      }}
+    >
       <NavBar fixed history={history}></NavBar>
-      <div style={{ marginTop: "150px" }}></div>
       <Container
         maxWidth="lg"
         sx={{
@@ -115,24 +116,32 @@ function ProfessorCourse({ history }) {
           justifyContent: "space-around",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
+        <Grid
+          container
+          spacing={2}
         >
-          <Typography
-            style={{ fontWeight: "600" }}
-            variant="h6"
-            component="div"
-          >
-            Courses and Assignments
-          </Typography>
-        </Box>
-        <Card sx={{ width: "100%", bgcolor: "#fff", borderRadius: "10px" }}>
-          <CustomizedTabs type2 setValue={setValue} value={value}></CustomizedTabs>
+          <Grid item xs={8}>
+            <Typography
+              style={{ fontWeight: "600" }}
+              variant="h6"
+              component="div"
+            >
+              Courses and Assignments
+            </Typography>
+          </Grid>
+            <Grid item xs={2}>
+              <CustomizedButtons type2 model={"add"}>Create Course</CustomizedButtons>
+            </Grid>
+            <Grid item xs={2}>
+            <CustomizedButtons type1>View Student Info</CustomizedButtons>
+          </Grid>
+        </Grid>
+        <Card sx={{ width: "100%", bgcolor: "#fff", borderRadius: "10px", marginTop: "15px" }}>
+          <CustomizedTabs
+            type1
+            setValue={setValue}
+            value={value}
+          ></CustomizedTabs>
           <TabPanel value={value} index={0}>
             <Box
               sx={{

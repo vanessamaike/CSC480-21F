@@ -37,8 +37,8 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
   return (
     <Button {...rest} ref={ref} className={btnClasses}>
       {children}
-      {model === "type1" ? <AddCircleOutlineIcon sx={{marginLeft: "5px"}}/> : 
-      <>{model === "type2" ? <ArrowCircleUpIcon sx={{marginLeft: "5px", transform: "rotate(90deg)"}}/> : <></>}</>}
+      {model === "add" ? <AddCircleOutlineIcon sx={{marginLeft: "5px"}}/> : 
+      <>{model === "arrow" ? <ArrowCircleUpIcon sx={{marginLeft: "5px", transform: "rotate(90deg)"}}/> : <></>}</>}
     </Button>
   );
 });

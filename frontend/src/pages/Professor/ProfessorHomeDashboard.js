@@ -126,7 +126,6 @@ function ProfessorHomeDashBoard() {
     <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
     >    
       <NavBar></NavBar>
-      <div style={{ marginTop: "110px" }}></div>
       <Container maxWidth="lg" >
         <Grid
           container
@@ -191,6 +190,7 @@ function ProfessorHomeDashBoard() {
                 <CardHeader
                   sx={{ paddingBottom: "8px" }}
                   title={
+                    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                     <Stack
                       direction="row"
                       sx={{ borderBottom: "3px solid #cfe1ff" }}
@@ -211,6 +211,8 @@ function ProfessorHomeDashBoard() {
                         Results to Review
                       </Typography>
                     </Stack>
+                    <CustomizedButtons type1>See All</CustomizedButtons>
+                    </Box>
                   }
                 ></CardHeader>
                 <CardContent sx={{ paddingTop: 0 }}>
@@ -255,22 +257,22 @@ function ProfessorHomeDashBoard() {
                 <CardContent sx={{ paddingTop: 0 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"type2"}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
                         Create a New Course
                       </CustomizedButtons>
                     </Grid>
                     <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"type2"}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
                         Create a New Course
                       </CustomizedButtons>
                     </Grid>
                     <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"type2"}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
                         Create a New Course
                       </CustomizedButtons>
                     </Grid>
                     <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"type2"}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
                         Create a New Course
                       </CustomizedButtons>
                     </Grid>
@@ -283,7 +285,7 @@ function ProfessorHomeDashBoard() {
               xs={12}
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <CustomizedButtons type1 model={"type1"}>
+              <CustomizedButtons type1 model={"add"}>
                 Create a New Course
               </CustomizedButtons>
             </Grid>

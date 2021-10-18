@@ -7,6 +7,8 @@ const ButtonStyle = makeStyles((theme) => ({
     borderRadius: "50px",
     textTransform: "unset",
     fontWeight: "600",
+    padding: "5px 20px",
+    
   },
   fullwidth: {
     width: "100%"
@@ -18,7 +20,7 @@ const ButtonStyle = makeStyles((theme) => ({
     "&:hover, &.Mui-focusVisible": { backgroundColor: "#222" }
   },
   type2: {
-    backgroundColor: secondaryColor,
+    backgroundColor: "transparent",
     color: darkColor,
     border: "1px solid #000000"
   },

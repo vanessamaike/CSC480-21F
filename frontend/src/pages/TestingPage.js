@@ -12,14 +12,15 @@ function TestingPage() {
       <CustomizedTables jsonData={jsonData.slice(0,-1)}></CustomizedTables> */}
       <Grid container spacing={2}>
         <Grid item>
-          <CustomizedButtons type1 model={"type1"}>View Student Info </CustomizedButtons>
+          <CustomizedButtons type1 model={"type1"}>See All </CustomizedButtons>
+          <CustomizedButtons type1 model={"arrow"}>fsdfhui</CustomizedButtons>
         </Grid>
         <Grid item>
           {" "}
-          <CustomizedButtons type2 model={"type2"}>View Student Info </CustomizedButtons>
+          <CustomizedButtons type2 model={"type2"}>See All  </CustomizedButtons>
         </Grid>
         <Grid item>
-          <CustomizedButtons type3 model={"type3"}>View Student Info </CustomizedButtons>
+          <CustomizedButtons type3 model={"type3"}>See All </CustomizedButtons>
         </Grid>
       </Grid>
     </div>

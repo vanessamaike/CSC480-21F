@@ -64,7 +64,7 @@ function LoginPage() {
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
+    <div style ={{ backgroundImage:`url(${bg})`, height: "100vh", backgroundSize: "cover", paddingTop: "150px" }}
     >    
 
       <NavBar></NavBar>
