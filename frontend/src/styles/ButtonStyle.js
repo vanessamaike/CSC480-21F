@@ -8,7 +8,11 @@ const ButtonStyle = makeStyles((theme) => ({
     textTransform: "unset",
     fontWeight: "600",
     padding: "5px 20px",
-    
+    height: "42px",
+    display: "flex",
+    textAlign: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   fullwidth: {
     width: "100%"
