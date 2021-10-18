@@ -1,8 +1,0 @@
-
- Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
-------+------+---------------------------+---------------------------+---------------------------
-     0      1  10/12/21, 19:52:36:630 EDT  10/12/21, 19:52:36:630 EDT java.lang.reflect.InvocationTargetException org.apache.cxf.jaxrs.lifecycle.PerRequestResourceProvider 107
-                                                                            - /home/johnojacob84/480/Updated_480/CSC480-21F-backend/backend/teamManager/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.12_19.52.36.0.log
-     1      2  10/12/21, 19:52:36:974 EDT  10/12/21, 19:52:37:129 EDT java.lang.IllegalArgumentException com.ibm.ws.http.channel.internal.HttpResponseMessageImpl.isGoodCharacters(String) 1
-                                                                            - /home/johnojacob84/480/Updated_480/CSC480-21F-backend/backend/teamManager/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.10.12_19.52.36.1.log
-------+------+---------------------------+---------------------------+---------------------------
