@@ -17,8 +17,8 @@ public class AnswerService implements IAnswerService {
     }
     @Override
     public Answer save(Answer answer) {
-        answerDao.save(answer);
-        return answerDao.findOne(answer.getAnswerID());
+        int id = answerDao.save(answer);
+        return answerDao.findOne(id);
     }
     @Override
     public List<Answer> findAll() {

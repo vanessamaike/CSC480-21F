@@ -11,4 +11,5 @@ public interface IQuestionDAO {
     void update(Question question);
     void delete(Question question);
     void deleteAll();
+    int generateUniqueRandomId();
 }

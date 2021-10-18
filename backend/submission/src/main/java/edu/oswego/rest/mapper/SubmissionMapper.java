@@ -1,6 +1,5 @@
 package edu.oswego.rest.mapper;
 
-import edu.oswego.rest.objects.Assignment;
 import edu.oswego.rest.objects.Submission;
 
 import java.sql.ResultSet;

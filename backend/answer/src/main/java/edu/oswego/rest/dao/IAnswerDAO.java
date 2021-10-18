@@ -11,5 +11,6 @@ public interface IAnswerDAO {
     void update(Answer answer);
     void delete(Answer answer);
     void deleteAll();
+    int generateUniqueRandomId();
 
 }

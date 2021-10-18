@@ -9,13 +9,26 @@ import edu.oswego.rest.objects.Review;
 import java.util.List;
 
 public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
+    @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM review " +
+                "WHERE \"random_number\" NOT IN (SELECT reviewID FROM review) " +
+                "LIMIT 1;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
 
     @Override
     public int save(Review review) {
         StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, pdfDoc, signOff,teamId )");
         sql.append(" VALUES(?, ?, ?, ?)");
-        return insert(sql.toString(), review.getReviewID(), review.getPdfDoc(),review.getSignOff(),
+        int uniqueRandomId = generateUniqueRandomId();
+        insert(sql.toString(), uniqueRandomId, review.getPdfDoc(),review.getSignOff(),
                 review.getTeamID());
+        return uniqueRandomId;
     }
 
     @Override

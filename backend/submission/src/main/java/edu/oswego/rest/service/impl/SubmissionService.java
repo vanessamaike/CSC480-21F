@@ -18,8 +18,8 @@ public class SubmissionService implements ISubmissionService {
     }
     @Override
     public Submission save(Submission submission) {
-        submissionDao.save(submission);
-        return submissionDao.findOne(submission.getSubmissionID());
+        int id  = submissionDao.save(submission);
+        return submissionDao.findOne(id);
     }
     @Override
     public List<Submission> findAll() {
