@@ -11,10 +11,23 @@ import java.util.List;
 public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissionDAO {
 
     @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM course " +
+                "WHERE \"random_number\" NOT IN (SELECT courseID FROM course) " +
+                "LIMIT 1;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
+    @Override
     public int save(Submission submission) {
         StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, pdfDoc, signOff, teamID)");
         sql.append(" VALUES(?, ?, ?, ?)");
-        return insert(sql.toString(), submission.getSubmissionID(), submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID());
+        int uniqueRandomId = generateUniqueRandomId();
+        insert(sql.toString(), uniqueRandomId, submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID());
+        return uniqueRandomId;
     }
 
     @Override

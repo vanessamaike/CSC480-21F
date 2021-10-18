@@ -10,4 +10,5 @@ public interface GenericDAO<T> {
     int insert (String sql, Object... parameters);
     String insertString (String sql, Object... parameters);
     int count(String sql, Object... parameters);
+    List<Integer> generateUniqueRandomId(String sql, Object... parameters);
 }

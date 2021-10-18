@@ -16,8 +16,8 @@ public class QuestionService implements IQuestionService {
     }
     @Override
     public Question save(Question question) {
-        questionDao.save(question);
-        return questionDao.findOne(question.getQuestionID());
+        int id = questionDao.save(question);
+        return questionDao.findOne(id);
     }
     @Override
     public List<Question> findAll() {

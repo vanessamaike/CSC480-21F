@@ -1,10 +1,15 @@
 package edu.oswego.rest.dao.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import edu.oswego.rest.dao.GenericDAO;
 import edu.oswego.rest.mapper.RowMapper;
@@ -13,13 +18,29 @@ public class AbstractDAO<T> implements GenericDAO<T> {
 
     public Connection getConnection() {
         try {
+            File file = new File(
+                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
+            Scanner sc = new Scanner(file);
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/CSC480database";
-            String user = "root";
-            String password = "your_password";
+            String user = "";
+            String password = "";
+
+            while (sc.hasNextLine())
+            {
+                user = sc.nextLine();
+                password = sc.nextLine();
+            }
+
+
+
             Connection con =  DriverManager.getConnection(url,user,password);
             return con;
         } catch (ClassNotFoundException | SQLException e) {
+            return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -106,7 +127,6 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
-                System.out.println(id);
             }
             connection.commit();
             return id;

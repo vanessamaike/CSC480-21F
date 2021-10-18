@@ -15,6 +15,9 @@ import javax.ws.rs.*;
 import java.sql.SQLOutput;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 @Path("/course")
 public class CourseAPI {
 
@@ -25,6 +28,14 @@ public class CourseAPI {
 
     public CourseAPI() {
         courseService = new CourseService();
+    }
+
+    @PATCH
+    public int asd(String payload) throws JsonProcessingException {
+        JSONObject obj = new JSONObject(payload);
+        int id = obj.getInt("id");
+        System.out.println(id);
+        return id;
     }
 
     @GET

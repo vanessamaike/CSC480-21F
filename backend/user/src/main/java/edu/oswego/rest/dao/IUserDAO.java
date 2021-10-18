@@ -11,4 +11,5 @@ public interface IUserDAO {
     void update(User user);
     void delete(User user);
     void deleteAll();
+    int generateUniqueRandomId();
 }

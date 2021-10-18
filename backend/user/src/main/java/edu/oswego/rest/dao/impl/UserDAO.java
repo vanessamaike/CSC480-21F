@@ -9,12 +9,23 @@ import edu.oswego.rest.objects.User;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> implements IUserDAO {
-
+    @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM course " +
+                "WHERE \"random_number\" NOT IN (SELECT courseID FROM course) " +
+                "LIMIT 1;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
     @Override
     public int save(User user) {
         StringBuilder sql = new StringBuilder("INSERT INTO user (userId, email, role)");
         sql.append(" VALUES(?, ?, ?)");
-        return insert(sql.toString(), user.getUserID(), user.getEmail(),user.getRole());
+        int uniqueRandomId = generateUniqueRandomId();
+        insert(sql.toString(), uniqueRandomId, user.getEmail(),user.getRole());
+        return uniqueRandomId;
     }
 
     @Override

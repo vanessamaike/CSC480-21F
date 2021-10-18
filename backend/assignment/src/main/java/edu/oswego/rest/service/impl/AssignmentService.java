@@ -16,8 +16,8 @@ public class AssignmentService implements IAssignmentService {
     }
     @Override
     public Assignment save(Assignment assignment) {
-        assignmentDao.save(assignment);
-        return assignmentDao.findOne(assignment.getAssignmentID());
+        int id = assignmentDao.save(assignment);
+        return assignmentDao.findOne(id);
     }
     @Override
     public List<Assignment> findAll() {

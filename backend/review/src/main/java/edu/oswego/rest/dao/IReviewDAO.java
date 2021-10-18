@@ -11,4 +11,5 @@ public interface IReviewDAO {
     void update(Review review);
     void delete(Review review);
     void deleteAll();
+    int generateUniqueRandomId();
 }

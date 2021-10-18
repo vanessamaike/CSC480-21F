@@ -14,14 +14,18 @@ public class Course {
 
 
     private  int courseID;
+    private int userID;
     private  String title;
     private  String code;
+    private String sectionNumber;
     private  LocalDate endDate;
     private String settings;
 
-    public Course(int courseID, String title, String code, LocalDate endDate, String settings){
+    public Course(int courseID, int userID, String title, String code, String sectionNumber, LocalDate endDate, String settings){
         this.title = title;
+        this.userID = userID;
         this.code = code;
+        this.sectionNumber = sectionNumber;
         this.endDate = endDate;
         this.settings = settings;
         this.courseID = courseID;
@@ -30,11 +34,29 @@ public class Course {
 
     public Course(){
         this.courseID = 0;
+        this.userID = 0;
         this.title = "";
-        //this.name = "";
         this.code = "";
+        this.sectionNumber = "";
         this.endDate = LocalDate.now();
         this.settings = "";
+    }
+
+    public String getSectionNumber() {
+        return sectionNumber;
+    }
+
+    public void setSectionNumber(String sectionNumber) {
+        this.sectionNumber = sectionNumber;
+    }
+
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public void setSettings(String settings) {

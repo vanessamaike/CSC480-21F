@@ -9,10 +9,23 @@ import java.util.List;
 public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmentDAO {
 
     @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM assignment " +
+                "WHERE \"random_number\" NOT IN (SELECT assignmentID FROM assignment) " +
+                "LIMIT 1;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
+    @Override
     public int save(Assignment assignment) {
         StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, pdfDoc, settings, courseID)");
         sql.append(" VALUES(?, ?, ?, ?)");
-        return insert(sql.toString(), assignment.getAssignmentID(), assignment.getPdfDoc(),assignment.getSettings(),assignment.getCourseID());
+        int uniqueRandomId = generateUniqueRandomId();
+         insert(sql.toString(), uniqueRandomId, assignment.getPdfDoc(),assignment.getSettings(),assignment.getCourseID());
+        return uniqueRandomId;
     }
 
     @Override
