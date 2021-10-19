@@ -35,18 +35,17 @@ function FilterAssignment() {
         }}
       >
         <Typography
-              style={{ display: "flex",  textAlign: "center", fontWeight: "600" }}
-              variant="body1"
-              component="div"
-            >
-              Filter Assignments
-            </Typography>
+          style={{ display: "flex", textAlign: "center", fontWeight: "600" }}
+          variant="body1"
+          component="div"
+        >
+          Filter Assignments
+        </Typography>
         <CustomizedRadios></CustomizedRadios>
       </Box>
     </div>
   );
 }
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,7 +85,11 @@ function ProfessorCourse({ history }) {
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={4}>
             <Typography
-              style={{ display: "flex",  textAlign: "center", fontWeight: "600" }}
+              style={{
+                display: "flex",
+                textAlign: "center",
+                fontWeight: "600",
+              }}
               variant="h6"
               component="div"
             >
@@ -109,8 +112,8 @@ function ProfessorCourse({ history }) {
             </Grid>
             <Grid item xs={4}>
               <CustomizedButtons type2 model={"add"}>
-              <Link
-                  to="/addcourse"
+                <Link
+                  to="/coursecreation"
                   style={{ textDecoration: "none", color: "#000" }}
                 >
                   <div>Create Course</div>
@@ -139,15 +142,18 @@ function ProfessorCourse({ history }) {
                 title={
                   <Grid container>
                     <Grid item xs={7}>
-                    <CustomizedButtons type3 model={"add"}>
-                      Create New Assignment
-                    </CustomizedButtons>
+                      <CustomizedButtons type3 model={"add"}>
+                        <Link
+                          to="/assignmentcreation"
+                          style={{ textDecoration: "none", color: "#000" }}
+                        >
+                          <div>Create New Assignment</div>
+                        </Link>
+                      </CustomizedButtons>
                     </Grid>
                     <Grid item xs={5}>
-                    <FilterAssignment></FilterAssignment>
+                      <FilterAssignment></FilterAssignment>
                     </Grid>
-
-                    
                   </Grid>
                 }
               ></CardHeader>
