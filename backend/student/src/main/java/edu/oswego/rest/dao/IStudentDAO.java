@@ -10,5 +10,6 @@ public interface IStudentDAO {
     Student findOne(String studentID);
     void update(Student student);
     void delete(Student student);
+    int generateUniqueRandomId();
     void deleteAll();
 }
