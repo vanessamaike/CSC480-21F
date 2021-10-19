@@ -13,6 +13,7 @@ import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import { Grid } from "@mui/material";
+import CustomizedCard from "../../components/CustomizedCard";
 
 function FilterAssignment() {
   return (
@@ -116,10 +117,7 @@ function ProfessorCourse({ history }) {
           justifyContent: "space-around",
         }}
       >
-        <Grid
-          container
-          spacing={2}
-        >
+        <Grid container spacing={2}>
           <Grid item xs={8}>
             <Typography
               style={{ fontWeight: "600" }}
@@ -129,30 +127,34 @@ function ProfessorCourse({ history }) {
               Courses and Assignments
             </Typography>
           </Grid>
-            <Grid item xs={2}>
-              <CustomizedButtons type2 model={"add"}>Create Course</CustomizedButtons>
-            </Grid>
-            <Grid item xs={2}>
+          <Grid item xs={2}>
+            <CustomizedButtons type2 model={"add"}>
+              Create Course
+            </CustomizedButtons>
+          </Grid>
+          <Grid item xs={2}>
             <CustomizedButtons type1>View Student Info</CustomizedButtons>
           </Grid>
         </Grid>
-        <Card sx={{ width: "100%", bgcolor: "#fff", borderRadius: "10px", marginTop: "15px" }}>
+        <div>
           <CustomizedTabs
             type1
             setValue={setValue}
             value={value}
           ></CustomizedTabs>
           <TabPanel value={value} index={0}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <CreateNewAssignmentButton></CreateNewAssignmentButton>
-              <FilterAssignment></FilterAssignment>
-            </Box>
+            <CustomizedCard>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CreateNewAssignmentButton></CreateNewAssignmentButton>
+                <FilterAssignment></FilterAssignment>
+              </Box>
+            </CustomizedCard>
           </TabPanel>
           <TabPanel value={value} index={1}>
             Item Two
@@ -163,7 +165,7 @@ function ProfessorCourse({ history }) {
           <TabPanel value={value} index={3}>
             Item Three
           </TabPanel>
-        </Card>
+        </div>
       </Container>
     </div>
   );

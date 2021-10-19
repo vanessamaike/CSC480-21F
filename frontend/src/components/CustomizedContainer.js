@@ -39,9 +39,7 @@ const CustomizedContainer = React.forwardRef((props, ref) => {
   )
 });
 CustomizedContainer.propTypes = {
-  fullwidth: PropTypes.bool,
-  type1: PropTypes.bool,
-  type1: PropTypes.bool,
-  type1: PropTypes.bool,
+  container: PropTypes.bool,
+  containerFluid: PropTypes.bool,
 };
 export default CustomizedContainer;

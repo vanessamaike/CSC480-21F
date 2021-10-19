@@ -19,6 +19,8 @@ import bg from "../../images/multi_background_dashboard.jpg";
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedContainer from "../../components/CustomizedContainer";
+import CustomizedCard from "../../components/CustomizedCard";
+
 function CourseBar() {
   return (
     <Stack spacing={1}>
@@ -129,15 +131,7 @@ function ProfessorHomeDashBoard() {
           alignItems="flex-start"
         >
           <Grid item xs={4}>
-            <Card
-              variant="outlined"
-              sx={{
-                overflow: "hidden",
-                p: 1,
-                border: "3px solid #cfe1ff",
-                borderRadius: "10px",
-              }}
-            >
+            <CustomizedCard>
               <CardHeader
                 sx={{paddingBottom: "0"}}
                 title={
@@ -166,19 +160,11 @@ function ProfessorHomeDashBoard() {
                   <CourseBar></CourseBar>
                 </Stack>
               </CardContent>
-            </Card>
+            </CustomizedCard>
           </Grid>
           <Grid item container spacing={3} xs={8}>
             <Grid item xs={12}>
-              <Card
-                variant="outlined"
-                sx={{
-                  overflow: "hidden",
-                  p: 1,
-                  border: "3px solid #cfe1ff",
-                  borderRadius: "10px",
-                }}
-              >
+              <CustomizedCard>
                 <CardHeader
                   sx={{ paddingBottom: "8px" }}
                   title={
@@ -219,18 +205,10 @@ function ProfessorHomeDashBoard() {
                     <ReviewBar></ReviewBar>
                   </Stack>
                 </CardContent>
-              </Card>
+              </CustomizedCard>
             </Grid>
             <Grid item xs={12}>
-              <Card
-                variant="outlined"
-                sx={{
-                  overflow: "hidden",
-                  p: 1,
-                  border: "3px solid #cfe1ff",
-                  borderRadius: "10px",
-                }}
-              >
+              <CustomizedCard>
                 <CardHeader
                   title={
                     <Stack direction="row">
@@ -276,7 +254,7 @@ function ProfessorHomeDashBoard() {
                     </Grid>
                   </Grid>
                 </CardContent>
-              </Card>
+              </CustomizedCard>
             </Grid>
             <Grid
               item
