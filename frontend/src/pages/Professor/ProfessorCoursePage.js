@@ -12,7 +12,7 @@ import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
-import { Grid } from "@mui/material";
+import { CardHeader, Grid, Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 
 function FilterAssignment() {
@@ -83,11 +83,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -144,16 +140,19 @@ function ProfessorCourse({ history }) {
           ></CustomizedTabs>
           <TabPanel value={value} index={0}>
             <CustomizedCard>
-              <Box
+              <CardHeader
                 sx={{
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
                 }}
-              >
-                <CreateNewAssignmentButton></CreateNewAssignmentButton>
-                <FilterAssignment></FilterAssignment>
-              </Box>
+                title={
+                  <Stack direction="row" spacing={16}>
+                    <CustomizedButtons type3 model={"add"}>Create New Assignment</CustomizedButtons>
+                    <FilterAssignment></FilterAssignment>
+                  </Stack>
+                }
+              ></CardHeader>
             </CustomizedCard>
           </TabPanel>
           <TabPanel value={value} index={1}>
