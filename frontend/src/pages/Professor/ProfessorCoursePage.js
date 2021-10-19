@@ -12,12 +12,15 @@ import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
-import { Grid } from "@mui/material";
-
+import { CardHeader, Grid, Stack } from "@mui/material";
+import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedContainer from "../../components/CustomizedContainer";
+import { Link } from "react-router-dom";
 function FilterAssignment() {
   return (
     <div>
       <Box
+        gap={2}
         sx={{
           display: "flex",
           direction: "column",
@@ -28,43 +31,17 @@ function FilterAssignment() {
           cursor: "pointer",
           borderRadius: 10,
           color: "#000",
-          fontWeight: "600",
           backgroundColor: "#ddd",
         }}
       >
-        <div style={{ marginRight: "40px" }}>Filter Assignments</div>
+        <Typography
+          style={{ display: "flex", textAlign: "center", fontWeight: "600" }}
+          variant="body1"
+          component="div"
+        >
+          Filter Assignments
+        </Typography>
         <CustomizedRadios></CustomizedRadios>
-      </Box>
-    </div>
-  );
-}
-
-function CreateNewAssignmentButton() {
-  return (
-    <div>
-      <Box
-        sx={{
-          display: "flex",
-          direction: "column",
-          justifyContent: "space-between",
-          width: "90%",
-          overflow: "hidden",
-          px: 2,
-          py: 1,
-          cursor: "pointer",
-          borderRadius: 10,
-          border: "1px solid red",
-          color: "#000",
-          fontWeight: "600",
-          backgroundColor: "#ddd",
-          "&:hover": {
-            backgroundColor: "#aaa",
-            opacity: [0.9, 0.8, 0.7],
-          },
-        }}
-      >
-        <div>Create a New Assignment</div>
-        <AddCircleOutlineIcon sx={{ color: "#000" }} />
       </Box>
     </div>
   );
@@ -82,11 +59,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -108,51 +81,83 @@ function ProfessorCourse({ history }) {
       }}
     >
       <NavBar fixed history={history}></NavBar>
-      <Container
-        maxWidth="lg"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-        }}
-      >
-        <Grid
-          container
-          spacing={2}
-        >
-          <Grid item xs={8}>
+      <CustomizedContainer>
+        <Grid container sx={{ marginBottom: "20px" }}>
+          <Grid item xs={4}>
             <Typography
-              style={{ fontWeight: "600" }}
+              style={{
+                display: "flex",
+                textAlign: "center",
+                fontWeight: "600",
+              }}
               variant="h6"
               component="div"
             >
               Courses and Assignments
             </Typography>
           </Grid>
-            <Grid item xs={2}>
-              <CustomizedButtons type2 model={"add"}>Create Course</CustomizedButtons>
+          <Grid
+            item
+            container
+            xs={8}
+            rowSpacing={2}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Grid item xs={4}>
+              <div></div>
             </Grid>
-            <Grid item xs={2}>
-            <CustomizedButtons type1>View Student Info</CustomizedButtons>
+            <Grid item xs={4}>
+              <CustomizedButtons type2 model={"add"}>
+                <Link
+                  to="/coursecreation"
+                  style={{ textDecoration: "none", color: "#000" }}
+                >
+                  <div>Create Course</div>
+                </Link>
+              </CustomizedButtons>
+            </Grid>
+            <Grid item xs={4}>
+              <CustomizedButtons type1>View Student Info</CustomizedButtons>
+            </Grid>
           </Grid>
         </Grid>
-        <Card sx={{ width: "100%", bgcolor: "#fff", borderRadius: "10px", marginTop: "15px" }}>
+        <div>
           <CustomizedTabs
-            type1
+            type3
             setValue={setValue}
             value={value}
           ></CustomizedTabs>
           <TabPanel value={value} index={0}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <CreateNewAssignmentButton></CreateNewAssignmentButton>
-              <FilterAssignment></FilterAssignment>
-            </Box>
+            <CustomizedCard>
+              <CardHeader
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+                title={
+                  <Grid container>
+                    <Grid item xs={7}>
+                      <CustomizedButtons type3 model={"add"}>
+                        <Link
+                          to="/assignmentcreation"
+                          style={{ textDecoration: "none", color: "#000" }}
+                        >
+                          <div>Create New Assignment</div>
+                        </Link>
+                      </CustomizedButtons>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <FilterAssignment></FilterAssignment>
+                    </Grid>
+                  </Grid>
+                }
+              ></CardHeader>
+            </CustomizedCard>
           </TabPanel>
           <TabPanel value={value} index={1}>
             Item Two
@@ -163,8 +168,8 @@ function ProfessorCourse({ history }) {
           <TabPanel value={value} index={3}>
             Item Three
           </TabPanel>
-        </Card>
-      </Container>
+        </div>
+      </CustomizedContainer>
     </div>
   );
 }

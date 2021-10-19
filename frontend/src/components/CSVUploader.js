@@ -1,7 +1,8 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { CSVReader } from "react-papaparse";
 
-function CSVReader2({ setjsonData }) {
+function CSVReader2({ setjsonData, setIsUploaded }) {
   const handleOnDrop = (data) => {
     console.log("---------------------------");
 
@@ -11,6 +12,7 @@ function CSVReader2({ setjsonData }) {
     });
     //console.log(combinedData);
     setjsonData(combinedData);
+    setIsUploaded(true)
     console.log("---------------------------");
   };
 
@@ -21,49 +23,56 @@ function CSVReader2({ setjsonData }) {
   const handleOnRemoveFile = (data) => {
     console.log("---------------------------");
     setjsonData([]);
+    setIsUploaded(false)
     console.log("---------------------------");
   };
   return (
-    <div style={{ width: "30%" }}>
+    <div style={{ width: "100%" }}>
       <CSVReader
         onDrop={handleOnDrop}
         onError={handleOnError}
-        noDrag
+        addRemoveButton
+        onRemoveFile={handleOnRemoveFile}
         style={{
           dropArea: {
-            width: "87px",
-            height: "33px",
-            backgroundColor: "#000",
-            borderRadius: 30,
+            borderColor: "transparent",
+            borderRadius: 20,
           },
           dropAreaActive: {
             borderColor: "red",
           },
           dropFile: {
-            width: 87,
-            height: 33,
-            background: "#000",
+            width: 200,
+            height: 80,
+            background: "#347DEB",
           },
           fileSizeInfo: {
-            backgroundColor: "#000",
+            display: "none",
+            color: "#000",
+            backgroundColor: "transparent",
+            lineHeight: 1,
+            marginBottom: "0.5em",
+            padding: "0 0.4em",
           },
           fileNameInfo: {
             color: "#fff",
             backgroundColor: "transparent",
-            borderRadius: 3,
-            fontSize: 14,
+            fontSize: "1em",
             lineHeight: 1,
-            padding: "0 0.4em",
+            marginBottom: "0.2em",
           },
           removeButton: {
-            color: "blue",
+            color: "#347DEB",
+            backgroundColor: "#fff",
+          },
+          progressBar: {
+            backgroundColor: "#fff",
           },
         }}
-        config={{ header: true }}
-        addRemoveButton
-        onRemoveFile={handleOnRemoveFile}
       >
-        <span>Upload.</span>
+        <Typography style={{ fontWeight: "600" }} variant="body1" component="div">
+          Drop CSV file here or click to upload
+        </Typography>
       </CSVReader>
     </div>
   );

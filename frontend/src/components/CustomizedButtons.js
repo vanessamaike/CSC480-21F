@@ -7,8 +7,9 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import {IoIosAddCircleOutline} from "react-icons/io";
+import {BsArrowRightCircle} from "react-icons/bs";
+
 // core components
 import ButtonStyle from "../styles/ButtonStyle";
 
@@ -37,8 +38,8 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
   return (
     <Button {...rest} ref={ref} className={btnClasses}>
       {children}
-      {model === "add" ? <AddCircleOutlineIcon sx={{marginLeft: "5px"}}/> : 
-      <>{model === "arrow" ? <ArrowCircleUpIcon sx={{marginLeft: "5px", transform: "rotate(90deg)"}}/> : <></>}</>}
+      {model === "add" ? <IoIosAddCircleOutline size="2em" style={{marginLeft: "5px"}}/> : 
+      <>{model === "arrow" ? <BsArrowRightCircle size="2em" style={{marginLeft: "5px"}}/> : <></>}</>}
     </Button>
   );
 });

@@ -11,63 +11,57 @@ import {
   Stack,
 } from "@mui/material";
 
-import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { BiCheckCircle } from "react-icons/bi";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import bg from '../../images/multi_background_dashboard.jpg'
+import bg from "../../images/multi_background_dashboard.jpg";
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
+import CustomizedContainer from "../../components/CustomizedContainer";
+import CustomizedCard from "../../components/CustomizedCard";
 
 function CourseBar() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        direction: "column",
-        justifyContent: "space-between",
-        width: "90%",
-        overflow: "hidden",
-        px: 2,
-        py: 1,
-        cursor: "pointer",
-        borderRadius: 10,
-        color: "#000",
-        bgcolor: "#F0F0F0",
-        "&:hover": {
-          backgroundColor: "#ccc",
-        },
-      }}
-    >
-      <Stack direction="row">
+    <Stack spacing={1}>
+        <CustomizedButtons type3 fullwidth model={"arrow"}>
+          CRN, Section, Semester
+        </CustomizedButtons>
+        <Stack sx={{ px: 2, py: 0 }} spacing={2} direction="row">
+          <Typography
+            style={{
+              fontWeight: "600",
+            }}
+            variant="body1"
+            component="div"
+          >
+            Solution 1
+          </Typography>
+          <Typography
+            variant="body1"
+            component="div"
+          >
+            Due 10/15/21
+          </Typography>
+        </Stack>
+        <Stack sx={{ px: 2, py: 0 }} spacing={2} direction="row">
         <Typography
-          style={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: "600",
-          }}
-          variant="subtitle1"
-          component="div"
-        >
-          CRN
-        </Typography>
-        <Typography
-          style={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: "600",
-          }}
-          variant="subtitle1"
-          component="div"
-        >
-          , Section, Semester
-        </Typography>
-      </Stack>
-      <ArrowCircleUpIcon sx={{ color: "#000", transform: "rotate(90deg)" }} />
-    </Box>
+            style={{
+              fontWeight: "600",
+            }}
+            variant="body1"
+            component="div"
+          >
+            Peer Review 3
+          </Typography>
+          <Typography
+            variant="body1"
+            component="div"
+          >
+            Due 10/15/21
+          </Typography>
+        </Stack>
+    </Stack>
   );
 }
 
@@ -88,7 +82,7 @@ function ReviewBar() {
         },
       }}
     >
-      <CheckCircleOutlinedIcon sx={{ color: "#00000" }} />
+      <BiCheckCircle size="1.5em" style={{ color: "#00000" }} />
       <Box
         sx={{
           display: "flex",
@@ -99,19 +93,15 @@ function ReviewBar() {
       >
         <Typography
           style={{
-            display: "flex",
-            display: "flex",
-            alignItems: "center",
             fontWeight: "600",
           }}
-          variant="subtitle1"
+          variant="body1"
           component="div"
         >
           Peer Review 1
         </Typography>
         <Typography
-          style={{ display: "flex", display: "flex", alignItems: "center" }}
-          variant="h7"
+          variant="body1"
           component="div"
         >
           Final submissions completed on 10/05/21
@@ -123,10 +113,16 @@ function ReviewBar() {
 
 function ProfessorHomeDashBoard() {
   return (
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
-    >    
+    <div
+      style={{
+        backgroundImage: `url(${bg})`,
+        height: "80vh",
+        backgroundSize: "cover",
+        paddingTop: "150px",
+      }}
+    >
       <NavBar></NavBar>
-      <Container maxWidth="lg" >
+      <CustomizedContainer >
         <Grid
           container
           spacing={3}
@@ -135,16 +131,9 @@ function ProfessorHomeDashBoard() {
           alignItems="flex-start"
         >
           <Grid item xs={4}>
-            <Card
-              variant="outlined"
-              sx={{
-                overflow: "hidden",
-                p: 1,
-                border: "3px solid #cfe1ff",
-                borderRadius: "10px",
-              }}
-            >
+            <CustomizedCard>
               <CardHeader
+                sx={{paddingBottom: "0"}}
                 title={
                   <Stack direction="row">
                     <FiberManualRecordIcon
@@ -169,49 +158,44 @@ function ProfessorHomeDashBoard() {
                 <Stack spacing={2}>
                   <CourseBar></CourseBar>
                   <CourseBar></CourseBar>
-                  <CourseBar></CourseBar>
-                  <CourseBar></CourseBar>
-                  <CourseBar></CourseBar>
                 </Stack>
               </CardContent>
-            </Card>
+            </CustomizedCard>
           </Grid>
           <Grid item container spacing={3} xs={8}>
             <Grid item xs={12}>
-              <Card
-                variant="outlined"
-                sx={{
-                  overflow: "hidden",
-                  p: 1,
-                  border: "3px solid #cfe1ff",
-                  borderRadius: "10px",
-                }}
-              >
+              <CustomizedCard>
                 <CardHeader
                   sx={{ paddingBottom: "8px" }}
                   title={
-                    <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                    <Stack
-                      direction="row"
-                      sx={{ borderBottom: "3px solid #cfe1ff" }}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      <FiberManualRecordIcon
-                        sx={{ color: "#0DC38D" }}
-                        fontSize="large"
-                      ></FiberManualRecordIcon>
-                      <Typography
-                        style={{
-                          display: "flex",
-                          fontWeight: "600",
-                          margin: "4px",
-                        }}
-                        variant="h6"
-                        component="div"
+                      <Stack
+                        direction="row"
+                        sx={{ borderBottom: "3px solid #cfe1ff" }}
                       >
-                        Results to Review
-                      </Typography>
-                    </Stack>
-                    <CustomizedButtons type1>See All</CustomizedButtons>
+                        <FiberManualRecordIcon
+                          sx={{ color: "#0DC38D" }}
+                          fontSize="large"
+                        ></FiberManualRecordIcon>
+                        <Typography
+                          style={{
+                            display: "flex",
+                            fontWeight: "600",
+                            margin: "4px",
+                          }}
+                          variant="h6"
+                          component="div"
+                        >
+                          Results to Review
+                        </Typography>
+                      </Stack>
+                      <CustomizedButtons type1>See All</CustomizedButtons>
                     </Box>
                   }
                 ></CardHeader>
@@ -221,18 +205,10 @@ function ProfessorHomeDashBoard() {
                     <ReviewBar></ReviewBar>
                   </Stack>
                 </CardContent>
-              </Card>
+              </CustomizedCard>
             </Grid>
             <Grid item xs={12}>
-              <Card
-                variant="outlined"
-                sx={{
-                  overflow: "hidden",
-                  p: 1,
-                  border: "3px solid #cfe1ff",
-                  borderRadius: "10px",
-                }}
-              >
+              <CustomizedCard>
                 <CardHeader
                   title={
                     <Stack direction="row">
@@ -278,7 +254,7 @@ function ProfessorHomeDashBoard() {
                     </Grid>
                   </Grid>
                 </CardContent>
-              </Card>
+              </CustomizedCard>
             </Grid>
             <Grid
               item
@@ -291,7 +267,7 @@ function ProfessorHomeDashBoard() {
             </Grid>
           </Grid>
         </Grid>
-      </Container>
+      </CustomizedContainer>
     </div>
   );
 }

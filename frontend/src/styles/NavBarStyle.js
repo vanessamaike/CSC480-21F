@@ -9,7 +9,6 @@ const NavBarStyle = makeStyles((theme) => ({
     flexDirection: "row",
     border: "0",
     borderRadius: "3px",
-    padding: "0 12em",
     marginBottom: "20px",
     color: "#f11111",
     width: "100%",
@@ -27,14 +26,11 @@ const NavBarStyle = makeStyles((theme) => ({
   logo: {
     cursor: "pointer",
     userSelect: "none",
-    width: "15em",
-    display: "flex",
-    justifyContent: "start",
+    width: "7em",
   },
   link: {
     cursor: "pointer",
     userSelect: "none",
-    width: "15em",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
