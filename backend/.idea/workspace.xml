@@ -2,17 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8e6d562-8325-4c6e-98de-1a9727fa392e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/student/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/student/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/student/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/student/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/answer/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/answer/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment/src/main/java/edu/oswego/rest/dao/impl/AbstractDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/assignment/src/main/java/edu/oswego/rest/dao/impl/AbstractDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/course/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/course/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.txt" beforeDir="false" afterPath="$PROJECT_DIR$/database.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentDistributor/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/documentDistributor/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentDistributor/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentDistributor/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/question/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/question/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/review/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/review/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/student/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/student/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/GenericDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/IStudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/IStudentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/impl/AbstractDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/impl/AbstractDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/impl/StudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/dao/impl/StudentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/objects/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/objects/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/controller/user/UserAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/controller/user/UserAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/dao/impl/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/dao/impl/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/student/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/hello/RestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/edu/oswego/rest/hello/RestResource.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +45,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="15" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

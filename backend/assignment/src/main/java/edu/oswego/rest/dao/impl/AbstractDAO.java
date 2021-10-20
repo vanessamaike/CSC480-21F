@@ -33,8 +33,6 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 password = sc.nextLine();
             }
 
-
-
             Connection con =  DriverManager.getConnection(url,user,password);
             return con;
         } catch (ClassNotFoundException | SQLException e) {

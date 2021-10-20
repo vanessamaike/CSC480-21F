@@ -37,6 +37,7 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     @Override
     public Student findOne(String studentId) {
         String sql = "SELECT * FROM student WHERE studentID = ?";
+        System.out.println(studentId);
         List<Student> student = query(sql, new StudentMapper(), studentId);
         return student.isEmpty() ? null : student.get(0);
     }
