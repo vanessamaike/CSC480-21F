@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { secondaryColor, primaryColor, fontColor } from "../styles/Style";
+import { primaryColor, darkColor, grayColor, greenColor, whiteColor, blueColor } from "../styles/Style";
 import { borderRadius } from "@mui/system";
 
 export default function StickyHeadTable({jsonData}) {
@@ -59,19 +59,19 @@ export default function StickyHeadTable({jsonData}) {
                 let bgColor;
                 let color;
                 if (indexCol == columns.length - 1) {
-                  bgColor = "#0DC38D"
-                  color = "#fff"
+                  bgColor = greenColor
+                  color = whiteColor
                 }
                 else{
-                  bgColor = primaryColor
-                  color = "#000";
+                  bgColor = grayColor
+                  color = darkColor
                 }
                 return <TableCell
                   key={column.id}
                   align={column.align}
                   style={{
                     minWidth: column.minWidth,
-                    border: "0.01px solid #000000",
+                    border: "0.01px solid #000",
                     backgroundColor: bgColor,
                     color: color,
                   }}
@@ -96,16 +96,16 @@ export default function StickyHeadTable({jsonData}) {
                         }
                         else {
                           if (indexCol == columns.length - 1 && indexRow != arrayData.length - 1) {
-                            bgColor = "#0DC38D"
-                            color = "#fff"
+                            bgColor = greenColor
+                            color = whiteColor
                           }
                           else {
                             if (indexRow == arrayData.length - 1 && indexCol != columns.length - 1) {
-                              bgColor = "#347DEB"
-                              color = "#fff"
+                              bgColor = blueColor
+                              color = whiteColor
                             }
                             else {
-                              bgColor = secondaryColor
+                              bgColor = whiteColor
                             }
                           }
                         }
@@ -117,7 +117,7 @@ export default function StickyHeadTable({jsonData}) {
                           style={{
                             color: color,
                             backgroundColor: bgColor,
-                            border: "0.01px solid #000000",
+                            border: "0.01px solid #000",
                           }}
                         >
                           {value != 0 ? value : ""}

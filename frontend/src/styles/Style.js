@@ -1,5 +1,6 @@
-const primaryColor = "#E5E5E5"
-const secondaryColor = "#FFFFFF"
+const primaryColor = "#CFE1FF"
+const whiteColor = "#FFFFFF"
+const grayColor = "#E5E5E5"
 const darkColor = "#000000"
 const blueColor = "#347DEB"
 const greenColor = "#0DC38D"
@@ -27,7 +28,8 @@ const defaultBoxShadow = {
 export {
     containerFluid,
     primaryColor,
-    secondaryColor,
+    whiteColor,
+    grayColor,
     darkColor,
     blueColor,
     greenColor,

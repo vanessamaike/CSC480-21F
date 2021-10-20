@@ -10,7 +10,7 @@ import logo from "../../images/logo.png";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
 
-import { secondaryColor, primaryColor, darkColor } from "../../styles/Style";
+import { whiteColor, darkColor } from "../../styles/Style";
 import CustomizedContainer from "../CustomizedContainer";
 import { Grid } from "@mui/material";
 
@@ -21,7 +21,7 @@ function NavBar({ history }) {
     <div className={nav.root}>
       <AppBar
         style={{
-          backgroundColor: secondaryColor,
+          backgroundColor: whiteColor,
           color: darkColor,
           flexDirection: "row",
         }}

@@ -3,16 +3,14 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Card from "@mui/material/Card";
+import {BsArrowRightCircle} from "react-icons/bs";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import Container from "@mui/material/Container";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
-import { CardHeader, Grid, Stack } from "@mui/material";
+import { CardContent, CardHeader, Grid, Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
@@ -46,7 +44,35 @@ function FilterAssignment() {
     </div>
   );
 }
-
+function AssignmentBar() {
+  return (
+      <CustomizedButtons fullwidth type4>
+      <Grid container style={{display: "flex", alignItems: "center", height: "35px"}}>
+        <Grid item xs={7}>
+          <Typography
+            style={{ display: "flex", textAlign: "center", fontWeight: "600", marginLeft: "10px" }}
+            variant="body1"
+            component="div"
+          >
+            Solution 1
+          </Typography>
+        </Grid>
+        <Grid item xs={4} style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Typography
+            style={{ display: "flex", textAlign: "center" }}
+            variant="body1"
+            component="div"
+          >
+            Due 10/01/21
+          </Typography>
+        </Grid>
+        <Grid item xs={1} style={{ display: "flex", justifyContent: "center"}}>
+        <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/>
+        </Grid>
+      </Grid>
+      </CustomizedButtons>
+  );
+}
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -66,10 +92,6 @@ function TabPanel(props) {
 
 function ProfessorCourse({ history }) {
   const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
     <div
@@ -157,6 +179,12 @@ function ProfessorCourse({ history }) {
                   </Grid>
                 }
               ></CardHeader>
+              <CardContent>
+                <AssignmentBar></AssignmentBar>
+                <AssignmentBar></AssignmentBar>
+                <AssignmentBar></AssignmentBar>
+                <AssignmentBar></AssignmentBar>
+              </CardContent>
             </CustomizedCard>
           </TabPanel>
           <TabPanel value={value} index={1}>
