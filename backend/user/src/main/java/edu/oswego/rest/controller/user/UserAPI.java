@@ -3,9 +3,7 @@ package edu.oswego.rest.controller.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import edu.oswego.rest.objects.User;
-import edu.oswego.rest.service.IStudentService;
 import edu.oswego.rest.service.IUserService;
-import edu.oswego.rest.service.impl.StudentService;
 import edu.oswego.rest.service.impl.UserService;
 // Json-B
 import javax.json.bind.Jsonb;
@@ -19,13 +17,11 @@ import java.util.List;
 public class UserAPI {
     private static final long serialVersionUID = 1L;
     private IUserService userService;
-    private IStudentService studentService;
     private Jsonb jsonb = JsonbBuilder.create();
 
 
     public UserAPI() {
         userService = new UserService();
-        studentService = new StudentService();
     }
 
     @GET

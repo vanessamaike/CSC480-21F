@@ -1,0 +1,9 @@
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/assignment/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/course/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/csvImport/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/documentDistributor/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/review/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/socialLogin/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/student/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/submission/
+/home/phoenix/IdeaProjects/CSC480-21F-backend/backend/user/
