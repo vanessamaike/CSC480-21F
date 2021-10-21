@@ -40,7 +40,7 @@ function TabPanel(props) {
   );
 }
 
-function ProfessorCourse({ history }) {
+function CourseResultPage({ history }) {
   const [value, setValue] = React.useState(0);
 
   return (
@@ -65,37 +65,13 @@ function ProfessorCourse({ history }) {
               variant="h6"
               component="div"
             >
-              Courses and Assignments
+              Results
             </Typography>
-          </Grid>
-
-          <Grid
-            item
-            xs={4}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Link
-              to="/coursecreation"
-              style={{ textDecoration: "none", color: "#000" }}
-            >
-              <CustomizedButtons type2 model={"add"}>
-                Create Course
-              </CustomizedButtons>
-            </Link>
-            <Link
-              to="/studentinfoview"
-              style={{ textDecoration: "none", color: "#fff" }}
-            >
-              <CustomizedButtons type1>View Student Info</CustomizedButtons>
-            </Link>
-            </Stack>
-            
           </Grid>
         </Grid>
         <div>
           <CustomizedTabs
-            type1
+            type3
             setValue={setValue}
             value={value}
           ></CustomizedTabs>
@@ -110,21 +86,10 @@ function ProfessorCourse({ history }) {
                 }}
                 title={
                   <Grid container>
-                    <Grid item xs={7}>
-                      <Link
-                        to="/assignmentcreation"
-                        style={{ textDecoration: "none", color: "#000" }}
-                      >
-                        <CustomizedButtons type3 model={"add"}>
-                          Create New Assignment
+                    <Grid item xs={12} sx={{display: "flex", justifyContent: "flex-end"}}>
+                        <CustomizedButtons type3 model={"radio2"} fullwidth>
+                          Filter Results
                         </CustomizedButtons>
-                      </Link>
-                    </Grid>
-                    <Grid item xs={5} sx={{display: "flex", justifyContent: "flex-end"}}>
-                    <CustomizedButtons type3 model={"radio1"}>
-                          Filter Assignment
-                        </CustomizedButtons>
-                      
                     </Grid>
                   </Grid>
                 }
@@ -134,7 +99,7 @@ function ProfessorCourse({ history }) {
                   paddingTop: "0",
                 }}
               >
-                {[1, 2, 3].map((value) => (
+                {[1, 2, 3].map((num) => (
                   <ListItem
                     button
                     divider
@@ -144,21 +109,25 @@ function ProfessorCourse({ history }) {
                       </IconButton>
                     }
                   >
-                    <ListItemText primary="Solution 2" />
+                    <ListItemText primary={`Peer Review ${num}`} />
+                    <ListItemText
+                      sx={{ display: "flex", justifyContent: "center" }}
+                      primary="Student submissions completed 10/01/21"
+                    />
                     <ListItemText
                       sx={{ display: "flex", justifyContent: "flex-end" }}
-                      primary="Due 10/01/21"
+                      primary="Complete"
                     />
                   </ListItem>
                 ))}
               </CardContent>
             </CustomizedCard>
-          </TabPanel>
-          ))}
+          </TabPanel>))
+}
         </div>
       </CustomizedContainer>
     </div>
   );
 }
 
-export default ProfessorCourse;
+export default CourseResultPage;

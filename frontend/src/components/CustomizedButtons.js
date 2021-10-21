@@ -46,8 +46,9 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "switch" ? <CustomizedSwitch /> : <>
-      {model === "radio" ? <CustomizedRadios/> : <>
-      
+      {model === "radio1" ? <CustomizedRadios type={'radio1'}/> : <>
+      {model === "radio2" ? <CustomizedRadios type={'radio2'}/> : <>
+      </>}
       </>}
       </>}
       </>}

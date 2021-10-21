@@ -29,13 +29,20 @@ function MyFormControlLabel(props) {
 
 
 
-export default function CustomizedRadios() {
+export default function CustomizedRadios({type}) {
 
   return (
-    <RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
-      <MyFormControlLabel value="first" label="First" control={<Radio />} />
-      <MyFormControlLabel value="second" label="Second" control={<Radio />} />
+    <>
+    {type === "radio1" ? (
+      <RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
+      <MyFormControlLabel value="first" label="Draft" control={<Radio />} />
+      <MyFormControlLabel value="second" label="Active" control={<Radio />} />
     </RadioGroup>
-    
+    ) : 
+    (<RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
+      <MyFormControlLabel value="first" label="Needs Review" control={<Radio />} />
+      <MyFormControlLabel value="second" label="Completed" control={<Radio />} />
+    </RadioGroup>)
+    }</>
   );
 }

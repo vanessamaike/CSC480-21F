@@ -68,7 +68,7 @@ function NavBar({ history }) {
               </Grid>
               <Grid item xs={3}>
                 <Link
-                  to="/result"
+                  to="/courseresult"
                   style={{ textDecoration: "none", color: "#000" }}
                 >
                   <div className={nav.link}>Results</div>
