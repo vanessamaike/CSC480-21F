@@ -1,34 +1,41 @@
 import React, {useState} from 'react';
 import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
+import RadioGroup, { useRadioGroup } from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../styles/Style";
+import { styled } from '@mui/material/styles';
+
+const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
+  ({ theme, checked }) => ({
+    '.MuiFormControlLabel-label': checked && {
+      color: theme.palette.primary.main,
+    },
+  }),
+);
+
+function MyFormControlLabel(props) {
+  const radioGroup = useRadioGroup();
+
+  let checked = false;
+
+  if (radioGroup) {
+    checked = radioGroup.value === props.value;
+  }
+
+  return <StyledFormControlLabel checked={checked} {...props} />;
+}
+
+
 
 export default function CustomizedRadios() {
 
   return (
-    <FormControl component="fieldset">
-      <RadioGroup row aria-label="position" name="position" defaultValue="top">
-      <FormControlLabel value="Drafts" control={<Radio
-        sx={{
-          color: blueColor,
-          '&.Mui-checked': {
-            color: blueColor,
-          },
-        }}
-      />} label="Drafts" />
-        <FormControlLabel sx={{display: "flex", alignItems: "center"}} value="Active" control={<Radio
-        sx={{
-          color: "#000",
-          '&.Mui-checked': {
-            color: blueColor,
-          },
-        }}
-      />} label="Active" />
-      </RadioGroup>
-    </FormControl>
+    <RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
+      <MyFormControlLabel value="first" label="First" control={<Radio />} />
+      <MyFormControlLabel value="second" label="Second" control={<Radio />} />
+    </RadioGroup>
     
   );
 }

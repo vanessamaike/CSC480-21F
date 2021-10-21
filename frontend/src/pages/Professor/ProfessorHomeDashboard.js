@@ -127,7 +127,7 @@ function ProfessorHomeDashBoard() {
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem
                         secondaryAction={
-                          <CustomizedButtons type1>See All</CustomizedButtons>
+                          <CustomizedButtons type1 height1>See All</CustomizedButtons>
                         }
                       >
                         <ListItemIcon>
@@ -188,23 +188,27 @@ function ProfessorHomeDashBoard() {
               <CustomizedCard>
                 <CardHeader
                   title={
-                    <Stack direction="row">
-                      <FiberManualRecordIcon
-                        sx={{ color: "#6F40DC" }}
-                        fontSize="large"
-                      ></FiberManualRecordIcon>
-                      <Typography
-                        style={{
-                          display: "flex",
-                          fontWeight: "600",
-                          margin: "4px",
-                        }}
-                        variant="h6"
-                        component="div"
-                      >
-                        Manage Students & Teams by Course
-                      </Typography>
-                    </Stack>
+                    <List dense={true} sx={{ padding: "0", margin: "0" }}>
+                      <ListItem>
+                        <ListItemIcon>
+                          <FiberManualRecordIcon
+                            sx={{ color: "#6F40DC" }}
+                            fontSize="medium"
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              component="span"
+                              fontWeight="600"
+                              variant="body1"
+                            >
+                              Manage Students & Teams by Course
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </List>
                   }
                 ></CardHeader>
                 <CardContent sx={{ paddingTop: 0 }}>

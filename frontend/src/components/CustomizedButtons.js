@@ -9,7 +9,8 @@ import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
 import {IoIosAddCircleOutline} from "react-icons/io";
 import {BsArrowRightCircle} from "react-icons/bs";
-
+import CustomizedSwitch from "../components/CustomizedSwitch"
+import CustomizedRadios from "../components/CustomizedRadios"
 // core components
 import ButtonStyle from "../styles/ButtonStyle";
 
@@ -20,7 +21,8 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
     type1,
     type2,
     type3,
-    type4,
+    height1,
+    height2,
     children,
     ...rest
   } = props;
@@ -33,15 +35,23 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
     [classes.type1]: type1,
     [classes.type2]: type2,
     [classes.type3]: type3,
-    [classes.type4]: type4,
+    [classes.height1]: height1,
+    [classes.height2]: height2,
     [classes.root]: true
   });
 
   return (
     <Button {...rest} ref={ref} className={btnClasses}>
       {children}
-      {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : 
-      <>{model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <></>}</>}
+      {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
+      {model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
+      {model === "switch" ? <CustomizedSwitch /> : <>
+      {model === "radio" ? <CustomizedRadios/> : <>
+      
+      </>}
+      </>}
+      </>}
+      </>}
     </Button>
   );
 });
@@ -50,6 +60,8 @@ CustomizedButtons.propTypes = {
   type1: PropTypes.bool,
   type2: PropTypes.bool,
   type3: PropTypes.bool,
-  type4: PropTypes.bool,
+  height1: PropTypes.bool,
+  height2: PropTypes.bool,
+
 };
 export default CustomizedButtons;

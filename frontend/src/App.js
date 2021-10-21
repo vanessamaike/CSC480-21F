@@ -10,6 +10,7 @@ import TestingPage from './pages/TestingPage';
 import ProfessorCoursePage from './pages/Professor/ProfessorCoursePage';
 import AddCoursePage from './pages/Professor/AddCoursePage';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
+import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/course" component={ProfessorCoursePage}></Route>
         <Route exact path="/coursecreation" component={AddCoursePage}></Route>
         <Route exact path="/assignmentcreation" component={AssignmentCreation}></Route>
+        <Route exact path="/studentinfoview" component={StudentInfoViewPage}></Route>
       </Switch>
     </Router>
   );

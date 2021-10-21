@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles';
-import { primaryColor, darkColor, whiteColor } from "./Style";
+import { primaryColor, darkColor, whiteColor, grayColor } from "./Style";
 const ButtonStyle = makeStyles((theme) => ({
   root: {
     minHeight: "auto",
@@ -7,7 +7,7 @@ const ButtonStyle = makeStyles((theme) => ({
     borderRadius: "50px",
     textTransform: "unset",
     fontWeight: "600",
-    padding: "5px 20px",
+    padding: "5px 15px",
     height: "42px",
     display: "flex",
     textAlign: "center",
@@ -17,8 +17,15 @@ const ButtonStyle = makeStyles((theme) => ({
   fullwidth: {
     width: "100%"
   },
+  height1: {
+    height: "33px",
+  },
+  height2: {
+    height: "42px",
+  },
   type1: {
     backgroundColor: darkColor,
+
     color: whiteColor,
     border: "1px solid #000000",
     "&:hover, &.Mui-focusVisible": { backgroundColor: "#222" }
@@ -29,17 +36,9 @@ const ButtonStyle = makeStyles((theme) => ({
     border: "1px solid #000000"
   },
   type3: {
-    backgroundColor: primaryColor,
+    backgroundColor: grayColor,
     color: darkColor,
   },
-  type4: {
-    backgroundColor: "transparent",
-    color: darkColor,
-    borderRadius: "0",
-    borderBottom: "1px solid #aaa",
-    padding: "0 100x",
-    marginBotom: "50px"
-  }
 }));
 
 export default ButtonStyle;

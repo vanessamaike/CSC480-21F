@@ -60,7 +60,7 @@ function NavBar({ history }) {
               </Grid>
               <Grid item xs={3}>
                 <Link
-                  to="/course"
+                  to="/studentinfoview"
                   style={{ textDecoration: "none", color: "#000" }}
                 >
                   <div className={nav.link}>Students & Teams</div>

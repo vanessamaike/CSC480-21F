@@ -3,76 +3,26 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {BsArrowRightCircle} from "react-icons/bs";
+import { BsArrowRightCircle } from "react-icons/bs";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
-import { CardContent, CardHeader, Grid, Stack } from "@mui/material";
+import {
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Stack,
+} from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
-function FilterAssignment() {
-  return (
-    <div>
-      <Box
-        gap={2}
-        sx={{
-          display: "flex",
-          direction: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          overflow: "hidden",
-          px: 2,
-          cursor: "pointer",
-          borderRadius: 10,
-          color: "#000",
-          backgroundColor: "#ddd",
-        }}
-      >
-        <Typography
-          style={{ display: "flex", textAlign: "center", fontWeight: "600" }}
-          variant="body1"
-          component="div"
-        >
-          Filter Assignments
-        </Typography>
-        <CustomizedRadios></CustomizedRadios>
-      </Box>
-    </div>
-  );
-}
-function AssignmentBar() {
-  return (
-      <CustomizedButtons fullwidth type4>
-      <Grid container style={{display: "flex", alignItems: "center", height: "35px"}}>
-        <Grid item xs={7}>
-          <Typography
-            style={{ display: "flex", textAlign: "center", fontWeight: "600", marginLeft: "10px" }}
-            variant="body1"
-            component="div"
-          >
-            Solution 1
-          </Typography>
-        </Grid>
-        <Grid item xs={4} style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Typography
-            style={{ display: "flex", textAlign: "center" }}
-            variant="body1"
-            component="div"
-          >
-            Due 10/01/21
-          </Typography>
-        </Grid>
-        <Grid item xs={1} style={{ display: "flex", justifyContent: "center"}}>
-        <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/>
-        </Grid>
-      </Grid>
-      </CustomizedButtons>
-  );
-}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -105,7 +55,7 @@ function ProfessorCourse({ history }) {
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
         <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={4}>
+          <Grid item xs={8}>
             <Typography
               style={{
                 display: "flex",
@@ -118,33 +68,29 @@ function ProfessorCourse({ history }) {
               Courses and Assignments
             </Typography>
           </Grid>
+
           <Grid
             item
-            container
-            xs={8}
-            rowSpacing={2}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            xs={4}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Grid item xs={4}>
-              <div></div>
-            </Grid>
-            <Grid item xs={4}>
+            <Stack direction="row" spacing={2}>
+              <Link
+              to="/coursecreation"
+              style={{ textDecoration: "none", color: "#000" }}
+            >
               <CustomizedButtons type2 model={"add"}>
-                <Link
-                  to="/coursecreation"
-                  style={{ textDecoration: "none", color: "#000" }}
-                >
-                  <div>Create Course</div>
-                </Link>
+                Create Course
               </CustomizedButtons>
-            </Grid>
-            <Grid item xs={4}>
+            </Link>
+            <Link
+              to="/studentinfoview"
+              style={{ textDecoration: "none", color: "#fff" }}
+            >
               <CustomizedButtons type1>View Student Info</CustomizedButtons>
-            </Grid>
+            </Link>
+            </Stack>
+            
           </Grid>
         </Grid>
         <div>
@@ -164,26 +110,46 @@ function ProfessorCourse({ history }) {
                 title={
                   <Grid container>
                     <Grid item xs={7}>
-                      <CustomizedButtons type3 model={"add"}>
-                        <Link
-                          to="/assignmentcreation"
-                          style={{ textDecoration: "none", color: "#000" }}
-                        >
-                          <div>Create New Assignment</div>
-                        </Link>
-                      </CustomizedButtons>
+                      <Link
+                        to="/assignmentcreation"
+                        style={{ textDecoration: "none", color: "#000" }}
+                      >
+                        <CustomizedButtons type3 model={"add"}>
+                          Create New Assignment
+                        </CustomizedButtons>
+                      </Link>
                     </Grid>
-                    <Grid item xs={5}>
-                      <FilterAssignment></FilterAssignment>
+                    <Grid item xs={5} sx={{display: "flex", justifyContent: "flex-end"}}>
+                    <CustomizedButtons type3 model={"radio"}>
+                          Filter Assignment
+                        </CustomizedButtons>
+                      
                     </Grid>
                   </Grid>
                 }
               ></CardHeader>
-              <CardContent>
-                <AssignmentBar></AssignmentBar>
-                <AssignmentBar></AssignmentBar>
-                <AssignmentBar></AssignmentBar>
-                <AssignmentBar></AssignmentBar>
+              <CardContent
+                sx={{
+                  paddingTop: "0",
+                }}
+              >
+                {[1, 2, 3].map((value) => (
+                  <ListItem
+                    button
+                    divider
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <BsArrowRightCircle />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary="Solution 2" />
+                    <ListItemText
+                      sx={{ display: "flex", justifyContent: "flex-end" }}
+                      primary="Due 10/01/21"
+                    />
+                  </ListItem>
+                ))}
               </CardContent>
             </CustomizedCard>
           </TabPanel>
