@@ -1,0 +1,11 @@
+answer/
+assignment/
+course/
+question/
+csvImport/
+documentDistributor/
+review/
+socialLogin/
+student/
+submission/
+user/

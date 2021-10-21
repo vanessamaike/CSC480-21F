@@ -1,8 +1,9 @@
 #!
 echo "Stopping services..."
-while read line;
+while IFS= read -r line;
 do 
-	cd $line
-	echo "Stopping service in $line"
+	cd `pwd`$line
+	echo "Stopping service in `pwd`"
 	mvn liberty:stop &
+	cd ..
 done < $1

@@ -1,8 +1,8 @@
-#!
 echo "Starting services..."
-while read line;
+while IFS= read -r line;
 do 
-	cd $line
-	echo "Beginning service in $line"
+	cd `pwd`$line
+	echo "Beginning service in `pwd`"
 	mvn liberty:run &
+	cd ..
 done < $1
