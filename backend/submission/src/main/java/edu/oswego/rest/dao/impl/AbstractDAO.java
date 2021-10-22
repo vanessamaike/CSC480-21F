@@ -1,9 +1,6 @@
 package edu.oswego.rest.dao.impl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -218,7 +215,9 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 {
                     statement.setDate(index, (Date.valueOf((LocalDate) parameter)));
                 }
-
+                else if (parameter instanceof InputStream){
+                    statement.setBlob(index, (InputStream) parameter);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

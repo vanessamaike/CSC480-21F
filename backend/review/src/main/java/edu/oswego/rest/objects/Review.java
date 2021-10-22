@@ -4,10 +4,10 @@ public class Review {
 
     private int teamID;
     private String signOff;
-    private String pdfDoc;
+    private byte[] pdfDoc;
     private int reviewID;
 
-    public Review(int reviewID , String pdfDoc, String signOff, int teamID ){
+    public Review(int reviewID , byte[] pdfDoc, String signOff, int teamID ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -18,7 +18,7 @@ public class Review {
         this.reviewID = 0;
         this.teamID = 0;
         this.signOff = "";
-        this.pdfDoc = "";
+        this.pdfDoc = new byte[]{};
     }
 
     public int getReviewID() {
@@ -29,7 +29,7 @@ public class Review {
         return teamID;
     }
 
-    public String getPdfDoc() { return pdfDoc;}
+    public byte[] getPdfDoc() { return pdfDoc;}
 
     public String getSignOff() { return signOff;}
     public void setTeamID(int teamID) {
@@ -40,7 +40,7 @@ public class Review {
         this.signOff = signOff;
     }
 
-    public void setPdfDoc(String pdfDoc) {
+    public void setPdfDoc(byte[] pdfDoc) {
         this.pdfDoc = pdfDoc;
     }
 

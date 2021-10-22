@@ -11,7 +11,7 @@ public class AssignmentMapper implements RowMapper<Assignment>{
         try {
             Assignment assignment = new Assignment(
                     rs.getInt("assignmentID"),
-                    rs.getString("pdfDoc"),
+                    rs.getBytes("pdfDoc"),
                     rs.getString("settings"),
                     rs.getInt("courseID")
             );
