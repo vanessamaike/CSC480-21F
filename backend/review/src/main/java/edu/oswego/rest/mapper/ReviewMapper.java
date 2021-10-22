@@ -11,7 +11,7 @@ public class ReviewMapper implements RowMapper<Review>{
         try {
             Review review = new Review(
                     rs.getInt("reviewID"),
-                    rs.getString("pdfDoc"),
+                    rs.getBytes("pdfDoc"),
                     rs.getString("signOff"),
                     rs.getInt("teamID")
             );

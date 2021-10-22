@@ -6,6 +6,8 @@ import edu.oswego.rest.dao.IReviewDAO;
 import edu.oswego.rest.mapper.ReviewMapper;
 import edu.oswego.rest.objects.Review;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
@@ -26,7 +28,10 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
         StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, pdfDoc, signOff,teamId )");
         sql.append(" VALUES(?, ?, ?, ?)");
         int uniqueRandomId = generateUniqueRandomId();
-        insert(sql.toString(), uniqueRandomId, review.getPdfDoc(),review.getSignOff(),
+
+        InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
+
+        insert(sql.toString(), uniqueRandomId, targetStream,review.getSignOff(),
                 review.getTeamID());
         return uniqueRandomId;
     }
@@ -48,7 +53,9 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public void update(Review review) {
         StringBuilder sql = new StringBuilder("UPDATE review SET pdfDoc = ?, signOff = ?, teamId = ? WHERE reviewID = ?");
-        update(sql.toString(), review.getPdfDoc(),review.getSignOff() ,review.getTeamID(),review.getReviewID());
+        InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
+
+        update(sql.toString(),targetStream, review.getSignOff() ,review.getTeamID(),review.getReviewID());
     }
 
     @Override

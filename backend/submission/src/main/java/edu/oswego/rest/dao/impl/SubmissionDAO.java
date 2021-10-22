@@ -6,6 +6,8 @@ import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.mapper.SubmissionMapper;
 import edu.oswego.rest.objects.Submission;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissionDAO {
@@ -14,8 +16,8 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     public int generateUniqueRandomId()
     {
         String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM course " +
-                "WHERE \"random_number\" NOT IN (SELECT courseID FROM course) " +
+                "FROM submission " +
+                "WHERE \"random_number\" NOT IN (SELECT submissionID FROM submission) " +
                 "LIMIT 1;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
@@ -25,8 +27,13 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     public int save(Submission submission) {
         StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, pdfDoc, signOff, teamID)");
         sql.append(" VALUES(?, ?, ?, ?)");
+
+
         int uniqueRandomId = generateUniqueRandomId();
-        insert(sql.toString(), uniqueRandomId, submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID());
+
+        InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
+
+        insert(sql.toString(), uniqueRandomId, targetStream,submission.getSignOff(),submission.getTeamID());
         return uniqueRandomId;
     }
 

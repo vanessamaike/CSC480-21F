@@ -1,16 +1,12 @@
 package edu.oswego.rest.objects;
 
-import java.util.Date;
-
 public class Submission {
-   // private final DatabaseInterface dbi = new DatabaseInterface();
-
     private int teamID;
     private String signOff;
-    private String pdfDoc;
+    private byte[] pdfDoc;
     private int submissionID;
 
-    public Submission(int submissionID , String pdfDoc, String signOff, int teamID ){
+    public Submission(int submissionID , byte[] pdfDoc, String signOff, int teamID ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -22,7 +18,7 @@ public class Submission {
         this.submissionID = 1;
         this.teamID = 0;
         this.signOff = "";
-        this.pdfDoc = "";
+        this.pdfDoc = new byte[]{};
     }
 
     public int getSubmissionID() {
@@ -33,7 +29,7 @@ public class Submission {
         return teamID;
     }
 
-    public String getPdfDoc() { return pdfDoc;}
+    public byte[] getPdfDoc() { return pdfDoc;}
 
     public String getSignOff() { return signOff;}
 
@@ -45,7 +41,7 @@ public class Submission {
         this.signOff = signOff;
     }
 
-    public void setPdfDoc(String pdfDoc) {
+    public void setPdfDoc(byte[] pdfDoc) {
         this.pdfDoc = pdfDoc;
     }
 

@@ -4,6 +4,8 @@ import edu.oswego.rest.dao.IAssignmentDAO;
 import edu.oswego.rest.mapper.AssignmentMapper;
 import edu.oswego.rest.objects.Assignment;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmentDAO {
@@ -16,6 +18,7 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
                 "WHERE \"random_number\" NOT IN (SELECT assignmentID FROM assignment) " +
                 "LIMIT 1;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }
 
@@ -24,7 +27,8 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
         StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, pdfDoc, settings, courseID)");
         sql.append(" VALUES(?, ?, ?, ?)");
         int uniqueRandomId = generateUniqueRandomId();
-         insert(sql.toString(), uniqueRandomId, assignment.getPdfDoc(),assignment.getSettings(),assignment.getCourseID());
+        InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
+         insert(sql.toString(), uniqueRandomId, targetStream,assignment.getSettings(),assignment.getCourseID());
         return uniqueRandomId;
     }
 
@@ -45,7 +49,8 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
     @Override
     public void update(Assignment assignment) {
         StringBuilder sql = new StringBuilder("UPDATE assignment SET pdfDoc = ?, settings = ?, courseID = ? WHERE assignmentID = ?");
-        update(sql.toString(), assignment.getPdfDoc(),assignment.getSettings(),assignment.getCourseID(),assignment.getAssignmentID());
+        InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
+        update(sql.toString(),targetStream,assignment.getSettings(),assignment.getCourseID(),assignment.getAssignmentID());
     }
 
     @Override
