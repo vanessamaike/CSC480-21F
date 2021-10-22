@@ -6,8 +6,9 @@ import { MdOutlineCancel } from "react-icons/md";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
-import CustomizedRadios from "../../components/CustomizedRadios";
+import CustomizedModal from "../../components/CustomizedModal";
 import CustomizedTabs from "../../components/CustomizedTabs";
+
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
   CardContent,
@@ -22,7 +23,10 @@ import {
   ListItemText,
   Stack,
   TextField,
+  Modal,
+  Fade,
 } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
@@ -36,8 +40,12 @@ const styles = theme => ({
   },
 });
 
+
+
+
 const  AddStudentBox = withStyles(styles)(props => {
   const { classes,handleAddStudent } = props;
+
   return (
     <Box
       sx={{ height: "115px", backgroundColor: "#EDEDED", borderRadius: "20px" }}
@@ -119,12 +127,14 @@ function TabPanel(props) {
 function StudentInfoViewPage({ history }) {
   const [value, setValue] = useState(0);
   const [isOpenedAddStudentBox, setIsOpenedAddStudentBox] = useState(false);
-  const handleAddStudent = () => {
-    setIsOpenedAddStudentBox(false);
-  }
-  const handleOpenAddStudentBox = () => {
-    setIsOpenedAddStudentBox(true);
-  };
+  const [isCourseModalOpened, setIsCourseModalOpened] = useState(false);
+  const [isStudentModalOpened, setIsStudentModalOpened] = useState(false);
+  const handleAddStudent = () => setIsOpenedAddStudentBox(false);
+  const handleOpenAddStudentBox = () => setIsOpenedAddStudentBox(true);
+  const handleOpenCourseModal = () => setIsCourseModalOpened(true);
+  const handleCloseCourseModal = () => setIsCourseModalOpened(false);
+  const handleOpenStudentModal = () => setIsStudentModalOpened(true);
+  const handleCloseStudentModal = () => setIsStudentModalOpened(false);
   return (
     <div
       style={{
@@ -155,13 +165,8 @@ function StudentInfoViewPage({ history }) {
             xs={3}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <CustomizedButtons type2 model={"add"}>
-              <Link
-                to="/coursecreation"
-                style={{ textDecoration: "none", color: "#000" }}
-              >
-                <div>Delete Course</div>
-              </Link>
+            <CustomizedButtons type2 model={"add"} onClick={handleOpenCourseModal}>
+                Delete Course
             </CustomizedButtons>
           </Grid>
         </Grid>
@@ -226,6 +231,7 @@ function StudentInfoViewPage({ history }) {
                           <MdOutlineCancel />
                         </IconButton>
                       }
+                      onClick={handleOpenStudentModal}
                     >
                       <ListItemText primary="Student Name" />
                       <ListItemText
@@ -241,6 +247,8 @@ function StudentInfoViewPage({ history }) {
 ))}
         </div>
       </CustomizedContainer>
+      <CustomizedModal modalType={"course"} isCourseModalOpened={isCourseModalOpened} handleCloseCourseModal={handleCloseCourseModal}/>
+      <CustomizedModal modalType={"student"}  isStudentModalOpened={isStudentModalOpened} handleCloseStudentModal={handleCloseStudentModal}/>
     </div>
   );
 }
