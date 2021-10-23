@@ -18,10 +18,3 @@ user : 9087
 csvImport : 9088
 documentDistributor : 9089
 
-
-
-        String sql = "SELECT (IF( (select count(answerId) from answer) = 0," +
-                "(SELECT FLOOR(10000 + RAND() * 89999))," +
-                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM answer WHERE \"random_number\" NOT IN (SELECT answerId FROM answer) LIMIT 1))) as random_number;";
-
