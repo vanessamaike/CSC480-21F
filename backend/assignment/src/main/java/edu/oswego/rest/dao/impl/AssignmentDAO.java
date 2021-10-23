@@ -13,10 +13,10 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM assignment " +
-                "WHERE \"random_number\" NOT IN (SELECT assignmentID FROM assignment) " +
-                "LIMIT 1;";
+        String sql = "SELECT (IF( (select count(assignmentId) from assignment) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM assignment WHERE \"random_number\" NOT IN (SELECT assignmentId FROM assignment) LIMIT 1))) as random_number;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
 
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);

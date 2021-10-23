@@ -14,10 +14,11 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM review " +
-                "WHERE \"random_number\" NOT IN (SELECT reviewID FROM review) " +
-                "LIMIT 1;";
+
+        String sql = "SELECT (IF( (select count(reviewId) from review) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM review WHERE \"random_number\" NOT IN (SELECT reviewId FROM review) LIMIT 1))) as random_number;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }

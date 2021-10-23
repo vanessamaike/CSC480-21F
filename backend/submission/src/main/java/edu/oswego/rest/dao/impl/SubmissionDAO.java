@@ -15,10 +15,11 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM submission " +
-                "WHERE \"random_number\" NOT IN (SELECT submissionID FROM submission) " +
-                "LIMIT 1;";
+
+        String sql = "SELECT (IF( (select count(submissionId) from submission) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM submission WHERE \"random_number\" NOT IN (SELECT submissionId FROM submission) LIMIT 1))) as random_number;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }
@@ -54,7 +55,8 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     @Override
     public void update(Submission submission) {
         StringBuilder sql = new StringBuilder("UPDATE submission SET pdfDoc = ?, signOff = ?, teamID = ? WHERE submissionID = ?");
-        update(sql.toString(), submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID(),submission.getSubmissionID());
+        InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
+        update(sql.toString(), targetStream,submission.getSignOff(),submission.getTeamID(),submission.getSubmissionID());
     }
 
     @Override
