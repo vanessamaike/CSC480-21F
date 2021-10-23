@@ -12,6 +12,7 @@ import AddCoursePage from './pages/Professor/AddCoursePage';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
 import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
 import CourseResultPage from './pages/Professor/CourseResultPage';
+import StudentTeamView from './pages/Professor/StudentTeamView';
 function App() {
   return (
 
@@ -24,6 +25,7 @@ function App() {
         <Route exact path="/coursecreation" component={AddCoursePage}></Route>
         <Route exact path="/assignmentcreation" component={AssignmentCreation}></Route>
         <Route exact path="/studentinfoview" component={StudentInfoViewPage}></Route>
+        <Route exact path="/studentteamview" component={StudentTeamView}></Route>
         <Route exact path="/courseresult" component={CourseResultPage}></Route>
       </Switch>
     </Router>

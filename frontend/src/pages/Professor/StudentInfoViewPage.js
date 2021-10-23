@@ -36,8 +36,9 @@ const styles = theme => ({
   },
 });
 
-const  AddStudentBox = withStyles(styles)(props => {
-  const { classes,handleAddStudent } = props;
+
+const AddStudentBox = withStyles(styles)(props => {
+  const { classes, handleAddStudent } = props;
   return (
     <Box
       sx={{ height: "115px", backgroundColor: "#EDEDED", borderRadius: "20px" }}
@@ -63,7 +64,7 @@ const  AddStudentBox = withStyles(styles)(props => {
           </ListItem>
         </ListItem>
         <ListItem disablePadding>
-          <ListItem sx={{display: "flex", justifyContent: "space-between"}}>
+          <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
               sx={{ bgcolor: '#fff' }}
               label="Name"
@@ -77,7 +78,7 @@ const  AddStudentBox = withStyles(styles)(props => {
               sx={{ bgcolor: '#fff' }}
               label="Student ID"
               id="outlined-size-small"
-              size= "small"
+              size="small"
               InputProps={{
                 className: classes.input
               }}
@@ -172,73 +173,73 @@ function StudentInfoViewPage({ history }) {
             value={value}
           ></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
-          <TabPanel value={value} index={id - 1}>
-            <CustomizedCard>
-              <CardHeader
-                sx={{
-                  paddingBottom: "0",
-                }}
-                title={
-                  <>
-                    {isOpenedAddStudentBox === false ? (
-                      <Grid container>
-                        <Grid item xs={9}>
-                          <CustomizedButtons
-                            type3
-                            model={"add"}
-                            model={"switch"}
-                          >
-                            Student List
+            <TabPanel value={value} index={id - 1}>
+              <CustomizedCard>
+                <CardHeader
+                  sx={{
+                    paddingBottom: "0",
+                  }}
+                  title={
+                    <>
+                      {isOpenedAddStudentBox === false ? (
+                        <Grid container>
+                          <Grid item xs={9}>
+                            <CustomizedButtons
+                              type3
+                              model={"add"}
+                              model={"switch"}
+                            >
+                              Student List
                           </CustomizedButtons>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
+                          >
+                            <CustomizedButtons
+                              type3
+                              model={"add"}
+                              onClick={handleOpenAddStudentBox}
+                            >
+                              Add new student
+                          </CustomizedButtons>
+                          </Grid>
                         </Grid>
-                        <Grid
-                          item
-                          xs={3}
+                      ) : (
+                          <AddStudentBox handleAddStudent={handleAddStudent}></AddStudentBox>
+                        )}
+                    </>
+                  }
+                ></CardHeader>
+                <CardContent
+                  sx={{
+                    paddingTop: "0",
+                  }}
+                >
+                  <List component="nav" aria-label="mailbox folders">
+                    {[1, 2, 3].map((value) => (
+                      <ListItem
+                        button
+                        divider
+                        secondaryAction={
+                          <IconButton edge="end" aria-label="delete">
+                            <MdOutlineCancel />
+                          </IconButton>
+                        }
+                      >
+                        <ListItemText primary="Student Name" />
+                        <ListItemText
                           sx={{ display: "flex", justifyContent: "flex-end" }}
-                        >
-                          <CustomizedButtons
-                            type3
-                            model={"add"}
-                            onClick={handleOpenAddStudentBox}
-                          >
-                            Add new student
-                          </CustomizedButtons>
-                        </Grid>
-                      </Grid>
-                    ) : (
-                      <AddStudentBox handleAddStudent={handleAddStudent}></AddStudentBox>
-                    )}
-                  </>
-                }
-              ></CardHeader>
-              <CardContent
-                sx={{
-                  paddingTop: "0",
-                }}
-              >
-                <List component="nav" aria-label="mailbox folders">
-                  {[1, 2, 3].map((value) => (
-                    <ListItem
-                      button
-                      divider
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <MdOutlineCancel />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemText primary="Student Name" />
-                      <ListItemText
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                        primary="Added via CSV upload 08/13/21"
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </CustomizedCard>
-          </TabPanel>
-))}
+                          primary="Added via CSV upload 08/13/21"
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </CardContent>
+              </CustomizedCard>
+            </TabPanel>
+          ))}
         </div>
       </CustomizedContainer>
     </div>
