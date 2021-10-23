@@ -12,10 +12,11 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM user " +
-                "WHERE \"random_number\" NOT IN (SELECT userID FROM user) " +
-                "LIMIT 1;";
+
+        String sql = "SELECT (IF( (select count(userId) from user) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM user WHERE \"random_number\" NOT IN (SELECT userId FROM user) LIMIT 1))) as random_number;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }

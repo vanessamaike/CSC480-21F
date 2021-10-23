@@ -13,10 +13,11 @@ public class AnswerDAO extends AbstractDAO<Answer> implements IAnswerDAO {
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM answer " +
-                "WHERE \"random_number\" NOT IN (SELECT answerID FROM answer) " +
-                "LIMIT 1;";
+        String sql = "SELECT (IF( (select count(answerId) from answer) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM answer WHERE \"random_number\" NOT IN (SELECT answerId FROM answer) LIMIT 1))) as random_number;";
+
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }

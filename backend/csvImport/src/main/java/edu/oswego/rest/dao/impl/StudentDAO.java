@@ -11,10 +11,11 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     @Override
     public int generateUniqueRandomId()
     {
-        String sql = "SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
-                "FROM student " +
-                "WHERE \"random_number\" NOT IN (SELECT userID FROM student) " +
-                "LIMIT 1;";
+
+        String sql = "SELECT (IF( (select count(studentId) from student) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM student WHERE \"random_number\" NOT IN (SELECT studentId FROM student) LIMIT 1))) as random_number;";
         List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
         return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
     }
