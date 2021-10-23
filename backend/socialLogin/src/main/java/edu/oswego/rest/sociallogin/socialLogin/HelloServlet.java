@@ -50,7 +50,7 @@ public class HelloServlet extends HttpServlet {
                 System.out.println("request.get" + request.getAttribute(username));
 
         request
-                .getRequestDispatcher("securedHello.jsp")
+                .getRequestDispatcher("securedHello.jsp") //this line will be changed when linked to frontend
                 .forward(request,response);
 
     } else { //if user is not in text file of students in the course, just return to the log in page
