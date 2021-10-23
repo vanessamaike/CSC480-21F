@@ -231,7 +231,6 @@ function StudentInfoViewPage({ history }) {
                           <MdOutlineCancel />
                         </IconButton>
                       }
-                      onClick={handleOpenStudentModal}
                     >
                       <ListItemText primary="Student Name" />
                       <ListItemText

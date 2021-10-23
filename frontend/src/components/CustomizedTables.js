@@ -5,10 +5,9 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { primaryColor, darkColor, grayColor, greenColor, whiteColor, blueColor } from "../styles/Style";
-import { borderRadius } from "@mui/system";
+import { borderRadius, Box } from "@mui/system";
 
 export default function StickyHeadTable({jsonData}) {
   console.log(jsonData)
@@ -27,14 +26,14 @@ export default function StickyHeadTable({jsonData}) {
   console.log(arrayData)
 
   const label_1 = [
-    { id: "name", label: "Team Name", align: "center", minWidth: 50 },
+    { id: "name", label: "Team Name", align: "center", width: 20 },
   ];
   const label_2 = [
     {
       id: "avggradereceived",
       label: "Avg Grade RECEIVED",
       align: "center",
-      minWidth: 50,
+      width: 20,
     },
   ];
   const headers = arrayData.map((index, i) => {
@@ -42,7 +41,7 @@ export default function StickyHeadTable({jsonData}) {
       key: i,
       id: index[0],
       label: index[0],
-      minWidth: 50,
+      width: 20,
       align: "center",
       format: (value) => value.toLocaleString("en-US"),
     };
@@ -50,11 +49,11 @@ export default function StickyHeadTable({jsonData}) {
 
   const columns = label_1.concat(headers);
   return (
-    <Paper elevation={1} sx={{ width: "70%", overflow: "hidden", p: 2 }}>
+    <Box sx={{ width: "100%"}}>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
-            <TableRow>
+            <TableRow >
               {columns.map((column, indexCol) => {
                 let bgColor;
                 let color;
@@ -70,7 +69,8 @@ export default function StickyHeadTable({jsonData}) {
                   key={column.id}
                   align={column.align}
                   style={{
-                    minWidth: column.minWidth,
+                    width: "10px",
+                    height: "10px",
                     border: "0.01px solid #000",
                     backgroundColor: bgColor,
                     color: color,
@@ -85,7 +85,9 @@ export default function StickyHeadTable({jsonData}) {
             {arrayData
               .map((row, indexRow) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code} style={{
+                    width: "10px",
+                    height: "10px"}}>
                     {columns.map((column, indexCol) => {
                       let value = row[indexCol];
                       let bgColor;
@@ -115,6 +117,8 @@ export default function StickyHeadTable({jsonData}) {
                           key={column.id}
                           align={column.align}
                           style={{
+                            width: "10px",
+                            height: "10px",
                             color: color,
                             backgroundColor: bgColor,
                             border: "0.01px solid #000",
@@ -130,6 +134,6 @@ export default function StickyHeadTable({jsonData}) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </Box>
   );
 }

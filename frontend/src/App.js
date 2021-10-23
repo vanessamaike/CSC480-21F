@@ -12,10 +12,17 @@ import AddCoursePage from './pages/Professor/AddCoursePage';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
 import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
 import CourseResultPage from './pages/Professor/CourseResultPage';
-function App() {
-  return (
+import ResultsViewerPage from './pages/Professor/ResultsViewerPage';
+import {isMobile} from 'react-device-detect';
 
-    <Router>
+function App() {
+
+  return (
+  <>
+    { isMobile == true ? (
+      <div> This content is unavailable on mobile</div>
+    ) : (
+      <Router>
       <Switch>
         <Route exact path="/login" component={LoginPage}></Route>
         <Route exact path="/home" component={ProfessorHomeDashboard}></Route>
@@ -25,8 +32,11 @@ function App() {
         <Route exact path="/assignmentcreation" component={AssignmentCreation}></Route>
         <Route exact path="/studentinfoview" component={StudentInfoViewPage}></Route>
         <Route exact path="/courseresult" component={CourseResultPage}></Route>
+        <Route exact path="/resultviewer" component={ResultsViewerPage}></Route>
       </Switch>
-    </Router>
+    </Router>)
+    }
+  </>
   );
 }
 

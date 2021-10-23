@@ -11,7 +11,7 @@ ReactDOM.render(
   <React.StrictMode>
   <StyledEngineProvider injectFirst>
     <App />
-    </StyledEngineProvider>,
+    </StyledEngineProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

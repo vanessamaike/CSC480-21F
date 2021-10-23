@@ -7,42 +7,43 @@ import FormLabel from '@mui/material/FormLabel';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../styles/Style";
 import { styled } from '@mui/material/styles';
 
-const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
-  ({ theme, checked }) => ({
-    '.MuiFormControlLabel-label': checked && {
-      color: theme.palette.primary.main,
-    },
-  }),
-);
 
-function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup();
-
-  let checked = false;
-
-  if (radioGroup) {
-    checked = radioGroup.value === props.value;
-  }
-
-  return <StyledFormControlLabel checked={checked} {...props} />;
-}
-
-
-
-export default function CustomizedRadios({type}) {
-
+export default function CustomizedRadios({type, filterType, setFilterType}) {
+  const handleChange = (event) => {
+    setFilterType(event.target.value);
+    console.log(event.target.value)
+   
+  };
   return (
     <>
     {type === "radio1" ? (
-      <RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
-      <MyFormControlLabel value="first" label="Draft" control={<Radio />} />
-      <MyFormControlLabel value="second" label="Active" control={<Radio />} />
-    </RadioGroup>
+      <FormControl component="fieldset">
+      <RadioGroup
+        aria-label="gender"
+        name="controlled-radio-buttons-group"
+        value={filterType}
+        onChange={handleChange}
+        sx={{display: "flex", flexDirection: "row"}}
+      >
+        <FormControlLabel value="draft" control={<Radio />} label="Draft" />
+        <FormControlLabel value="active" control={<Radio />} label="Active" />
+      </RadioGroup>
+    </FormControl>
     ) : 
-    (<RadioGroup name="use-radio-group" defaultValue="first" sx={{display: "flex", flexDirection: "row"}}>
-      <MyFormControlLabel value="first" label="Needs Review" control={<Radio />} />
-      <MyFormControlLabel value="second" label="Completed" control={<Radio />} />
-    </RadioGroup>)
+    (
+      <FormControl component="fieldset">
+      <RadioGroup
+        aria-label="gender"
+        name="controlled-radio-buttons-group"
+        value={filterType}
+        onChange={handleChange}
+        sx={{display: "flex", flexDirection: "row"}}
+      >
+        <FormControlLabel value="Needs Review" control={<Radio />} label="Needs Review" />
+        <FormControlLabel value="Completed" control={<Radio />} label="Completed" />
+        <FormControlLabel value="All" control={<Radio />} label="All" />
+      </RadioGroup>
+    </FormControl>)
     }</>
   );
 }

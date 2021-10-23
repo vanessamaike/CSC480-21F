@@ -15,6 +15,7 @@
     "classnames": "^2.3.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-device-detect": "^2.1.1",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-icons": "^4.3.1",

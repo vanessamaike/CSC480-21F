@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -7,7 +7,7 @@ import { BsArrowRightCircle } from "react-icons/bs";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
-import CustomizedRadios from "../../components/CustomizedRadios";
+
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
@@ -22,6 +22,22 @@ import {
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
+
+const demoData = [
+  {name: "Peer Review 1",
+   date: "10/07/21",
+   type: "Completed"},
+   {name: "Peer Review 2",
+   date: "11/07/21",
+   type: "Needs Review"},
+   {name: "Peer Review 3",
+   date: "13/07/21",
+   type: "Needs Review"},
+   {name: "Peer Review 4",
+   date: "12/07/21",
+   type: "Completed"},
+]
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,8 +57,20 @@ function TabPanel(props) {
 }
 
 function CourseResultPage({ history }) {
-  const [value, setValue] = React.useState(0);
-
+  const [tab, setTab] = useState(0);
+  const [filterType, setFilterType] = useState("All");
+  const [items, setItems] = useState(demoData);
+  useEffect(() => {
+      console.log(filterType)
+      const filteredItems = demoData.filter((item) => {
+        return (item.type == filterType) || (filterType === "All")
+      });
+      setItems(filteredItems);
+    
+  }, [filterType])
+  
+  console.log(filterType)
+  console.log(items)
   return (
     <div
       style={{
@@ -72,58 +100,67 @@ function CourseResultPage({ history }) {
         <div>
           <CustomizedTabs
             type3
-            setValue={setValue}
-            value={value}
+            setValue={setTab}
+            value={tab}
           ></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
-          <TabPanel value={value} index={id - 1}>
-            <CustomizedCard>
-              <CardHeader
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-                title={
-                  <Grid container>
-                    <Grid item xs={12} sx={{display: "flex", justifyContent: "flex-end"}}>
-                        <CustomizedButtons type3 model={"radio2"} fullwidth>
+            <TabPanel value={tab} index={id - 1}>
+              <CustomizedCard>
+                <CardHeader
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                  title={
+                    <Grid container>
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <CustomizedButtons type3 model={"radio2"} fullwidth filterType={filterType} setFilterType={setFilterType} >
                           Filter Results
                         </CustomizedButtons>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                }
-              ></CardHeader>
-              <CardContent
-                sx={{
-                  paddingTop: "0",
-                }}
-              >
-                {[1, 2, 3].map((num) => (
-                  <ListItem
-                    button
-                    divider
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <BsArrowRightCircle />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText primary={`Peer Review ${num}`} />
-                    <ListItemText
-                      sx={{ display: "flex", justifyContent: "center" }}
-                      primary="Student submissions completed 10/01/21"
-                    />
-                    <ListItemText
-                      sx={{ display: "flex", justifyContent: "flex-end" }}
-                      primary="Complete"
-                    />
-                  </ListItem>
-                ))}
-              </CardContent>
-            </CustomizedCard>
-          </TabPanel>))
-}
+                  }
+                ></CardHeader>
+                <CardContent
+                  sx={{
+                    paddingTop: "0",
+                  }}
+                >
+                  {items.map((item) => (
+                    <Link
+                      to="/resultviewer"
+                      style={{ textDecoration: "none", color: "#000" }}
+                    >
+                      <ListItem
+                        button
+                        divider
+                        secondaryAction={
+                          <IconButton edge="end" aria-label="delete">
+                            <BsArrowRightCircle />
+                          </IconButton>
+                        }
+                      >
+                        <ListItemText primary={`${item.name}`} />
+                        <ListItemText
+                          sx={{ display: "flex", justifyContent: "center" }}
+                          primary={`Student submissions completed ${item.date}`}
+                        />
+                        <ListItemText
+                          sx={{ display: "flex", justifyContent: "flex-end" }}
+                          primary={`${item.type}`}
+                        />
+                      </ListItem>
+                    </Link>
+                  ))}
+                </CardContent>
+              </CustomizedCard>
+            </TabPanel>
+          ))}
         </div>
       </CustomizedContainer>
     </div>
