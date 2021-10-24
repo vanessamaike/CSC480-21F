@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { BsArrowRightCircle } from "react-icons/bs";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -24,20 +25,11 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 
 const demoData = [
-  {name: "Peer Review 1",
-   date: "10/07/21",
-   type: "Completed"},
-   {name: "Peer Review 2",
-   date: "11/07/21",
-   type: "Needs Review"},
-   {name: "Peer Review 3",
-   date: "13/07/21",
-   type: "Needs Review"},
-   {name: "Peer Review 4",
-   date: "12/07/21",
-   type: "Completed"},
-]
-
+  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
+  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
+  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
+  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
+];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,16 +53,15 @@ function CourseResultPage({ history }) {
   const [filterType, setFilterType] = useState("All");
   const [items, setItems] = useState(demoData);
   useEffect(() => {
-      console.log(filterType)
-      const filteredItems = demoData.filter((item) => {
-        return (item.type == filterType) || (filterType === "All")
-      });
-      setItems(filteredItems);
-    
-  }, [filterType])
-  
-  console.log(filterType)
-  console.log(items)
+    console.log(filterType);
+    const filteredItems = demoData.filter((item) => {
+      return item.type == filterType || filterType === "All";
+    });
+    setItems(filteredItems);
+  }, [filterType]);
+
+  console.log(filterType);
+  console.log(items);
   return (
     <div
       style={{
@@ -98,11 +89,7 @@ function CourseResultPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs
-            type3
-            setValue={setTab}
-            value={tab}
-          ></CustomizedTabs>
+          <CustomizedTabs type3 setValue={setTab} value={tab}></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
             <TabPanel value={tab} index={id - 1}>
               <CustomizedCard>
@@ -119,7 +106,13 @@ function CourseResultPage({ history }) {
                         xs={12}
                         sx={{ display: "flex", justifyContent: "flex-end" }}
                       >
-                        <CustomizedButtons type3 model={"radio2"} fullwidth filterType={filterType} setFilterType={setFilterType} >
+                        <CustomizedButtons
+                          type3
+                          model={"radio2"}
+                          fullwidth
+                          filterType={filterType}
+                          setFilterType={setFilterType}
+                        >
                           Filter Results
                         </CustomizedButtons>
                       </Grid>
@@ -150,10 +143,31 @@ function CourseResultPage({ history }) {
                           sx={{ display: "flex", justifyContent: "center" }}
                           primary={`Student submissions completed ${item.date}`}
                         />
-                        <ListItemText
-                          sx={{ display: "flex", justifyContent: "flex-end" }}
-                          primary={`${item.type}`}
+                        <>
+                          {item.type === "Needs Review" ? (
+                            <>
+                            <FiberManualRecordIcon
+                          sx={{ color: "#0DC38D" }}
+                          fontSize="medium"
                         />
+                            <ListItemText
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                              primary={`${item.type}`}
+                            />
+                            </>
+                          ) : (
+                            <ListItemText
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                              primary={`${item.type}`}
+                            />
+                          )}
+                        </>
                       </ListItem>
                     </Link>
                   ))}

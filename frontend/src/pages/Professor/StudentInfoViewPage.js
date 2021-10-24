@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { MdOutlineCancel } from "react-icons/md";
+import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -25,26 +26,23 @@ import {
   TextField,
   Modal,
   Fade,
+  Collapse,
 } from "@mui/material";
-import Backdrop from '@mui/material/Backdrop';
+import Backdrop from "@mui/material/Backdrop";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
 
-
-const styles = theme => ({
+const styles = (theme) => ({
   input: {
     height: 30,
-    paddingTop: "5px"
+    paddingTop: "5px",
   },
 });
 
-
-
-
-const  AddStudentBox = withStyles(styles)(props => {
-  const { classes,handleAddStudent } = props;
+const AddStudentBox = withStyles(styles)((props) => {
+  const { classes, handleAddStudent } = props;
 
   return (
     <Box
@@ -71,41 +69,43 @@ const  AddStudentBox = withStyles(styles)(props => {
           </ListItem>
         </ListItem>
         <ListItem disablePadding>
-          <ListItem sx={{display: "flex", justifyContent: "space-between"}}>
+          <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
             <TextField
-              sx={{ bgcolor: '#fff' }}
+              sx={{ bgcolor: "#fff" }}
               label="Name"
               id="outlined-size-small"
               size="small"
               InputProps={{
-                className: classes.input
+                className: classes.input,
               }}
             />
             <TextField
-              sx={{ bgcolor: '#fff' }}
+              sx={{ bgcolor: "#fff" }}
               label="Student ID"
               id="outlined-size-small"
-              size= "small"
+              size="small"
               InputProps={{
-                className: classes.input
+                className: classes.input,
               }}
             />
             <TextField
-              sx={{ bgcolor: '#fff' }}
+              sx={{ bgcolor: "#fff" }}
               label="Email"
               id="outlined-size-small"
               size="small"
               InputProps={{
-                className: classes.input
+                className: classes.input,
               }}
             />
-            <CustomizedButtons type1 height1 onClick={handleAddStudent}>Add</CustomizedButtons>
+            <CustomizedButtons type1 height1 onClick={handleAddStudent}>
+              Add
+            </CustomizedButtons>
           </ListItem>
         </ListItem>
       </List>
     </Box>
   );
-})
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -125,7 +125,8 @@ function TabPanel(props) {
 }
 
 function StudentInfoViewPage({ history }) {
-  const [value, setValue] = useState(0);
+  const [tab, setTab] = useState(0);
+  const [viewType, setViewType] = useState("Student List");
   const [isOpenedAddStudentBox, setIsOpenedAddStudentBox] = useState(false);
   const [isCourseModalOpened, setIsCourseModalOpened] = useState(false);
   const [isStudentModalOpened, setIsStudentModalOpened] = useState(false);
@@ -135,6 +136,12 @@ function StudentInfoViewPage({ history }) {
   const handleCloseCourseModal = () => setIsCourseModalOpened(false);
   const handleOpenStudentModal = () => setIsStudentModalOpened(true);
   const handleCloseStudentModal = () => setIsStudentModalOpened(false);
+  const [teamKeys, setTeamKeys] = useState({});
+
+  const handleClick = key => () => {
+    setTeamKeys({ [key]: !teamKeys[key] });
+  };
+
   return (
     <div
       style={{
@@ -165,89 +172,155 @@ function StudentInfoViewPage({ history }) {
             xs={3}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <CustomizedButtons type2 model={"add"} onClick={handleOpenCourseModal}>
-                Delete Course
+            <CustomizedButtons
+              type2
+              model={"add"}
+              onClick={handleOpenCourseModal}
+            >
+              Delete Course
             </CustomizedButtons>
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs
-            type2
-            setValue={setValue}
-            value={value}
-          ></CustomizedTabs>
+          <CustomizedTabs type2 setValue={setTab} value={tab}></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
-          <TabPanel value={value} index={id - 1}>
-            <CustomizedCard>
-              <CardHeader
-                sx={{
-                  paddingBottom: "0",
-                }}
-                title={
-                  <>
-                    {isOpenedAddStudentBox === false ? (
-                      <Grid container>
-                        <Grid item xs={9}>
-                          <CustomizedButtons
-                            type3
-                            model={"add"}
-                            model={"switch"}
+            <TabPanel value={tab} index={id - 1}>
+              <CustomizedCard>
+                <CardHeader
+                  sx={{
+                    paddingBottom: "0",
+                  }}
+                  title={
+                    <>
+                      {isOpenedAddStudentBox === false ? (
+                        <Grid container>
+                          <Grid item xs={3}>
+                            <CustomizedButtons
+                              type3
+                              sx={{ width: "170px" }}
+                              model={"add"}
+                              model={"switch"}
+                              setViewType={setViewType}
+                            >
+                              {viewType}
+                            </CustomizedButtons>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={9}
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
                           >
-                            Student List
-                          </CustomizedButtons>
+                            <CustomizedButtons
+                              type3
+                              model={"add"}
+                              onClick={handleOpenAddStudentBox}
+                            >
+                              Add new student
+                            </CustomizedButtons>
+                          </Grid>
                         </Grid>
-                        <Grid
-                          item
-                          xs={3}
-                          sx={{ display: "flex", justifyContent: "flex-end" }}
+                      ) : (
+                        <AddStudentBox
+                          handleAddStudent={handleAddStudent}
+                        ></AddStudentBox>
+                      )}
+                    </>
+                  }
+                ></CardHeader>
+                <CardContent
+                  sx={{
+                    paddingTop: "0",
+                  }}
+                >
+                  {viewType === "Student List" ? (
+                    <List component="nav" aria-label="mailbox folders">
+                      {[1, 2, 3].map((value) => (
+                        <ListItem
+                          button
+                          divider
+                          secondaryAction={
+                            <IconButton edge="end" aria-label="delete" onClick={handleOpenStudentModal}>
+                              <MdOutlineCancel />
+                            </IconButton>
+                          }
+                          
                         >
-                          <CustomizedButtons
-                            type3
-                            model={"add"}
-                            onClick={handleOpenAddStudentBox}
-                          >
-                            Add new student
-                          </CustomizedButtons>
-                        </Grid>
-                      </Grid>
-                    ) : (
-                      <AddStudentBox handleAddStudent={handleAddStudent}></AddStudentBox>
-                    )}
-                  </>
-                }
-              ></CardHeader>
-              <CardContent
-                sx={{
-                  paddingTop: "0",
-                }}
-              >
-                <List component="nav" aria-label="mailbox folders">
-                  {[1, 2, 3].map((value) => (
-                    <ListItem
-                      button
-                      divider
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <MdOutlineCancel />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemText primary="Student Name" />
-                      <ListItemText
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                        primary="Added via CSV upload 08/13/21"
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </CustomizedCard>
-          </TabPanel>
-))}
+                          <ListItemText primary="Student Name" />
+                          <ListItemText
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
+                            primary="Added via CSV upload 08/13/21"
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <List component="nav" aria-label="mailbox folders">
+                      {[1, 2, 3].map((key) => {
+                        const open = teamKeys[key] || false;
+                        return (
+                        <div key={key}>
+                        <ListItem
+                          button
+                          divider
+                          secondaryAction={
+                            <IconButton edge="end" aria-label="delete">
+                              {open ? <IoIosArrowDropdown /> : <IoIosArrowDropup/>}
+                            </IconButton>
+                          }
+                          onClick={handleClick(key)}
+                        >
+                          <ListItemText primary="Team Name" />
+                          <ListItemText
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
+                            primary="3 team members"
+                          />
+
+                        </ListItem>
+                        
+                      <Collapse in={open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                          <>
+                        {[1, 2, 3].map((value, key) => (
+                                <ListItem
+                                  key={key}
+                                  button
+                                  sx={{ pl: 4 }}
+                                  divider
+                                  secondaryAction={
+                                    <IconButton
+                                      edge="end"
+                                      aria-label="delete"
+                                      onClick={handleOpenStudentModal}
+                                    >
+                                      <MdOutlineCancel />
+                                    </IconButton>
+                                  }
+                                >
+                                  <ListItemText primary={`Student ${value} Name`} />
+                                </ListItem>
+                        ))}</>
+                        </List>
+                      </Collapse>
+                        </div>)
+                      })}
+                    </List>
+                  )}
+                </CardContent>
+              </CustomizedCard>
+            </TabPanel>
+          ))}
         </div>
       </CustomizedContainer>
-      <CustomizedModal modalType={"course"} isCourseModalOpened={isCourseModalOpened} handleCloseCourseModal={handleCloseCourseModal}/>
-      <CustomizedModal modalType={"student"}  isStudentModalOpened={isStudentModalOpened} handleCloseStudentModal={handleCloseStudentModal}/>
+      <CustomizedModal
+        modalType={"course"}
+        isCourseModalOpened={isCourseModalOpened}
+        handleCloseCourseModal={handleCloseCourseModal}
+      />
+      <CustomizedModal
+        modalType={"student"}
+        isStudentModalOpened={isStudentModalOpened}
+        handleCloseStudentModal={handleCloseStudentModal}
+      />
     </div>
   );
 }

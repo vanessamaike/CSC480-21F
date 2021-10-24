@@ -1,8 +1,10 @@
-import * as React from 'react';
-import { styled } from '@mui/system';
-import SwitchUnstyled, { switchUnstyledClasses } from '@mui/core/SwitchUnstyled';
+import * as React from "react";
+import { styled } from "@mui/system";
+import SwitchUnstyled, {
+  switchUnstyledClasses,
+} from "@mui/core/SwitchUnstyled";
 
-const Root = styled('span')(`
+const Root = styled("span")(`
   font-size: 0;
   position: relative;
   display: inline-block;
@@ -67,12 +69,25 @@ const Root = styled('span')(`
     margin: 0;
   }`);
 
-export default function UnstyledSwitches() {
-  const label = { componentsProps: { input: { 'aria-label': 'Demo switch' } } };
+export default function UnstyledSwitches({ setViewType }) {
+  const label = { componentsProps: { input: { "aria-label": "Demo switch" } } };
+  const [checked, setChecked] = React.useState(false);
 
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    if(!checked){
+      setViewType("Team List")
+    }else{
+      setViewType("Student List")
+    }}
   return (
-    <div style={{display:"flex", alignItems: "center"}}>
-      <SwitchUnstyled component={Root} {...label} />
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <SwitchUnstyled
+        component={Root}
+        {...label}
+        checked={checked}
+        onChange={handleChange}
+      />
     </div>
   );
 }

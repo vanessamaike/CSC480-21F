@@ -7,7 +7,7 @@ import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
-import {IoIosAddCircleOutline} from "react-icons/io";
+import {IoIosAddCircleOutline, IoIosArrowDropdown} from "react-icons/io";
 import {BsArrowRightCircle} from "react-icons/bs";
 import {BiCheckCircle} from 'react-icons/bi'
 import CustomizedSwitch from "../components/CustomizedSwitch"
@@ -25,6 +25,7 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
     height1,
     height2,
     children,
+    setViewType,
     filterType,
     setFilterType,
     requestFilter,
@@ -49,10 +50,12 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {children}
       {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
-      {model === "switch" ? <CustomizedSwitch /> : <>
+      {model === "switch" ? <CustomizedSwitch  setViewType={setViewType}/> : <>
       {model === "radio1" ? <CustomizedRadios type={'radio1'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "radio2" ? <CustomizedRadios type={'radio2'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "checked" ? <BiCheckCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
+      {model === "expand" ? <IoIosArrowDropdown size="1.5em" style={{marginLeft: "5px"}} /> : <>
+      </>}
       </>}
       </>}
       </>}
