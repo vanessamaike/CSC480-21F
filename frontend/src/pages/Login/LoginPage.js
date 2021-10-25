@@ -11,12 +11,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
+import bg from '../../images/multi_background_login.jpg'
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import Button from "../../components/Button";
 import { Stack } from "@mui/material";
-
+import CustomizedCard from "../../components/CustomizedCard";
 function RoleButton() {
   return (
     <Box
@@ -65,15 +65,16 @@ function LoginPage() {
   };
   return (
 
-    <div>
-      <NavBar fixed></NavBar>
-      <div style={{ marginTop: "150px" }}></div>
-      <div
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
+    >    
+
+      <NavBar></NavBar>
+      <div 
         style={{
           display: "flex",
           justifyContent: "space-around",
           flexDirection: "row",
-          margin: "0 12em",
+          margin: "1em 12em",
         }}
       >
         <div
@@ -90,13 +91,13 @@ function LoginPage() {
             variant="h4"
             component="div"
           >
-            Aliquam pulvinar nunc eget consectetur facilisis.
+            A proven system to improve student grade outcomes.
           </Typography>
           <Typography variant="h6" component="div">
-            Nulla ullamcorper efficitur nisl eget aliquet.
+          Distribute assignments and collect peer reviews with accuracy and efficiency while utilizing this effective learning method. 
           </Typography>
         </div>
-        <Card
+        <CustomizedCard
           style={{
             display: "flex",
             flexDirection: "column",
@@ -150,7 +151,7 @@ function LoginPage() {
               />
             </Stack>
           </CardContent>
-        </Card>
+        </CustomizedCard>
       </div>
     </div>
   );

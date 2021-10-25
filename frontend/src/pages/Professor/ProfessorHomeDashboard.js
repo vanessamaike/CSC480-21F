@@ -1,162 +1,254 @@
 import React from "react";
 // @mui components
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Container,
+  Typography,
+  Box,
+  Stack,
+  Divider,
+  List,
+  ListItem,
+  IconButton,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListItemButton,
+  ListItemIcon,
+} from "@mui/material";
+
+import { BiCheckCircle } from "react-icons/bi";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import bg from "../../images/multi_background_dashboard.jpg";
+
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import Button from "../../components/Button";
-import Stack from "@mui/material/Stack";
-import Container from "@mui/material/Container";
-import { primaryColor, fontColor } from "../../styles/Style";
+import CustomizedButtons from "../../components/CustomizedButtons";
+import CustomizedContainer from "../../components/CustomizedContainer";
+import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedDivider from "../../components/CustomizedDivider";
 
 function CourseBar() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        direction: "column",
-        justifyContent: "space-between",
-        width: "90%",
-        overflow: "hidden",
-        px: 2,
-        py: 1,
-        cursor: "pointer",
-        borderRadius: 10,
-        color: "#ffffff",
-        bgcolor: "#000000",
-        fontWeight: "600",
-        "&:hover": {
-          backgroundColor: "#000000",
-          opacity: [0.9, 0.8, 0.7],
-        },
-      }}
-    >
-      <div>CRN, Section, Semester</div>
-      <ArrowCircleUpIcon
-        sx={{ color: "#ffffff", transform: "rotate(90deg)" }}
-      />
-    </Box>
+    <Stack spacing={0}>
+      <CustomizedButtons type3 fullwidth model={"arrow"}>
+        CRN, Section, Semester
+      </CustomizedButtons>
+      <List dense={true}>
+        <ListItem>
+          <ListItemText
+            primary={
+              <Typography component="span" fontWeight="600" variant="body2">
+                Solution 1
+              </Typography>
+            }
+          />
+          <ListItemText primary="Due 10/13/21" />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={
+              <Typography component="span" fontWeight="600" variant="body2">
+                Peer Review 1
+              </Typography>
+            }
+          />
+          <ListItemText primary="Due 10/13/21" />
+        </ListItem>
+      </List>
+    </Stack>
   );
 }
 
-function CreateNewCourseButton() {
-  return (
-    <div>
-      <Box
-        sx={{
-          display: "flex",
-          direction: "column",
-          justifyContent: "space-between",
-          width: "90%",
-          overflow: "hidden",
-          px: 2,
-          py: 1,
-          cursor: "pointer",
-          borderRadius: 10,
-          border: "1px solid #000",
-          color: "#000",
-          fontWeight: "600",
-          "&:hover": {
-            backgroundColor: "#ddd",
-            opacity: [0.9, 0.8, 0.7],
-          },
-        }}
-      >
-        <div>Create a New Course</div>
-        <AddCircleOutlineIcon sx={{ color: "#000" }} />
-      </Box>
-    </div>
-  );
-}
-
-function ReviewBar() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        direction: "column",
-        justifyContent: "space-between",
-        width: "95%",
-        overflow: "hidden",
-        px: 2,
-        py: 1,
-        cursor: "pointer",
-        borderTop: "0.5px solid #aaa",
-        color: "#00000",
-        "&:hover": {
-          backgroundColor: "#ddd",
-          opacity: [0.9, 0.8, 0.7],
-        },
-      }}
-    >
-      <Stack direction="row" spacing={1}>
-        <div style={{fontWeight: "600"}}>CRN, Section, Semester</div>
-        <div>Final submissions completed on 10/05/21</div>
-      </Stack>
-
-      <CheckCircleOutlinedIcon sx={{ color: "#00000" }} />
-    </Box>
-  );
-}
 function ProfessorHomeDashBoard() {
   return (
-    <div>
-      <NavBar fixed></NavBar>
-      <div style={{ marginTop: "150px" }}></div>
-      <Container
-        maxWidth="lg"
-        sx={{ display: "flex", justifyContent: "space-around" }}
-      >
-        <Card sx={{ width: "30%", overflow: "hidden", p: 1 }}>
-          <CardHeader
-            title={
-              <Typography
-                style={{ fontWeight: "600" }}
-                variant="h6"
-                component="div"
-              >
-                View Courses
-              </Typography>
-            }
-          ></CardHeader>
-          <CardContent>
-            <Stack spacing={2}>
-              <CourseBar></CourseBar>
-              <CourseBar></CourseBar>
-              <CourseBar></CourseBar>
-              <CourseBar></CourseBar>
-              <CreateNewCourseButton></CreateNewCourseButton>
-            </Stack>
-          </CardContent>
-        </Card>
-        <Card sx={{ width: "60%", overflow: "hidden", p: 1 }}>
-          <CardHeader
-            title={
-              <Typography
-                style={{ fontWeight: "600" }}
-                variant="h6"
-                component="div"
-              >
-                Results to Review
-              </Typography>
-            }
-          ></CardHeader>
-          <CardContent sx={{paddingTop: 0}}>
-            <Stack>
-              <ReviewBar></ReviewBar>
-              <ReviewBar></ReviewBar>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Container>
+    <div
+      style={{
+        backgroundImage: `url(${bg})`,
+        height: "80vh",
+        backgroundSize: "cover",
+        paddingTop: "150px",
+      }}
+    >
+      <NavBar></NavBar>
+      <CustomizedContainer>
+        <Grid
+          container
+          spacing={3}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Grid item xs={4}>
+            <CustomizedCard>
+              <CardHeader
+                sx={{ paddingBottom: "0" }}
+                title={
+                  <List dense={true} sx={{ padding: "0", margin: "0" }}>
+                    <ListItem>
+                      <ListItemIcon>
+                        <FiberManualRecordIcon
+                          sx={{ color: "#0DC38D" }}
+                          fontSize="medium"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Typography
+                            component="span"
+                            fontWeight="600"
+                            variant="body1"
+                          >
+                            Assignments by Course
+                          </Typography>
+                        }
+                      />
+                    </ListItem>
+                  </List>
+                }
+              ></CardHeader>
+              <CardContent sx={{ paddingTop: "0" }}>
+                <Stack spacing={2}>
+                  <CourseBar></CourseBar>
+                  <CourseBar></CourseBar>
+                </Stack>
+              </CardContent>
+            </CustomizedCard>
+          </Grid>
+          <Grid item container spacing={3} xs={8}>
+            <Grid item xs={12}>
+              <CustomizedCard>
+                <CardHeader
+                  sx={{ paddingBottom: "8px" }}
+                  title={
+                    <List dense={true} sx={{ padding: "0", margin: "0" }}>
+                      <ListItem
+                        secondaryAction={
+                          <CustomizedButtons type1 height1>See All</CustomizedButtons>
+                        }
+                      >
+                        <ListItemIcon>
+                          <FiberManualRecordIcon
+                            sx={{ color: "#0DC38D" }}
+                            fontSize="medium"
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              component="span"
+                              fontWeight="600"
+                              variant="body1"
+                            >
+                              Results to Review
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                  }
+                ></CardHeader>
+                <CustomizedDivider type1></CustomizedDivider>
+                <CardContent sx={{ paddingTop: 0 }}>
+                  <List>
+                    <ListItem
+                      disablePadding
+                      secondaryAction={
+                        <ListItemText primary="Final submissions completed on 10/05/21" />
+                      }
+                    >
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <BiCheckCircle size="1.5em"></BiCheckCircle>
+                        </ListItemIcon>
+                        <ListItemText primary="Peer Review" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem
+                      disablePadding
+                      secondaryAction={
+                        <ListItemText primary="Final submissions completed on 10/05/21" />
+                      }
+                    >
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <BiCheckCircle size="1.5em"></BiCheckCircle>
+                        </ListItemIcon>
+                        <ListItemText primary="Peer Review" />
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </CustomizedCard>
+            </Grid>
+            <Grid item xs={12}>
+              <CustomizedCard>
+                <CardHeader
+                  title={
+                    <List dense={true} sx={{ padding: "0", margin: "0" }}>
+                      <ListItem>
+                        <ListItemIcon>
+                          <FiberManualRecordIcon
+                            sx={{ color: "#6F40DC" }}
+                            fontSize="medium"
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              component="span"
+                              fontWeight="600"
+                              variant="body1"
+                            >
+                              Manage Students & Teams by Course
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                  }
+                ></CardHeader>
+                <CardContent sx={{ paddingTop: 0 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
+                        Create a New Course
+                      </CustomizedButtons>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
+                        Create a New Course
+                      </CustomizedButtons>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
+                        Create a New Course
+                      </CustomizedButtons>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomizedButtons type2 fullwidth model={"arrow"}>
+                        Create a New Course
+                      </CustomizedButtons>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </CustomizedCard>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <CustomizedButtons type1 model={"add"}>
+                Create a New Course
+              </CustomizedButtons>
+            </Grid>
+          </Grid>
+        </Grid>
+      </CustomizedContainer>
     </div>
   );
 }
