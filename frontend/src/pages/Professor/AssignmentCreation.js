@@ -13,45 +13,81 @@ import {
 } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import CustomizedButtons from "../../components/CustomizedButtons";
-import CustomizedRadios from "../../components/CustomizedRadios";
-import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import TextField from '@mui/material/TextField'
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
+// Import the main component
+import { Viewer } from '@react-pdf-viewer/core'; // install this library
+// Plugins
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'; // install this library
+// Import the styles
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+// Worker
+import { Worker } from '@react-pdf-viewer/core'; // install this library
+import { red } from "@mui/material/colors";
+import { BiFontSize } from "react-icons/bi";
+import { Button } from 'react-bootstrap';
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            sx={{ borderRadius: "10px" }}
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-function AssignDueDate() { }
+var pdfFilev;
+var pdfFileErrorv;
 
 
 function AssignmentCreation() {
     const [solutionDueDate, setSolutionDueDate] = useState('');
     const [prDueDate, setPRDueDate] = useState('');
+
+    // Create new plugin instance
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  
+  // for onchange event
+  const [pdfFile, setPdfFile]=useState(null);
+  const [pdfFileError, setPdfFileError]=useState('');
+
+
+  // for submit event
+  const [viewPdf, setViewPdf]=useState(null);
+
+  // onchange event
+  const fileType=['application/pdf'];
+  const handlePdfFileChange=(e)=>{
+    let selectedFile=e.target.files[0];
+    if(selectedFile){
+      if(selectedFile&&fileType.includes(selectedFile.type)){
+        let reader = new FileReader();
+            reader.readAsDataURL(selectedFile);
+            reader.onloadend = (e) =>{
+              setPdfFile(e.target.result);
+              setPdfFileError('');
+            }
+      }
+      else{
+        setPdfFile(null);
+        setPdfFileError('Please select valid pdf file');
+      }
+    }
+    else{
+      console.log('select your file');
+    }
+  }
+
+  // form submit
+  const handlePdfFileSubmit=(e)=>{
+    e.preventDefault();
+    if(pdfFile!==null){
+      setViewPdf(pdfFile);
+    }
+    else{
+      setViewPdf(null);
+    }
+  }
+pdfFilev = pdfFile;
+pdfFileErrorv= pdfFileError;
+console.log(pdfFileErrorv);
 
     // const handleChange = (event, newValue) => {
     //     setValue(newValue);
@@ -191,7 +227,17 @@ function AssignmentCreation() {
                                     >
                                         <TextField placeholder="Optional Comments" ></TextField>
                                         <Box sx={{ p: 2 }}></Box>
-                                        <CustomizedButtons type1 model={"type1"}>Upload </CustomizedButtons>
+                                        <form onSubmit={handlePdfFileSubmit}>
+                                        <input type="file" required onChange={handlePdfFileChange}></input>
+                                        {pdfFileError&&<div style= {{
+                                                            width: '100%',
+                                                            color: red,
+                                                            fontSize: '14px',
+                                                            fontWeight: 600
+                                                        }}>{pdfFileError}</div>}
+                                        <CustomizedButtons type="submit" type1 onChange={handlePdfFileChange} model={"type1"}>Upload </CustomizedButtons>
+                                        {/* <button type="submit" class="btn btn-dark">Upload</button> */}
+                                        </form>
                                     </Box>
                                 </Stack>
                             }
