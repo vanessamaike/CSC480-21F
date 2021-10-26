@@ -53,8 +53,10 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {model === "switch" ? <CustomizedSwitch  setViewType={setViewType}/> : <>
       {model === "radio1" ? <CustomizedRadios type={'radio1'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "radio2" ? <CustomizedRadios type={'radio2'} filterType={filterType} setFilterType={setFilterType} /> : <>
+      {model === "radio3" ? <CustomizedRadios type={'radio3'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "checked" ? <BiCheckCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "expand" ? <IoIosArrowDropdown size="1.5em" style={{marginLeft: "5px"}} /> : <>
+      </>}
       </>}
       </>}
       </>}

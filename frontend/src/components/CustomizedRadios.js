@@ -15,9 +15,7 @@ export default function CustomizedRadios({type, filterType, setFilterType}) {
    
   };
   return (
-    <>
-    {type === "radio1" ? (
-      <FormControl component="fieldset">
+    <FormControl component="fieldset">
       <RadioGroup
         aria-label="gender"
         name="controlled-radio-buttons-group"
@@ -25,25 +23,22 @@ export default function CustomizedRadios({type, filterType, setFilterType}) {
         onChange={handleChange}
         sx={{display: "flex", flexDirection: "row"}}
       >
-        <FormControlLabel value="draft" control={<Radio />} label="Draft" />
-        <FormControlLabel value="active" control={<Radio />} label="Active" />
+      {type === "radio1" ? (<>
+        <FormControlLabel value="Draft" control={<Radio />} label="Draft" />
+        <FormControlLabel value="Active" control={<Radio />} label="Active" /></>) : <>
+        {type === "radio2" ? (<>
+          <FormControlLabel value="Needs Review" control={<Radio />} label="Needs Review" />
+        <FormControlLabel value="Completed" control={<Radio />} label="Completed" />
+        <FormControlLabel value="All" control={<Radio />} label="All" /></>) : <>
+        {type === "radio3" ? (<>
+        <FormControlLabel value="Upcoming" control={<Radio />} label="Upcoming" />
+        <FormControlLabel value="Completed" control={<Radio />} label="Completed" />
+        <FormControlLabel value="All" control={<Radio />} label="All" /></>) : <>
+        
+      </>}
+      </>}
+      </>}
       </RadioGroup>
     </FormControl>
-    ) : 
-    (
-      <FormControl component="fieldset">
-      <RadioGroup
-        aria-label="gender"
-        name="controlled-radio-buttons-group"
-        value={filterType}
-        onChange={handleChange}
-        sx={{display: "flex", flexDirection: "row"}}
-      >
-        <FormControlLabel value="Needs Review" control={<Radio />} label="Needs Review" />
-        <FormControlLabel value="Completed" control={<Radio />} label="Completed" />
-        <FormControlLabel value="All" control={<Radio />} label="All" />
-      </RadioGroup>
-    </FormControl>)
-    }</>
   );
 }
