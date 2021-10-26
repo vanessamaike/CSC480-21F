@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -19,12 +20,13 @@ import org.apache.pdfbox.text.PDFTextStripper;
 public class QualityCheck {
     /**
      * This method takes in a string that is the path to a PDF file to be scanned for banned words.
-     * @param path The path to the PDF file.
-     * @return An array list of the integer indexes at which the word was found.
+     * @param pdfPath The path to the PDF file.
+     * @param profanityPath The path to the profanity file.
+     * @return An <Integer, String> Hash Map where the key is the index and the value is the word.
      * @throws IOException If the file loading encounters issues.
      */
-    public ArrayList<Integer> QC(String path) throws IOException{
-        File pdfFile = new File(path);
+    public HashMap<Integer, String> QC(String pdfPath, String profanityPath) throws IOException{
+        File pdfFile = new File(pdfPath);
         PDDocument document = Loader.loadPDF(pdfFile);
         //Instantiate PDFTextStrip
         PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -39,7 +41,7 @@ public class QualityCheck {
          * Maybe we want to make this part of admin module? Maybe BLOB in user.
          * Could be a secondary parameter, too.
          */
-        File file = new File("profanity.txt");
+        File file = new File(profanityPath);
         Scanner inFile1 = new Scanner(file).useDelimiter(",\\s*");
         BufferedWriter out = new BufferedWriter(new FileWriter(file, true));
         out.close();
@@ -53,7 +55,8 @@ public class QualityCheck {
 
         String[] tempsArray = temps.toArray(new String[0]);
         int start = 0;
-        ArrayList<Integer> arr = new ArrayList<>();
+        HashMap<Integer, String> retVal = new HashMap<>();
+        //ArrayList<Integer> arr = new ArrayList<>();
         for (String s : tempsArray) {
             Pattern r = Pattern.compile(s);
             //Create a Pattern object
@@ -61,10 +64,11 @@ public class QualityCheck {
             //matcher object
             if(m.find(start)){
                 start = m.start();
-                arr.add(m.start());
+                //arr.add(m.start());
+                retVal.put(m.start(), s);
             }
         }
-        return arr;
+        return retVal;
     }
 
 }
