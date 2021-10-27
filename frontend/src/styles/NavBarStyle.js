@@ -1,12 +1,14 @@
 import { makeStyles } from "@mui/styles";
-import { secondaryColor, primaryColor, fontColor } from "./Style";
+import { secondaryColor, primaryColor, fontColor, grayColor } from "./Style";
 const NavBarStyle = makeStyles((theme) => ({
+  root: {
+    flexGrow: "1"
+  },
   appBar: {
     display: "flex",
     flexDirection: "row",
     border: "0",
     borderRadius: "3px",
-    padding: "0 12em",
     marginBottom: "20px",
     color: "#f11111",
     width: "100%",
@@ -18,25 +20,22 @@ const NavBarStyle = makeStyles((theme) => ({
     alignItems: "center",
     flexFlow: "collumn nowrap",
     justifyContent: "start",
-    position: "relative",
-    zIndex: "unset",
+    position: "fixed",
+    zIndex: "2",
   },
   logo: {
     cursor: "pointer",
     userSelect: "none",
-    width: "30em",
-    display: "flex",
-    justifyContent: "start",
+    width: "7em",
   },
   link: {
     cursor: "pointer",
     userSelect: "none",
-    width: "15em",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     '&:hover': {
-      color: primaryColor,
+      color: grayColor,
   },
   },
 }));

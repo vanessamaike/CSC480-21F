@@ -1,20 +1,44 @@
-import { makeStyles } from "@mui/styles";
-import { secondaryColor, primaryColor, fontColor } from "./Style";
-const ButtonStyle = {
+import { makeStyles } from '@mui/styles';
+import { primaryColor, darkColor, whiteColor, grayColor } from "./Style";
+const ButtonStyle = makeStyles((theme) => ({
+  root: {
+    minHeight: "auto",
+    minWidth: "auto",
+    borderRadius: "50px",
+    textTransform: "unset",
+    fontWeight: "600",
+    padding: "5px 15px",
+    height: "42px",
+    display: "flex",
+    textAlign: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  fullwidth: {
+    width: "100%"
+  },
+  height1: {
+    height: "33px",
+  },
+  height2: {
+    height: "42px",
+  },
   type1: {
-    backgroundColor: primaryColor,
-    color: "red",
+    backgroundColor: darkColor,
+
+    color: whiteColor,
+    border: "1px solid #000000",
+    "&:hover, &.Mui-focusVisible": { backgroundColor: "#222" }
   },
   type2: {
-    backgroundColor: primaryColor,
-    color: "blue",
+    backgroundColor: "transparent",
+    color: darkColor,
     border: "1px solid #000000"
   },
   type3: {
-    backgroundColor: primaryColor,
-    color: "green",
-    border: "1px solid #000000"
-  }
-};
+    backgroundColor: grayColor,
+    color: darkColor,
+  },
+}));
 
 export default ButtonStyle;

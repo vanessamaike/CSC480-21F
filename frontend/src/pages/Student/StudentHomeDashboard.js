@@ -63,7 +63,7 @@ function CourseBar() {
   );
 }
 
-function ProfessorHomeDashBoard() {
+function StudentHomeDashBoard() {
   return (
     <div
       style={{
@@ -102,7 +102,7 @@ function ProfessorHomeDashBoard() {
                             fontWeight="600"
                             variant="body1"
                           >
-                            Assignments by Course
+                            Recent Results
                           </Typography>
                         }
                       />
@@ -143,7 +143,7 @@ function ProfessorHomeDashBoard() {
                               fontWeight="600"
                               variant="body1"
                             >
-                              Results to Review
+                              Upcoming Assignments
                             </Typography>
                           }
                         />
@@ -203,7 +203,7 @@ function ProfessorHomeDashBoard() {
                               fontWeight="600"
                               variant="body1"
                             >
-                              Manage Students & Teams by Course
+                              Manage Teams
                             </Typography>
                           }
                         />
@@ -212,39 +212,8 @@ function ProfessorHomeDashBoard() {
                   }
                 ></CardHeader>
                 <CardContent sx={{ paddingTop: 0 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                  </Grid>
                 </CardContent>
               </CustomizedCard>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-              <CustomizedButtons type1 model={"add"}>
-                Create a New Course
-              </CustomizedButtons>
             </Grid>
           </Grid>
         </Grid>
@@ -253,4 +222,4 @@ function ProfessorHomeDashBoard() {
   );
 }
 
-export default ProfessorHomeDashBoard;
+export default StudentHomeDashBoard;
