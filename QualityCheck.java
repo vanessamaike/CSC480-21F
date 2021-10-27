@@ -1,11 +1,5 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.pdfbox.Loader;
@@ -22,10 +16,11 @@ public class QualityCheck {
      * This method takes in a string that is the path to a PDF file to be scanned for banned words.
      * @param pdfPath The path to the PDF file.
      * @param profanityPath The path to the profanity file.
+     * @param students The array of student names to be excluded. Could be custom words too.
      * @return An <Integer, String> Hash Map where the key is the index and the value is the word.
      * @throws IOException If the file loading encounters issues.
      */
-    public HashMap<Integer, String> QC(String pdfPath, String profanityPath) throws IOException{
+    public HashMap<Integer, String> QC(String pdfPath, String profanityPath, String[] students) throws IOException{
         File pdfFile = new File(pdfPath);
         PDDocument document = Loader.loadPDF(pdfFile);
         //Instantiate PDFTextStrip
@@ -52,11 +47,11 @@ public class QualityCheck {
             temps.add(token1);
         }
         inFile1.close();
-
+        Collections.addAll(temps, students);
         String[] tempsArray = temps.toArray(new String[0]);
         int start = 0;
         HashMap<Integer, String> retVal = new HashMap<>();
-        //ArrayList<Integer> arr = new ArrayList<>();
+        ArrayList<Integer> arr = new ArrayList<>();
         for (String s : tempsArray) {
             Pattern r = Pattern.compile(s);
             //Create a Pattern object
@@ -64,7 +59,7 @@ public class QualityCheck {
             //matcher object
             if(m.find(start)){
                 start = m.start();
-                //arr.add(m.start());
+                arr.add(m.start());
                 retVal.put(m.start(), s);
             }
         }
