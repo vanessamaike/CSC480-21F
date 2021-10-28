@@ -1,6 +1,9 @@
 package edu.oswego.rest.teamManager;
 
-import javax.ws.rs.GET;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -28,7 +31,6 @@ public class teamManager {
 //MakeTeamsManually method - accept a String  payload of JSON containing an int titled 'teamID' as well as an array of studentId. The professor may add x amount of
 //students per team as they wish and this method will asign the teamID, to all of them.
 //_____________________________________________________________________________________________________________________________________________________________________//
-int teamId;
 
    @POST
    @Path("/manual")
@@ -37,7 +39,7 @@ int teamId;
 
         JSONObject obj = new JSONObject(payload);
         JSONArray studentsJSON = obj.getJSONArray("students"); //get array of json of student array
-        teamId = obj.getInt("teamID");  //get the teamID
+        int teamId = obj.getInt("teamID");  //get the teamID
       
 
         for (int i = 0; i < studentsJSON.length(); i++) { //for each studentId in the array...
@@ -45,7 +47,7 @@ int teamId;
 
              int userId = obj.getJSONArray("students").getInt(i);
              boolean status = checkIfStudentIsInDatabase(userId); //check the Id and see if it's in the database
-             AddTeamsToDatabase(status, studentsJSON, studentsJSON, userId, i); //update each student's team
+             AddTeamsToDatabase(status, teamId, studentsJSON, userId, i); //update each student's team
              
         }
         
@@ -58,6 +60,7 @@ int teamId;
 
 int teamCounter = -1;
 int keepTrackOfStudent = 0;
+int teamX;
 
 @POST
 @Path("/auto")
@@ -65,13 +68,17 @@ int keepTrackOfStudent = 0;
 
       JSONObject obj = new JSONObject(payload);
       JSONArray studentsJSON = obj.getJSONArray("students"); //array of students
-      JSONArray teamNamesJSON = obj.getJSONArray("teams"); //array of team names
-      int numberToSplit = studentsJSON.length() / teamNamesJSON.length();
+      int NumberOfTeams = obj.getInt("NumberOfTeams");
+      //JSONArray teamNamesJSON = obj.getJSONArray("teams"); //array of team names
+      //int numberToSplit = studentsJSON.length() / teamNamesJSON.length();
+      int numberToSplit = studentsJSON.length() /  NumberOfTeams;
       keepTrackOfStudent = 0;
 
-      for (int j = 0; j <  teamNamesJSON.length(); j++) { //for each team name
+      for (int j = 0; j <  NumberOfTeams; j++) { //for each team name
 
          teamCounter++;
+         teamX = autoGenerateTeamName();
+         System.out.println("Team X is" + teamX);
 
       for (int i = 0; i < numberToSplit; i++) { //split up the team members into even (or as much as possible) teams
 
@@ -79,7 +86,8 @@ int keepTrackOfStudent = 0;
              int userId = obj.getJSONArray("students").getInt(keepTrackOfStudent); //get first student for example
              boolean status = checkIfStudentIsInDatabase(userId); //check the Id and see if it's in the database
 
-               AddTeamsToDatabase(status, teamNamesJSON, studentsJSON, userId, i); //change those student's teams
+               AddTeamsToDatabase(status, teamX, studentsJSON, userId, i); //change those student's teams
+               System.out.println("Added");
       }
             }
 
@@ -93,7 +101,8 @@ int keepTrackOfStudent = 0;
                                                                  
              int userId = obj.getJSONArray("students").getInt(keepTrackOfStudent); //get first student for example
              boolean status = checkIfStudentIsInDatabase(userId); //check the Id and see if it's in the database           
-            AddTeamsToDatabase(status, teamNamesJSON, studentsJSON, userId, 1);      //update database with their new team
+             AddTeamsToDatabase(status, teamX, studentsJSON, userId, 1);      //update database with their new team
+             System.out.println("Added extra");
 
                  teamCounter++;
 
@@ -105,7 +114,7 @@ int keepTrackOfStudent = 0;
 //_____________________________________________________________________________________________________________________________________________________________________/
 
 
-public void AddTeamsToDatabase(boolean status, JSONArray teamNamesJSON, JSONArray studentsJSON, int userId, int i) {
+public void AddTeamsToDatabase(boolean status, int teamX, JSONArray studentsJSON, int userId, int i) {
 
 
 
@@ -117,13 +126,7 @@ public void AddTeamsToDatabase(boolean status, JSONArray teamNamesJSON, JSONArra
       String email = student.getEmail();
       float score = student.getScore();
       int courseId = student.getCourseID();
-      int teamID = teamId;
-
-      if (teamCounter != -1) { //basically, if the teams are being made automatically
-                               //else, it is manually
-      teamID = teamNamesJSON.getInt(teamCounter); 
-
-      }
+      int teamID = teamX;
       
       Student studentToUpdate = new Student(studentId, userId, firstName, lastName, email, teamID , score, courseId); //add tigers to two students
       studentService.update(studentToUpdate);
@@ -137,6 +140,39 @@ public void AddTeamsToDatabase(boolean status, JSONArray teamNamesJSON, JSONArra
         i--;
 
        }     
+}
+
+//_____________________________________________________________________________________________________________________________________________________________________//
+//uto Generate Team Names. Create a random teamId. Id this is not in the database, use it. If it is in the database, create a new one.
+//_____________________________________________________________________________________________________________________________________________________________________/
+
+int generateTeamID = 0;
+
+public int autoGenerateTeamName() { 
+
+   int j = 0;
+
+   while (j == 0) {
+
+   Random rand = new Random();
+   List<Student> z = studentService.findAll();
+
+   generateTeamID = rand.nextInt(z.size() * 10); //even if each student has  a unique team, this will still generate a unique teamId based on database size
+   Student s = studentService.findTeamID(generateTeamID); //check to see if this team id already exists in the database
+
+   if (Objects.isNull(s)) { //if it doesn't exist
+
+      System.out.println("The team does not already exist in the database");
+      
+      j = 1;
+
+   }
+
+}
+
+return generateTeamID;
+  
+   
 }
 
 //_____________________________________________________________________________________________________________________________________________________________________//

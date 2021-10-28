@@ -32,6 +32,13 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     }
 
     @Override
+    public Student findTeamID(int id) {
+        String sql = "SELECT * FROM student WHERE teamID = ?";
+        List<Student> student = query(sql, new StudentMapper(), id);
+        return student.isEmpty() ? null : student.get(0);
+    }
+
+    @Override
     public Student findUserID(int userId) {
         String sql = "SELECT * FROM student WHERE userID = ?";
         List<Student> student = query(sql, new StudentMapper(), userId);

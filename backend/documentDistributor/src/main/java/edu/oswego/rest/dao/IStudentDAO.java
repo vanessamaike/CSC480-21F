@@ -12,4 +12,5 @@ public interface IStudentDAO {
     void delete(Student student);
     void deleteAll();
     Student findUserID(int userId);
+    Student findTeamID(int id);
 }
