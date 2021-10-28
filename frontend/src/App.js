@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
 import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
-
-import TestingPage from './pages/Test';
+import TestingPage from './pages/TestingPage';
+import Test from './pages/Test';
 import ProfessorCoursePage from './pages/Professor/ProfessorCoursePage';
 import AddCoursePage from './pages/Professor/AddCoursePage';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
