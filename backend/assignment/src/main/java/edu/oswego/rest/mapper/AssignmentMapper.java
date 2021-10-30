@@ -4,6 +4,7 @@ import edu.oswego.rest.objects.Assignment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class AssignmentMapper implements RowMapper<Assignment>{
     @Override
@@ -13,7 +14,12 @@ public class AssignmentMapper implements RowMapper<Assignment>{
                     rs.getInt("assignmentID"),
                     rs.getBytes("pdfDoc"),
                     rs.getString("settings"),
-                    rs.getInt("courseID")
+                    rs.getInt("courseID"),
+                    rs.getString("title"),
+                    rs.getBoolean("isTeamed"),
+                    rs.getBoolean("reviewStage"),
+                    rs.getObject("dueDateTime", LocalDateTime.class),
+                    rs.getObject("reviewDateTime", LocalDateTime.class)
             );
             return assignment;
         }catch(SQLException e)

@@ -26,15 +26,16 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
 
     @Override
     public int save(Submission submission) {
-        StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, pdfDoc, signOff, teamID)");
-        sql.append(" VALUES(?, ?, ?, ?)");
-
+        StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, " +
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
 
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
 
-        insert(sql.toString(), uniqueRandomId, targetStream,submission.getSignOff(),submission.getTeamID());
+        insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
+                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen());
         return uniqueRandomId;
     }
 
@@ -54,9 +55,13 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
 
     @Override
     public void update(Submission submission) {
-        StringBuilder sql = new StringBuilder("UPDATE submission SET pdfDoc = ?, signOff = ?, teamID = ? WHERE submissionID = ?");
+        StringBuilder sql = new StringBuilder("UPDATE submission SET comments = ?, " +
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE submissionID = ?");
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
-        update(sql.toString(), targetStream,submission.getSignOff(),submission.getTeamID(),submission.getSubmissionID());
+        update(sql.toString(), submission.getComments(),
+                submission.getSubmissionTime() ,targetStream,
+                submission.getSignOff(),submission.getTeamID(),
+                submission.isSeen(), submission.getSubmissionID());
     }
 
     @Override

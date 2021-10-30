@@ -11,15 +11,15 @@
         <feature>socialLogin-1.0</feature>
         
     </featureManager>
-    <httpEndpoint httpPort="${default.http.port}"
-                  httpsPort="${default.https.port}"
+    <httpEndpoint host="localhost"
                   id="defaultHttpEndpoint"
-                  host="*" />
+                  httpPort="9085"
+                  httpsPort="9443" />
 
     <keyStore id="defaultKeyStore"
               password="changeit" />
 
-              <basicRegistry realm="defaultWIMFileBasedRealm" 
+              <basicRegistry realm="defaultWIMFileBasedRealm" >
    <user name="uid=admin,o=defaultWIMFileBasedRealm" password="admin" />
    <user name="uid=johndoe,o=defaultWIMFileBasedRealm" password="password" />
    

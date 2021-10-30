@@ -3,6 +3,7 @@ package edu.oswego.rest.dao.impl;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -133,6 +134,7 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                     e1.printStackTrace();
                 }
             }
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {
@@ -213,8 +215,15 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 {
                     statement.setDate(index, (Date.valueOf((LocalDate) parameter)));
                 }
+                else if (parameter instanceof LocalDateTime)
+                {
+                    statement.setTimestamp(index,Timestamp.valueOf((LocalDateTime) parameter));
+                }
                 else if (parameter instanceof InputStream){
                     statement.setBlob(index, (InputStream) parameter);
+                }
+                else if(parameter instanceof Boolean){
+                    statement.setBoolean(index, (Boolean) parameter);
                 }
             }
         } catch (SQLException e) {

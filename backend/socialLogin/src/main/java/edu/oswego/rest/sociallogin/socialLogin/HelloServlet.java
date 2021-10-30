@@ -1,4 +1,4 @@
-// tag::copyright[]
+package edu.oswego.rest.sociallogin.socialLogin;// tag::copyright[]
 /*******************************************************************************
  * Copyright (c) 2020 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
@@ -41,6 +41,7 @@ public class HelloServlet extends HttpServlet {
         AcceptedStudents.add("jowens4@oswego.edu");
         AcceptedStudents.add("hayesandy5@gmail.com");
         AcceptedStudents.add("pboisnie@oswego.edu");
+        AcceptedStudents.add("dtran3@oswego.edu");
 
         String username = request.getUserPrincipal().getName();
       

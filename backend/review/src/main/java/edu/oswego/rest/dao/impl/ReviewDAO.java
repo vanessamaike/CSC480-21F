@@ -26,14 +26,17 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
 
     @Override
     public int save(Review review) {
-        StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, pdfDoc, signOff,teamId )");
-        sql.append(" VALUES(?, ?, ?, ?)");
+        StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, " +
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
 
-        insert(sql.toString(), uniqueRandomId, targetStream,review.getSignOff(),
-                review.getTeamID());
+        insert(sql.toString(), uniqueRandomId, review.getComments(),
+                review.getSubmissionTime(), targetStream,
+                review.getSignOff(),
+                review.getTeamID(), review.isSeen());
         return uniqueRandomId;
     }
 
@@ -53,10 +56,14 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
 
     @Override
     public void update(Review review) {
-        StringBuilder sql = new StringBuilder("UPDATE review SET pdfDoc = ?, signOff = ?, teamId = ? WHERE reviewID = ?");
+        StringBuilder sql = new StringBuilder("UPDATE review SET comments = ? " +
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE reviewID = ?");
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
 
-        update(sql.toString(),targetStream, review.getSignOff() ,review.getTeamID(),review.getReviewID());
+        update(sql.toString(),review.getComments(),
+                review.getSubmissionTime(), targetStream,
+                review.getSignOff() ,review.getTeamID(),
+                review.isSeen(), review.getReviewID());
     }
 
     @Override
