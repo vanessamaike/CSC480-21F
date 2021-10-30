@@ -30,19 +30,6 @@ public class CourseAPI {
         courseService = new CourseService();
     }
 
-    @PATCH
-    public int asd(String payload) throws JsonProcessingException {
-        JSONObject obj = new JSONObject(payload);
-        int id = obj.getInt("id");
-        System.out.println(id);
-        return id;
-    }
-
-    @GET
-    @Path("/generateUniqueRandomId")
-    public int  getGenerateUniqueRandomId(){
-        return courseService.generateUniqueRandomId();
-    }
 
     @GET
     public String getAllCourses(){

@@ -22,10 +22,10 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
     }
     @Override
     public int save(User user) {
-        StringBuilder sql = new StringBuilder("INSERT INTO user (userId, email, role)");
-        sql.append(" VALUES(?, ?, ?)");
+        StringBuilder sql = new StringBuilder("INSERT INTO user (userId, email, role, settings)");
+        sql.append(" VALUES(?, ?, ?, ?)");
         int uniqueRandomId = generateUniqueRandomId();
-        insert(sql.toString(), uniqueRandomId, user.getEmail(),user.getRole());
+        insert(sql.toString(), uniqueRandomId, user.getEmail(),user.getRole(),user.getSettings());
         return uniqueRandomId;
     }
 
@@ -45,8 +45,8 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
 
     @Override
     public void update(User user) {
-        StringBuilder sql = new StringBuilder("UPDATE user SET email = ?, role = ? WHERE userID = ?");
-        update(sql.toString(), user.getEmail(),user.getRole(), user.getUserID());
+        StringBuilder sql = new StringBuilder("UPDATE user SET email = ?, role = ?, settings = ? WHERE userID = ?");
+        update(sql.toString(), user.getEmail(),user.getRole(), user.getUserID(), user.getSettings());
     }
 
     @Override

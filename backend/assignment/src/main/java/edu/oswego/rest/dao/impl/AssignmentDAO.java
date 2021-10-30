@@ -24,11 +24,15 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
 
     @Override
     public int save(Assignment assignment) {
-        StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, pdfDoc, settings, courseID)");
-        sql.append(" VALUES(?, ?, ?, ?)");
+        StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, pdfDoc, settings, courseID, " +
+                "title, isTeamed, reviewStage, dueDateTime, reviewDateTime)");
+        sql.append(" VALUES(?, ?, ?, ?, ? , ? , ?, ?, ? )");
         int uniqueRandomId = generateUniqueRandomId();
         InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
-         insert(sql.toString(), uniqueRandomId, targetStream,assignment.getSettings(),assignment.getCourseID());
+         insert(sql.toString(), uniqueRandomId, targetStream,
+                 assignment.getSettings(),assignment.getCourseID(),
+                 assignment.getTitle(), assignment.isTeamed(), assignment.isReviewStage(),
+                 assignment.getDueDateTime() , assignment.getReviewDateTime());
         return uniqueRandomId;
     }
 
@@ -48,9 +52,13 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
 
     @Override
     public void update(Assignment assignment) {
-        StringBuilder sql = new StringBuilder("UPDATE assignment SET pdfDoc = ?, settings = ?, courseID = ? WHERE assignmentID = ?");
+        StringBuilder sql = new StringBuilder("UPDATE assignment SET pdfDoc = ?, settings = ?, courseID = ? ," +
+                " title = ?, isTeamed = ?, reviewStage = ? , dueDateTime = ? , " +
+                " reviewDateTime = ? WHERE assignmentID = ?");
         InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
-        update(sql.toString(),targetStream,assignment.getSettings(),assignment.getCourseID(),assignment.getAssignmentID());
+        update(sql.toString(),targetStream,assignment.getSettings(),assignment.getCourseID(),
+                assignment.getTitle(), assignment.isTeamed(), assignment.isReviewStage(),
+                assignment.getDueDateTime(),assignment.getReviewDateTime(),assignment.getAssignmentID());
     }
 
     @Override

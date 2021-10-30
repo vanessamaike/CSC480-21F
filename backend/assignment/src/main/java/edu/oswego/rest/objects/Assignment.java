@@ -1,5 +1,7 @@
 package edu.oswego.rest.objects;
 
+import javax.json.bind.annotation.JsonbDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Assignment {
@@ -8,13 +10,29 @@ public class Assignment {
         private int courseID;
         private byte[] pdfDoc;
         private String settings;
+        private String title;
+        private boolean isTeamed;
+        private boolean reviewStage;
+        @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
+        private LocalDateTime dueDateTime;
+        @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
+        private LocalDateTime reviewDateTime;
 
 
-        public Assignment(int assignmentID, byte[] pdfDoc, String settings,int courseID){
+        public Assignment(int assignmentID, byte[] pdfDoc, String settings,
+                          int courseID, String title, boolean isTeamed,
+                          boolean reviewStage, LocalDateTime dueDateTime,
+                          LocalDateTime reviewDateTime){
                 this.courseID = courseID;
                 this.pdfDoc = pdfDoc;
                 this.settings = settings;
                 this.assignmentID = assignmentID;
+                this.title = title;
+                this.isTeamed = isTeamed;
+                this.reviewStage = reviewStage;
+
+                this.dueDateTime = dueDateTime;
+                this.reviewDateTime = reviewDateTime;
         }
 
         public Assignment(){
@@ -22,6 +40,11 @@ public class Assignment {
                 this.courseID = 0;
                 this.pdfDoc = new byte[]{};
                 this.settings = "";
+                this.title = "";
+                this.isTeamed = false;
+                this.reviewStage = false;
+                this.dueDateTime = LocalDateTime.now();
+                this.reviewDateTime = LocalDateTime.now();
         }
 
         public int getAssignmentID() {
@@ -57,26 +80,47 @@ public class Assignment {
                 return settings;
         }
 
-        public char getSetting(int index){
-                if(index < settings.length()) return settings.charAt(index);
-                else return 0;
+        public String getTitle() {
+                return title;
+        }
+
+        public void setTitle(String title) {
+                this.title = title;
+        }
+
+        public boolean isTeamed() {
+                return isTeamed;
+        }
+
+        public void setTeamed(boolean teamed) {
+                isTeamed = teamed;
+        }
+
+        public boolean isReviewStage() {
+                return reviewStage;
+        }
+
+        public void setReviewStage(boolean reviewStage) {
+                this.reviewStage = reviewStage;
+        }
+
+        public LocalDateTime getDueDateTime() {
+                return dueDateTime;
+        }
+
+        public void setDueDateTime(LocalDateTime dueDateTime) {
+                this.dueDateTime = dueDateTime;
+        }
+
+        public LocalDateTime getReviewDateTime() {
+                return reviewDateTime;
+        }
+
+        public void setReviewDateTime(LocalDateTime reviewDateTime) {
+                this.reviewDateTime = reviewDateTime;
         }
 
 
-        public boolean updateSetting(int index, char setting){
-                String firstHalf = "";
-                if(index-1>0) firstHalf = settings.substring(0, index-1);
-                String lastHalf = "";
-                if(index+1<settings.length()) lastHalf = settings.substring(index+1);
-                settings = firstHalf+setting+lastHalf;
-                return true;
-        }
-
-
-        public boolean updateAllSettings(String settings){
-                this.settings = settings;
-                return true;
-        }
 
 }
 

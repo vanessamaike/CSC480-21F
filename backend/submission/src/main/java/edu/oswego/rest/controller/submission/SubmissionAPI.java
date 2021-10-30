@@ -41,10 +41,9 @@ public class SubmissionAPI {
 
     @GET
     @Path("/{submissionId}")
-    public String getSpecificAssignment(@PathParam("submissionId") String _submissionId){
+    public String getSpecificSubmission(@PathParam("submissionId") String _submissionId){
         //TODO This method needs to ensure authentication
         try {
-
             int submissionId = Integer.parseInt(_submissionId);
             Submission submission = submissionService.findOne(submissionId);
             String res = jsonb.toJson(submission);

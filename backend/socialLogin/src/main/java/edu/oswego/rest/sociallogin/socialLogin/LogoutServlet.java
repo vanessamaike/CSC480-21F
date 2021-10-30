@@ -10,10 +10,11 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.sociallogin;
+package edu.oswego.rest.sociallogin.socialLogin;
 
-import io.openliberty.guides.sociallogin.logout.ILogout;
-import io.openliberty.guides.sociallogin.logout.LogoutHandler;
+
+import edu.oswego.rest.sociallogin.socialLogin.logout.ILogout;
+import edu.oswego.rest.sociallogin.socialLogin.logout.LogoutHandler;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
