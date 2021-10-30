@@ -29,7 +29,9 @@ public class StudentService implements IStudentService {
         return studentDao.findOne(studentId);
     }
 
-
+    public Student findTeamID(int id) {
+        return studentDao.findTeamID(id);
+    }
 
     @Override
     public Student update(Student student) {
