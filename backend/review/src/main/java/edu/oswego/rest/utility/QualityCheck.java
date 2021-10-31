@@ -1,20 +1,19 @@
-package edu.oswego.rest.qualityCheck;
+package edu.oswego.rest.utility;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 
 public class QualityCheck {
-    public ArrayList<Integer> QC(File pdfFile) throws IOException{
-        //File pdfFile = new File(path);
+    public HashMap<Integer, String> QC(byte[] pdfFile, String[] students) throws IOException{
+
         PDDocument document = PDDocument.load(pdfFile);
         //Instantiate PDFTextStrip
         PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -29,7 +28,10 @@ public class QualityCheck {
          * Maybe we want to make this part of admin module? Maybe BLOB in user.
          * Could be a secondary parameter, too.
          */
-        File file = new File("profanity.txt");
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        // Getting resource(File) from class loader
+        File file = new File(classLoader.getResource("profanity.txt").getFile());
+
         Scanner inFile1 = new Scanner(file).useDelimiter(",\\s*");
         BufferedWriter out = new BufferedWriter(new FileWriter(file, true));
         out.close();
@@ -37,12 +39,17 @@ public class QualityCheck {
 
         while (inFile1.hasNext()) {
             token1 = inFile1.next();
-            temps.add(token1);
+            temps.add("\\b" + token1 + "\\b");
         }
         inFile1.close();
+        for(String s : students){
+            temps.add("\\b" + s + "\\b");
+        }
 
+        Collections.addAll(temps, students);
         String[] tempsArray = temps.toArray(new String[0]);
         int start = 0;
+        HashMap<Integer, String> retVal = new HashMap<>();
         ArrayList<Integer> arr = new ArrayList<>();
         for (String s : tempsArray) {
             Pattern r = Pattern.compile(s);
@@ -52,8 +59,9 @@ public class QualityCheck {
             if(m.find(start)){
                 start = m.start();
                 arr.add(m.start());
+                retVal.put(m.start(), s.substring(2,s.length()-2));
             }
         }
-        return arr;
+        return retVal;
     }
 }
