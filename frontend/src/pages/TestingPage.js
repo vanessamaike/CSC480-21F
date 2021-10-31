@@ -1,31 +1,17 @@
-import React, { useState } from "react";
-import CustomizedTables from "../components/CustomizedTables";
-import CSVUploader from "../components/CSVUploader";
-import CustomizedContainer from "../components/CustomizedContainer";
-import CustomizedButtons from "../components/CustomizedButtons";
-import { Grid } from "@mui/material";
-
-function TestingPage() {
-  const [jsonData, setjsonData] = useState([]);
+import React, {useState} from 'react';
+import PDFReader from '../components/PDFhandling/PDFReader';
+import CustomizedButtons from '../components/CustomizedButtons';
+export default function Testing() {
+  const [text, settext] = useState("helloworld")
+  const hanldechangetext = () => {
+    settext("goodbye")
+  }
   return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent:"center", width: "100%" , margin: "20px"}}>
-      <CSVUploader setjsonData={setjsonData}></CSVUploader>
-      <CustomizedTables jsonData={jsonData.slice(0,-1)}></CustomizedTables> 
-       <Grid container spacing={2}>
-        <Grid item>
-          <CustomizedButtons type1 model={"arrow"}>See All </CustomizedButtons>
-        </Grid>
-        <Grid item>
-          <CustomizedButtons type2 model={"add"}>See All  </CustomizedButtons>
-        </Grid>
-        <Grid item>
-          <CustomizedButtons type3 >See All </CustomizedButtons>
-        </Grid>
-      </Grid>
-      
-    </div>
-    //<CustomizedContainer>ff</CustomizedContainer>
-  )
+    <>
+    <div>{text}</div>
+    <button onClick={hanldechangetext}>Click</button>
+    <CustomizedButtons type3 height1>Click</CustomizedButtons>
+    <CustomizedButtons type3 height1>Click herer</CustomizedButtons>
+    </>
+  );
 }
-
-export default TestingPage;

@@ -12,10 +12,13 @@ import Box from "@mui/material/Box";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import bg from '../../images/multi_background_login.jpg'
-
+import { useSelector,useDispatch } from "react-redux";
+import { setUser, selectUser } from "../../features/userSlice";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import { Stack } from "@mui/material";
+import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedButtons from "../../components/CustomizedButtons";
 function RoleButton() {
   return (
     <Box
@@ -45,35 +48,35 @@ function RoleButton() {
   );
 }
 
-
-
 function LoginPage() {
+  const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
+  console.log(user)
+  const userModel = {
+    "userId": 1,
+    "email": "dtran4@oswego.edu",
+    "role": "professor"
+  }
+  const handleLogin = () => {
+    dispatch(setUser(userModel));
+
+  }
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
-    axios.post("http://localhost9080", response);
+    //axios.post("http://localhost9080", response);
+    
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "100vh", backgroundSize: "cover", paddingTop: "150px" }}
-    >    
-
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}> 
       <NavBar></NavBar>
       <div 
         style={{
           display: "flex",
           justifyContent: "space-around",
           flexDirection: "row",
-          margin: "0 12em",
+          margin: "1em 12em",
         }}
       >
         <div
@@ -90,13 +93,13 @@ function LoginPage() {
             variant="h4"
             component="div"
           >
-            Aliquam pulvinar nunc eget consectetur facilisis.
+            A proven system to improve student grade outcomes.
           </Typography>
           <Typography variant="h6" component="div">
-            Nulla ullamcorper efficitur nisl eget aliquet.
+          Distribute assignments and collect peer reviews with accuracy and efficiency while utilizing this effective learning method. 
           </Typography>
         </div>
-        <Card
+        <CustomizedCard
           style={{
             display: "flex",
             flexDirection: "column",
@@ -148,9 +151,10 @@ function LoginPage() {
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
               />
+              <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons>
             </Stack>
           </CardContent>
-        </Card>
+        </CustomizedCard>
       </div>
     </div>
   );

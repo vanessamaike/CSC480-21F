@@ -59,14 +59,15 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
     type1,
     type2,
     type3,
+    courseNames,
     children,
-    setValue,
-    value,
+    setTab,
+    tab,
     ...rest
   } = props;
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTab(newValue);
   };
   // Styles
   const classes = TabStyle();
@@ -80,7 +81,7 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
 
   return (
     <StyledTabs
-      value={value}
+      value={tab}
       variant="fullWidth"
       onChange={handleChange}
       aria-label="styled tabs example"
@@ -88,11 +89,9 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
       ref={ref}
       className={tabClasses}
     >
-      <StyledTab label="Course 1" />
-      <StyledTab label="Course 2" />
-      <StyledTab label="Course 3" />
-      <StyledTab label="Course 4" />
-      
+      {courseNames.map(course => {
+        return <StyledTab label= {course}/>
+      }) }
     </StyledTabs>
   );
 });
