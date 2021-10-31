@@ -51,7 +51,7 @@ function RoleButton() {
 function LoginPage() {
   const dispatch = useDispatch();
 
-  console.log(user)
+  // console.log(user)
   const userModel = {
     "userId": 1,
     "email": "dtran4@oswego.edu",

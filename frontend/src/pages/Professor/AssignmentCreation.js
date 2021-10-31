@@ -31,7 +31,6 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Worker } from '@react-pdf-viewer/core'; // install this library
 import { red } from "@mui/material/colors";
 import { BiFontSize } from "react-icons/bi";
-import { Button } from 'react-bootstrap';
 
 var pdfFilev;
 var pdfFileErrorv;
