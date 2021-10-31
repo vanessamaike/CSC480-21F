@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { BsArrowRightCircle } from "react-icons/bs";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
-import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
   CardContent,
   CardHeader,
+  CircularProgress,
   Grid,
   IconButton,
   ListItem,
@@ -22,6 +21,9 @@ import {
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,8 +43,27 @@ function TabPanel(props) {
 }
 
 function ProfessorCourse({ history }) {
-  const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const getCourses = useSelector(selectCourses);
+  const { courses, loading, error } = getCourses;
+  const getUser = useSelector(selectUser);
+  const { user, isAuthenticated, authLoading } = getUser;
 
+  const [tab, setTab] = React.useState(0);
+  const [courseNames, setCourseNames] = React.useState([]);
+  useEffect(() => {
+    dispatch(getCoursesByUserId());
+  }, [dispatch]);
+  useEffect(() => {
+    var nameLists = [];
+    if (courses != null) {
+      courses.map((course) => {
+        nameLists.push(course.code);
+      });
+      setCourseNames(nameLists);
+    }
+  }, [courses]);
+  console.log(loading)
   return (
     <div
       style={{
@@ -76,86 +97,95 @@ function ProfessorCourse({ history }) {
           >
             <Stack direction="row" spacing={2}>
               <Link
-              to="/coursecreation"
-              style={{ textDecoration: "none", color: "#000" }}
-            >
-              <CustomizedButtons type2 model={"add"}>
-                Create Course
-              </CustomizedButtons>
-            </Link>
-            <Link
-              to="/studentinfoview"
-              style={{ textDecoration: "none", color: "#fff" }}
-            >
-              <CustomizedButtons type1>View Student Info</CustomizedButtons>
-            </Link>
+                to="/coursecreation"
+                style={{ textDecoration: "none", color: "#000" }}
+              >
+                <CustomizedButtons type2 model={"add"}>
+                  Create Course
+                </CustomizedButtons>
+              </Link>
+              <Link
+                to="/studentinfoview"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <CustomizedButtons type1>View Student Info</CustomizedButtons>
+              </Link>
             </Stack>
-            
           </Grid>
         </Grid>
-        <div>
-          <CustomizedTabs
-            type1
-            setValue={setValue}
-            value={value}
-          ></CustomizedTabs>
-          {[1, 2, 3, 4].map((id) => (
-          <TabPanel value={value} index={id - 1}>
-            <CustomizedCard>
-              <CardHeader
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-                title={
-                  <Grid container>
-                    <Grid item xs={7}>
-                      <Link
-                        to="/assignmentcreation"
-                        style={{ textDecoration: "none", color: "#000" }}
-                      >
-                        <CustomizedButtons type3 model={"add"}>
-                          Create New Assignment
-                        </CustomizedButtons>
-                      </Link>
-                    </Grid>
-                    <Grid item xs={5} sx={{display: "flex", justifyContent: "flex-end"}}>
-                    <CustomizedButtons type3 model={"radio1"}>
-                          Filter Assignment
-                        </CustomizedButtons>
-                      
-                    </Grid>
-                  </Grid>
-                }
-              ></CardHeader>
-              <CardContent
-                sx={{
-                  paddingTop: "0",
-                }}
-              >
-                {[1, 2, 3].map((value) => (
-                  <ListItem
-                    button
-                    divider
-                    secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
-                        <BsArrowRightCircle />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText primary="Solution 2" />
-                    <ListItemText
-                      sx={{ display: "flex", justifyContent: "flex-end" }}
-                      primary="Due 10/01/21"
-                    />
-                  </ListItem>
-                ))}
-              </CardContent>
-            </CustomizedCard>
-          </TabPanel>
-          ))}
-        </div>
+        <>
+          {error === true ? (
+            <CircularProgress />
+          ) : (
+            <div>
+              <CustomizedTabs
+                type1
+                setTab={setTab}
+                tab={tab}
+                courseNames={courseNames}
+              ></CustomizedTabs>
+              {courses.map((course, key) => (
+                <TabPanel value={tab} index={key}>
+                  <CustomizedCard>
+                    <CardHeader
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                      title={
+                        <Grid container>
+                          <Grid item xs={7}>
+                            <Link
+                              to="/assignmentcreation"
+                              style={{ textDecoration: "none", color: "#000" }}
+                            >
+                              <CustomizedButtons type3 model={"add"}>
+                                Create New Assignment
+                              </CustomizedButtons>
+                            </Link>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={5}
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
+                          >
+                            <CustomizedButtons type3 model={"radio1"}>
+                              Filter Assignment
+                            </CustomizedButtons>
+                          </Grid>
+                        </Grid>
+                      }
+                    ></CardHeader>
+                    <CardContent
+                      sx={{
+                        paddingTop: "0",
+                      }}
+                    >
+                      {[1, 2, 3].map((value) => (
+                        <ListItem
+                          button
+                          divider
+                          secondaryAction={
+                            <IconButton edge="end" aria-label="delete">
+                              <BsArrowRightCircle />
+                            </IconButton>
+                          }
+                        >
+                          <ListItemText primary="Solution 2" />
+                          <ListItemText
+                            sx={{ display: "flex", justifyContent: "flex-end" }}
+                            primary="Due 10/01/21"
+                          />
+                        </ListItem>
+                      ))}
+                    </CardContent>
+                  </CustomizedCard>
+                </TabPanel>
+              ))}
+            </div>
+          )}
+        </>
       </CustomizedContainer>
     </div>
   );

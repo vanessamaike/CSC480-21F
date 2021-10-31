@@ -23,7 +23,9 @@ import {
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 const demoData = [
   { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
   { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
@@ -52,6 +54,24 @@ function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
   const [items, setItems] = useState(demoData);
+  
+  const dispatch = useDispatch();
+  const getCourses = useSelector(selectCourses);
+  const { courses, loading, error } = getCourses;
+  const getUser = useSelector(selectUser);
+  const { user, isAuthenticated, authLoading } = getUser;
+
+  const [courseNames, setCourseNames] = React.useState([]);
+  useEffect(() => {
+      dispatch(getCoursesByUserId());
+  }, [dispatch]);
+  useEffect(() => {
+    var nameLists = []
+    courses.map((course) => {
+        nameLists.push(course.code)
+    })
+    setCourseNames(nameLists)
+}, [courses]);
   useEffect(() => {
     console.log(filterType);
     const filteredItems = demoData.filter((item) => {
@@ -59,9 +79,6 @@ function CourseResultPage({ history }) {
     });
     setItems(filteredItems);
   }, [filterType]);
-
-  console.log(filterType);
-  console.log(items);
   return (
     <div
       style={{
@@ -89,9 +106,9 @@ function CourseResultPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type3 setValue={setTab} value={tab}></CustomizedTabs>
-          {[1, 2, 3, 4].map((id) => (
-            <TabPanel value={tab} index={id - 1}>
+          <CustomizedTabs type3 setTab={setTab} value={tab} courseNames={courseNames}></CustomizedTabs>
+          {courses.map((course, key) => (
+            <TabPanel value={tab} index={key}>
               <CustomizedCard>
                 <CardHeader
                   sx={{

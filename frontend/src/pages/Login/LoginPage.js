@@ -12,11 +12,13 @@ import Box from "@mui/material/Box";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import bg from '../../images/multi_background_login.jpg'
-
+import { useSelector,useDispatch } from "react-redux";
+import { setUser, selectUser } from "../../features/userSlice";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedButtons from "../../components/CustomizedButtons";
 function RoleButton() {
   return (
     <Box
@@ -46,28 +48,28 @@ function RoleButton() {
   );
 }
 
-
-
 function LoginPage() {
+  const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
+  console.log(user)
+  const userModel = {
+    "userId": 1,
+    "email": "dtran4@oswego.edu",
+    "role": "professor"
+  }
+  const handleLogin = () => {
+    dispatch(setUser(userModel));
+
+  }
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
-    axios.post("http://localhost9080", response);
+    //axios.post("http://localhost9080", response);
+    
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}
-    >    
-
+    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}> 
       <NavBar></NavBar>
       <div 
         style={{
@@ -149,6 +151,7 @@ function LoginPage() {
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
               />
+              <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons>
             </Stack>
           </CardContent>
         </CustomizedCard>

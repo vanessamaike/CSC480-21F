@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -33,7 +33,9 @@ import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 const styles = (theme) => ({
   input: {
     height: 30,
@@ -138,6 +140,23 @@ function StudentInfoViewPage({ history }) {
   const handleCloseStudentModal = () => setIsStudentModalOpened(false);
   const [teamKeys, setTeamKeys] = useState({});
 
+  const dispatch = useDispatch();
+  const getCourses = useSelector(selectCourses);
+  const { courses, loading, error } = getCourses;
+  const getUser = useSelector(selectUser);
+  const { user, isAuthenticated, authLoading } = getUser;
+  
+  const [courseNames, setCourseNames] = React.useState([]);
+  useEffect(() => {
+      dispatch(getCoursesByUserId());
+  }, [dispatch]);
+  useEffect(() => {
+    var nameLists = []
+    courses.map((course) => {
+        nameLists.push(course.code)
+    })
+    setCourseNames(nameLists)
+}, [courses]);
   const handleClick = key => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
@@ -182,9 +201,9 @@ function StudentInfoViewPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type2 setValue={setTab} value={tab}></CustomizedTabs>
-          {[1, 2, 3, 4].map((id) => (
-            <TabPanel value={tab} index={id - 1}>
+          <CustomizedTabs type2 setTab={setTab} value={tab} courseNames={courseNames}></CustomizedTabs>
+          {courses.map((course, key) => (
+            <TabPanel value={tab} index={key}>
               <CustomizedCard>
                 <CardHeader
                   sx={{
@@ -255,7 +274,7 @@ function StudentInfoViewPage({ history }) {
                     </List>
                   ) : (
                     <List component="nav" aria-label="mailbox folders">
-                      {[1, 2, 3].map((key) => {
+                      {course.teams.map((team, key) => {
                         const open = teamKeys[key] || false;
                         return (
                         <div key={key}>
@@ -269,7 +288,7 @@ function StudentInfoViewPage({ history }) {
                           }
                           onClick={handleClick(key)}
                         >
-                          <ListItemText primary="Team Name" />
+                          <ListItemText primary={`Team ` + team.teamId} />
                           <ListItemText
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                             primary="3 team members"
@@ -280,7 +299,7 @@ function StudentInfoViewPage({ history }) {
                       <Collapse in={open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                           <>
-                        {[1, 2, 3].map((value, key) => (
+                        {team.students.map((student, key) => (
                                 <ListItem
                                   key={key}
                                   button
@@ -296,7 +315,7 @@ function StudentInfoViewPage({ history }) {
                                     </IconButton>
                                   }
                                 >
-                                  <ListItemText primary={`Student ${value} Name`} />
+                                  <ListItemText primary={student.firstName} />
                                 </ListItem>
                         ))}</>
                         </List>
