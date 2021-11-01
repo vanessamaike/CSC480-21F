@@ -20,11 +20,15 @@ import bg from "../../images/multi_background_dashboard.jpg";
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
 import AssignmentCreation from "./AssignmentCreation"
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import jsPDF from 'jspdf'
 
 function AssignmentViewer() {
 
-    // Create new plugin instance
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+const pdfGenerate = ()=>{
+    // var doc =new jsPDF{uploaded pdf}
+    // doc.save({name of the pdf})
+}
+
 // console.log(pdfFileErrorv);
     return (
         <div 
@@ -80,9 +84,12 @@ function AssignmentViewer() {
                   <Grid item xs={12}>
                     </Grid>
                     <Grid item xs={3}>
-                        <CustomizedButtons type2 model={"download"}> Download PDF</CustomizedButtons>
+                        <CustomizedButtons type2 onClick={pdfGenerate} model={"download"}> Download PDF</CustomizedButtons>
                     </Grid>
                 </Typography>
+                        </Grid>
+                        <Grid>
+                            {/* {pdfHandling} */}
                         </Grid>
                 </div>
         </CustomizedContainer>
