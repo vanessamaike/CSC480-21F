@@ -285,16 +285,6 @@ function AssignmentCreation() {
                                                 />} label="Publish Now" />
                                             </RadioGroup>
                                         </FormControl>
-                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
-                                        <Typography
-                                            style={{
-                                                display: "flex",
-                                                fontWeight: "600",
-                                                marginLeft: "10px",
-                                                alignItems: "center"
-                                            }}
-                                            variant="subtitle1"
-                                            component="div"> Pre-Schedule</Typography>
                                     </Box>
                                 </Stack>
                             }
