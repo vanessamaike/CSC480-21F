@@ -39,7 +39,7 @@ function App() {
         <PrivateRoute exact path="/testing" component={TestingPage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/course" component={ProfessorCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/coursecreation" component={AddCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/assignmentcreation" component={AssignmentCreation} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <Route exact path="/assignmentcreation" component={AssignmentCreation} isAuthenticated={isAuthenticated}></Route>
         <Route exact path="/assignmentviewer" component={AssignmentViewer} ></Route>
         <PrivateRoute exact path="/studentinfoview" component={StudentInfoViewPage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/courseresult" component={CourseResultPage} isAuthenticated={isAuthenticated}></PrivateRoute>

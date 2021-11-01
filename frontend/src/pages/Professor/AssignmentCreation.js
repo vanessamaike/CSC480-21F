@@ -31,62 +31,58 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { Worker } from '@react-pdf-viewer/core'; // install this library
 import { red } from "@mui/material/colors";
 import { BiFontSize } from "react-icons/bi";
-
-var pdfFilev;
-var pdfFileErrorv;
-
+import { Document, Page, pdfjs } from 'react-pdf';
+import PDFControlBar from '../../components/PDFhandling/PDFControlBar';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function AssignmentCreation() {
     const [solutionDueDate, setSolutionDueDate] = useState('');
     const [prDueDate, setPRDueDate] = useState('');
-
-    // Create new plugin instance
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
   
-  // for onchange event
-  const [pdfFile, setPdfFile]=useState(null);
-  const [pdfFileError, setPdfFileError]=useState('');
-
-
-  // for submit event
-  const [viewPdf, setViewPdf]=useState(null);
-
-  // onchange event
-  const fileType=['application/pdf'];
-  const handlePdfFileChange=(e)=>{
-    let selectedFile=e.target.files[0];
-    if(selectedFile){
-      if(selectedFile&&fileType.includes(selectedFile.type)){
-        let reader = new FileReader();
-            reader.readAsDataURL(selectedFile);
-            reader.onloadend = (e) =>{
-              setPdfFile(e.target.result);
-              setPdfFileError('');
-            }
+    const [scale, setScale] = useState(1.0);
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    // for onchange event
+    const [pdfFile, setPdfFile]=useState(null);
+    const [pdfFileError, setPdfFileError]=useState('');
+  
+    // for submit event
+    const [viewPdf, setViewPdf]=useState(null);
+    function onDocumentLoadSuccess({ numPages }) {
+      setNumPages(numPages);
+      setIsLoading(false);
+    }
+    const fileType=['application/pdf'];
+    const handlePdfFileChange=(e)=>{
+      let selectedFile=e.target.files[0];
+      if(selectedFile){
+        if(selectedFile&&fileType.includes(selectedFile.type)){
+          let reader = new FileReader();
+              reader.readAsDataURL(selectedFile);
+              reader.onloadend = (e) =>{
+                setPdfFile(e.target.result);
+                setPdfFileError('');
+              }
+        }
+        else{
+          setPdfFile(null);
+          setPdfFileError('Please select valid pdf file');
+        }
       }
       else{
-        setPdfFile(null);
-        setPdfFileError('Please select valid pdf file');
+        console.log('select your file');
       }
     }
-    else{
-      console.log('select your file');
+    const handlePdfFileSubmit=(e)=>{
+      e.preventDefault();
+      if(pdfFile!==null){
+        setViewPdf(pdfFile);
+      }
+      else{
+        setViewPdf(null);
+      }
     }
-  }
-
-  // form submit
-  const handlePdfFileSubmit=(e)=>{
-    e.preventDefault();
-    if(pdfFile!==null){
-      setViewPdf(pdfFile);
-    }
-    else{
-      setViewPdf(null);
-    }
-  }
-pdfFilev = pdfFile;
-pdfFileErrorv= pdfFileError;
-console.log(pdfFileErrorv);
 
     // const handleChange = (event, newValue) => {
     //     setValue(newValue);
@@ -235,7 +231,6 @@ console.log(pdfFileErrorv);
                                                             fontWeight: 600
                                                         }}>{pdfFileError}</div>}
                                         <CustomizedButtons type="submit" type1 onChange={handlePdfFileChange} model={"type1"}>Upload </CustomizedButtons>
-                                        {/* <button type="submit" class="btn btn-dark">Upload</button> */}
                                         </form>
                                     </Box>
                                 </Stack>
