@@ -1,8 +1,14 @@
 package edu.oswego.rest.controller.submission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.oswego.rest.objects.Submission;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import edu.oswego.util.objects.Submission;
+
+
 import edu.oswego.rest.utility.QualityCheck;
+
 import edu.oswego.rest.service.ISubmissionService;
 import edu.oswego.rest.service.impl.SubmissionService;
 // Json-B

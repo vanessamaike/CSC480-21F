@@ -1,6 +1,6 @@
 package edu.oswego.rest.mapper;
 
-import edu.oswego.rest.objects.User;
+import edu.oswego.util.objects.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

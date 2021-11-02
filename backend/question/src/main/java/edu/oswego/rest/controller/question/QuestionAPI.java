@@ -1,7 +1,7 @@
 package edu.oswego.rest.controller.question;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.oswego.rest.objects.Question;
+import edu.oswego.util.objects.Question;
 import edu.oswego.rest.service.IQuestionService;
 import edu.oswego.rest.service.impl.QuestionService;
 

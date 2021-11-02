@@ -2,7 +2,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.ICourseDAO;
 import edu.oswego.rest.dao.impl.CourseDAO;
-import edu.oswego.rest.objects.Course;
+import edu.oswego.util.objects.Course;
 import edu.oswego.rest.service.ICourseService;
 
 import java.util.List;

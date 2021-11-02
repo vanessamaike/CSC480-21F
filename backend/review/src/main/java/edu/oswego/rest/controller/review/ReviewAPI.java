@@ -1,7 +1,9 @@
 package edu.oswego.rest.controller.review;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.oswego.rest.objects.Review;
+
+import com.google.gson.Gson;
+import edu.oswego.util.objects.Review;
 
 import edu.oswego.rest.service.IReviewService;
 import edu.oswego.rest.service.impl.ReviewService;

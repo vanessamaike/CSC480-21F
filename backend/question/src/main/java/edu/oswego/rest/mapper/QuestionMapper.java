@@ -1,6 +1,6 @@
 package edu.oswego.rest.mapper;
 
-import edu.oswego.rest.objects.Question;
+import edu.oswego.util.objects.Question;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

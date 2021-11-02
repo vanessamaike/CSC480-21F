@@ -3,7 +3,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.IStudentDAO;
 import edu.oswego.rest.dao.impl.StudentDAO;
-import edu.oswego.rest.objects.Student;
+import edu.oswego.util.objects.Student;
 import edu.oswego.rest.service.IStudentService;
 
 import java.util.List;
@@ -29,7 +29,9 @@ public class StudentService implements IStudentService {
         return studentDao.findOne(studentId);
     }
 
-
+    public Student findTeamID(int id) {
+        return studentDao.findTeamID(id);
+    }
 
     @Override
     public Student update(Student student) {

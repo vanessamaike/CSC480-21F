@@ -3,7 +3,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IStudentDAO;
 import edu.oswego.rest.mapper.StudentMapper;
-import edu.oswego.rest.objects.Student;
+import edu.oswego.util.objects.Student;
 
 import java.util.List;
 
@@ -28,6 +28,13 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     public Student findOne(String studentId) {
         String sql = "SELECT * FROM student WHERE studentID = ?";
         List<Student> student = query(sql, new StudentMapper(), studentId);
+        return student.isEmpty() ? null : student.get(0);
+    }
+
+    @Override
+    public Student findTeamID(int id) {
+        String sql = "SELECT * FROM student WHERE teamID = ?";
+        List<Student> student = query(sql, new StudentMapper(), id);
         return student.isEmpty() ? null : student.get(0);
     }
 

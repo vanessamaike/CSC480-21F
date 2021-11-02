@@ -4,7 +4,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IUserDAO;
 import edu.oswego.rest.mapper.UserMapper;
-import edu.oswego.rest.objects.User;
+import edu.oswego.util.objects.User;
 
 import java.util.List;
 

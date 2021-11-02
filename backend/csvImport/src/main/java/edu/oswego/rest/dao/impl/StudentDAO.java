@@ -3,7 +3,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IStudentDAO;
 import edu.oswego.rest.mapper.StudentMapper;
-import edu.oswego.rest.objects.Student;
+import edu.oswego.util.objects.Student;
 
 import java.util.List;
 

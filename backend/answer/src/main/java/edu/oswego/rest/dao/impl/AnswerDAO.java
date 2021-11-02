@@ -3,7 +3,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IAnswerDAO;
 import edu.oswego.rest.mapper.AnswerMapper;
-import edu.oswego.rest.objects.Answer;
+import edu.oswego.util.objects.Answer;
 import edu.oswego.rest.dao.impl.AbstractDAO;
 
 import java.util.List;

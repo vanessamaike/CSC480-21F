@@ -1,6 +1,6 @@
 package edu.oswego.rest.dao;
 
-import edu.oswego.rest.objects.Student;
+import edu.oswego.util.objects.Student;
 
 import java.util.List;
 
@@ -12,4 +12,5 @@ public interface IStudentDAO {
     void delete(Student student);
     void deleteAll();
     Student findUserID(int userId);
+    Student findTeamID(int id);
 }

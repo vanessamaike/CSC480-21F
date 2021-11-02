@@ -4,7 +4,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.mapper.SubmissionMapper;
-import edu.oswego.rest.objects.Submission;
+import edu.oswego.util.objects.Submission;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

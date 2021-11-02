@@ -1,6 +1,6 @@
 package edu.oswego.rest.dao;
 
-import edu.oswego.rest.objects.Review;
+import edu.oswego.util.objects.Review;
 
 import java.util.List;
 

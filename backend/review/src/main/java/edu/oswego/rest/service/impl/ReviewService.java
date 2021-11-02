@@ -3,7 +3,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.IReviewDAO;
 import edu.oswego.rest.dao.impl.ReviewDAO;
-import edu.oswego.rest.objects.Review;
+import edu.oswego.util.objects.Review;
 import edu.oswego.rest.service.IReviewService;
 
 import java.util.List;
