@@ -7,7 +7,7 @@ import edu.oswego.util.objects.Assignment;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
-
+import edu.oswego.util.dao.impl.AbstractDAO;
 public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmentDAO {
 
     @Override

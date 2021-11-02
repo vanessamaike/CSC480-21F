@@ -1,4 +1,4 @@
-package edu.oswego.rest.util.objects;
+package edu.oswego.util.objects;
 
 public class Question {
     private int questionID;

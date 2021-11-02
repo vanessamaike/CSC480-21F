@@ -5,7 +5,7 @@ import edu.oswego.util.objects.Review;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-
+import edu.oswego.util.mapper.RowMapper;
 public class ReviewMapper implements RowMapper<Review>{
     @Override
     public Review mapRow(ResultSet rs) {

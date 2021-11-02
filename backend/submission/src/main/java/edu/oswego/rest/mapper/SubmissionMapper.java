@@ -6,7 +6,7 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-
+import edu.oswego.util.mapper.RowMapper;
 
 public class SubmissionMapper implements RowMapper<Submission>{
     @Override

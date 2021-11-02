@@ -4,7 +4,7 @@ package edu.oswego.rest.dao.impl;
 import edu.oswego.rest.dao.IStudentDAO;
 import edu.oswego.rest.mapper.StudentMapper;
 import edu.oswego.util.objects.Student;
-
+import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {

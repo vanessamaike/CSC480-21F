@@ -4,7 +4,7 @@ package edu.oswego.rest.dao.impl;
 import edu.oswego.rest.dao.ICourseDAO;
 import edu.oswego.rest.mapper.CourseMapper;
 import edu.oswego.util.objects.Course;
-
+import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class CourseDAO extends AbstractDAO<Course> implements ICourseDAO {

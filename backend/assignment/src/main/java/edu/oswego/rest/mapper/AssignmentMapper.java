@@ -5,7 +5,7 @@ import edu.oswego.util.objects.Assignment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-
+import edu.oswego.util.mapper.RowMapper;
 public class AssignmentMapper implements RowMapper<Assignment>{
     @Override
     public Assignment mapRow(ResultSet rs) {

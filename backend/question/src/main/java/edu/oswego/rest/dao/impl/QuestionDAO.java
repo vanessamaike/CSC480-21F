@@ -3,7 +3,7 @@ package edu.oswego.rest.dao.impl;
 import edu.oswego.rest.dao.IQuestionDAO;
 import edu.oswego.rest.mapper.QuestionMapper;
 import edu.oswego.util.objects.Question;
-
+import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class QuestionDAO extends AbstractDAO<Question> implements IQuestionDAO {

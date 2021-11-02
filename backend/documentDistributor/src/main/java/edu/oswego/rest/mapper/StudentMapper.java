@@ -4,7 +4,7 @@ import edu.oswego.util.objects.Student;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import edu.oswego.util.mapper.RowMapper;
 public class StudentMapper implements RowMapper<Student>{
     @Override
     public Student mapRow(ResultSet rs) {

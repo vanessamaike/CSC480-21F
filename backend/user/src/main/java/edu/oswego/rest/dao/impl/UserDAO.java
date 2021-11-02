@@ -5,7 +5,7 @@ package edu.oswego.rest.dao.impl;
 import edu.oswego.rest.dao.IUserDAO;
 import edu.oswego.rest.mapper.UserMapper;
 import edu.oswego.util.objects.User;
-
+import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> implements IUserDAO {

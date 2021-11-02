@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-
+import edu.oswego.util.mapper.RowMapper;
 public class CourseMapper implements RowMapper<Course>{
     @Override
     public Course mapRow(ResultSet rs) {
