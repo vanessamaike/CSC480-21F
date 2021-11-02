@@ -1,6 +1,6 @@
 package edu.oswego.rest.mapper;
 
-import edu.oswego.rest.objects.Submission;
+import edu.oswego.util.objects.Submission;
 
 import java.io.*;
 import java.sql.ResultSet;

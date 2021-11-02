@@ -1,4 +1,4 @@
-package edu.oswego.rest.objects;
+package edu.oswego.util.objects;
 
 import java.time.LocalDate;
 import java.util.Date;

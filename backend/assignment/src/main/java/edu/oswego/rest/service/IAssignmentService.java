@@ -1,6 +1,6 @@
 package edu.oswego.rest.service;
 
-import edu.oswego.rest.objects.Assignment;
+import edu.oswego.util.objects.Assignment;
 
 import java.util.List;
 

@@ -1,3 +1,4 @@
+package edu.oswego.util.objects;
 import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 

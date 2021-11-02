@@ -1,6 +1,6 @@
 package edu.oswego.rest.dao;
 
-import edu.oswego.rest.objects.Course;
+import edu.oswego.util.objects.Course;
 
 import java.util.List;
 

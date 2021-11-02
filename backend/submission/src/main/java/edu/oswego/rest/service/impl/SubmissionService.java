@@ -4,7 +4,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.dao.impl.SubmissionDAO;
-import edu.oswego.rest.objects.Submission;
+import edu.oswego.util.objects.Submission;
 import edu.oswego.rest.service.ISubmissionService;
 
 import java.util.List;

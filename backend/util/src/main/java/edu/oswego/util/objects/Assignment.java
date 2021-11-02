@@ -1,4 +1,4 @@
-package edu.oswego.rest.objects;
+package edu.oswego.util.objects;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import java.time.LocalDateTime;

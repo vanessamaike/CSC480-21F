@@ -2,7 +2,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.IAssignmentDAO;
 import edu.oswego.rest.dao.impl.AssignmentDAO;
-import edu.oswego.rest.objects.Assignment;
+import edu.oswego.util.objects.Assignment;
 import edu.oswego.rest.service.IAssignmentService;
 
 import java.util.List;

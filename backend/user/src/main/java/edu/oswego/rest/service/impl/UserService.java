@@ -3,7 +3,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.IUserDAO;
 import edu.oswego.rest.dao.impl.UserDAO;
-import edu.oswego.rest.objects.User;
+import edu.oswego.util.objects.User;
 import edu.oswego.rest.service.IUserService;
 
 import java.util.List;

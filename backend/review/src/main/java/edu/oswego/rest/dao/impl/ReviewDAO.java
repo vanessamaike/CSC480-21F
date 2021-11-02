@@ -4,7 +4,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IReviewDAO;
 import edu.oswego.rest.mapper.ReviewMapper;
-import edu.oswego.rest.objects.Review;
+import edu.oswego.util.objects.Review;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

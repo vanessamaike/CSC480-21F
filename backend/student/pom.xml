@@ -51,6 +51,11 @@
             <artifactId>tink</artifactId>
             <version>1.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>edu.oswego</groupId>
+            <artifactId>cpr-util</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

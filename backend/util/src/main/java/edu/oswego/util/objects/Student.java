@@ -1,4 +1,4 @@
-package edu.oswego.rest.objects;
+package edu.oswego.util.objects;
 
 public class Student{
     private String studentID;

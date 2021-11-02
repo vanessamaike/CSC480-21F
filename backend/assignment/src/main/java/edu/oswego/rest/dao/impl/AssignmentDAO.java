@@ -2,7 +2,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IAssignmentDAO;
 import edu.oswego.rest.mapper.AssignmentMapper;
-import edu.oswego.rest.objects.Assignment;
+import edu.oswego.util.objects.Assignment;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

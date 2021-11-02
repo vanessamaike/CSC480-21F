@@ -3,7 +3,7 @@ package edu.oswego.rest.controller.course;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.oswego.rest.objects.Course;
+import edu.oswego.util.objects.Course;
 import edu.oswego.rest.service.ICourseService;
 import edu.oswego.rest.service.impl.CourseService;
 

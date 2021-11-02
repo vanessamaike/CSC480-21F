@@ -2,7 +2,7 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.IQuestionDAO;
 import edu.oswego.rest.mapper.QuestionMapper;
-import edu.oswego.rest.objects.Question;
+import edu.oswego.util.objects.Question;
 
 import java.util.List;
 

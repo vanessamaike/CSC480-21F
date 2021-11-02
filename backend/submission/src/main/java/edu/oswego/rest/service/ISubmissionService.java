@@ -1,6 +1,6 @@
 package edu.oswego.rest.service;
 
-import edu.oswego.rest.objects.Submission;
+import edu.oswego.util.objects.Submission;
 
 import java.util.List;
 

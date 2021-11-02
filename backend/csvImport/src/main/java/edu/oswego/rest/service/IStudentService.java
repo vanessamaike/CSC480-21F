@@ -1,6 +1,6 @@
 package edu.oswego.rest.service;
 
-import edu.oswego.rest.objects.Student;
+import edu.oswego.util.objects.Student;
 
 import java.util.List;
 
