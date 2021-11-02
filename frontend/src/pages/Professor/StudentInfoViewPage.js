@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel, MdTurnedInNot } from "react-icons/md";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -27,6 +27,7 @@ import {
   Modal,
   Fade,
   Collapse,
+  CircularProgress,
 } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CustomizedCard from "../../components/CustomizedCard";
@@ -36,6 +37,7 @@ import { withStyles } from "@mui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+import Loading from "../../components/Loading";
 const styles = (theme) => ({
   input: {
     height: 30,
@@ -142,21 +144,41 @@ function StudentInfoViewPage({ history }) {
 
   const dispatch = useDispatch();
   const getCourses = useSelector(selectCourses);
-  const { courses, loading, error } = getCourses;
+  const { courses, error } = getCourses;
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
-  
+  const [loading, setLoading] = React.useState(true);
   const [courseNames, setCourseNames] = React.useState([]);
+  const [students, setStudents] = React.useState([]);
   useEffect(() => {
       dispatch(getCoursesByUserId());
+      setLoading(true)
   }, [dispatch]);
   useEffect(() => {
-    var nameLists = []
-    courses.map((course) => {
-        nameLists.push(course.code)
-    })
-    setCourseNames(nameLists)
+    var courseNameLists = []
+    var studentLists = []
+    if(courses){
+      courses.map((course) => {
+        courseNameLists.push(course.code)
+        var studentListsByCourse = []
+        course.teams.map((team) => {
+          team.students.map((student) => {
+            studentListsByCourse.push(student)
+          })
+        })
+        studentLists.push(studentListsByCourse)
+      })
+      setCourseNames(courseNameLists)
+      setStudents(studentLists)
+      if(students.length != 0){
+        setLoading(false)
+        console.log(loading)
+      }
+    }
+    
 }, [courses]);
+  console.log(students)
+  console.log(loading)
   const handleClick = key => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
@@ -172,6 +194,11 @@ function StudentInfoViewPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <>
+          {(error === true || loading === true) ? (
+            <Loading />
+          ) : (
+            <>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
             <Typography
@@ -253,7 +280,7 @@ function StudentInfoViewPage({ history }) {
                 >
                   {viewType === "Student List" ? (
                     <List component="nav" aria-label="mailbox folders">
-                      {[1, 2, 3].map((value) => (
+                      {students[key].map((student) => (
                         <ListItem
                           button
                           divider
@@ -264,7 +291,7 @@ function StudentInfoViewPage({ history }) {
                           }
                           
                         >
-                          <ListItemText primary="Student Name" />
+                          <ListItemText primary={student.firstName}/>
                           <ListItemText
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                             primary="Added via CSV upload 08/13/21"
@@ -329,6 +356,9 @@ function StudentInfoViewPage({ history }) {
             </TabPanel>
           ))}
         </div>
+        </>
+          )}
+        </>
       </CustomizedContainer>
       <CustomizedModal
         modalType={"course"}

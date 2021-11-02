@@ -3,6 +3,7 @@ import './App.css';
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import PrivateRoute from './routing/PrivateRoute'
+import PublicRoute from './routing/PublicRoute'
 //Custom Pages
 import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
@@ -26,6 +27,7 @@ import { selectUser } from "./features/userSlice";
 function App() {
   const getUser = useSelector(selectUser)
   const {user, isAuthenticated} = getUser
+  console.log(isAuthenticated)
   return (
   <>
     { isMobile == true ? (
@@ -33,6 +35,7 @@ function App() {
     ) : (
       <Router>
       <Switch>
+        <PublicRoute exact path="/" isAuthenticated={isAuthenticated}></PublicRoute>
         <Route exact path="/login" component={LoginPage}></Route>
         <PrivateRoute exact path="/professorhome" component={ProfessorHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/testing" component={TestingPage} isAuthenticated={isAuthenticated}></PrivateRoute>
