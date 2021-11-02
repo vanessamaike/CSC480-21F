@@ -1,10 +1,14 @@
 package edu.oswego.rest.controller.review;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.google.gson.Gson;
 import edu.oswego.util.objects.Review;
+
 import edu.oswego.rest.service.IReviewService;
 import edu.oswego.rest.service.impl.ReviewService;
+import edu.oswego.rest.utility.QualityCheck;
+import edu.oswego.rest.utility.SD;
 
 // Json-B
 import javax.json.bind.Jsonb;
@@ -12,7 +16,11 @@ import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Path("/review")
 public class ReviewAPI {
@@ -58,8 +66,56 @@ public class ReviewAPI {
     @POST
     public String postReview(String payload) throws JsonProcessingException {
         Review review = jsonb.fromJson(payload, Review.class);
-        review = reviewService.save(review);
-        String res = jsonb.toJson(review);
+        String res = "";
+        String[] students =  new String[] { "Adam", "Boo", "Chris", "Dat", "Erik" };
+        ClassLoader classLoader = this.getClass().getClassLoader();
+
+        /*============= Use this if you want to use local pdf File ============*/
+        //File pdfFile = new File(classLoader.getResource("Br00Mi99.pdf").getFile());
+        //byte[] bytes = Files.readAllBytes(pdfFile.toPath());
+
+        /* =================== comment this if you want to use local pdf file ============*/
+        byte[] bytes = review.getPdfDoc();
+
+        /*======================== SD =================================*/
+
+        File f0 = new File(classLoader.getResource("total0.pdf").getFile());
+        File f1 = new File(classLoader.getResource("total1.pdf").getFile());
+        File f2 = new File(classLoader.getResource("total2.pdf").getFile());
+        File f3 = new File(classLoader.getResource("total3.pdf").getFile());
+        File f4 = new File(classLoader.getResource("total4.pdf").getFile());
+
+        try {
+            SD sCheck = new SD(new File[]{f0,f1,f2,f3,f4}, "TOTAL", true);
+            System.out.println(sCheck);
+            double score = sCheck.getOutlierScore(f4, 1.99);
+            System.out.println("Outlier score: "+score);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*================ Quality Check ==================*/
+        try {
+            QualityCheck qc = new QualityCheck();
+
+            HashMap<Integer, String> violations = qc.QC(bytes, students);
+            if ( violations.size() > 0) {
+                System.out.println("This PDF file is not accepted because it includes some profanity words : ");
+                res = "This PDF file is not accepted because it includes some profanity words: ";
+                for (Map.Entry value : violations.entrySet()){
+                    System.out.println("Key: "+value.getKey() + " & Value: " + value.getValue());
+
+                }
+            }
+            else{
+                System.out.println("This PDF file is accepted to store to database ");
+                review = reviewService.save(review);
+                res = jsonb.toJson(review);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 
