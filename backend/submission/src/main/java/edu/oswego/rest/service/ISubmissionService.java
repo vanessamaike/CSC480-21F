@@ -1,5 +1,6 @@
 package edu.oswego.rest.service;
 
+import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public interface ISubmissionService {
     Submission save(Submission submission);
     List<Submission> findAll();
+    List<Student> findAllStudents();
     Submission findOne(int submissionId);
     Submission update(Submission submission);
     Submission delete(Submission submission);

@@ -4,11 +4,13 @@ package edu.oswego.rest.dao.impl;
 
 import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.mapper.SubmissionMapper;
+import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 import edu.oswego.util.dao.impl.AbstractDAO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import edu.oswego.util.mapper.StudentMapper;
 
 public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissionDAO {
 
@@ -37,6 +39,13 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
         insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
                 ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen());
         return uniqueRandomId;
+    }
+
+    @Override
+    public List<Student> findAllStudents() {
+        String sql = "SELECT * FROM student";
+        List<Student> student = query(sql, new StudentMapper());
+        return student.isEmpty() ? null : student;
     }
 
     @Override

@@ -4,6 +4,7 @@ package edu.oswego.rest.service.impl;
 
 import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.dao.impl.SubmissionDAO;
+import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 import edu.oswego.rest.service.ISubmissionService;
 
@@ -25,6 +26,12 @@ public class SubmissionService implements ISubmissionService {
     public List<Submission> findAll() {
         return submissionDao.findAll();
     }
+
+    @Override
+    public List<Student> findAllStudents() {
+        return submissionDao.findAllStudents();
+    }
+
 
     @Override
     public Submission findOne(int submissionId) {

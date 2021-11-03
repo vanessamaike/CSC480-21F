@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 
 
@@ -17,7 +18,9 @@ import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,20 +69,33 @@ public class SubmissionAPI {
     public String postSubmission(String payload) throws IOException {
         Submission submission = jsonb.fromJson(payload, Submission.class);
         String res = "";
-        String[] students =  new String[] { "Adam", "Boo", "Chris", "Dat", "Erik" };
+        List<Student> allStudents = submissionService.findAllStudents();
+        String[] students = new String[allStudents.size()*2];
+
+        int i = 0;
+
+        for(Student student : allStudents){
+            students[i] = student.getFirstName();
+            students[i + 1 ] = student.getLastName();
+            i = i + 2;
+        }
+
         ClassLoader classLoader = this.getClass().getClassLoader();
+
         /*======= Use this if you want to use local pdf File ===========*/
-        //File pdfFile = new File(classLoader.getResource("Br00Mi99.pdf").getFile());
-        //byte[] bytes = Files.readAllBytes(pdfFile.toPath());
+        File pdfFile = new File(classLoader.getResource("a.pdf").getFile());
+        byte[] bytes = Files.readAllBytes(pdfFile.toPath());
 
         /*========= comment this if you want to use local pdf file =======*/
-        byte[] bytes = submission.getPdfDoc();
+        //byte[] bytes = submission.getPdfDoc();
 
         try {
             QualityCheck qc = new QualityCheck();
 
             HashMap<Integer, String> violations = qc.QC(bytes, students);
             if ( violations.size() > 0) {
+                //TODO edit the response if the pdf is not accepted
+
                 System.out.println("This PDF file is not accepted because it includes some profanity words : ");
                 res = "This PDF file is not accepted because it includes some profanity words: ";
                 for (Map.Entry value : violations.entrySet()){

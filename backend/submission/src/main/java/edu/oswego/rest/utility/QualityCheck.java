@@ -46,7 +46,7 @@ public class QualityCheck {
             temps.add("\\b" + s + "\\b");
         }
 
-        Collections.addAll(temps, students);
+        //Collections.addAll(temps, students);
         String[] tempsArray = temps.toArray(new String[0]);
         int start = 0;
         HashMap<Integer, String> retVal = new HashMap<>();

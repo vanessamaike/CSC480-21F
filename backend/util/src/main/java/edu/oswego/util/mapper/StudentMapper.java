@@ -1,4 +1,4 @@
-package edu.oswego.rest.mapper;
+package edu.oswego.util.mapper;
 
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.mapper.RowMapper;
