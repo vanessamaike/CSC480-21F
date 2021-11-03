@@ -17,12 +17,23 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import NavBar from "../../components/NavBar/NavBar";
 import bg from "../../images/multi_background_dashboard.jpg";
-import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
-import AssignmentCreation from "./AssignmentCreation"
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import jsPDF from 'jspdf'
-
+import PDFControlBar from '../../components/PDFhandling/PDFControlBar';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { useSelector } from "react-redux";
+import { selectPdf } from "../../features/pdfSlice";
+import viewPdf from "../../pdfsample/sample.pdf"
 function AssignmentViewer() {
+    const getPdf = useSelector(selectPdf);
+    const [scale, setScale] = useState(1.0);
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    console.log(viewPdf)
+    console.log(isLoading)
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+        setIsLoading(false);
+      }
 
 const pdfGenerate = ()=>{
     // var doc =new jsPDF{uploaded pdf}
@@ -66,16 +77,16 @@ const pdfGenerate = ()=>{
                     height: "550px",
                     backgroundColor: "white",
                     overflowY: "auto",
-                    display: "flex",
                     padding: "10px",
-                    // alignItems: "center"
                 }}>
+                    
                     <Grid item xs={15}>
                 <Typography
                   style={{
                     display: "flex",
                     textAlign: "center",
                     fontWeight: "600",
+                    marginBottom: "10px",
                   }}
                   variant="h6"
                   component="div"
@@ -88,9 +99,30 @@ const pdfGenerate = ()=>{
                     </Grid>
                 </Typography>
                         </Grid>
-                        <Grid>
-                            {/* {pdfHandling} */}
-                        </Grid>
+                    
+                        <Container style={{
+                            display: "flex",
+                            padding: "10px",
+
+                        }}>
+                        {viewPdf&&<>
+                                            <PDFControlBar
+                                            scale={scale}
+                                            setScale={setScale}
+                                            numPages={numPages}
+                                            pageNumber={pageNumber}
+                                            setPageNumber={setPageNumber}
+                                            file={viewPdf}
+                                            />
+                                            <Document
+                                            file={viewPdf}
+                                            onLoadSuccess={onDocumentLoadSuccess}
+                                            >
+                                            <Page pageNumber={pageNumber} scale={scale} />
+                                            </Document>
+                                        </>}
+                        </Container>
+                        
                 </div>
         </CustomizedContainer>
             

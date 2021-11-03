@@ -20,39 +20,30 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
-// Import the main component
-import { Viewer } from '@react-pdf-viewer/core'; // install this library
-// Plugins
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'; // install this library
 // Import the styles
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 // Worker
-import { Worker } from '@react-pdf-viewer/core'; // install this library
 import { red } from "@mui/material/colors";
-import { BiFontSize } from "react-icons/bi";
 import { Document, Page, pdfjs } from 'react-pdf';
-import PDFControlBar from '../../components/PDFhandling/PDFControlBar';
+import { useSelector, useDispatch } from "react-redux";
+import {selectPdf} from '../../features/pdfSlice'
+import { setPdf } from "../../features/pdfSlice";
+import CustomizedContainer from "../../components/CustomizedContainer";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function AssignmentCreation() {
     const [solutionDueDate, setSolutionDueDate] = useState('');
     const [prDueDate, setPRDueDate] = useState('');
-  
-    const [scale, setScale] = useState(1.0);
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
     // for onchange event
     const [pdfFile, setPdfFile]=useState(null);
     const [pdfFileError, setPdfFileError]=useState('');
-  
+    const getPdf = useSelector(selectPdf)
+    const {viewPdf} =getPdf
+    console.log(getPdf)
     // for submit event
-    const [viewPdf, setViewPdf]=useState(null);
-    function onDocumentLoadSuccess({ numPages }) {
-      setNumPages(numPages);
-      setIsLoading(false);
-    }
+  
     const fileType=['application/pdf'];
     const handlePdfFileChange=(e)=>{
       let selectedFile=e.target.files[0];
@@ -77,10 +68,12 @@ function AssignmentCreation() {
     const handlePdfFileSubmit=(e)=>{
       e.preventDefault();
       if(pdfFile!==null){
-        setViewPdf(pdfFile);
+
+        dispatch(setPdf(pdfFile))
       }
       else{
-        setViewPdf(null);
+
+        dispatch(setPdf(null))
       }
     }
 
@@ -97,13 +90,7 @@ function AssignmentCreation() {
             }}
         >
             <NavBar fixed ></NavBar>
-            <Container
-                maxWidth="lg"
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    // justifyContent: "space-around",
-                }}
+            <CustomizedContainer
             >
                 <Grid
                     container
@@ -232,6 +219,7 @@ function AssignmentCreation() {
                                                         }}>{pdfFileError}</div>}
                                         <CustomizedButtons type="submit" type1 onChange={handlePdfFileChange} model={"type1"}>Upload </CustomizedButtons>
                                         </form>
+                                        
                                     </Box>
                                 </Stack>
                             }
@@ -296,8 +284,7 @@ function AssignmentCreation() {
                     <Box sx={{ p: 2 }}></Box>
                     <CustomizedButtons type1 model={"type2"}> Publish  </CustomizedButtons> </Grid>
 
-
-            </Container>
+            </CustomizedContainer>
         </div>
     )
 }
