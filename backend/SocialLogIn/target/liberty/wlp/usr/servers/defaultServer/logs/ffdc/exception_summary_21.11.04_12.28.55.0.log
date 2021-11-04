@@ -1,0 +1,8 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      2   11/4/21, 12:28:55:224 EDT   11/4/21, 12:29:00:309 EDT java.lang.NoClassDefFoundError com.ibm.wsspi.injectionengine.MethodMap.getAllDeclaredMethods 106
+                                                                            - /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.11.04_12.28.55.0.log
+     1      1   11/4/21, 12:29:08:692 EDT   11/4/21, 12:29:08:692 EDT com.ibm.ws.security.registry.RegistryException com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule 116
+                                                                            - /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/ffdc/ffdc_21.11.04_12.29.08.0.log
+------+------+---------------------------+---------------------------+---------------------------

@@ -1,0 +1,24 @@
+#Tue Oct 19 21:40:08 BST 2021
+lib/com.ibm.ws.org.apache.aries.jmx.core.whiteboard_1.0.58.jar=3d3ba74866b6448be03467297797e6c7
+lib/com.ibm.ws.event_1.0.58.jar=a2675195bec076e6510feb5b265c49a2
+lib/com.ibm.ws.org.apache.felix.scr_1.0.58.jar=9f0f1db392ae6855ffad8b5195768b29
+lib/com.ibm.ws.org.objectweb.asm_1.0.58.jar=c894932b1b087a8efdecd0908ece45fa
+lib/com.ibm.ws.org.apache.aries.jmx.api_1.0.58.jar=bca4bb3615f4859caa6ee94c5941c79d
+lib/com.ibm.ws.config_1.0.58.jar=4b872221ae3683b5674f609c98b58e3e
+lib/com.ibm.ws.org.eclipse.equinox.coordinator_1.0.58.jar=2dd9acf87a05a502d009dce76f6f29f6
+lib/com.ibm.ws.diagnostics_1.0.58.jar=803284f19eae7906a4ffe5d995e478ae
+lib/com.ibm.ws.org.eclipse.equinox.region_1.0.58.jar=8986380452b7e8932c023243d97af62c
+lib/com.ibm.ws.kernel.metatype.helper_1.0.58.jar=0357d1394210bcd30fcf9a5bf2fc5460
+lib/com.ibm.ws.org.jboss.jandex_1.0.58.jar=e11b061856b84b890d92f4bcd9559d2f
+lib/com.ibm.ws.kernel.feature_1.0.58.jar=24319f13d90bbf919ca62d77db0c5c77
+lib/platform/kernelCore-1.0.mf=e6a033cd53ff98099c1d7e0a427ad612
+lib/com.ibm.ws.threading_1.1.58.jar=cf1e815013bafa9add37f3d9a9fa7cb0
+lib/org.eclipse.osgi_3.16.0.jar=65404d8a8a6ea910997db86874385c0f
+lib/com.ibm.ws.runtime.update_1.0.58.jar=4e2854a0de8b4740772958e8c2fdd1ee
+lib/com.ibm.ws.org.eclipse.equinox.metatype_1.0.58.jar=07ccdaf553ffbc6f8b60f06372dab2e8
+lib/com.ibm.ws.org.apache.aries.util_1.0.58.jar=f03a4b72c5c155431440837b79a8c8b2
+lib/com.ibm.ws.kernel.equinox.module_1.0.58.jar=c38fd3c3942bfbc57270b68699d459a3
+lib/com.ibm.ws.kernel.filemonitor_1.0.58.jar=89608e779ef904f298d88bae99b1ab76
+lib/com.ibm.ws.crypto.passwordutil_1.0.58.jar=890337012ffe29325daf4e422087f9e1
+lib/com.ibm.ws.jmx_1.0.58.jar=744a4992d04f38eecb6736f02722638b
+lib/com.ibm.ws.kernel.service_1.3.58.jar=9cb3231c47f437cbce59aedc678e541e

@@ -1,0 +1,199 @@
+------Start of DE processing------ = [11/4/21, 11:15:20:186 EDT]
+Exception = com.ibm.ws.security.registry.RegistryException
+Source = com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule
+probeid = 116
+Stack Dump = com.ibm.ws.security.registry.RegistryException: CWWKS3005E: A configuration exception has occurred. No UserRegistry implementation service is available.  Ensure that you have a user registry configured.
+	at com.ibm.ws.security.registry.internal.UserRegistryServiceImpl.autoDetectUserRegistry(UserRegistryServiceImpl.java:412)
+	at com.ibm.ws.security.registry.internal.UserRegistryServiceImpl.determineActiveUserRegistry(UserRegistryServiceImpl.java:366)
+	at com.ibm.ws.security.registry.internal.UserRegistryServiceImpl.getUserRegistry(UserRegistryServiceImpl.java:385)
+	at com.ibm.ws.security.authentication.internal.jaas.JAASServiceImpl.getUserRegistry(JAASServiceImpl.java:122)
+	at com.ibm.ws.security.authentication.internal.jaas.modules.ServerCommonLoginModule.getUserRegistry(ServerCommonLoginModule.java:71)
+	at com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule.setUpTemporaryUserSubject(TokenLoginModule.java:165)
+	at com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule.login(TokenLoginModule.java:105)
+	at com.ibm.ws.kernel.boot.security.LoginModuleProxy.login(LoginModuleProxy.java:51)
+	at java.base/javax.security.auth.login.LoginContext.invoke(LoginContext.java:726)
+	at java.base/javax.security.auth.login.LoginContext$4.run(LoginContext.java:665)
+	at java.base/javax.security.auth.login.LoginContext$4.run(LoginContext.java:663)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at java.base/javax.security.auth.login.LoginContext.invokePriv(LoginContext.java:663)
+	at java.base/javax.security.auth.login.LoginContext.login(LoginContext.java:574)
+	at com.ibm.ws.security.authentication.internal.jaas.JAASServiceImpl.doLoginContext(JAASServiceImpl.java:343)
+	at com.ibm.ws.security.authentication.internal.jaas.JAASServiceImpl.performLogin(JAASServiceImpl.java:329)
+	at com.ibm.ws.security.authentication.internal.jaas.JAASServiceImpl.performLogin(JAASServiceImpl.java:314)
+	at com.ibm.ws.security.authentication.internal.AuthenticationServiceImpl.performJAASLogin(AuthenticationServiceImpl.java:543)
+	at com.ibm.ws.security.authentication.internal.AuthenticationServiceImpl.authenticate(AuthenticationServiceImpl.java:212)
+	at com.ibm.ws.webcontainer.security.internal.SSOAuthenticator.handleLtpaSSO(SSOAuthenticator.java:176)
+	at com.ibm.ws.webcontainer.security.internal.SSOAuthenticator.handleSSO(SSOAuthenticator.java:136)
+	at com.ibm.ws.webcontainer.security.internal.SSOAuthenticator.authenticate(SSOAuthenticator.java:95)
+	at com.ibm.ws.webcontainer.security.internal.SSOAuthenticator.authenticate(SSOAuthenticator.java:85)
+	at com.ibm.ws.webcontainer.security.WebProviderAuthenticatorProxy.handleSSO(WebProviderAuthenticatorProxy.java:347)
+	at com.ibm.ws.webcontainer.security.WebProviderAuthenticatorProxy.authenticate(WebProviderAuthenticatorProxy.java:463)
+	at com.ibm.ws.webcontainer.security.WebAuthenticatorProxy.authenticate(WebAuthenticatorProxy.java:68)
+	at com.ibm.ws.webcontainer.security.WebAppSecurityCollaboratorImpl.authenticateRequest(WebAppSecurityCollaboratorImpl.java:1233)
+	at com.ibm.ws.webcontainer.security.WebAppSecurityCollaboratorImpl.determineWebReply(WebAppSecurityCollaboratorImpl.java:989)
+	at com.ibm.ws.webcontainer.security.WebAppSecurityCollaboratorImpl.performSecurityChecks(WebAppSecurityCollaboratorImpl.java:678)
+	at com.ibm.ws.webcontainer.security.WebAppSecurityCollaboratorImpl.preInvoke(WebAppSecurityCollaboratorImpl.java:596)
+	at com.ibm.wsspi.webcontainer.collaborator.CollaboratorHelper.preInvokeCollaborators(CollaboratorHelper.java:459)
+	at com.ibm.ws.webcontainer.osgi.collaborator.CollaboratorHelperImpl.preInvokeCollaborators(CollaboratorHelperImpl.java:270)
+	at com.ibm.ws.webcontainer.filter.WebAppFilterManager.invokeFilters(WebAppFilterManager.java:1115)
+	at com.ibm.ws.webcontainer.webapp.WebApp.handleRequest(WebApp.java:5049)
+	at com.ibm.ws.webcontainer.osgi.DynamicVirtualHost$2.handleRequest(DynamicVirtualHost.java:314)
+	at com.ibm.ws.webcontainer.WebContainer.handleRequest(WebContainer.java:1007)
+	at com.ibm.ws.webcontainer.osgi.DynamicVirtualHost$2.run(DynamicVirtualHost.java:279)
+	at com.ibm.ws.http.dispatcher.internal.channel.HttpDispatcherLink$TaskWrapper.run(HttpDispatcherLink.java:1159)
+	at com.ibm.ws.http.dispatcher.internal.channel.HttpDispatcherLink.wrapHandlerAndExecute(HttpDispatcherLink.java:428)
+	at com.ibm.ws.http.dispatcher.internal.channel.HttpDispatcherLink.ready(HttpDispatcherLink.java:387)
+	at com.ibm.ws.http.channel.internal.inbound.HttpInboundLink.handleDiscrimination(HttpInboundLink.java:566)
+	at com.ibm.ws.http.channel.internal.inbound.HttpInboundLink.handleNewRequest(HttpInboundLink.java:500)
+	at com.ibm.ws.http.channel.internal.inbound.HttpInboundLink.processRequest(HttpInboundLink.java:360)
+	at com.ibm.ws.http.channel.internal.inbound.HttpInboundLink.ready(HttpInboundLink.java:327)
+	at com.ibm.ws.http.channel.h2internal.H2StreamProcessor$Http2Ready.run(H2StreamProcessor.java:1789)
+	at com.ibm.ws.threading.internal.ExecutorServiceImpl$RunnableWrapper.run(ExecutorServiceImpl.java:238)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+Dump of callerThis
+Object type = com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule
+  tc = class com.ibm.websphere.ras.TraceComponent@65be9ff2
+    strings[0] = "TraceComponent[com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule,class com.ibm.ws.security.authentication.jaas.modules.TokenLoginModule,[Authentication],com.ibm.ws.security.authentication.internal.resources.AuthenticationMessages,null]"
+  LTPA_OID = "oid:1.3.18.0.2.30.2"
+  JWT_OID = "oid:1.3.18.0.2.30.3"
+  accessId = "user:https://accounts.google.com/jowens4@oswego.edu"
+  recreatedToken = class com.ibm.ws.security.token.ltpa.internal.LTPAToken2@6c32f8d5
+    tc = class com.ibm.websphere.ras.TraceComponent@3b631156
+      strings[0] = "TraceComponent[com.ibm.ws.security.token.ltpa.internal.LTPAToken2,class com.ibm.ws.security.token.ltpa.internal.LTPAToken2,[Token],com.ibm.ws.security.token.ltpa.internal.resources.LTPAMessages,null]"
+    MESSAGE_DIGEST_ALGORITHM = "SHA"
+    AES_CBC_CIPHER = "AES/CBC/PKCS5Padding"
+    serialVersionUID = 1
+    DELIM = "%"
+    md1JCE = class java.security.MessageDigest$Delegate@62f34891
+      digestSpi = "/* Could not access digestSpi */"
+      pdebug = "/* Could not access pdebug */"
+      skipDebug = "/* Could not access skipDebug */"
+      algorithm = "/* Could not access algorithm */"
+      INITIAL = "/* Could not access INITIAL */"
+      IN_PROGRESS = "/* Could not access IN_PROGRESS */"
+      state = "/* Could not access state */"
+      provider = "/* Could not access provider */"
+      tempArray = "/* Could not access tempArray */"
+    md2JCE = class java.security.MessageDigest$Delegate@cab9c99
+      digestSpi = "/* Could not access digestSpi */"
+      pdebug = "/* Could not access pdebug */"
+      skipDebug = "/* Could not access skipDebug */"
+      algorithm = "/* Could not access algorithm */"
+      INITIAL = "/* Could not access INITIAL */"
+      IN_PROGRESS = "/* Could not access IN_PROGRESS */"
+      state = "/* Could not access state */"
+      provider = "/* Could not access provider */"
+      tempArray = "/* Could not access tempArray */"
+    lockObj1 = class java.lang.Object@23b60379
+    lockObj2 = class java.lang.Object@12a14032
+    version = 1
+    signature = null
+    encryptedBytes = null
+    userData = class com.ibm.ws.security.token.ltpa.internal.UserData@29cf525b
+      serialVersionUID = 1
+      _userID = "user:https://accounts.google.com/jowens4@oswego.edu"
+      _attributes = class java.util.HashMap@4afacd02
+      _toString = null
+      $$$tc$$$ = class com.ibm.websphere.ras.TraceComponent@1699aa6
+    expirationInMilliseconds = 1636045474260
+    sharedKey = {-72,-54,-72,95,62,-125,120,30,76,116,-104,83,-118,-9,-86,-120,-70,-65,-23,67,84,-22,34,104} /* array length = 24 */
+    privateKey = class com.ibm.ws.crypto.ltpakeyutil.LTPAPrivateKey@2aabeb14
+      serialVersionUID = -2566137894245694562
+      PRIVATE_EXPONENT = 1
+      PUBLIC_EXPONENT = 2
+      PRIME_P = 3
+      PRIME_Q = 4
+      PRIVATE_EXPONENT_LENGTH_FIELD_LENGTH = 4
+      PUBLIC_EXPONENT_LENGTH = 3
+      PRIME_P_LENGTH = 65
+      PRIME_Q_LENGTH = 65
+      privateExponentLength = 129
+      rawKey = class [B[8]
+      encodedKey = {0,0,0,-127,0,-23,67,18,-18,-31,-1,84,-1,-59,-121,99,30,5,35,27,69,-100,-10,-78,-26,-79,61,-5,-45,117,-88,27,-39,-124,-17,6,-119,105,111,105,-34,17,62,1,-20,-18,8,117,-69,112,-101,-51,31,-14,-10,13,14,100,61,2,-75,-12,85,-1,37,78,6,0,-2,54,-51,77,-15,-109,-39,9,-4,77,2,62,117,-42,31,-103,56,-73,-36,29,-11,-14,-47,10,33,-107,-96,-120,37,13,94,118,67,-112,-75,-59,-3,102,-86,56,122,120,91,6,5,103,63,67,66,-6,-89,-17,-76,-46,51,2,29,120,-1,86,51,-85,-40,-51,41,1,0,1,0,-7,1,-76,-106,-42,48,-103,113,61,-115,69,19,37,-126,-24,32,121,50,-71,-89,-12,-86,-89,-24,-96,62,87,-76,58,86,52,-8,124,54,-53,68,-56,-59,-128,-118,-61,10,79,20,-108,-101,43,-125,-61,84,-3,17,-28,89,-20,13,22,122,125,23,-113,117,111,107,0,-14,-98,-119,-66,109,-55,-28,101,-69,-50,-9,23,-73,-103,-6,-97,18,-31,-53,-59,-77,-111,23,-107,98,26,-125,-92,-29,-81,111,124,63,-66,58,-34,42,120,-55,-80,12,14,-12,23,-115,-24,3,122,-72,90,-13,8,47,43,-62,-98,-79,-33,-6,-23,47,86,84,-51} /* array length = 266 */
+    publicKey = class com.ibm.ws.crypto.ltpakeyutil.LTPAPublicKey@19f419ed
+      serialVersionUID = 6585779055758956436
+      MODULUS = 0
+      EXPONENT = 1
+      MODULUS_LENGTH = 129
+      EXPONENT_LENGTH = 3
+      rawKey = class [B[2]
+      encodedKey = {0,-21,-3,-47,-65,47,68,-2,2,55,20,6,-35,-75,-37,-29,-96,-46,-53,-92,9,116,24,-6,-17,119,-104,54,-101,25,106,-77,-2,-80,23,-120,-27,73,29,70,-67,29,44,-88,-45,30,-96,-49,64,-102,29,-71,-21,53,-47,-117,-108,-75,-55,-128,83,-60,-32,122,-47,74,-97,-84,100,-103,27,-41,73,-48,-14,70,78,-18,89,73,-76,78,-19,-122,-15,50,-4,7,4,33,-75,-74,-77,85,78,-94,-17,67,64,110,-46,-81,-115,-64,87,-61,-115,-99,-101,-4,-121,-120,92,-2,18,103,-94,75,58,59,-31,-44,72,-114,59,124,-117,84,-81,1,0,1} /* array length = 132 */
+    cipher = "AES/CBC/PKCS5Padding"
+    IBMJCE_NAME = "IBMJCE"
+  customRealm = null
+  authProvider = null
+  hashtableLoginProperties = class java.lang.String[8]
+    String[0] = "com.ibm.wsspi.security.cred.uniqueId"
+    String[1] = "com.ibm.wsspi.security.cred.userId"
+    String[2] = "com.ibm.wsspi.security.cred.securityName"
+    String[3] = "com.ibm.wsspi.security.cred.realm"
+    String[4] = "com.ibm.wsspi.security.cred.cacheKey"
+    String[5] = "com.ibm.ws.authentication.internal.assertion"
+    String[6] = "com.ibm.ws.authentication.internal.json.web.token"
+    String[7] = "com.ibm.ws.authentication.internal.auth.provider"
+  serialVersionUID = -8443847235269521669
+  tc = class com.ibm.websphere.ras.TraceComponent@2d8eefc1
+    strings[0] = "TraceComponent[com.ibm.ws.security.authentication.internal.jaas.modules.ServerCommonLoginModule,class com.ibm.ws.security.authentication.internal.jaas.modules.ServerCommonLoginModule,[Authentication],com.ibm.ws.security.authentication.internal.resources.AuthenticationMessages,null]"
+  jsonWebTokenProperties = class java.lang.String[1]
+    String[0] = "com.ibm.ws.authentication.internal.json.web.token"
+  subjectHelper = class com.ibm.ws.security.authentication.utility.SubjectHelper@f871175
+    tc = class com.ibm.websphere.ras.TraceComponent@62e8ce4b
+      strings[0] = "TraceComponent[com.ibm.ws.security.authentication.utility.SubjectHelper,class com.ibm.ws.security.authentication.utility.SubjectHelper,[],null,null]"
+    serialVersionUID = -6967119586978031041
+  userIdOnlyProperties = class java.lang.String[2]
+    String[0] = "com.ibm.wsspi.security.cred.userId"
+    String[1] = "com.ibm.ws.authentication.internal.assertion"
+  customPropertiesFromSubject = false
+  serialVersionUID = -878775644266839608
+  callbackHandler = class javax.security.auth.login.LoginContext$SecureCallbackHandler@290e40c1
+    acc = "/* Could not access acc */"
+    ch = "/* Could not access ch */"
+  subject = class javax.security.auth.Subject@18eca5a2
+    serialVersionUID = "/* Could not access serialVersionUID */"
+    principals = "/* Could not access principals */"
+    pubCredentials = "/* Could not access pubCredentials */"
+    privCredentials = "/* Could not access privCredentials */"
+    readOnly = "/* Could not access readOnly */"
+    PRINCIPAL_SET = "/* Could not access PRINCIPAL_SET */"
+    PUB_CREDENTIAL_SET = "/* Could not access PUB_CREDENTIAL_SET */"
+    PRIV_CREDENTIAL_SET = "/* Could not access PRIV_CREDENTIAL_SET */"
+    NULL_PD_ARRAY = "/* Could not access NULL_PD_ARRAY */"
+  sharedState = class java.util.HashMap@2fd71373
+    serialVersionUID = "/* Could not access serialVersionUID */"
+    DEFAULT_INITIAL_CAPACITY = "/* Could not access DEFAULT_INITIAL_CAPACITY */"
+    MAXIMUM_CAPACITY = "/* Could not access MAXIMUM_CAPACITY */"
+    DEFAULT_LOAD_FACTOR = "/* Could not access DEFAULT_LOAD_FACTOR */"
+    TREEIFY_THRESHOLD = "/* Could not access TREEIFY_THRESHOLD */"
+    UNTREEIFY_THRESHOLD = "/* Could not access UNTREEIFY_THRESHOLD */"
+    MIN_TREEIFY_CAPACITY = "/* Could not access MIN_TREEIFY_CAPACITY */"
+    table = "/* Could not access table */"
+    entrySet = "/* Could not access entrySet */"
+    size = "/* Could not access size */"
+    modCount = "/* Could not access modCount */"
+    threshold = "/* Could not access threshold */"
+    loadFactor = "/* Could not access loadFactor */"
+    keySet = "/* Could not access keySet */"
+    values = "/* Could not access values */"
+  options = class java.util.Collections$UnmodifiableMap@53c7ae38
+    serialVersionUID = "/* Could not access serialVersionUID */"
+    m = "/* Could not access m */"
+    keySet = "/* Could not access keySet */"
+    entrySet = "/* Could not access entrySet */"
+    values = "/* Could not access values */"
+  temporarySubject = class javax.security.auth.Subject@894f4c9
+    serialVersionUID = "/* Could not access serialVersionUID */"
+    principals = "/* Could not access principals */"
+    pubCredentials = "/* Could not access pubCredentials */"
+    privCredentials = "/* Could not access privCredentials */"
+    readOnly = "/* Could not access readOnly */"
+    PRINCIPAL_SET = "/* Could not access PRINCIPAL_SET */"
+    PUB_CREDENTIAL_SET = "/* Could not access PUB_CREDENTIAL_SET */"
+    PRIV_CREDENTIAL_SET = "/* Could not access PRIV_CREDENTIAL_SET */"
+    NULL_PD_ARRAY = "/* Could not access NULL_PD_ARRAY */"
+  serialVersionUID = -8873301121271047884
+  $$$tc$$$ = class com.ibm.websphere.ras.TraceComponent@4208bdc4
+    strings[0] = "TraceComponent[com.ibm.ws.security.jaas.common.modules.CommonLoginModule,class com.ibm.ws.security.jaas.common.modules.CommonLoginModule,[security],com.ibm.ws.security.jaas.common.internal.resources.JAASCommonMessages,null]"
+

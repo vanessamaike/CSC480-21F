@@ -1,0 +1,103 @@
+********************************************************************************
+product = Open Liberty 21.0.0.11 (wlp-1.0.58.cl211120211019-1900)
+wlp.install.dir = /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/
+java.home = /usr/lib/jvm/java-11-openjdk-amd64
+java.version = 11.0.11
+java.runtime = OpenJDK Runtime Environment (11.0.11+9-Ubuntu-0ubuntu2.20.04)
+os = Linux (5.11.0-38-generic; amd64) (en_US)
+process = 25601@johnojacob
+********************************************************************************
+[11/4/21, 12:26:16:889 EDT] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           A CWWKE0001I: The server defaultServer has been launched.
+[11/4/21, 12:26:17:345 EDT] 00000018 com.ibm.ws.config.xml.internal.ServerXMLConfiguration        A CWWKG0093A: Processing configuration drop-ins resource: /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/configDropins/overrides/liberty-plugin-variable-config.xml
+[11/4/21, 12:26:17:539 EDT] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           I CWWKE0002I: The kernel started after 0.835 seconds
+[11/4/21, 12:26:17:550 EDT] 00000023 com.ibm.ws.kernel.feature.internal.FeatureManager            I CWWKF0007I: Feature update started.
+[11/4/21, 12:26:17:746 EDT] 00000018 .apache.cxf.cxf.core.3.2:1.0.58.cl211120211019-1900(id=191)] I Aries Blueprint packages not available. So namespaces will not be registered
+[11/4/21, 12:26:17:797 EDT] 00000017 com.ibm.ws.security.ready.internal.SecurityReadyServiceImpl  I CWWKS0007I: The security service is starting...
+[11/4/21, 12:26:18:095 EDT] 0000001a com.ibm.ws.cache.ServerCache                                 I DYNA1001I: WebSphere Dynamic Cache instance named baseCache initialized successfully.
+[11/4/21, 12:26:18:098 EDT] 0000001a com.ibm.ws.cache.ServerCache                                 I DYNA1071I: The cache provider default is being used.
+[11/4/21, 12:26:18:099 EDT] 0000001a com.ibm.ws.cache.CacheServiceImpl                            I DYNA1056I: Dynamic Cache (object cache) initialized successfully.
+[11/4/21, 12:26:18:131 EDT] 00000019 com.ibm.ws.app.manager.internal.monitor.DropinMonitor        A CWWKZ0058I: Monitoring dropins for applications.
+[11/4/21, 12:26:18:647 EDT] 0000002e com.ibm.ws.security.token.ltpa.internal.LTPAKeyCreateTask    I CWWKS4105I: LTPA configuration is ready after 0.023 seconds.
+[11/4/21, 12:26:18:667 EDT] 00000017 ibm.ws.security.authentication.internal.jaas.JAASServiceImpl I CWWKS1123I: The collective authentication plugin with class name NullCollectiveAuthenticationPlugin has been activated. 
+[11/4/21, 12:26:18:899 EDT] 00000017 com.ibm.ws.security.jwt.internal.ConsumerImpl                I CWWKS6012I: The JSON Web Token (JWT) consumer service is available.
+[11/4/21, 12:26:18:922 EDT] 00000017 com.ibm.ws.security.jwt.web.JwtEndpointServices              I CWWKS6002I: The JSON Web Token (JWT) endpoint service is available.
+[11/4/21, 12:26:18:937 EDT] 0000001f com.ibm.ws.ssl.config.WSKeyStore                             I Successfully loaded default keystore: /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/resources/security/key.p12 of type: PKCS12
+[11/4/21, 12:26:18:982 EDT] 00000017 com.ibm.ws.security.jaspi.AuthConfigFactoryWrapper           I CWWKS1655I: The default Java Authentication SPI for Containers (JASPIC) AuthConfigFactory class com.ibm.ws.security.jaspi.ProviderRegistry is being used because the Java security property authconfigprovider.factory is not set. 
+[11/4/21, 12:26:18:999 EDT] 00000017 com.ibm.ws.security.social.internal.SocialLoginServiceImpl   I CWWKS5400I: The social login configuration [SocialLoginService] was successfully processed.
+[11/4/21, 12:26:19:036 EDT] 00000017 com.ibm.ws.security.social.web.EndpointServices              I CWWKS5407I: The Social Login Version 1.0 endpoint service is activated.
+[11/4/21, 12:26:19:051 EDT] 00000017 com.ibm.ws.security.social.internal.Oauth2LoginConfigImpl    I CWWKS5400I: The social login configuration [googleLogin] was successfully processed.
+[11/4/21, 12:26:19:392 EDT] 00000025 com.ibm.ws.app.manager.AppMessageHelper                      I CWWKZ0018I: Starting application guide-social-login.
+[11/4/21, 12:26:19:394 EDT] 00000025 bm.ws.app.manager.war.internal.WARDeployedAppInfoFactoryImpl I CWWKZ0134I: The guide-social-login application is using the loose application definition at the /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/apps/guide-social-login.war.xml location.
+[11/4/21, 12:26:19:704 EDT] 0000003a com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Loading Web Module: com.ibm.ws.security.jwt.
+[11/4/21, 12:26:19:704 EDT] 0000003b com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Loading Web Module: Social Login 1.0 Endpoint Servlet.
+[11/4/21, 12:26:19:708 EDT] 0000003a com.ibm.ws.webcontainer                                      I SRVE0250I: Web Module com.ibm.ws.security.jwt has been bound to default_host.
+[11/4/21, 12:26:19:708 EDT] 0000003b com.ibm.ws.webcontainer                                      I SRVE0250I: Web Module Social Login 1.0 Endpoint Servlet has been bound to default_host.
+[11/4/21, 12:26:19:712 EDT] 0000003a com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web application available (default_host): http://192.168.0.12:9080/jwt/
+[11/4/21, 12:26:19:726 EDT] 0000003b com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web application available (default_host): http://192.168.0.12:9080/ibm/api/social-login/
+[11/4/21, 12:26:19:797 EDT] 0000002f com.ibm.ws.session.WASSessionCore                            I SESN8501I: The session manager did not find a persistent storage location; HttpSession objects will be stored in the local application server's memory.
+[11/4/21, 12:26:19:801 EDT] 0000002e com.ibm.ws.session.WASSessionCore                            I SESN8501I: The session manager did not find a persistent storage location; HttpSession objects will be stored in the local application server's memory.
+[11/4/21, 12:26:19:802 EDT] 0000002f com.ibm.ws.session.WASSessionCore                            I SESN0176I: A new session context will be created for application key default_host/ibm/api/social-login
+[11/4/21, 12:26:19:818 EDT] 0000002f com.ibm.ws.util                                              I SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[11/4/21, 12:26:19:932 EDT] 0000002f com.ibm.ws.jsp                                               I JSPG8502I: The value of the JSP attribute jdkSourceLevel is "15".
+[11/4/21, 12:26:20:094 EDT] 0000002f com.ibm.ws.cache.CacheServiceImpl                            I DYNA1056I: Dynamic Cache (object cache) initialized successfully.
+[11/4/21, 12:26:20:146 EDT] 0000002d com.ibm.ws.session.WASSessionCore                            I SESN0176I: A new session context will be created for application key default_host/jwt
+[11/4/21, 12:26:20:151 EDT] 0000002d com.ibm.ws.util                                              I SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[11/4/21, 12:26:20:427 EDT] 0000002e com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[11/4/21, 12:26:20:800 EDT] 00000025 org.jboss.weld.Version                                       I WELD-000900: 3.1.8 (Final)
+[11/4/21, 12:26:21:508 EDT] 00000025 com.ibm.ws.logging.internal.impl.IncidentImpl                I FFDC1015I: An FFDC Incident has been created: "java.lang.NoClassDefFoundError: org/eclipse/microprofile/jwt/JsonWebToken com.ibm.wsspi.injectionengine.MethodMap.getAllDeclaredMethods 106" at ffdc_21.11.04_12.26.21.0.log
+[11/4/21, 12:26:21:512 EDT] 00000025 com.ibm.wsspi.injectionengine.MethodMap                      W CWNEN0049W: Resource annotations on the methods of the edu.oswego.rest.course.CourseGetter class will be ignored. The annotations could not be obtained because of the exception : java.lang.NoClassDefFoundError: org/eclipse/microprofile/jwt/JsonWebToken
+[11/4/21, 12:26:21:911 EDT] 00000025 org.jboss.weld.Bootstrap                                     I WELD-000119: Not generating any bean definitions from edu.oswego.rest.course.CourseGetter because of underlying class loading error: Type org.eclipse.microprofile.jwt.JsonWebToken not found.  If this is unexpected, enable DEBUG logging to see the full error.
+[11/4/21, 12:26:22:582 EDT] 00000025 com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Loading Web Module: Hello Servlet.
+[11/4/21, 12:26:22:582 EDT] 00000025 com.ibm.ws.webcontainer                                      I SRVE0250I: Web Module Hello Servlet has been bound to default_host.
+[11/4/21, 12:26:22:583 EDT] 00000025 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web application available (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:26:22:588 EDT] 0000003a com.ibm.ws.session.WASSessionCore                            I SESN0176I: A new session context will be created for application key default_host/api
+[11/4/21, 12:26:22:589 EDT] 0000003a com.ibm.ws.util                                              I SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[11/4/21, 12:26:22:658 EDT] 0000003a com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0001I: Application guide-social-login started in 3.266 seconds.
+[11/4/21, 12:26:22:677 EDT] 00000025 com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[11/4/21, 12:26:22:679 EDT] 00000023 com.ibm.ws.tcpchannel.internal.TCPPort                       I CWWKO0219I: TCP Channel defaultHttpEndpoint has been started and is now listening for requests on host *  (IPv6) port 9080.
+[11/4/21, 12:26:22:682 EDT] 00000023 com.ibm.ws.tcpchannel.internal.TCPPort                       I CWWKO0219I: TCP Channel defaultHttpEndpoint-ssl has been started and is now listening for requests on host *  (IPv6) port 9443.
+[11/4/21, 12:26:22:688 EDT] 00000023 com.ibm.ws.kernel.feature.internal.FeatureManager            A CWWKF0012I: The server installed the following features: [appSecurity-3.0, cdi-2.0, distributedMap-1.0, el-3.0, jaxrsClient-2.1, jndi-1.0, jsonb-1.0, jsonp-1.1, jsp-2.3, jwt-1.0, mpConfig-2.0, servlet-4.0, socialLogin-1.0, ssl-1.0, transportSecurity-1.0].
+[11/4/21, 12:26:22:689 EDT] 00000023 com.ibm.ws.kernel.feature.internal.FeatureManager            I CWWKF0008I: Feature update completed in 5.151 seconds.
+[11/4/21, 12:26:22:690 EDT] 00000023 com.ibm.ws.kernel.feature.internal.FeatureManager            A CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 5.988 seconds.
+[11/4/21, 12:26:25:889 EDT] 0000002c com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web application removed (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:26:25:926 EDT] 0000002c com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0009I: The application guide-social-login has stopped successfully.
+[11/4/21, 12:26:25:936 EDT] 0000002c com.ibm.ws.app.manager.AppMessageHelper                      I CWWKZ0018I: Starting application guide-social-login.
+[11/4/21, 12:26:25:937 EDT] 0000002c bm.ws.app.manager.war.internal.WARDeployedAppInfoFactoryImpl I CWWKZ0134I: The guide-social-login application is using the loose application definition at the /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/apps/guide-social-login.war.xml location.
+[11/4/21, 12:26:26:010 EDT] 00000036 com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[11/4/21, 12:26:26:511 EDT] 0000002c com.ibm.wsspi.injectionengine.MethodMap                      W CWNEN0049W: Resource annotations on the methods of the edu.oswego.rest.course.CourseGetter class will be ignored. The annotations could not be obtained because of the exception : java.lang.NoClassDefFoundError: org/eclipse/microprofile/jwt/JsonWebToken
+[11/4/21, 12:26:26:644 EDT] 0000002c org.jboss.weld.Bootstrap                                     I WELD-000119: Not generating any bean definitions from edu.oswego.rest.course.CourseGetter because of underlying class loading error: Type org.eclipse.microprofile.jwt.JsonWebToken not found.  If this is unexpected, enable DEBUG logging to see the full error.
+[11/4/21, 12:26:26:874 EDT] 0000002c com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Loading Web Module: Hello Servlet.
+[11/4/21, 12:26:26:875 EDT] 0000002c com.ibm.ws.webcontainer                                      I SRVE0250I: Web Module Hello Servlet has been bound to default_host.
+[11/4/21, 12:26:26:875 EDT] 0000002c com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web application available (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:26:26:877 EDT] 00000038 com.ibm.ws.session.WASSessionCore                            I SESN0176I: A new session context will be created for application key default_host/api
+[11/4/21, 12:26:26:878 EDT] 00000038 com.ibm.ws.util                                              I SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[11/4/21, 12:26:26:925 EDT] 00000038 com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0003I: The application guide-social-login updated in 0.989 seconds.
+[11/4/21, 12:26:26:943 EDT] 0000002c com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[11/4/21, 12:28:36:740 EDT] 00000038 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web application removed (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:28:36:774 EDT] 00000038 com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0009I: The application guide-social-login has stopped successfully.
+[11/4/21, 12:28:36:787 EDT] 00000038 com.ibm.ws.app.manager.AppMessageHelper                      I CWWKZ0018I: Starting application guide-social-login.
+[11/4/21, 12:28:36:787 EDT] 00000038 bm.ws.app.manager.war.internal.WARDeployedAppInfoFactoryImpl I CWWKZ0134I: The guide-social-login application is using the loose application definition at the /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/apps/guide-social-login.war.xml location.
+[11/4/21, 12:28:36:880 EDT] 00000033 com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: A configuration file for a web server plugin was automatically generated for this server at /home/johnojacob84/nou/CSC480-21F/backend/SocialLogIn/target/liberty/wlp/usr/servers/defaultServer/logs/state/plugin-cfg.xml.
+[11/4/21, 12:28:38:163 EDT] 00000038 com.ibm.wsspi.injectionengine.MethodMap                      W CWNEN0049W: Resource annotations on the methods of the edu.oswego.rest.course.CourseGetter class will be ignored. The annotations could not be obtained because of the exception : java.lang.NoClassDefFoundError: org/eclipse/microprofile/jwt/JsonWebToken
+[11/4/21, 12:28:38:358 EDT] 00000038 org.jboss.weld.Bootstrap                                     I WELD-000119: Not generating any bean definitions from edu.oswego.rest.course.CourseGetter because of underlying class loading error: Type org.eclipse.microprofile.jwt.JsonWebToken not found.  If this is unexpected, enable DEBUG logging to see the full error.
+[11/4/21, 12:28:38:665 EDT] 00000038 com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Loading Web Module: Hello Servlet.
+[11/4/21, 12:28:38:665 EDT] 00000038 com.ibm.ws.webcontainer                                      I SRVE0250I: Web Module Hello Servlet has been bound to default_host.
+[11/4/21, 12:28:38:665 EDT] 00000038 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web application available (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:28:38:667 EDT] 0000003b com.ibm.ws.session.WASSessionCore                            I SESN0176I: A new session context will be created for application key default_host/api
+[11/4/21, 12:28:38:668 EDT] 0000003b com.ibm.ws.util                                              I SESN0172I: The session manager is using the Java default SecureRandom implementation for session ID generation.
+[11/4/21, 12:28:38:723 EDT] 00000013 com.ibm.ws.kernel.launch.internal.FrameworkManager           A CWWKE0085I: The server defaultServer is stopping because the JVM is exiting.
+[11/4/21, 12:28:38:739 EDT] 00000055 com.ibm.ws.runtime.update.internal.RuntimeUpdateManagerImpl  A CWWKE1100I: Waiting for up to 30 seconds for the server to quiesce.
+[11/4/21, 12:28:38:757 EDT] 00000025 com.ibm.ws.tcpchannel.internal.TCPChannel                    I CWWKO0220I: TCP Channel defaultHttpEndpoint-ssl has stopped listening for requests on host *  (IPv6) port 9443.
+[11/4/21, 12:28:38:762 EDT] 00000025 com.ibm.ws.tcpchannel.internal.TCPChannel                    I CWWKO0220I: TCP Channel defaultHttpEndpoint has stopped listening for requests on host *  (IPv6) port 9080.
+[11/4/21, 12:28:38:763 EDT] 00000025 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web application removed (default_host): http://192.168.0.12:9080/jwt/
+[11/4/21, 12:28:38:768 EDT] 0000003b com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0003I: The application guide-social-login updated in 1.981 seconds.
+[11/4/21, 12:28:38:763 EDT] 00000025 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web application removed (default_host): http://192.168.0.12:9080/api/
+[11/4/21, 12:28:38:771 EDT] 00000025 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web application removed (default_host): http://192.168.0.12:9080/ibm/api/social-login/
+[11/4/21, 12:28:39:008 EDT] 00000014 com.ibm.ws.kernel.launch.internal.ServerCommandListener      A CWWKE0055I: Server shutdown requested on Thursday, November 4, 2021 at 12:28 PM. The server defaultServer is shutting down.
+[11/4/21, 12:28:39:773 EDT] 00000055 com.ibm.ws.runtime.update.internal.RuntimeUpdateManagerImpl  I CWWKE1101I: Server quiesce complete.
+[11/4/21, 12:28:39:887 EDT] 00000036 com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0009I: The application guide-social-login has stopped successfully.
+[11/4/21, 12:28:40:066 EDT] 00000055 com.ibm.ws.security.social.internal.Oauth2LoginConfigImpl    I CWWKS5402I: The social login configuration [googleLogin] was successfully deactivated.
+[11/4/21, 12:28:40:068 EDT] 00000055 com.ibm.ws.security.social.internal.SocialLoginServiceImpl   I CWWKS5402I: The social login configuration [SocialLoginService] was successfully deactivated.
+[11/4/21, 12:28:40:129 EDT] 00000055 com.ibm.ws.security.ready.internal.SecurityReadyServiceImpl  I CWWKS0009I: The security service has stopped.
+[11/4/21, 12:28:40:146 EDT] 00000055 ibm.ws.security.authentication.internal.jaas.JAASServiceImpl I CWWKS1124I: The collective authentication plugin with class name NullCollectiveAuthenticationPlugin has been deactivated. 
+[11/4/21, 12:28:40:424 EDT] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           A CWWKE0036I: The server defaultServer stopped after 2 minutes, 23.721 seconds.
