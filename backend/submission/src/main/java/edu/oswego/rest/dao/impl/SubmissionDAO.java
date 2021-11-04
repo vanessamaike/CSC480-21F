@@ -6,15 +6,37 @@ import edu.oswego.rest.dao.ISubmissionDAO;
 import edu.oswego.rest.mapper.SubmissionMapper;
 import edu.oswego.rest.objects.Submission;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissionDAO {
 
     @Override
+    public int generateUniqueRandomId()
+    {
+
+        String sql = "SELECT (IF( (select count(submissionId) from submission) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM submission WHERE \"random_number\" NOT IN (SELECT submissionId FROM submission) LIMIT 1))) as random_number;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
+    @Override
     public int save(Submission submission) {
-        StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, pdfDoc, signOff, teamID)");
-        sql.append(" VALUES(?, ?, ?, ?)");
-        return insert(sql.toString(), submission.getSubmissionID(), submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID());
+        StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, " +
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
+
+        int uniqueRandomId = generateUniqueRandomId();
+
+        InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
+
+        insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
+                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen());
+        return uniqueRandomId;
     }
 
     @Override
@@ -33,8 +55,13 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
 
     @Override
     public void update(Submission submission) {
-        StringBuilder sql = new StringBuilder("UPDATE submission SET pdfDoc = ?, signOff = ?, teamID = ? WHERE submissionID = ?");
-        update(sql.toString(), submission.getPdfDoc(),submission.getSignOff(),submission.getTeamID(),submission.getSubmissionID());
+        StringBuilder sql = new StringBuilder("UPDATE submission SET comments = ?, " +
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE submissionID = ?");
+        InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
+        update(sql.toString(), submission.getComments(),
+                submission.getSubmissionTime() ,targetStream,
+                submission.getSignOff(),submission.getTeamID(),
+                submission.isSeen(), submission.getSubmissionID());
     }
 
     @Override

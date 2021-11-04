@@ -8,12 +8,22 @@ import edu.oswego.rest.objects.Student;
 import java.util.List;
 
 public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
-
+    @Override
+    public int generateUniqueRandomId()
+    {
+        String sql = "SELECT (IF( (select count(studentId) from student) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM student WHERE \"random_number\" NOT IN (SELECT studentId FROM student) LIMIT 1))) as random_number;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
     @Override
     public String save(Student student) {
         StringBuilder sql = new StringBuilder("INSERT INTO student (studentId, userId, firstName,lastName,email, teamID,score,courseId) ");
         sql.append(" VALUES(?, ?, ?, ?, ?, ? , ?, ?)");
-        return insertString(sql.toString(), student.getStudentID(), student.getUserID(),student.getFirstName(),
+        int uniqueRandomUserId = generateUniqueRandomId();
+        return insertString(sql.toString(), student.getStudentID(), uniqueRandomUserId,student.getFirstName(),
                 student.getLastName(), student.getEmail(), student.getTeamID(), student.getScore(),student.getCourseID());
     }
 
@@ -27,6 +37,7 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     @Override
     public Student findOne(String studentId) {
         String sql = "SELECT * FROM student WHERE studentID = ?";
+        System.out.println(studentId);
         List<Student> student = query(sql, new StudentMapper(), studentId);
         return student.isEmpty() ? null : student.get(0);
     }

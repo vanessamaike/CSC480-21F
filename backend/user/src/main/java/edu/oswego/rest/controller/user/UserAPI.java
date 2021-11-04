@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import edu.oswego.rest.objects.User;
 import edu.oswego.rest.service.IUserService;
 import edu.oswego.rest.service.impl.UserService;
-
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;

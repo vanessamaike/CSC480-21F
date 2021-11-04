@@ -9,11 +9,26 @@ import java.util.List;
 public class QuestionDAO extends AbstractDAO<Question> implements IQuestionDAO {
 
     @Override
+    public int generateUniqueRandomId()
+    {
+
+        String sql = "SELECT (IF( (select count(questionId) from question) = 0," +
+                "(SELECT FLOOR(10000 + RAND() * 89999))," +
+                "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
+                "FROM question WHERE \"random_number\" NOT IN (SELECT questionId FROM question) LIMIT 1))) as random_number;";
+        List<Integer> generatedUniqueRandomId = generateUniqueRandomId(sql);
+        return generatedUniqueRandomId.isEmpty() ? null : generatedUniqueRandomId.get(0);
+    }
+
+
+    @Override
     public int save(Question question) {
         StringBuilder sql = new StringBuilder("INSERT INTO question (questionId, question, assignmentId, value )");
         sql.append(" VALUES(?, ?, ?, ?)");
-        return insert(sql.toString(), question.getQuestionID(), question.getQuestion(),question.getAssignmentID(),
+        int uniqueRandomId = generateUniqueRandomId();
+         insert(sql.toString(), uniqueRandomId, question.getQuestion(),question.getAssignmentID(),
                 question.getValue());
+        return uniqueRandomId;
     }
 
     @Override

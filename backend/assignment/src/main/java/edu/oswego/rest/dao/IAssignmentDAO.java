@@ -11,5 +11,5 @@ public interface IAssignmentDAO {
     void update(Assignment assignment);
     void delete(Assignment assignment);
     void deleteAll();
-
+    int generateUniqueRandomId();
 }

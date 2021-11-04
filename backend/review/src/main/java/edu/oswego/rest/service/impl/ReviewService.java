@@ -17,8 +17,8 @@ public class ReviewService implements IReviewService {
     }
     @Override
     public Review save(Review review) {
-        reviewDao.save(review);
-        return reviewDao.findOne(review.getReviewID());
+        int id = reviewDao.save(review);
+        return reviewDao.findOne(id);
     }
     @Override
     public List<Review> findAll() {

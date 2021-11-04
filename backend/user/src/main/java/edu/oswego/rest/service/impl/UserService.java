@@ -17,8 +17,8 @@ public class UserService implements IUserService {
     }
     @Override
     public User save(User user) {
-        userDao.save(user);
-        return userDao.findOne(user.getUserID());
+        int id = userDao.save(user);
+        return userDao.findOne(id);
     }
     @Override
     public List<User> findAll() {

@@ -15,6 +15,9 @@ import javax.ws.rs.*;
 import java.sql.SQLOutput;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 @Path("/course")
 public class CourseAPI {
 
@@ -27,11 +30,6 @@ public class CourseAPI {
         courseService = new CourseService();
     }
 
-    @GET
-    @Path("/generateUniqueRandomId")
-    public int  getGenerateUniqueRandomId(){
-        return courseService.generateUniqueRandomId();
-    }
 
     @GET
     public String getAllCourses(){

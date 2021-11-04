@@ -1,14 +1,15 @@
 package edu.oswego.rest.dao.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import edu.oswego.rest.dao.GenericDAO;
 import edu.oswego.rest.mapper.RowMapper;
@@ -17,13 +18,26 @@ public class AbstractDAO<T> implements GenericDAO<T> {
 
     public Connection getConnection() {
         try {
+            File file = new File(
+                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
+            Scanner sc = new Scanner(file);
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/CSC480database";
-            String user = "root";
-            String password = "your password";
+            String user = "";
+            String password = "";
+
+            while (sc.hasNextLine())
+            {
+                user = sc.nextLine();
+                password = sc.nextLine();
+            }
             Connection con =  DriverManager.getConnection(url,user,password);
             return con;
         } catch (ClassNotFoundException | SQLException e) {
+            return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -197,10 +211,49 @@ public class AbstractDAO<T> implements GenericDAO<T> {
                 } else if (parameter instanceof Float) {
                     statement.setFloat(index, (Float) parameter);
                 }
+                else if (parameter instanceof LocalDate)
+                {
+                    statement.setDate(index, (Date.valueOf((LocalDate) parameter)));
+                }
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Integer> generateUniqueRandomId(String sql, Object... parameters){
+        List<Integer> results = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
+            setParameter(statement, parameters);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int generateUniqueRandomId = resultSet.getInt("random_number");
+                results.add(generateUniqueRandomId);
+            }
+            return results;
+        } catch (SQLException e) {
+            return null;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                return null;
+            }
         }
     }
 

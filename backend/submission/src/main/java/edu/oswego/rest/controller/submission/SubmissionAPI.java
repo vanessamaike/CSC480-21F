@@ -1,13 +1,9 @@
 package edu.oswego.rest.controller.submission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import edu.oswego.rest.objects.Assignment;
 import edu.oswego.rest.objects.Submission;
-import edu.oswego.rest.service.IAssignmentService;
+import edu.oswego.rest.utility.QualityCheck;
 import edu.oswego.rest.service.ISubmissionService;
-import edu.oswego.rest.service.impl.AssignmentService;
 import edu.oswego.rest.service.impl.SubmissionService;
 // Json-B
 import javax.json.bind.Jsonb;
@@ -15,7 +11,10 @@ import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Path("/submission")
 public class SubmissionAPI {
@@ -44,10 +43,9 @@ public class SubmissionAPI {
 
     @GET
     @Path("/{submissionId}")
-    public String getSpecificAssignment(@PathParam("submissionId") String _submissionId){
+    public String getSpecificSubmission(@PathParam("submissionId") String _submissionId){
         //TODO This method needs to ensure authentication
         try {
-
             int submissionId = Integer.parseInt(_submissionId);
             Submission submission = submissionService.findOne(submissionId);
             String res = jsonb.toJson(submission);
@@ -59,10 +57,39 @@ public class SubmissionAPI {
         return null;
     }
     @POST
-    public String postSubmission(String payload) throws JsonProcessingException {
+    public String postSubmission(String payload) throws IOException {
         Submission submission = jsonb.fromJson(payload, Submission.class);
-        submission = submissionService.save(submission);
-        String res = jsonb.toJson(submission);
+        String res = "";
+        String[] students =  new String[] { "Adam", "Boo", "Chris", "Dat", "Erik" };
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        /*======= Use this if you want to use local pdf File ===========*/
+        //File pdfFile = new File(classLoader.getResource("Br00Mi99.pdf").getFile());
+        //byte[] bytes = Files.readAllBytes(pdfFile.toPath());
+
+        /*========= comment this if you want to use local pdf file =======*/
+        byte[] bytes = submission.getPdfDoc();
+
+        try {
+            QualityCheck qc = new QualityCheck();
+
+            HashMap<Integer, String> violations = qc.QC(bytes, students);
+            if ( violations.size() > 0) {
+                System.out.println("This PDF file is not accepted because it includes some profanity words : ");
+                res = "This PDF file is not accepted because it includes some profanity words: ";
+                for (Map.Entry value : violations.entrySet()){
+                    System.out.println("Key: "+value.getKey() + " & Value: " + value.getValue());
+
+                }
+            }
+            else{
+                System.out.println("This PDF file is accepted to store to database ");
+                submission = submissionService.save(submission);
+                res = jsonb.toJson(submission);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 

@@ -1,6 +1,6 @@
 package edu.oswego.rest.objects;
 
-public class Student {
+public class Student{
     private String studentID;
     private int userID;
     private String firstName;

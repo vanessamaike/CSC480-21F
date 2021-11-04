@@ -13,8 +13,10 @@ public class CourseMapper implements RowMapper<Course>{
         try {
             Course course = new Course(
                     rs.getInt("courseID"),
+                    rs.getInt("userID"),
                     rs.getString("title"),
                     rs.getString("code"),
+                    rs.getString("sectionNumber"),
                     rs.getObject("endDate", LocalDate.class),
                     rs.getString("settings")
             );

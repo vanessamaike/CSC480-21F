@@ -11,5 +11,5 @@ public interface ISubmissionDAO {
     void update(Submission submission);
     void delete(Submission submission);
     void deleteAll();
-
+    int generateUniqueRandomId();
 }
