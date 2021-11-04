@@ -37,7 +37,7 @@ function App() {
         <Route exact path="/login" component={LoginPage}></Route>
         <PrivateRoute exact path="/professorhome" component={ProfessorHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/testing" component={TestingPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/course" component={ProfessorCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <Route exact path="/course" component={ProfessorCoursePage} isAuthenticated={isAuthenticated}></Route>
         <PrivateRoute exact path="/coursecreation" component={AddCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <Route exact path="/assignmentcreation" component={AssignmentCreation} isAuthenticated={isAuthenticated}></Route>
         <Route exact path="/assignmentviewer" component={AssignmentViewer} ></Route>
@@ -46,7 +46,7 @@ function App() {
         <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/studenthome" component={StudentHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/seeallassignment" component={SeeAllAssignmentPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/studentteams" component={StudentTeamsPage} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <Route exact path="/studentteams" component={StudentTeamsPage} isAuthenticated={isAuthenticated}></Route>
       </Switch>
     </Router>)
     }

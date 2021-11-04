@@ -30,9 +30,12 @@ import { useSelector, useDispatch } from "react-redux";
 import {selectPdf} from '../../features/pdfSlice'
 import { setPdf } from "../../features/pdfSlice";
 import CustomizedContainer from "../../components/CustomizedContainer";
+import axios from "axios";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function AssignmentCreation() {
+
+
+function AssignmentCreation(){
     const [solutionDueDate, setSolutionDueDate] = useState('');
     const [prDueDate, setPRDueDate] = useState('');
     const dispatch = useDispatch();
@@ -54,6 +57,8 @@ function AssignmentCreation() {
               reader.onloadend = (e) =>{
                 setPdfFile(e.target.result);
                 setPdfFileError('');
+                axios.post("pi.cs.oswego.edu:9081/api/assignment", e.target.result);
+                console.log(e.target.result)
               }
         }
         else{
