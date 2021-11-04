@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import {
   Grid,
@@ -30,51 +30,67 @@ import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedDivider from "../../components/CustomizedDivider";
+import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
+import Loading from "../../components/Loading";
 
-function CourseBar() {
+function CourseBar({course}) {
   return (
     <Stack spacing={0}>
       <CustomizedButtons type3 fullwidth model={"arrow"}>
-        CRN, Section, Semester
+        {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
       <List dense={true}>
         <ListItem>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
-                Solution 1
+                {`${course.assignments[0].title} Solution`}
               </Typography>
             }
           />
-          <ListItemText primary="Due 10/13/21" />
+          <ListItemText primary={`Due ${course.assignments[0].solution.dueDate}`} />
         </ListItem>
         <ListItem>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
-                Peer Review 1
+                {`${course.assignments[0].title} Peer Review`}
               </Typography>
             }
           />
-          <ListItemText primary="Due 10/13/21" />
+          <ListItemText primary={`Due ${course.assignments[0].peerreview.dueDate}`} />
         </ListItem>
       </List>
     </Stack>
   );
 }
 
-function ProfessorHomeDashBoard() {
-  return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
+function ProfessorHomeDashBoard({history}) {
+  const [loading, setLoading] = React.useState(true);
+  const [courses, setCourses] = React.useState([]);
+  useEffect(() => {
+    async function getCourses() {
+      try {
+        const response = await axios.get('http://localhost:3000/courses');
+        setCourses(response.data);
+        setLoading(false)
+        console.log(response.data)
+      } catch (error) {
+        console.error(error);
       }}
-    >
+      getCourses()
+  }, [])
+  console.log(courses)
+  return (
+    <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
+      <>
+          {(loading === true) ? (
+            <Loading />
+          ) : (
+            <>
         <Grid
           container
           spacing={3}
@@ -112,8 +128,9 @@ function ProfessorHomeDashBoard() {
               ></CardHeader>
               <CardContent sx={{ paddingTop: "0" }}>
                 <Stack spacing={2}>
-                  <CourseBar></CourseBar>
-                  <CourseBar></CourseBar>
+                {courses.map((course, key) => {
+                  return <CourseBar course={course} key={key}></CourseBar>
+                })}
                 </Stack>
               </CardContent>
             </CustomizedCard>
@@ -213,26 +230,13 @@ function ProfessorHomeDashBoard() {
                 ></CardHeader>
                 <CardContent sx={{ paddingTop: 0 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CustomizedButtons type2 fullwidth model={"arrow"}>
-                        Create a New Course
-                      </CustomizedButtons>
-                    </Grid>
+                  {courses.map((course, key) => {
+                  return <Grid item xs={6}>
+                  <CustomizedButtons type2 fullwidth model={"arrow"} key={key}>
+                  {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
+                  </CustomizedButtons>
+                </Grid>
+                })}
                   </Grid>
                 </CardContent>
               </CustomizedCard>
@@ -242,14 +246,17 @@ function ProfessorHomeDashBoard() {
               xs={12}
               sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <CustomizedButtons type1 model={"add"}>
+              <CustomizedButtons type1 model={"add"} onClick={() => history.push("/coursecreation")}>
                 Create a New Course
               </CustomizedButtons>
             </Grid>
           </Grid>
         </Grid>
+        </>
+          )}
+        </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

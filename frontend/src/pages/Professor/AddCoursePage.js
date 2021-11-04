@@ -9,6 +9,7 @@ import axios from "axios";
 import { CSVReader } from "react-papaparse";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import { Box } from "@mui/system";
+import CustomizedBody from "../../components/CustomizedBody";
 
 const buttonRef = React.createRef();
 
@@ -48,14 +49,7 @@ function AddCoursePage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
         <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
@@ -135,7 +129,7 @@ function AddCoursePage() {
           </CardContent>
         </CustomizedCard>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

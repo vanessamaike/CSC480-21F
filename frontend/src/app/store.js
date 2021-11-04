@@ -3,14 +3,16 @@ import userReducer from '../features/userSlice'
 import coursesReducer from '../features/coursesSlice'
 
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/";
+import storageSession from 'redux-persist/lib/storage/session'
 const persistConfig = {
   key: "root",
-  storage,
+  storage:storageSession,
+  whitelist: ['userReducer']
 };
 const reducer = combineReducers({
-    coursesReducer,
-    userReducer,
+  coursesReducer: coursesReducer,
+  userReducer: userReducer,
 })
 
 const persistReducer_ = persistReducer(persistConfig, reducer);

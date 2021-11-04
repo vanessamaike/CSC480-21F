@@ -7,6 +7,7 @@ import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
+import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedModal from "../../components/CustomizedModal";
 import CustomizedTabs from "../../components/CustomizedTabs";
 
@@ -36,8 +37,9 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+import { selectCourses, getCoursesByUserId, getStudentsByCourseId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
+import axios from "axios";
 const styles = (theme) => ({
   input: {
     height: 30,
@@ -143,64 +145,59 @@ function StudentInfoViewPage({ history }) {
   const [teamKeys, setTeamKeys] = useState({});
 
   const dispatch = useDispatch();
-  const getCourses = useSelector(selectCourses);
-  const { courses, error } = getCourses;
+  //const getCourses = useSelector(selectCourses);
+  //const { courses, error } = getCourses;
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [loading, setLoading] = React.useState(true);
+  const [courses, setCourses] = React.useState([]);
   const [courseNames, setCourseNames] = React.useState([]);
-  const [students, setStudents] = React.useState([]);
-  useEffect(() => {
-      dispatch(getCoursesByUserId());
-      setLoading(true)
-  }, [dispatch]);
+
+//   useEffect(() => {
+//       dispatch(getCoursesByUserId());
+//       dispatch(getCoursesByUserId());
+//       setLoading(true)
+//   }, [dispatch]);
   useEffect(() => {
     var courseNameLists = []
-    var studentLists = []
+    console.log(courses)
     if(courses){
       courses.map((course) => {
         courseNameLists.push(course.code)
-        var studentListsByCourse = []
-        course.teams.map((team) => {
-          team.students.map((student) => {
-            studentListsByCourse.push(student)
-          })
-        })
-        studentLists.push(studentListsByCourse)
       })
       setCourseNames(courseNameLists)
-      setStudents(studentLists)
-      if(students.length != 0){
-        setLoading(false)
-        console.log(loading)
-      }
+      setLoading(false)
     }
-    
 }, [courses]);
-  console.log(students)
-  console.log(loading)
+
+  useEffect(() => {
+    async function getCourses() {
+      try {
+        const response = await axios.get('http://localhost:3000/courses');
+        setCourses(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error(error);
+      }}
+      getCourses()
+  }, [])
+  console.log(courses)
   const handleClick = key => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
+    <CustomizedBody bg={bg}
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
       <>
-          {(error === true || loading === true) ? (
+          {(loading === true) ? (
             <Loading />
           ) : (
             <>
         <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={9}>
+          <Grid item xs={9} sx={{display: "flex", alignItems: "center"}}>
             <Typography
               style={{
                 display: "flex",
@@ -280,7 +277,7 @@ function StudentInfoViewPage({ history }) {
                 >
                   {viewType === "Student List" ? (
                     <List component="nav" aria-label="mailbox folders">
-                      {students[key].map((student) => (
+                      {course.students.map((student) => (
                         <ListItem
                           button
                           divider
@@ -291,7 +288,7 @@ function StudentInfoViewPage({ history }) {
                           }
                           
                         >
-                          <ListItemText primary={student.firstName}/>
+                          <ListItemText primary={`${student.firstName} ${student.lastName}`}/>
                           <ListItemText
                             sx={{ display: "flex", justifyContent: "flex-end" }}
                             primary="Added via CSV upload 08/13/21"
@@ -342,7 +339,7 @@ function StudentInfoViewPage({ history }) {
                                     </IconButton>
                                   }
                                 >
-                                  <ListItemText primary={student.firstName} />
+                                  <ListItemText primary={`${student.firstName} ${student.lastName}`} />
                                 </ListItem>
                         ))}</>
                         </List>
@@ -370,7 +367,7 @@ function StudentInfoViewPage({ history }) {
         isStudentModalOpened={isStudentModalOpened}
         handleCloseStudentModal={handleCloseStudentModal}
       />
-    </div>
+    </CustomizedBody>
   );
 }
 

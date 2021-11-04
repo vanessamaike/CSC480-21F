@@ -27,6 +27,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
+
 const demoData = [
   { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
   { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
@@ -83,14 +85,7 @@ function CourseResultPage({ history }) {
     setItems(filteredItems);
   }, [filterType]);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
         <>
@@ -98,8 +93,8 @@ function CourseResultPage({ history }) {
             <Loading />
           ) : (
             <>
-              <Grid container sx={{ marginBottom: "20px" }}>
-                <Grid item xs={8}>
+              <Grid container spacing={15} sx={{ marginBottom: "20px" }}>
+                <Grid item xs={6} sx={{display: "flex", alignItems: "center"}}>
                   <Typography
                     style={{
                       display: "flex",
@@ -109,8 +104,11 @@ function CourseResultPage({ history }) {
                     variant="h6"
                     component="div"
                   >
-                    Results
+                    Quality Check
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  {/* <SuccessfulNotification/> */}
                 </Grid>
               </Grid>
               <div>
@@ -158,13 +156,10 @@ function CourseResultPage({ history }) {
                         }}
                       >
                         {items.map((item) => (
-                          <Link
-                            to="/resultviewer"
-                            style={{ textDecoration: "none", color: "#000" }}
-                          >
                             <ListItem
                               button
                               divider
+                              onClick={() => history.push("/resultviewer")}
                               secondaryAction={
                                 <IconButton edge="end" aria-label="delete">
                                   <BsArrowRightCircle />
@@ -205,7 +200,6 @@ function CourseResultPage({ history }) {
                                 )}
                               </>
                             </ListItem>
-                          </Link>
                         ))}
                       </CardContent>
                     </CustomizedCard>
@@ -216,7 +210,7 @@ function CourseResultPage({ history }) {
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

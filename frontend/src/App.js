@@ -16,6 +16,7 @@ import AssignmentCreation from './pages/Professor/AssignmentCreation';
 import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
 import CourseResultPage from './pages/Professor/CourseResultPage';
 import ResultsViewerPage from './pages/Professor/ResultsViewerPage';
+import StudentSolutionQualityCheckPage from './pages/Professor/StudentSolutionQualityCheckPage';
 
 import StudentHomeDashboard from './pages/Student/StudentHomeDashboard';
 import SeeAllAssignmentPage from './pages/Student/SeeAllAssignmentPage';
@@ -45,6 +46,7 @@ function App() {
         <PrivateRoute exact path="/studentinfoview" component={StudentInfoViewPage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/courseresult" component={CourseResultPage} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <PrivateRoute exact path="/studentsolutionqualitycheck" component={StudentSolutionQualityCheckPage} isAuthenticated={isAuthenticated}></PrivateRoute>
 
         <PrivateRoute exact path="/studenthome" component={StudentHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
         <PrivateRoute exact path="/seeallassignment" component={SeeAllAssignmentPage} isAuthenticated={isAuthenticated}></PrivateRoute>

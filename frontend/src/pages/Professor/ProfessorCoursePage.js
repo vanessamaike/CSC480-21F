@@ -9,6 +9,7 @@ import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
+  Breadcrumbs,
   CardContent,
   CardHeader,
   CircularProgress,
@@ -23,8 +24,9 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
-import Loading from "../../components/Loading"
+import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -44,155 +46,173 @@ function TabPanel(props) {
 
 function ProfessorCourse({ history }) {
   const dispatch = useDispatch();
-  const getCourses = useSelector(selectCourses);
-  const { courses, loading, error } = getCourses;
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
-
+  const [courses, setCourses] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const [tab, setTab] = React.useState(0);
   const [courseNames, setCourseNames] = React.useState([]);
-  useEffect(() => {
-    dispatch(getCoursesByUserId());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if(courses)
+  //   {
+  //     dispatch(getCoursesByUserId());
+  //     console.log("dispatch")
+  //   }
+  // }, [dispatch]);
   useEffect(() => {
     var nameLists = [];
-    if (courses != null) {
+    if (courses) {
       courses.map((course) => {
         nameLists.push(course.code);
       });
       setCourseNames(nameLists);
+      setLoading(false);
     }
   }, [courses]);
-  console.log(getCourses)
+  useEffect(() => {
+    async function getCourses() {
+      try {
+        const response = await axios.get("http://localhost:3000/courses");
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getCourses();
+  }, []);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <>
-          {(error === true || loading === true) ? (
+        <>
+          {loading === true ? (
             <Loading />
           ) : (
             <>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Courses and Assignments
-            </Typography>
-          </Grid>
+              <Grid container sx={{ marginBottom: "20px" }}>
+                <Grid
+                  item
+                  xs={8}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Courses and Assignments
+                  </Typography>
+                </Grid>
 
-          <Grid
-            item
-            xs={4}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Link
-                to="/coursecreation"
-                style={{ textDecoration: "none", color: "#000" }}
-              >
-                <CustomizedButtons type2 model={"add"}>
-                  Create Course
-                </CustomizedButtons>
-              </Link>
-              <Link
-                to="/studentinfoview"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <CustomizedButtons type1>View Student Info</CustomizedButtons>
-              </Link>
-            </Stack>
-          </Grid>
-        </Grid>
-            <div>
-              <CustomizedTabs
-                type1
-                setTab={setTab}
-                tab={tab}
-                courseNames={courseNames}
-              ></CustomizedTabs>
-              {courses.map((course, key) => {
-              
-                console.log(course)
-                return <TabPanel value={tab} index={key}>
-                  <CustomizedCard>
-                    <CardHeader
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                      title={
-                        <Grid container>
-                          <Grid item xs={7}>
-                            <Link
-                              to="/assignmentcreation"
-                              style={{ textDecoration: "none", color: "#000" }}
-                            >
-                              <CustomizedButtons type3 model={"add"}>
-                                Create New Assignment
-                              </CustomizedButtons>
-                            </Link>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={5}
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                          >
-                            <CustomizedButtons type3 model={"radio1"}>
-                              Filter Assignment
-                            </CustomizedButtons>
-                          </Grid>
-                        </Grid>
-                      }
-                    ></CardHeader>
-                    <CardContent
-                      sx={{
-                        paddingTop: "0",
-                      }}
+                <Grid
+                  item
+                  xs={4}
+                  sx={{ display: "flex", justifyContent: "flex-end" }}
+                >
+                  <Stack direction="row" spacing={2}>
+                    <CustomizedButtons
+                      type2
+                      model={"add"}
+                      onClick={() => history.push("/coursecreation")}
                     >
-                      {course.assignments.map((assignment, key) => (
-                        <ListItem
-                          key={key}
-                          button
-                          divider
-                          secondaryAction={
-                            <IconButton edge="end" aria-label="delete">
-                              <BsArrowRightCircle />
-                            </IconButton>
+                      Create Course
+                    </CustomizedButtons>
+                    <CustomizedButtons
+                      type1
+                      onClick={() => history.push("/studentinfoview")}
+                    >
+                      View Student Info
+                    </CustomizedButtons>
+                  </Stack>
+                </Grid>
+              </Grid>
+              <div>
+                <CustomizedTabs
+                  type1
+                  setTab={setTab}
+                  tab={tab}
+                  courseNames={courseNames}
+                ></CustomizedTabs>
+                {courses.map((course, key) => {
+                  return (
+                    <TabPanel value={tab} index={key}>
+                      <CustomizedCard>
+                        <CardHeader
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                          title={
+                            <Grid container>
+                              <Grid item xs={7}>
+                                <CustomizedButtons
+                                  type3
+                                  model={"add"}
+                                  onClick={() =>
+                                    history.push("/assignmentcreation")
+                                  }
+                                >
+                                  Create New Assignment
+                                </CustomizedButtons>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={5}
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <CustomizedButtons type3 model={"radio1"}>
+                                  Filter Assignment
+                                </CustomizedButtons>
+                              </Grid>
+                            </Grid>
                           }
+                        ></CardHeader>
+                        <CardContent
+                          sx={{
+                            paddingTop: "0",
+                          }}
                         >
-                          <ListItemText primary={assignment.title} />
-                          <ListItemText
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                            primary={assignment.solutionDueDate}
-                          />
-                        </ListItem>
-                      ))}
-                    </CardContent>
-                  </CustomizedCard>
-                </TabPanel>
-              })}
-            </div>
+                          {course.assignments.map((assignment, key) => (
+                            <ListItem
+                              key={key}
+                              button
+                              divider
+                              secondaryAction={
+                                <IconButton edge="end" aria-label="delete">
+                                  <BsArrowRightCircle />
+                                </IconButton>
+                              }
+                            >
+                              <ListItemText primary={assignment.title} />
+                              <ListItemText
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "flex-end",
+                                }}
+                                primary={assignment.solutionDueDate}
+                              />
+                            </ListItem>
+                          ))}
+                        </CardContent>
+                      </CustomizedCard>
+                    </TabPanel>
+                  );
+                })}
+              </div>
             </>
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

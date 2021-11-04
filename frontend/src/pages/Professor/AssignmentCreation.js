@@ -24,6 +24,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
+import CustomizedBody from "../../components/CustomizedBody";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -57,14 +58,7 @@ function AssignmentCreation() {
     //     setValue(newValue);
     // };
     return (
-        <div
-            style={{
-                backgroundImage: `url(${bg})`,
-                height: "80vh",
-                backgroundSize: "cover",
-                paddingTop: "150px",
-            }}
-        >
+        <CustomizedBody bg={bg}>
             <NavBar fixed ></NavBar>
             <Container
                 maxWidth="lg"
@@ -78,7 +72,7 @@ function AssignmentCreation() {
                     container
                     spacing={2}
                 >
-                    <Grid item xs={8}>
+                    <Grid item xs={8} sx={{display: "flex", alignItems: "center"}}>
                         <Typography
                             style={{ fontWeight: "400" }}
                             variant="h6"
@@ -268,7 +262,7 @@ function AssignmentCreation() {
 
 
             </Container>
-        </div>
+        </CustomizedBody>
     )
 }
 

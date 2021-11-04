@@ -19,6 +19,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
+import CustomizedBody from "../../components/CustomizedBody";
 function RoleButton() {
   return (
     <Box
@@ -66,7 +67,7 @@ function LoginPage() {
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}> 
+    <CustomizedBody bg={bg}> 
       <NavBar></NavBar>
       <div 
         style={{
@@ -153,7 +154,7 @@ function LoginPage() {
           </CardContent>
         </CustomizedCard>
       </div>
-    </div>
+    </CustomizedBody>
   );
 }
 
