@@ -12,8 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import edu.oswego.rest.objects.Student;
-import edu.oswego.rest.service.impl.StudentService;
+import edu.oswego.util.objects.Student;
+import edu.oswego.util.service.impl.StudentService;
 
 @Path("/makeTeam")
 
@@ -22,8 +22,6 @@ public class teamManager {
     /* @Author John Owens
     Team Manager Class. Allow professor to make teams for students.
     */
-
-
      Student student = new Student();
      StudentService studentService = new StudentService();
 

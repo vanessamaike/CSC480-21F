@@ -12,8 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import edu.oswego.rest.objects.Student;
-import edu.oswego.rest.service.impl.StudentService;
+import edu.oswego.util.objects.Student;
+import edu.oswego.util.service.impl.StudentService;
 
 
 /**
@@ -25,8 +25,6 @@ import edu.oswego.rest.service.impl.StudentService;
 @Path("/parse")
 
 public class csvImport {
-
-
 
     Student student = new Student();
     StudentService studentService = new StudentService();

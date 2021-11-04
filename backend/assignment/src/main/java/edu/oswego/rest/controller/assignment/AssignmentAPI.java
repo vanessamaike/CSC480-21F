@@ -2,9 +2,9 @@ package edu.oswego.rest.controller.assignment;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
-import edu.oswego.rest.objects.Assignment;
-import edu.oswego.rest.service.IAssignmentService;
-import edu.oswego.rest.service.impl.AssignmentService;
+import edu.oswego.util.objects.Assignment;
+import edu.oswego.util.service.IAssignmentService;
+import edu.oswego.util.service.impl.AssignmentService;
 
 // JAX-RS
 import javax.ws.rs.*;

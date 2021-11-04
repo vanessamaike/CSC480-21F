@@ -1,9 +1,9 @@
 package edu.oswego.rest.controller.question;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.oswego.rest.objects.Question;
-import edu.oswego.rest.service.IQuestionService;
-import edu.oswego.rest.service.impl.QuestionService;
+import edu.oswego.util.objects.Question;
+import edu.oswego.util.service.IQuestionService;
+import edu.oswego.util.service.impl.QuestionService;
 
 // Json-B
 import javax.json.bind.Jsonb;
