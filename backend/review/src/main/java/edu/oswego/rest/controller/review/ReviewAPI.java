@@ -13,6 +13,7 @@ import edu.oswego.util.service.impl.StudentService;
 import edu.oswego.util.utility.QualityCheck;
 import edu.oswego.util.utility.SD;
 
+
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -20,8 +21,9 @@ import javax.json.bind.JsonbBuilder;
 // JAX-RS
 import javax.ws.rs.*;
 import java.io.File;
-import java.io.IOException;
+
 import java.nio.file.Files;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,7 @@ public class ReviewAPI {
     public String postReview(String payload) throws IOException {
         Review review = jsonb.fromJson(payload, Review.class);
         String res = "";
+
         List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
 
@@ -90,6 +93,7 @@ public class ReviewAPI {
 
         /* =================== comment this if you want to use local pdf file ============*/
         //byte[] bytes = review.getPdfDoc();
+
 
         /*======================== SD =================================*/
 
@@ -130,6 +134,7 @@ public class ReviewAPI {
         } catch (IOException e) {
             e.printStackTrace();
             return e.toString();
+
         }
         return res;
     }
