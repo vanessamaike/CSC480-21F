@@ -3,8 +3,8 @@ package edu.oswego.rest.controller.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import edu.oswego.util.objects.User;
-import edu.oswego.rest.service.IUserService;
-import edu.oswego.rest.service.impl.UserService;
+import edu.oswego.util.service.IUserService;
+import edu.oswego.util.service.impl.UserService;
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;

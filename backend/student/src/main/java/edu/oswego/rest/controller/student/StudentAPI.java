@@ -2,8 +2,8 @@ package edu.oswego.rest.controller.student;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.oswego.rest.service.IStudentService;
-import edu.oswego.rest.service.impl.StudentService;
+import edu.oswego.util.service.IStudentService;
+import edu.oswego.util.service.impl.StudentService;
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;

@@ -5,10 +5,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import edu.oswego.util.objects.Review;
 
-import edu.oswego.rest.service.IReviewService;
-import edu.oswego.rest.service.impl.ReviewService;
-import edu.oswego.rest.utility.QualityCheck;
-import edu.oswego.rest.utility.SD;
+import edu.oswego.util.objects.Student;
+import edu.oswego.util.service.IReviewService;
+import edu.oswego.util.service.IStudentService;
+import edu.oswego.util.service.impl.ReviewService;
+import edu.oswego.util.service.impl.StudentService;
+import edu.oswego.util.utility.QualityCheck;
+import edu.oswego.util.utility.SD;
 
 // Json-B
 import javax.json.bind.Jsonb;
@@ -18,6 +21,7 @@ import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +30,13 @@ import java.util.Map;
 public class ReviewAPI {
     private static final long serialVersionUID = 1L;
     private IReviewService reviewService;
+    private IStudentService studentService;
     private Jsonb jsonb = JsonbBuilder.create();
 
 
     public ReviewAPI() {
         reviewService = new ReviewService();
+        studentService = new StudentService();
     }
 
     @GET
@@ -64,18 +70,26 @@ public class ReviewAPI {
         return null;
     }
     @POST
-    public String postReview(String payload) throws JsonProcessingException {
+    public String postReview(String payload) throws IOException {
         Review review = jsonb.fromJson(payload, Review.class);
         String res = "";
-        String[] students =  new String[] { "Adam", "Boo", "Chris", "Dat", "Erik" };
-        ClassLoader classLoader = this.getClass().getClassLoader();
+        List<Student> allStudents = studentService.findAll();
+        String[] students = new String[allStudents.size()*2];
+
+        int i = 0;
+
+        for(Student student : allStudents){
+            students[i] = student.getFirstName();
+            students[i + 1 ] = student.getLastName();
+            i = i + 2;
+        }ClassLoader classLoader = this.getClass().getClassLoader();
 
         /*============= Use this if you want to use local pdf File ============*/
-        //File pdfFile = new File(classLoader.getResource("Br00Mi99.pdf").getFile());
-        //byte[] bytes = Files.readAllBytes(pdfFile.toPath());
+        File pdfFile = new File(classLoader.getResource("a.pdf").getFile());
+        byte[] bytes = Files.readAllBytes(pdfFile.toPath());
 
         /* =================== comment this if you want to use local pdf file ============*/
-        byte[] bytes = review.getPdfDoc();
+        //byte[] bytes = review.getPdfDoc();
 
         /*======================== SD =================================*/
 
@@ -115,6 +129,7 @@ public class ReviewAPI {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return e.toString();
         }
         return res;
     }

@@ -8,10 +8,12 @@ import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 
 
-import edu.oswego.rest.utility.QualityCheck;
+import edu.oswego.util.service.IStudentService;
+import edu.oswego.util.service.impl.StudentService;
+import edu.oswego.util.utility.QualityCheck;
 
-import edu.oswego.rest.service.ISubmissionService;
-import edu.oswego.rest.service.impl.SubmissionService;
+import edu.oswego.util.service.ISubmissionService;
+import edu.oswego.util.service.impl.SubmissionService;
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -29,11 +31,13 @@ import java.util.Map;
 public class SubmissionAPI {
     private static final long serialVersionUID = 1L;
     private ISubmissionService submissionService;
+    private IStudentService studentService;
     private Jsonb jsonb = JsonbBuilder.create();
 
 
     public SubmissionAPI() {
         submissionService = new SubmissionService();
+        studentService = new StudentService();
     }
 
     @GET
@@ -69,7 +73,7 @@ public class SubmissionAPI {
     public String postSubmission(String payload) throws IOException {
         Submission submission = jsonb.fromJson(payload, Submission.class);
         String res = "";
-        List<Student> allStudents = submissionService.findAllStudents();
+        List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
 
         int i = 0;
@@ -111,6 +115,7 @@ public class SubmissionAPI {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return e.toString();
         }
         return res;
     }
