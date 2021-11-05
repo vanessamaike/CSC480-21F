@@ -26,6 +26,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+import Loading from "../../components/Loading";
 const demoData = [
   { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
   { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
@@ -54,7 +55,7 @@ function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
   const [items, setItems] = useState(demoData);
-  
+
   const dispatch = useDispatch();
   const getCourses = useSelector(selectCourses);
   const { courses, loading, error } = getCourses;
@@ -63,15 +64,17 @@ function CourseResultPage({ history }) {
 
   const [courseNames, setCourseNames] = React.useState([]);
   useEffect(() => {
-      dispatch(getCoursesByUserId());
+    dispatch(getCoursesByUserId());
   }, [dispatch]);
   useEffect(() => {
-    var nameLists = []
-    courses.map((course) => {
-        nameLists.push(course.code)
-    })
-    setCourseNames(nameLists)
-}, [courses]);
+    var nameLists = [];
+    if (courses) {
+      courses.map((course) => {
+        nameLists.push(course.code);
+      });
+      setCourseNames(nameLists);
+    }
+  }, [courses]);
   useEffect(() => {
     console.log(filterType);
     const filteredItems = demoData.filter((item) => {
@@ -90,109 +93,128 @@ function CourseResultPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Results
-            </Typography>
-          </Grid>
-        </Grid>
-        <div>
-          <CustomizedTabs type3 setTab={setTab} value={tab} courseNames={courseNames}></CustomizedTabs>
-          {courses.map((course, key) => (
-            <TabPanel value={tab} index={key}>
-              <CustomizedCard>
-                <CardHeader
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                  title={
-                    <Grid container>
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                      >
-                        <CustomizedButtons
-                          type3
-                          model={"radio2"}
-                          fullwidth
-                          filterType={filterType}
-                          setFilterType={setFilterType}
-                        >
-                          Filter Results
-                        </CustomizedButtons>
-                      </Grid>
-                    </Grid>
-                  }
-                ></CardHeader>
-                <CardContent
-                  sx={{
-                    paddingTop: "0",
-                  }}
-                >
-                  {items.map((item) => (
-                    <Link
-                      to="/resultviewer"
-                      style={{ textDecoration: "none", color: "#000" }}
-                    >
-                      <ListItem
-                        button
-                        divider
-                        secondaryAction={
-                          <IconButton edge="end" aria-label="delete">
-                            <BsArrowRightCircle />
-                          </IconButton>
+        <>
+          {error === true || loading === true ? (
+            <Loading />
+          ) : (
+            <>
+              <Grid container sx={{ marginBottom: "20px" }}>
+                <Grid item xs={8}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Results
+                  </Typography>
+                </Grid>
+              </Grid>
+              <div>
+                <CustomizedTabs
+                  type3
+                  setTab={setTab}
+                  value={tab}
+                  courseNames={courseNames}
+                ></CustomizedTabs>
+                {courses.map((course, key) => (
+                  <TabPanel value={tab} index={key}>
+                    <CustomizedCard>
+                      <CardHeader
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                        title={
+                          <Grid container>
+                            <Grid
+                              item
+                              xs={12}
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <CustomizedButtons
+                                type3
+                                model={"radio2"}
+                                fullwidth
+                                filterType={filterType}
+                                setFilterType={setFilterType}
+                              >
+                                Filter Results
+                              </CustomizedButtons>
+                            </Grid>
+                          </Grid>
                         }
+                      ></CardHeader>
+                      <CardContent
+                        sx={{
+                          paddingTop: "0",
+                        }}
                       >
-                        <ListItemText primary={`${item.name}`} />
-                        <ListItemText
-                          sx={{ display: "flex", justifyContent: "center" }}
-                          primary={`Student submissions completed ${item.date}`}
-                        />
-                        <>
-                          {item.type === "Needs Review" ? (
-                            <>
-                            <FiberManualRecordIcon
-                          sx={{ color: "#0DC38D" }}
-                          fontSize="medium"
-                        />
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                              primary={`${item.type}`}
-                            />
-                            </>
-                          ) : (
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                              primary={`${item.type}`}
-                            />
-                          )}
-                        </>
-                      </ListItem>
-                    </Link>
-                  ))}
-                </CardContent>
-              </CustomizedCard>
-            </TabPanel>
-          ))}
-        </div>
+                        {items.map((item) => (
+                          <Link
+                            to="/resultviewer"
+                            style={{ textDecoration: "none", color: "#000" }}
+                          >
+                            <ListItem
+                              button
+                              divider
+                              secondaryAction={
+                                <IconButton edge="end" aria-label="delete">
+                                  <BsArrowRightCircle />
+                                </IconButton>
+                              }
+                            >
+                              <ListItemText primary={`${item.name}`} />
+                              <ListItemText
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                                primary={`Student submissions completed ${item.date}`}
+                              />
+                              <>
+                                {item.type === "Needs Review" ? (
+                                  <>
+                                    <FiberManualRecordIcon
+                                      sx={{ color: "#0DC38D" }}
+                                      fontSize="medium"
+                                    />
+                                    <ListItemText
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                      }}
+                                      primary={`${item.type}`}
+                                    />
+                                  </>
+                                ) : (
+                                  <ListItemText
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "flex-end",
+                                    }}
+                                    primary={`${item.type}`}
+                                  />
+                                )}
+                              </>
+                            </ListItem>
+                          </Link>
+                        ))}
+                      </CardContent>
+                    </CustomizedCard>
+                  </TabPanel>
+                ))}
+              </div>
+            </>
+          )}
+        </>
       </CustomizedContainer>
     </div>
   );

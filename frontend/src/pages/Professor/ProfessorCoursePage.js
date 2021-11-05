@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
-
+import Loading from "../../components/Loading"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -63,7 +63,7 @@ function ProfessorCourse({ history }) {
       setCourseNames(nameLists);
     }
   }, [courses]);
-  console.log(loading)
+  console.log(getCourses)
   return (
     <div
       style={{
@@ -75,6 +75,11 @@ function ProfessorCourse({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <>
+          {(error === true || loading === true) ? (
+            <Loading />
+          ) : (
+            <>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={8}>
             <Typography
@@ -113,10 +118,6 @@ function ProfessorCourse({ history }) {
             </Stack>
           </Grid>
         </Grid>
-        <>
-          {error === true ? (
-            <CircularProgress />
-          ) : (
             <div>
               <CustomizedTabs
                 type1
@@ -124,8 +125,10 @@ function ProfessorCourse({ history }) {
                 tab={tab}
                 courseNames={courseNames}
               ></CustomizedTabs>
-              {courses.map((course, key) => (
-                <TabPanel value={tab} index={key}>
+              {courses.map((course, key) => {
+              
+                console.log(course)
+                return <TabPanel value={tab} index={key}>
                   <CustomizedCard>
                     <CardHeader
                       sx={{
@@ -162,8 +165,9 @@ function ProfessorCourse({ history }) {
                         paddingTop: "0",
                       }}
                     >
-                      {[1, 2, 3].map((value) => (
+                      {course.assignments.map((assignment, key) => (
                         <ListItem
+                          key={key}
                           button
                           divider
                           secondaryAction={
@@ -172,18 +176,19 @@ function ProfessorCourse({ history }) {
                             </IconButton>
                           }
                         >
-                          <ListItemText primary="Solution 2" />
+                          <ListItemText primary={assignment.title} />
                           <ListItemText
                             sx={{ display: "flex", justifyContent: "flex-end" }}
-                            primary="Due 10/01/21"
+                            primary={assignment.solutionDueDate}
                           />
                         </ListItem>
                       ))}
                     </CardContent>
                   </CustomizedCard>
                 </TabPanel>
-              ))}
+              })}
             </div>
+            </>
           )}
         </>
       </CustomizedContainer>
