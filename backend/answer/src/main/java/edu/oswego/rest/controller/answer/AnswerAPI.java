@@ -1,11 +1,9 @@
 package edu.oswego.rest.controller.answer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import edu.oswego.rest.controller.response.IResponse;
-import edu.oswego.rest.controller.response.ResponseModel;
-import edu.oswego.rest.objects.Answer;
-import edu.oswego.rest.service.IAnswerService;
-import edu.oswego.rest.service.impl.AnswerService;
+import edu.oswego.util.objects.Answer;
+import edu.oswego.util.service.IAnswerService;
+import edu.oswego.util.service.impl.AnswerService;
 
 // Json-B
 import javax.json.bind.Jsonb;
@@ -22,17 +20,14 @@ import java.util.List;
 public class AnswerAPI {
     private static final long serialVersionUID = 1L;
     private IAnswerService answerService;
-    private IResponse response;
     private Jsonb jsonb = JsonbBuilder.create();
     public AnswerAPI() {
         answerService = new AnswerService();
-        response = new ResponseModel();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllAnswers(){
-
         List<Answer> listOfAnswers = answerService.findAll();
         //ResponseModel res = response.response_Status_OK(listOfAnswers);
         String listOfAnswers_json = jsonb.toJson(listOfAnswers);

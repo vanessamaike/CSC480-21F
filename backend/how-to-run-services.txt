@@ -1,0 +1,20 @@
+"chmod +x start-server.sh" and "chmod +x stop-server.sh"
+
+linux:
+./start-server.sh server-paths-linux.txt
+./stop-server.sh server-paths-linux.txt
+windows:
+./start-server.sh server-paths-windows.txt
+./stop-server.sh server-paths-windows.txt
+
+answer : 9080
+assignment : 9081
+course : 9082
+question : 9083
+review : 9084
+student : 9085
+submission : 9086
+user : 9087
+csvImport : 9088
+documentDistributor : 9089
+
