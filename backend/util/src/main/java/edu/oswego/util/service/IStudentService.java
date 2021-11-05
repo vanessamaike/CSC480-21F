@@ -1,5 +1,6 @@
 package edu.oswego.util.service;
 
+import edu.oswego.util.objects.Course_Team_Student;
 import edu.oswego.util.objects.Student;
 
 import java.util.List;
@@ -7,10 +8,14 @@ import java.util.List;
 public interface IStudentService{
     Student save(Student student);
     List<Student> findAll();
-    Student findOne(String studentId);
+    Student findOne(int userId);
     Student update(Student student);
     Student delete(Student student);
     void deleteAll();
-    Student findUserID(int userId);
-    Student findTeamID(int id);
+    List<Student> findStudentsByTeamID(int teamId);
+    List<Student> findStudentsByCourseID(int courseId);
+    List<Integer> findDistinctTeamIDsByCourseID(int courseId);
+    int setCourseForStudent(int userId, int courseId);
+    int generateUniqueRandomTeamId();
+    Course_Team_Student setTeamForStudentByUserIdAndCourseId(int userId, int courseId, int teamId);
 }

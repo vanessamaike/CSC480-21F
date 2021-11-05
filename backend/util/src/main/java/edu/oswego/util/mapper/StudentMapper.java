@@ -14,10 +14,7 @@ public class StudentMapper implements RowMapper<Student>{
                     rs.getInt("userID"),
                     rs.getString("firstName"),
                     rs.getString("lastName"),
-                    rs.getString("email"),
-                    rs.getInt("teamID"),
-                    rs.getFloat("score"),
-                    rs.getInt("courseID")
+                    rs.getString("email")
             );
             return student;
         }catch(SQLException e)

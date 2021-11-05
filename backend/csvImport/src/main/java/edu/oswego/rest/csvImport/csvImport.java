@@ -33,10 +33,9 @@ public class csvImport {
    @POST
    public void parse(String payload) throws ClassNotFoundException, JsonProcessingException { //receive json array from frontEnd. Ask John for exact input if unsure
 
-
     JSONObject obj = new JSONObject(payload);
-    JSONArray studentsJSON = obj.getJSONArray("CSV_Contents");  //json array of csv contents 
-    
+    JSONArray studentsJSON = obj.getJSONArray("CSV_Contents");  //json array of csv contents
+    int courseID = obj.getInt("courseID");
      for (int i = 0; i < studentsJSON.length(); i++) {  //for each student
 
         String pay = studentsJSON.get(i).toString();
@@ -52,7 +51,7 @@ public class csvImport {
                  removeSpecialCharacters(individualTokensKey, individualTokensWithoutExcess, z, hashmap);        
         }
         
-        addToDatabase(hashmap.get("\"StudentID\""), hashmap.get("\"FirstName\""), hashmap.get("\"LastName\""), hashmap.get("\"Email\""));
+        addToDatabase(hashmap.get("\"StudentID\""), hashmap.get("\"FirstName\""), hashmap.get("\"LastName\""), hashmap.get("\"Email\""),courseID);
 
      }
     
@@ -77,11 +76,11 @@ public class csvImport {
     }
 
 
-    public void addToDatabase(String sId, String fn, String ln, String em) { //add student to student object in database
-
+    public void addToDatabase(String sId, String fn, String ln, String em, int courseId) { //add student to student object in database
 
         Student studentToAdd = makeStudentWithoutSpecialCharacters(sId, fn, ln, em);
-        studentService.save(studentToAdd);
+        studentToAdd = studentService.save(studentToAdd);
+        studentService.setCourseForStudent(studentToAdd.getUserID(),courseId);
         System.out.println("\n\n Successfully added Student to Database");
 
         
@@ -94,7 +93,8 @@ public class csvImport {
         String firstName = fn.replace("\"", "");
         String lastName = ln.replace("\"", "");
         String email = em.replace("\"", "");
-        Student studentToAdd = new Student(studentID, 0, firstName, lastName, email, 0, (float) 0.0, 0); //userId will be changed in backend
+        Student studentToAdd = new Student(studentID, 0, firstName, lastName, email); //userId will be changed in backend
+
         return studentToAdd;
 
     }

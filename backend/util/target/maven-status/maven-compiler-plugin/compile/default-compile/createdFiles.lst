@@ -27,6 +27,7 @@ edu\oswego\util\dao\impl\AbstractDAO.class
 edu\oswego\util\utility\SD.class
 edu\oswego\util\dao\IUserDAO.class
 edu\oswego\util\mapper\StudentMapper.class
+edu\oswego\util\mapper\Course_Team_Student_Mapper.class
 edu\oswego\util\objects\Submission.class
 edu\oswego\util\dao\ICourseDAO.class
 edu\oswego\util\service\impl\StudentService.class
@@ -50,6 +51,7 @@ edu\oswego\util\dao\impl\CourseDAO.class
 edu\oswego\util\objects\Assignment.class
 edu\oswego\util\objects\Course.class
 edu\oswego\util\mapper\AssignmentMapper.class
+edu\oswego\util\objects\Course_Team_Student.class
 edu\oswego\util\service\impl\AssignmentService.class
 edu\oswego\util\objects\Question.class
 edu\oswego\util\service\ISubmissionService.class
