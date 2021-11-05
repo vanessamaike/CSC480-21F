@@ -3,6 +3,7 @@ package edu.oswego.util.service.impl;
 
 import edu.oswego.util.dao.IStudentDAO;
 import edu.oswego.util.dao.impl.StudentDAO;
+import edu.oswego.util.objects.Course_Team_Student;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.service.IStudentService;
 
@@ -17,8 +18,8 @@ public class StudentService implements IStudentService {
     }
     @Override
     public Student save(Student student) {
-        studentDao.save(student);
-        return studentDao.findOne(student.getStudentID());
+        int userId = studentDao.save(student);
+        return studentDao.findOne(userId);
     }
     @Override
     public List<Student> findAll() {
@@ -26,14 +27,14 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public Student findOne(String studentId) {
-        return studentDao.findOne(studentId);
+    public Student findOne(int userId) {
+        return studentDao.findOne(userId);
     }
 
     @Override
     public Student update(Student student) {
         studentDao.update(student);
-        return studentDao.findOne(student.getStudentID());
+        return studentDao.findOne(student.getUserID());
     }
 
     @Override
@@ -48,12 +49,30 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public Student findUserID(int userId) {
-        return studentDao.findUserID(userId);
+    public List<Student> findStudentsByTeamID(int teamId) {
+        return studentDao.findStudentsByTeamID(teamId);
     }
 
     @Override
-    public Student findTeamID(int id) {
-        return studentDao.findTeamID(id);
+    public List<Student> findStudentsByCourseID(int courseId) {
+        return studentDao.findStudentsByCourseID(courseId);
+    }
+
+    @Override
+    public List<Integer> findDistinctTeamIDsByCourseID(int courseId) {
+        return studentDao.findDistinctTeamIDsByCourseID(courseId);
+    }
+
+    @Override
+    public int setCourseForStudent(int userId, int courseId){
+        return studentDao.setCourseForStudent(userId,courseId);
+    }
+    @Override
+    public int generateUniqueRandomTeamId(){
+            return studentDao.generateUniqueRandomTeamId();
+    }
+    @Override
+    public Course_Team_Student setTeamForStudentByUserIdAndCourseId(int userId, int courseId, int teamId) {
+        return  studentDao.setTeamForStudentByUserIdAndCourseId(userId,courseId, teamId);
     }
 }

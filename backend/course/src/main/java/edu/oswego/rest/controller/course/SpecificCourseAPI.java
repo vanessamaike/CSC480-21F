@@ -45,7 +45,7 @@ public class SpecificCourseAPI {
     }
 
 
-    @GET
+/*    @GET
     public String getAllCourses(){
         //TODO This method needs to ensure authentication
         Course c = courseService.findAll().get(0);
@@ -65,42 +65,42 @@ public class SpecificCourseAPI {
 
         message = jsonc.toString();
         return message;
-    }
+    }*/
 
     @GET
-    @Path("/{courseId}")
-    public String getSpecificCourse(@PathParam("courseId") String _courseId){
+    @Path("/{userId}/course/team")
+    public String getSpecificCourse(@PathParam("userId") int userId){
         //TODO This method needs to ensure authentication
-        JSONObject jsonc = new JSONObject();
-        List<Answer> answers = answerService.findAll();
-        List<Assignment> assignments = assignmentService.findAll();
-        List<Course> courses = courseService.findAll();
-        List<Student> students = studentService.findAll();
-        List<Question> questions = questionService.findAll();
-        List<Review> reviews = reviewService.findAll();
-        List<Submission> submissions = submissionService.findAll();
-        List<User> users = userService.findAll();
-        JSONArray answersJSON = new JSONArray(answers);
-        JSONArray assignmentsJSON = new JSONArray(assignments);
-        JSONArray coursesJSON = new JSONArray(courses);
-        JSONArray studentsJSON = new JSONArray(students);
-        JSONArray questionsJSON = new JSONArray(questions);
-        JSONArray reviewsJSON = new JSONArray(reviews);
-        JSONArray submissionsJSON = new JSONArray(submissions);
-        JSONArray usersJSON = new JSONArray(users);
 
-        jsonc.put("answers",answersJSON);
-        jsonc.put("assignments",assignmentsJSON);
-        jsonc.put("courses",coursesJSON);
-        jsonc.put("students",studentsJSON);
-        jsonc.put("questions",questionsJSON);
-        jsonc.put("reviews",reviewsJSON);
-        jsonc.put("submissions",submissionsJSON);
-        jsonc.put("users",usersJSON);
-        String message;
-        message = jsonc.toString();
+        List<Course> courses = courseService.findCoursesByUserId(userId);
+        JSONArray listOfCoursesJSON = new JSONArray();
+        for(Course course : courses)
+        {
+            JSONObject courseJSON = new JSONObject(course);
 
-        return message;
+            List<Student> students = studentService.findStudentsByCourseID(course.getCourseID());
+            JSONArray listOfStudentsJSON = new JSONArray(students);
+            courseJSON.put("students",listOfStudentsJSON);
+
+            List<Integer> distinctTeamIDs = studentService.findDistinctTeamIDsByCourseID(course.getCourseID());
+            JSONArray listOfTeamsJSON = new JSONArray();
+
+            for(Integer teamId : distinctTeamIDs)
+            {
+                JSONObject teamJSON = new JSONObject();
+                teamJSON.put("teamID",teamId);
+
+                List<Student> studentsInTeam = studentService.findStudentsByTeamID(teamId);
+                JSONArray listOfStudentsInTeamJSON = new JSONArray(studentsInTeam);
+                teamJSON.put("students",listOfStudentsInTeamJSON);
+
+                listOfTeamsJSON.put(teamJSON);
+            }
+            courseJSON.put("teams", listOfTeamsJSON);
+            listOfCoursesJSON.put(courseJSON);
+        }
+        return listOfCoursesJSON.toString();
+
     }
 
 }
