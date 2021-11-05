@@ -140,7 +140,7 @@ function AssignmentViewer() {
                     marginBottom: "10px",
                     fontWeight: "300px"
                   }}
-                  variant="h6"
+                  variant="h7"
                   component="div"
                 >
                   Publish Date:
@@ -155,7 +155,7 @@ function AssignmentViewer() {
                     marginBottom: "10px",
                     fontWeight: "300px"
                   }}
-                  variant="h6"
+                  variant="h7"
                   component="div"
                 >
                   Solution Due Date:
@@ -170,7 +170,7 @@ function AssignmentViewer() {
                     marginBottom: "10px",
                     fontWeight: "300px"
                   }}
-                  variant="h6"
+                  variant="h7"
                   component="div"
                 >
                   Peer Review Due:
