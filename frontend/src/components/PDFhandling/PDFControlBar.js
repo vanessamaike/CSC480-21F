@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import React from 'react';
 import CustomizedButtons from "../../components/CustomizedButtons";
 
@@ -51,9 +52,10 @@ const ControlPanel = (props) => {
         <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           onClick={goToFirstPage}
         >first page</CustomizedButtons>
-        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
+        
+        <CustomizedButtons type3 model={"arrowL"} style={{ marginBottom: "10px"}}
           onClick={goToPreviousPage}
-        >previous</CustomizedButtons>
+        ></CustomizedButtons>
         <span style={{ marginBottom: "10px"}}>
           Page{' '}
           <input style={{ marginBottom: "10px"}}
@@ -66,10 +68,10 @@ const ControlPanel = (props) => {
           />{' '}
           of {numPages}
         </span>
-        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
+        <CustomizedButtons type3 model={"arrow"} style={{ marginBottom: "10px"}}
           
           onClick={goToNextPage}
-          >next page</CustomizedButtons>
+          ></CustomizedButtons>
         <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           
           onClick={goToLastPage}
@@ -85,8 +87,7 @@ const ControlPanel = (props) => {
           >zoom in</CustomizedButtons>
       </div>
       <div >
-        <CustomizedButtons type3 style={{ marginBottom: "10px"}} href={file} download={true} title="download">download
-        </CustomizedButtons>
+      <CustomizedButtons type2 model={"download"} style={{ marginBottom: "10px"}} href={file} download={true} title="download"> Download PDF</CustomizedButtons>
       </div>
       <div >
       </div>

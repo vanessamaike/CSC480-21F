@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 // @mui components
 import {
     Grid,
@@ -113,7 +114,12 @@ function AssignmentCreation(){
                     <Grid item xs={2}>
                     </Grid>
                     <Grid item xs={2}>
-                        <CustomizedButtons type2 >Preview</CustomizedButtons>
+                    <Link
+                        to="/assignmentviewer"
+                        style={{ textDecoration: "none", color: "#000" }}
+                        >
+                  <CustomizedButtons type2 >Preview</CustomizedButtons>
+                </Link>
                     </Grid>
                 </Grid>
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 // @mui components
 import {
     Grid,
@@ -13,34 +14,76 @@ import {
     autocompleteClasses,
 } from "@mui/material";
 // styled components
+import CustomizedTabs from "../../components/CustomizedTabs";
+import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import NavBar from "../../components/NavBar/NavBar";
 import bg from "../../images/multi_background_dashboard.jpg";
 import PDFControlBar from '../../components/PDFhandling/PDFControlBar';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { useSelector } from "react-redux";
 import { selectPdf } from "../../features/pdfSlice";
 import viewPdf from "../../pdfsample/sample.pdf"
+import { BiBorderRadius } from "react-icons/bi";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+import Loading from "../../components/Loading"
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      sx={{ borderRadius: "10px" }}
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+}
+
 function AssignmentViewer() {
     const getPdf = useSelector(selectPdf);
+    // const {viewPdf} = getPdf;
     const [scale, setScale] = useState(1.0);
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const isFirstPage = pageNumber === 1;
+    const isLastPage = pageNumber === numPages;
     const [isLoading, setIsLoading] = useState(true);
-    console.log(viewPdf)
+    const getCourses = useSelector(selectCourses);
+    const { courses, loading, error } = getCourses;
+    const [tab, setTab] = React.useState(0);
+    const [courseNames, setCourseNames] = React.useState([]);
+    console.log(getPdf)
     console.log(isLoading)
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
         setIsLoading(false);
       }
+      useEffect(() => {
+        var nameLists = [];
+        if (courses != null) {
+          courses.map((course) => {
+            nameLists.push(course.code);
+          });
+          setCourseNames(nameLists);
+        }
+      }, [courses]);
+      console.log(getCourses)
+      const goToPreviousPage = () => {
+        if (!isFirstPage) setPageNumber(pageNumber - 1);
+      };
+      const goToNextPage = () => {
+        if (!isLastPage) setPageNumber(pageNumber + 1);
+      };
 
-const pdfGenerate = ()=>{
-    // var doc =new jsPDF{uploaded pdf}
-    // doc.save({name of the pdf})
-}
 
-// console.log(pdfFileErrorv);
+
     return (
         <div 
         style={{
@@ -69,58 +112,118 @@ const pdfGenerate = ()=>{
                         <Grid item xs={2}>
                     </Grid>
                     <Grid item xs={2}>
-                        <CustomizedButtons type2 > Close Preview</CustomizedButtons>
+                    <Link
+                        to="/assignmentcreation"
+                        style={{ textDecoration: "none", color: "#000" }}
+                        >
+                  <CustomizedButtons type2 > Close Preview</CustomizedButtons>
+                </Link>
+                        
                     </Grid>
                         </Grid>
                 <div style={{
+                    display: "flex",
                     width: "100%",
-                    height: "550px",
+                    height: "90px",
                     backgroundColor: "white",
                     overflowY: "auto",
                     padding: "10px",
+                    marginBottom: "20px",
+                    borderRadius: "10px"
                 }}>
-                    
-                    <Grid item xs={15}>
-                <Typography
+                    <Grid item xs={4}>
+                    <Typography
                   style={{
+                      padding:"30px",
                     display: "flex",
                     textAlign: "center",
-                    fontWeight: "600",
                     marginBottom: "10px",
+                    fontWeight: "300px"
                   }}
                   variant="h6"
                   component="div"
                 >
-                  Due {/*due date from assignment creation page */}
-                  <Grid item xs={12}>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <CustomizedButtons type2 onClick={pdfGenerate} model={"download"}> Download PDF</CustomizedButtons>
-                    </Grid>
-                </Typography>
+                  Publish Date:
+                  </Typography>
                         </Grid>
+                  <Grid item xs={4}>
+                    <Typography
+                  style={{
+                    padding:"30px",
+                    display: "flex",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    fontWeight: "300px"
+                  }}
+                  variant="h6"
+                  component="div"
+                >
+                  Solution Due Date:
+                  </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography
+                  style={{
+                      padding:"30px",
+                    display: "flex",
+                    textAlign: "center",
+                    marginBottom: "10px",
+                    fontWeight: "300px"
+                  }}
+                  variant="h6"
+                  component="div"
+                >
+                  Peer Review Due:
+                  </Typography>
+                  </Grid>
+                </div>
+                <div style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "800px",
+                    backgroundColor: "white",
+                    overflowY: "auto",
+                    padding: "10px",
+                    marginBottom: "20px",
+                    borderRadius: "10px",
+                    alignContent: "center",
+                }}>    
+                    {/* <CustomizedTabs
+                        type1
+                        setTab={setTab}
+                        tab={tab}
+                        courseNames={courseNames}
+                    ></CustomizedTabs>
+                    {courses.map((course, key) => {
                     
+                        console.log(course)
+                        return <TabPanel value={tab} index={key}>
+                        <CustomizedCard>
+                        </CustomizedCard>
+                        </TabPanel>
+                    })} */}
                         <Container style={{
+                            alignItems: "center",
+                            marginLeft: "100px",
                             display: "flex",
                             padding: "10px",
 
                         }}>
                         {viewPdf&&<>
-                                            <PDFControlBar
-                                            scale={scale}
-                                            setScale={setScale}
-                                            numPages={numPages}
-                                            pageNumber={pageNumber}
-                                            setPageNumber={setPageNumber}
-                                            file={viewPdf}
-                                            />
-                                            <Document
-                                            file={viewPdf}
-                                            onLoadSuccess={onDocumentLoadSuccess}
-                                            >
-                                            <Page pageNumber={pageNumber} scale={scale} />
-                                            </Document>
-                                        </>}
+                        <CustomizedButtons model={"arrowL"} style={{ color: "black",marginBottom: "10px"}}
+                        onClick={goToPreviousPage}
+                        ></CustomizedButtons>
+                        <Document
+                        file={viewPdf}
+                        onLoadSuccess={onDocumentLoadSuccess}
+                        >
+                        <Page pageNumber={pageNumber} scale={scale} />
+                        </Document>
+                        <CustomizedButtons model={"arrow"} style={{ color: "black",marginBottom: "10px"}}
+          
+                        onClick={goToNextPage}
+                        ></CustomizedButtons>
+                        </>}
                         </Container>
                         
                 </div>
@@ -131,3 +234,6 @@ const pdfGenerate = ()=>{
 }
 
 export default AssignmentViewer
+{/* <div>
+              
+            </div> */}

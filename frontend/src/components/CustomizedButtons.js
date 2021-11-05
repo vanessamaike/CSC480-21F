@@ -9,7 +9,7 @@ import { IoDownloadOutline} from "react-icons/io5";
 import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
 import {IoIosAddCircleOutline, IoIosArrowDropdown} from "react-icons/io";
-import {BsArrowRightCircle} from "react-icons/bs";
+import {BsArrowRightCircle, BsArrowLeftCircle} from "react-icons/bs";
 import {BiCheckCircle} from 'react-icons/bi'
 import CustomizedSwitch from "../components/CustomizedSwitch"
 import CustomizedRadios from "../components/CustomizedRadios"
@@ -52,12 +52,14 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "download" ? <IoDownloadOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
+      {model === "arrowL" ? <BsArrowLeftCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "switch" ? <CustomizedSwitch  setViewType={setViewType}/> : <>
       {model === "radio1" ? <CustomizedRadios type={'radio1'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "radio2" ? <CustomizedRadios type={'radio2'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "radio3" ? <CustomizedRadios type={'radio3'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "checked" ? <BiCheckCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "expand" ? <IoIosArrowDropdown size="1.5em" style={{marginLeft: "5px"}} /> : <>
+      </>}
       </>}
       </>}
       </>}
