@@ -24,6 +24,7 @@ import {
   TextField,
   Modal,
   Fade,
+  Breadcrumbs
 } from "@mui/material";
 import CSVUploader from "../../components/CSVUploader";
 import CustomizedCard from "../../components/CustomizedCard";
@@ -38,6 +39,12 @@ function ResultsViewerPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={8}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Courses</Typography>
+          <Typography color="text.primary">Course Name</Typography>
+          <Typography color="text.primary">New Assignment</Typography>
+        </Breadcrumbs>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
             <Typography

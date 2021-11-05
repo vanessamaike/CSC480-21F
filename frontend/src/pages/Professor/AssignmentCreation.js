@@ -10,6 +10,7 @@ import {
     Box,
     Stack,
     Radio,
+    Breadcrumbs
 } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -68,6 +69,12 @@ function AssignmentCreation() {
                     // justifyContent: "space-around",
                 }}
             >
+        <Breadcrumbs aria-label="breadcrumb" mb={8}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Courses</Typography>
+          <Typography color="text.primary">Course Name</Typography>
+          <Typography color="text.primary">New Assignment</Typography>
+        </Breadcrumbs>
                 <Grid
                     container
                     spacing={2}

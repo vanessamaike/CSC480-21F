@@ -86,6 +86,7 @@ function ProfessorHomeDashBoard({history}) {
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
+     
       <>
           {(loading === true) ? (
             <Loading />

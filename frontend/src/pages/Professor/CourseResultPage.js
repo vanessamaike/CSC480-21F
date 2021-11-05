@@ -19,6 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -88,6 +89,10 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={8}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Course Results</Typography>
+        </Breadcrumbs>
         <>
           {error === true || loading === true ? (
             <Loading />

@@ -19,6 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -65,6 +66,10 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={8}>
+          <Typography color="text.primary">Student Dashboard</Typography>
+          <Typography color="text.primary">Peer Review Results</Typography>
+        </Breadcrumbs>
               <Grid container sx={{ marginBottom: "20px" }} spacing={9}>
                 <Grid item xs={9}>
                   <Typography
