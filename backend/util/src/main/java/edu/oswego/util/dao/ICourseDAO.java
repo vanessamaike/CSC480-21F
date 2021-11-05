@@ -8,6 +8,7 @@ public interface ICourseDAO {
     int save(Course course);
     List<Course> findAll();
     Course findOne(int courseId);
+    List<Course> findCoursesByUserId(int userId);
     void update(Course course);
     void delete(Course course);
     void deleteAll();

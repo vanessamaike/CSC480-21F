@@ -1,23 +1,14 @@
 use CSC480database;     
 
 
+
 CREATE TABLE user(
 	userId int NOT NULL,
     email VARCHAR(32) NOT NULL,
     settings VARCHAR(32) NOT NULL,
     role char(32) NOT NULL
 );
-     
-CREATE TABLE student(
-	studentId VARCHAR(32) NOT NULL,
-    userId int NOT NULL,
-    firstName VARCHAR(32) NOT NULL,
-    lastName VARCHAR(32) NOT NULL,
-    email VARCHAR(32) NOT NULL,
-    teamID int NOT NULL,
-    score float,
-    courseId int
-);
+
 
 CREATE TABLE course(
 	courseId int NOT NULL,
@@ -26,7 +17,21 @@ CREATE TABLE course(
     code VARCHAR(32) NOT NULL,
     sectionNumber VARCHAR(32) NOT NULL,
     endDate date NOT NULL,
-    settings CHAR(32) NOT NULL    
+    settings CHAR(32) NOT NULL
+);
+
+CREATE TABLE student(
+	studentId VARCHAR(32) NOT NULL,
+    userId int NOT NULL,
+    firstName VARCHAR(32) NOT NULL,
+    lastName VARCHAR(32) NOT NULL,
+    email VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE course_team_student(
+	teamId int NOT NULL,
+	userId int NOT NULL,
+    courseId int NOT NULL
 );
 
 CREATE TABLE assignment( 

@@ -33,16 +33,23 @@ public class CourseDAO extends AbstractDAO<Course> implements ICourseDAO {
 
     @Override
     public List<Course> findAll() {
-        String sql = "SELECT courseID, userID, title, code , sectionNumber, endDate ,settings FROM course";
+        String sql = "SELECT * FROM course";
         List<Course> course = query(sql, new CourseMapper());
-        return course.isEmpty() ? null : course;
+        return  course;
     }
 
     @Override
     public Course findOne(int courseId) {
-        String sql = "SELECT courseID, userID, title, code , sectionNumber, endDate ,settings FROM course WHERE courseID = ?";
+        String sql = "SELECT * FROM course WHERE courseID = ?";
         List<Course> course = query(sql, new CourseMapper(), courseId);
         return course.isEmpty() ? null : course.get(0);
+    }
+
+    @Override
+    public List<Course> findCoursesByUserId(int userId) {
+        String sql = "SELECT * FROM course WHERE userID = ?";
+        List<Course> course = query(sql, new CourseMapper(), userId);
+        return course;
     }
 
     @Override

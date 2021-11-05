@@ -6,9 +6,7 @@ public class Student{
     private String firstName;
     private String lastName;
     private String email;
-    private int teamID;
-    private float score;
-    private int courseID;
+
 
     public Student() {
         this.userID = 0;
@@ -16,20 +14,14 @@ public class Student{
         this.firstName = "";
         this.lastName = "";
         this.email = "";
-        this.teamID = 0;
-        this.score = 0.0f;
-        this.courseID = 0;
     }
 
-    public Student(String studentID, int userID, String firstName, String lastName, String email, int teamID, float score, int courseID) {
+    public Student(String studentID, int userID, String firstName, String lastName, String email) {
         this.userID = userID;
         this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.teamID = teamID;
-        this.score = score;
-        this.courseID = courseID;
     }
 
     public int getUserID() {
@@ -56,17 +48,6 @@ public class Student{
         this.email = email;
     }
 
-    public int getTeamID() {
-        return teamID;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public int getCourseID() {
-        return courseID;
-    }
 
     public void setUserID(int userID) {
         this.userID = userID;
@@ -84,15 +65,4 @@ public class Student{
         this.lastName = lastName;
     }
 
-    public void setTeamID(int teamID) {
-        this.teamID = teamID;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
-    }
-
-    public void setCourseID(int courseID) {
-        this.courseID = courseID;
-    }
 }
