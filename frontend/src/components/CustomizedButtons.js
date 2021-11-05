@@ -38,9 +38,9 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
   //const classes = makeComponentStyles();
   const btnClasses = classNames({
     [classes.fullwidth]: fullwidth,
-    [classes.type1]: type1,
-    [classes.type2]: type2,
-    [classes.type3]: type3,
+    [classes.type1]: type1, //black color background
+    [classes.type2]: type2, //transparent color background
+    [classes.type3]: type3, //gray color background
     [classes.height1]: height1,
     [classes.height2]: height2,
     [classes.root]: true

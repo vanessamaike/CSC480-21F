@@ -28,6 +28,7 @@ import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
 
 const demoData = [
   { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
@@ -56,18 +57,14 @@ function TabPanel(props) {
 function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [items, setItems] = useState(demoData);
+  const [courses, setCourses] = useState([]);
 
   const dispatch = useDispatch();
-  const getCourses = useSelector(selectCourses);
-  const { courses, loading, error } = getCourses;
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
-
+  const [loading, setLoading] = React.useState(true);
   const [courseNames, setCourseNames] = React.useState([]);
-  useEffect(() => {
-    dispatch(getCoursesByUserId());
-  }, [dispatch]);
+  console.log(filterType);
   useEffect(() => {
     var nameLists = [];
     if (courses) {
@@ -75,26 +72,43 @@ function CourseResultPage({ history }) {
         nameLists.push(course.code);
       });
       setCourseNames(nameLists);
+      setLoading(false);
     }
   }, [courses]);
   useEffect(() => {
-    console.log(filterType);
-    const filteredItems = demoData.filter((item) => {
-      return item.type == filterType || filterType === "All";
-    });
-    setItems(filteredItems);
-  }, [filterType]);
+    async function getCourses() {
+      try {
+        const response = await axios.get("http://localhost:3000/courses");
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getCourses();
+  }, []);
+  // useEffect(() => {
+  //   console.log(filterType);
+  //   const filteredItems = courses.assignments.filter((assignment) => {
+  //     return item.type == filterType || filterType === "All";
+  //   });
+  //   setItems(filteredItems);
+  // }, [filterType]);
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
         <>
-          {error === true || loading === true ? (
+          {loading === true ? (
             <Loading />
           ) : (
             <>
               <Grid container spacing={15} sx={{ marginBottom: "20px" }}>
-                <Grid item xs={6} sx={{display: "flex", alignItems: "center"}}>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
                   <Typography
                     style={{
                       display: "flex",
@@ -116,7 +130,7 @@ function CourseResultPage({ history }) {
                   type3
                   setTab={setTab}
                   value={tab}
-                  courseNames={courseNames}
+                  labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => (
                   <TabPanel value={tab} index={key}>
@@ -155,52 +169,139 @@ function CourseResultPage({ history }) {
                           paddingTop: "0",
                         }}
                       >
-                        {items.map((item) => (
-                            <ListItem
-                              button
-                              divider
-                              onClick={() => history.push("/resultviewer")}
-                              secondaryAction={
-                                <IconButton edge="end" aria-label="delete">
-                                  <BsArrowRightCircle />
-                                </IconButton>
-                              }
-                            >
-                              <ListItemText primary={`${item.name}`} />
-                              <ListItemText
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                                primary={`Student submissions completed ${item.date}`}
-                              />
-                              <>
-                                {item.type === "Needs Review" ? (
-                                  <>
-                                    <FiberManualRecordIcon
-                                      sx={{ color: "#0DC38D" }}
-                                      fontSize="medium"
-                                    />
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`${item.type}`}
-                                    />
-                                  </>
-                                ) : (
+                        {course.assignments.map((assignment) => {
+                          return (
+                            <>
+                              {(filterType === "All" ||
+                                (filterType === "Completed") ===
+                                  assignment.solution[0].isReviewed) && (
+                                <ListItem
+                                  button
+                                  divider
+                                  onClick={() =>
+                                    history.push("/studentsolutionqualitycheck")
+                                  }
+                                  secondaryAction={
+                                    <IconButton edge="end">
+                                      <BsArrowRightCircle />
+                                    </IconButton>
+                                  }
+                                >
                                   <ListItemText
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "flex-end",
-                                    }}
-                                    primary={`${item.type}`}
+                                    sx={{ width: "30%" }}
+                                    primary={`${assignment.title} Solutions`}
                                   />
-                                )}
-                              </>
-                            </ListItem>
-                        ))}
+
+                                  <>
+                                    {assignment.solution[0].isReviewed ===
+                                    false ? (
+                                      <>
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                          primary={`submissions closed ${assignment.peerreview[0].dueDate}`}
+                                        />
+                                        <ListItemText
+                                          primary={
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "flex-end",
+                                              }}
+                                            >
+                                              <FiberManualRecordIcon
+                                                sx={{
+                                                  color: "#0DC38D",
+                                                  marginRight: "10px",
+                                                }}
+                                                fontSize="medium"
+                                              />{" "}
+                                              <>Needs Review</>
+                                            </div>
+                                          }
+                                        />
+                                      </>
+                                    ) : (
+                                      <ListItemText
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                        primary={`Completed ${assignment.solution[0].dueDate}`}
+                                      />
+                                    )}
+                                  </>
+                                </ListItem>
+                              )}
+                              {(filterType === "All" ||
+                                (filterType === "Completed") ===
+                                  assignment.peerreview[0].isReviewed) && (
+                                <ListItem
+                                  button
+                                  divider
+                                  onClick={() => history.push("/resultviewer")}
+                                  secondaryAction={
+                                    <IconButton edge="end">
+                                      <BsArrowRightCircle />
+                                    </IconButton>
+                                  }
+                                >
+                                  <ListItemText
+                                    sx={{ width: "30%" }}
+                                    primary={`${assignment.title} Peer Reviews`}
+                                  />
+
+                                  <>
+                                    {assignment.peerreview[0].isReviewed ===
+                                    false ? (
+                                      <>
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                          primary={`submissions closed ${assignment.peerreview[0].dueDate}`}
+                                        />
+
+                                        <ListItemText
+                                          primary={
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "flex-end",
+                                              }}
+                                            >
+                                              <FiberManualRecordIcon
+                                                sx={{
+                                                  color: "#0DC38D",
+                                                  marginRight: "10px",
+                                                }}
+                                                fontSize="medium"
+                                              />{" "}
+                                              <>Needs Review</>
+                                            </div>
+                                          }
+                                        />
+                                      </>
+                                    ) : (
+                                      <ListItemText
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                        primary={`Completed ${assignment.peerreview[0].dueDate}`}
+                                      />
+                                    )}
+                                  </>
+                                </ListItem>
+                              )}
+                            </>
+                          );
+                        })}
                       </CardContent>
                     </CustomizedCard>
                   </TabPanel>

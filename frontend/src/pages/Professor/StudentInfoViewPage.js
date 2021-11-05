@@ -153,11 +153,6 @@ function StudentInfoViewPage({ history }) {
   const [courses, setCourses] = React.useState([]);
   const [courseNames, setCourseNames] = React.useState([]);
 
-//   useEffect(() => {
-//       dispatch(getCoursesByUserId());
-//       dispatch(getCoursesByUserId());
-//       setLoading(true)
-//   }, [dispatch]);
   useEffect(() => {
     var courseNameLists = []
     console.log(courses)
@@ -225,7 +220,7 @@ function StudentInfoViewPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type2 setTab={setTab} value={tab} courseNames={courseNames}></CustomizedTabs>
+          <CustomizedTabs type2 setTab={setTab} value={tab} labels={courseNames}></CustomizedTabs>
           {courses.map((course, key) => (
             <TabPanel value={tab} index={key}>
               <CustomizedCard>

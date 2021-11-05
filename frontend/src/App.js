@@ -22,13 +22,9 @@ import StudentHomeDashboard from './pages/Student/StudentHomeDashboard';
 import SeeAllAssignmentPage from './pages/Student/SeeAllAssignmentPage';
 import StudentTeamsPage from './pages/Student/StudentTeamsPage';
 import {isMobile} from 'react-device-detect';
-import { useSelector, useDispatch } from "react-redux";
-import { selectUser } from "./features/userSlice";
 
 function App() {
-  const getUser = useSelector(selectUser)
-  const {user, isAuthenticated} = getUser
-  console.log(isAuthenticated)
+
   return (
   <>
     { isMobile == true ? (
@@ -36,21 +32,21 @@ function App() {
     ) : (
       <Router>
       <Switch>
-        <PublicRoute exact path="/" isAuthenticated={isAuthenticated}></PublicRoute>
+        <PublicRoute exact path="/" ></PublicRoute>
         <Route exact path="/login" component={LoginPage}></Route>
-        <PrivateRoute exact path="/professorhome" component={ProfessorHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/testing" component={TestingPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/course" component={ProfessorCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/coursecreation" component={AddCoursePage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/assignmentcreation" component={AssignmentCreation} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/studentinfoview" component={StudentInfoViewPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/courseresult" component={CourseResultPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/studentsolutionqualitycheck" component={StudentSolutionQualityCheckPage} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <PrivateRoute exact path="/professorhome" component={ProfessorHomeDashboard} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/testing" component={TestingPage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/course" component={ProfessorCoursePage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/coursecreation" component={AddCoursePage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/assignmentcreation" component={AssignmentCreation} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/studentinfoview" component={StudentInfoViewPage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/courseresult" component={CourseResultPage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/studentsolutionqualitycheck" component={StudentSolutionQualityCheckPage} roleAccess={"professor"}></PrivateRoute>
 
-        <PrivateRoute exact path="/studenthome" component={StudentHomeDashboard} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/seeallassignment" component={SeeAllAssignmentPage} isAuthenticated={isAuthenticated}></PrivateRoute>
-        <PrivateRoute exact path="/studentteams" component={StudentTeamsPage} isAuthenticated={isAuthenticated}></PrivateRoute>
+        <PrivateRoute exact path="/studenthome" component={StudentHomeDashboard} roleAccess={"student"}></PrivateRoute>
+        <PrivateRoute exact path="/seeallassignment" component={SeeAllAssignmentPage} roleAccess={"student"}></PrivateRoute>
+        <PrivateRoute exact path="/studentteams" component={StudentTeamsPage} roleAccess={"student"}></PrivateRoute>
       </Switch>
     </Router>)
     }
