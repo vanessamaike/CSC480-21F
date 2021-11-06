@@ -29,6 +29,7 @@ import {
   Fade,
   Collapse,
   CircularProgress,
+  Breadcrumbs
 } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CustomizedCard from "../../components/CustomizedCard";
@@ -186,6 +187,11 @@ function StudentInfoViewPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Courses</Typography>
+          <Typography color="text.primary">Students & Teams</Typography>
+        </Breadcrumbs>
       <>
           {(loading === true) ? (
             <Loading />

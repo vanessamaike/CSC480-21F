@@ -10,7 +10,8 @@ const CustomizedBody = React.forwardRef((props, ref) => {
     <div {...rest} ref={ref} style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
-        paddingTop: "150px",
+        paddingTop: "120px",
+        paddingBottom: "50px",
         minHeight: "80vh"
       }}>
       {children}

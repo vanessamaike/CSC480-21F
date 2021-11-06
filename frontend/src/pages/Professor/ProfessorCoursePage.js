@@ -85,6 +85,10 @@ function ProfessorCourse({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Course</Typography>
+        </Breadcrumbs>
         <>
           {loading === true ? (
             <Loading />

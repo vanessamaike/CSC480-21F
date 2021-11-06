@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Typography, Container, CardContent, Stack } from "@mui/material";
+import { Card, Typography, Container, CardContent, Stack, Breadcrumbs } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -52,6 +52,11 @@ function AddCoursePage() {
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Course</Typography>
+          <Typography color="text.primary">Create Course</Typography>
+        </Breadcrumbs>
         <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
           Create Course
         </Typography>

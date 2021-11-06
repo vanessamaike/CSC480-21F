@@ -11,6 +11,7 @@ import {
   Box,
   Stack,
   Radio,
+  Breadcrumbs,
 } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -53,7 +54,7 @@ function AssignmentCreation() {
   const { viewPdf } = getPdf;
   console.log(getPdf);
   // for submit event
-    console.log(isPreviewMode)
+  console.log(isPreviewMode);
   const fileType = ["application/pdf"];
   const handlePdfFileChange = (e) => {
     let selectedFile = e.target.files[0];
@@ -91,6 +92,12 @@ function AssignmentCreation() {
       <>
         {isPreviewMode === false ? (
           <CustomizedContainer>
+            <Breadcrumbs aria-label="breadcrumb" mb={5}>
+              <Typography color="text.primary">Home</Typography>
+              <Typography color="text.primary">Courses</Typography>
+              <Typography color="text.primary">Course Name</Typography>
+              <Typography color="text.primary">New Assignment</Typography>
+            </Breadcrumbs>
             <Grid container spacing={2}>
               <Grid item xs={8} sx={{ display: "flex", alignItems: "center" }}>
                 <Typography
@@ -103,14 +110,14 @@ function AssignmentCreation() {
               </Grid>
               <Grid item xs={2}></Grid>
               <Grid item xs={2}>
-                  <CustomizedButtons
-                    type2
-                    onClick={() => {
-                      setIsPreviewMode(true);
-                    }}
-                  >
-                    Preview
-                  </CustomizedButtons>
+                <CustomizedButtons
+                  type2
+                  onClick={() => {
+                    setIsPreviewMode(true);
+                  }}
+                >
+                  Preview
+                </CustomizedButtons>
               </Grid>
             </Grid>
 
