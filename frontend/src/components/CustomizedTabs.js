@@ -55,7 +55,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
 const CustomizedTabs = React.forwardRef((props, ref) => {
   const {
     model,
-    fullwidth,
+    fullWidth,
     type1,
     type2,
     type3,
@@ -82,7 +82,7 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
   return (
     <StyledTabs
       value={tab}
-      variant="fullWidth"
+      variant={fullWidth}
       onChange={handleChange}
       aria-label="styled tabs example"
       {...rest}

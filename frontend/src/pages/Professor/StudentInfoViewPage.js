@@ -151,17 +151,17 @@ function StudentInfoViewPage({ history }) {
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [loading, setLoading] = React.useState(true);
-  const [courses, setCourses] = React.useState([]);
+  const [courses, setCourses] = React.useState();
   const [courseNames, setCourseNames] = React.useState([]);
 
   useEffect(() => {
     var courseNameLists = []
-    console.log(courses)
     if(courses){
       courses.map((course) => {
         courseNameLists.push(course.code)
       })
       setCourseNames(courseNameLists)
+      console.log("`loading`")
       setLoading(false)
     }
 }, [courses]);
@@ -178,6 +178,7 @@ function StudentInfoViewPage({ history }) {
       getCourses()
   }, [])
   console.log(courses)
+  console.log(loading)
   const handleClick = key => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
@@ -187,10 +188,10 @@ function StudentInfoViewPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
           <Typography color="text.primary">Courses</Typography>
-          <Typography color="text.primary">Students & Teams</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Students & Teams</Typography>
         </Breadcrumbs>
       <>
           {(loading === true) ? (
@@ -226,7 +227,7 @@ function StudentInfoViewPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type2 setTab={setTab} value={tab} labels={courseNames}></CustomizedTabs>
+          <CustomizedTabs type2 setTab={setTab} value={tab} fullWidth={"fullWidth"} labels={courseNames}></CustomizedTabs>
           {courses.map((course, key) => (
             <TabPanel value={tab} index={key}>
               <CustomizedCard>

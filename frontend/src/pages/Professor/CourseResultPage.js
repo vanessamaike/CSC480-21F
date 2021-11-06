@@ -31,13 +31,6 @@ import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 
-const demoData = [
-  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
-  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
-  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
-  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
-];
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -58,7 +51,7 @@ function TabPanel(props) {
 function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState(null);
 
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
@@ -99,9 +92,9 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary">Course Results</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Course Results</Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
@@ -135,6 +128,7 @@ function CourseResultPage({ history }) {
                   type3
                   setTab={setTab}
                   value={tab}
+                  fullWidth={"fullWidth"}
                   labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => (

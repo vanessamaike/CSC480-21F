@@ -18,6 +18,7 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
+  Breadcrumbs,
 } from "@mui/material";
 
 import { BiCheckCircle } from "react-icons/bi";
@@ -86,7 +87,9 @@ function ProfessorHomeDashBoard({history}) {
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
-     
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Home</Typography>
+        </Breadcrumbs>
       <>
           {(loading === true) ? (
             <Loading />

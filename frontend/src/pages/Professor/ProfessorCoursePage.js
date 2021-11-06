@@ -48,7 +48,7 @@ function ProfessorCourse({ history }) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
-  const [courses, setCourses] = React.useState([]);
+  const [courses, setCourses] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [tab, setTab] = React.useState(0);
   const [courseNames, setCourseNames] = React.useState([]);
@@ -85,9 +85,9 @@ function ProfessorCourse({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary">Course</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Course</Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
@@ -140,6 +140,7 @@ function ProfessorCourse({ history }) {
                   type1
                   setTab={setTab}
                   tab={tab}
+                  fullWidth={"fullWidth"}
                   labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => {

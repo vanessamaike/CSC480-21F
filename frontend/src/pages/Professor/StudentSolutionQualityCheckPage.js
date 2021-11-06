@@ -86,9 +86,9 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Student Dashboard</Typography>
-          <Typography color="text.primary">Peer Review Results</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Peer Review Results</Typography>
         </Breadcrumbs>
         <Grid
           container

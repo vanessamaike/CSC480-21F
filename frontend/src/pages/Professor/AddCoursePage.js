@@ -52,10 +52,10 @@ function AddCoursePage() {
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
           <Typography color="text.primary">Course</Typography>
-          <Typography color="text.primary">Create Course</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Create Course</Typography>
         </Breadcrumbs>
         <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
           Create Course

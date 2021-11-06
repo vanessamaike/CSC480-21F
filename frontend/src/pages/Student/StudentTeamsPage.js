@@ -88,10 +88,10 @@ function StudentTeamsPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
-          <Typography color="text.primary">Home</Typography>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary" >Home</Typography>
           <Typography color="text.primary">Courses</Typography>
-          <Typography color="text.primary">Students & Teams</Typography>
+          <Typography color="text.primary" style={{fontWeight:"800"}}>Students & Teams</Typography>
         </Breadcrumbs>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
@@ -122,7 +122,7 @@ function StudentTeamsPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type2 setValue={setTab} value={tab}></CustomizedTabs>
+          <CustomizedTabs type2 setValue={setTab} value={tab} fullWidth={"fullWidth"}></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
             <TabPanel value={tab} index={id - 1}>
               <CustomizedCard>

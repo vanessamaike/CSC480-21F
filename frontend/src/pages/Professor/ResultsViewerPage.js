@@ -11,19 +11,7 @@ import CustomizedTables from "../../components/CustomizedTables";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
   CardContent,
-  CardHeader,
-  Divider,
-  Box,
   Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  TextField,
-  Modal,
-  Fade,
   Breadcrumbs
 } from "@mui/material";
 import CSVUploader from "../../components/CSVUploader";
@@ -39,11 +27,11 @@ function ResultsViewerPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5}>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
           <Typography color="text.primary">Courses</Typography>
           <Typography color="text.primary">Course Name</Typography>
-          <Typography color="text.primary">New Assignment</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>New Assignment</Typography>
         </Breadcrumbs>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
