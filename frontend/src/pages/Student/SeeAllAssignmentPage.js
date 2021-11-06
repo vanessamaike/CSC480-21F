@@ -116,7 +116,7 @@ function SeeAllAssignmentPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type1 setValue={setTab} value={tab}></CustomizedTabs>
+          <CustomizedTabs type1 setValue={setTab} value={tab} labels={["hihi", "haha", "huhu"]}></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
             <TabPanel value={tab} index={id - 1}>
               <CustomizedCard>

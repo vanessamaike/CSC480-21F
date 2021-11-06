@@ -14,6 +14,9 @@ const ButtonStyle = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  displayNone:{
+    display : "none",
+  },
   fullwidth: {
     width: "100%"
   },
@@ -22,6 +25,9 @@ const ButtonStyle = makeStyles((theme) => ({
   },
   height2: {
     height: "42px",
+  },
+  height3: {
+    height: "26px",
   },
   type1: {
     backgroundColor: darkColor,

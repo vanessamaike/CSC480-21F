@@ -54,7 +54,7 @@ function LoginPage() {
   const userModel = {
     "userId": 1,
     "email": "dtran4@oswego.edu",
-    "role": "professor"
+    "role": "student"
   }
   const handleLogin = () => {
     dispatch(setUser(userModel));
