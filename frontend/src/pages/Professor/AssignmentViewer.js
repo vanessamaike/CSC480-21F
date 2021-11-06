@@ -177,31 +177,18 @@ function AssignmentViewer() {
                   </Typography>
                   </Grid>
                 </div>
-                <div style={{
-                    display: "flex",
-                    width: "100%",
-                    height: "800px",
-                    backgroundColor: "white",
-                    overflowY: "auto",
-                    padding: "10px",
-                    marginBottom: "20px",
-                    borderRadius: "10px",
-                    alignContent: "center",
-                }}>    
-                    {/* <CustomizedTabs
+                <div>    
+                    <CustomizedTabs
                         type1
                         setTab={setTab}
                         tab={tab}
-                        courseNames={courseNames}
+                        courseNames={["Solution", "Peer Review"]}
                     ></CustomizedTabs>
-                    {courses.map((course, key) => {
+                    {["Solution", "Peer Review"].map((course, key) => {
                     
                         console.log(course)
                         return <TabPanel value={tab} index={key}>
                         <CustomizedCard>
-                        </CustomizedCard>
-                        </TabPanel>
-                    })} */}
                         <Container style={{
                             alignItems: "center",
                             marginLeft: "100px",
@@ -225,6 +212,10 @@ function AssignmentViewer() {
                         ></CustomizedButtons>
                         </>}
                         </Container>
+                        </CustomizedCard>
+                        </TabPanel>
+                    })}
+                        
                         
                 </div>
         </CustomizedContainer>

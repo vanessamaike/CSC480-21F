@@ -37,6 +37,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 
 function AssignmentCreation(){
+    const [title, setTitle] = useState('');
     const [solutionDueDate, setSolutionDueDate] = useState('');
     const [prDueDate, setPRDueDate] = useState('');
     const dispatch = useDispatch();
@@ -83,9 +84,6 @@ function AssignmentCreation(){
       }
     }
 
-    // const handleChange = (event, newValue) => {
-    //     setValue(newValue);
-    // };
     return (
         <div
             style={{
@@ -104,11 +102,11 @@ function AssignmentCreation(){
                 >
                     <Grid item xs={8}>
                         <Typography
-                            style={{ fontWeight: "400" }}
-                            variant="h6"
+                            style={{ fontWeight: "300" }}
+                            variant="h5"
                             component="div"
                         >
-                            New Assignment
+                            Build New Assignment
                         </Typography>
                     </Grid>
                     <Grid item xs={2}>
@@ -124,6 +122,7 @@ function AssignmentCreation(){
                 </Grid>
 
                 {/* First Box */}
+                <div>
                 <Grid item xs={11.1}>
                     <Card
                         variant="outlined"
@@ -132,7 +131,7 @@ function AssignmentCreation(){
                             p: 2,
                             border: "3px solid #fff",
                             borderRadius: "10px",
-                            marginTop: "10px"
+                            marginTop: "10px",
                         }}
                     >
                         <CardHeader
@@ -142,48 +141,75 @@ function AssignmentCreation(){
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
-                                            fontWeight: "300",
+                                            fontWeight: "500",
                                             margin: "4px",
                                         }}
                                         variant="h6"
                                         component="div"
                                     >
-                                        Assign Due Dates:
+                                        Title Assignment:
                                     </Typography>
                                     <Box
                                         sx={{
-                                            display: "flex",
+                                           
                                         }}
                                     >
-                                        <TextField onChange={(e) => setSolutionDueDate(e.target.value)}></TextField>
+                                        <Box sx={{display: "flex", marginBottom: "20px"}}>
+                                        <TextField placeholder="Title" onChange={(e) => setTitle(e.target.value)}></TextField>
                                         <Typography
                                             style={{
                                                 display: "flex",
                                                 fontWeight: "600",
                                                 marginLeft: "10px",
-                                                alignItems: "center"
+                                                alignItems: "center",
+                                                marginBottom: "10px"
                                             }}
                                             variant="subtitle1"
-                                            component="div"> Solution Due Date</Typography>
-                                        <Grid xs={2}></Grid>
-                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
+                                            component="div"> ‘Solution’ and ‘Peer Review’ will be added to title in their respective phases.</Typography>
+                                        </Box>
+                                        
                                         <Typography
                                             style={{
-                                                display: "flex",
-                                                fontWeight: "600",
-                                                marginLeft: "10px",
+                                                fontWeight: "300",
+                                                //marginLeft: "10px",
                                                 alignItems: "center"
                                             }}
-                                            variant="subtitle1"
-                                            component="div"> Peer Review Due Date</Typography>
+                                            variant="subtitle2"
+                                            component="div">Please select submission type. Teams submissions should be used when groups of students will submit a solution together.</Typography>
 
-
+                                            <FormControl component="fieldset">
+                                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                                <FormControlLabel value="Manually Set Teams" control={<Radio
+                                                    sx={{
+                                                        color: darkColor,
+                                                        '&.Mui-checked': {
+                                                            color: darkColor,
+                                                        },
+                                                    }}
+                                                />} label="Manually Set Teams (student-defined)" />
+                                                <FormControlLabel value="Randomized Teams" control={<Radio 
+                                                        sx={{
+                                                        color: darkColor,
+                                                        '&.Mui-checked': {
+                                                            color: darkColor,
+                                                        },
+                                                    }} />} label="Randomized Teams" />
+                                                <FormControlLabel value="Independent" control={<Radio 
+                                                        sx={{
+                                                        color: darkColor,
+                                                        '&.Mui-checked': {
+                                                            color: darkColor,
+                                                        },
+                                                    }} />} label="Independent" />
+                                            </RadioGroup>
+                                        </FormControl>
                                     </Box>
                                 </Stack>
                             }
                         ></CardHeader>
                     </Card>
                 </Grid>
+                </div>
 
                 {/* second box */}
                 <Grid item xs={11.1}>
@@ -204,22 +230,40 @@ function AssignmentCreation(){
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
-                                            fontWeight: "300",
-                                            margin: "4px",
+                                            fontWeight: "600",
                                         }}
                                         variant="h6"
                                         component="div"
                                     >
-                                        PDF Attachments
+                                        Solution Assignment Content:
                                     </Typography>
-                                    <Box
+                                    <Typography
+                                            style={{
+                                                fontWeight: "300",
+                                                //marginLeft: "10px",
+                                                alignItems: "center",
+                                                marginBottom: "10px"
+                                            }}
+                                            variant="subtitle2"
+                                            component="div">Please set the due date and upload instruction PDFs to be displayed within solution assignment.</Typography>
+                                        <Box
                                         sx={{
                                             display: "flex",
-
                                         }}
                                     >
-                                        <TextField placeholder="Optional Comments" ></TextField>
+                                        <TextField onChange={(e) => setSolutionDueDate(e.target.value)}></TextField>
+                                        <Typography
+                                            style={{
+                                                display: "flex",
+                                                fontWeight: "600",
+                                                marginLeft: "10px",
+                                                alignItems: "center",
+                                                marginBottom: "20px"
+                                            }}
+                                            variant="subtitle1"
+                                            component="div">Solution Due Date</Typography>
                                         <Box sx={{ p: 2 }}></Box>
+                                        
                                         <form onSubmit={handlePdfFileSubmit}>
                                         <input type="file" required onChange={handlePdfFileChange}></input>
                                         {pdfFileError&&<div style= {{
@@ -228,10 +272,22 @@ function AssignmentCreation(){
                                                             fontSize: '14px',
                                                             fontWeight: 600
                                                         }}>{pdfFileError}</div>}
+                                                        <Box sx={{ display: "flex"}}>
                                         <CustomizedButtons type="submit" type1 onChange={handlePdfFileChange} model={"type1"}>Upload </CustomizedButtons>
+                                        <Typography
+                                            style={{
+                                                display: "flex",
+                                                fontWeight: "600",
+                                                alignItems: "center",
+                                                marginTop: "10px",
+                                                marginBottom: "10px",
+                                                marginLeft: "10px"
+                                            }}
+                                            variant="subtitle1"
+                                            component="div">Solution Instructions</Typography>
+                                            </Box>
                                         </form>
-                                        
-                                    </Box>
+                                        </Box>
                                 </Stack>
                             }
                         ></CardHeader>
@@ -258,32 +314,63 @@ function AssignmentCreation(){
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
-                                            fontWeight: "300",
-                                            margin: "4px",
+                                            fontWeight: "600",
                                         }}
                                         variant="h6"
                                         component="div"
                                     >
-                                        Schedule Send Date:
+                                        Peer Review Assignment Content:
                                     </Typography>
-                                    <Box
+                                    <Typography
+                                            style={{
+                                                fontWeight: "300",
+                                                //marginLeft: "10px",
+                                                alignItems: "center",
+                                                marginBottom: "10px"
+                                            }}
+                                            variant="subtitle2"
+                                            component="div">Please set the due date and upload instruction PDFs to be displayed within Peer Review Assignment. Please note that peer reviews must be manually sent for review by professors after quality checking.</Typography>
+                                        <Box
                                         sx={{
                                             display: "flex",
-
                                         }}
                                     >
-                                        <FormControl component="fieldset">
-                                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                                                <FormControlLabel value="Drafts" control={<Radio
-                                                    sx={{
-                                                        color: darkColor,
-                                                        '&.Mui-checked': {
-                                                            color: darkColor,
-                                                        },
-                                                    }}
-                                                />} label="Publish Now" />
-                                            </RadioGroup>
-                                        </FormControl>
+                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
+                                        <Typography
+                                            style={{
+                                                display: "flex",
+                                                fontWeight: "600",
+                                                marginLeft: "10px",
+                                                alignItems: "center",
+                                                marginBottom: "20px"
+                                            }}
+                                            variant="subtitle1"
+                                            component="div">Peer Review Due Date</Typography>
+                                            <Box sx={{ p: 2 }}></Box>
+                                        <form onSubmit={handlePdfFileSubmit}>
+                                        <input type="file" required onChange={handlePdfFileChange}></input>
+                                        {pdfFileError&&<div style= {{
+                                                            width: '100%',
+                                                            color: red,
+                                                            fontSize: '14px',
+                                                            fontWeight: 600
+                                                        }}>{pdfFileError}</div>}
+                                        <Box sx={{ display: "flex"}}>
+                                        <CustomizedButtons type="submit" type1 onChange={handlePdfFileChange} model={"type1"}>Upload </CustomizedButtons>
+                                        <Typography
+                                            style={{
+                                                display: "flex",
+                                                fontWeight: "600",
+                                                alignItems: "center",
+                                                marginTop: "10px",
+                                                marginBottom: "10px",
+                                                marginLeft: "10px"
+                                            }}
+                                            variant="subtitle1"
+                                            component="div">Peer Review Instructions</Typography>
+                                        </Box>
+                                        </form>
+                                        
                                     </Box>
                                 </Stack>
                             }
@@ -293,7 +380,13 @@ function AssignmentCreation(){
                 <Grid item xs={11} sx={{ display: "flex", justifyContent: "flex-end", margintop: "10px" }}>
                     <CustomizedButtons type2 model={"type2"}> Save Draft  </CustomizedButtons>
                     <Box sx={{ p: 2 }}></Box>
-                    <CustomizedButtons type1 model={"type2"}> Publish  </CustomizedButtons> </Grid>
+                    <Link
+                        to="/professorhome"
+                        style={{ textDecoration: "none", color: "#000" }}
+                        >
+                  <CustomizedButtons type1 >Publish</CustomizedButtons>
+                </Link>
+                    </Grid>
 
             </CustomizedContainer>
         </div>
