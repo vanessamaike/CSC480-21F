@@ -136,7 +136,7 @@ function ProfessorCourse({ history }) {
                   type1
                   setTab={setTab}
                   tab={tab}
-                  courseNames={courseNames}
+                  labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => {
                   return (
