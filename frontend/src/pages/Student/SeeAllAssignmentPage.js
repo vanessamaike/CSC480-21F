@@ -112,12 +112,7 @@ function SeeAllAssignmentPage({ history }) {
             xs={4}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Link
-              to="/studentinfoview"
-              style={{ textDecoration: "none", color: "#fff" }}
-            >
-              <CustomizedButtons type1>View Teams</CustomizedButtons>
-            </Link>
+              <CustomizedButtons type1 onClick={() => history.push("/studentinfoview")}>View Teams</CustomizedButtons>
           </Grid>
         </Grid>
         <div>
@@ -157,15 +152,12 @@ function SeeAllAssignmentPage({ history }) {
                   }}
                 >
                   {items.map((item) => (
-                    <Link
-                      to="/resultviewer"
-                      style={{ textDecoration: "none", color: "#000" }}
-                    >
                       <ListItem
                         button
                         divider
+                        onClick={() => history.push("/resultviewer")}
                         secondaryAction={
-                          <IconButton edge="end" aria-label="delete">
+                          <IconButton edge="end" aria-label="delete" >
                             <BsArrowRightCircle />
                           </IconButton>
                         }
@@ -191,7 +183,6 @@ function SeeAllAssignmentPage({ history }) {
                           )}
                         </>
                       </ListItem>
-                    </Link>
                   ))}
                 </CardContent>
               </CustomizedCard>

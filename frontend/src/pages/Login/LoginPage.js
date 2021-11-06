@@ -19,6 +19,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
+import CustomizedBody from "../../components/CustomizedBody";
 function RoleButton() {
   return (
     <Box
@@ -50,8 +51,6 @@ function RoleButton() {
 
 function LoginPage() {
   const dispatch = useDispatch();
-
-  console.log(user)
   const userModel = {
     "userId": 1,
     "email": "dtran4@oswego.edu",
@@ -65,11 +64,10 @@ function LoginPage() {
     console.log(response);
     console.log(response.profileObj);
     //axios.post("http://localhost9080", response);
-    
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}> 
+    <CustomizedBody bg={bg}> 
       <NavBar></NavBar>
       <div 
         style={{
@@ -156,7 +154,7 @@ function LoginPage() {
           </CardContent>
         </CustomizedCard>
       </div>
-    </div>
+    </CustomizedBody>
   );
 }
 

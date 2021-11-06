@@ -30,18 +30,12 @@ import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
+import CustomizedBody from "../../components/CustomizedBody";
 
 function ResultsViewerPage({ history }) {
   const [jsonData, setjsonData] = useState([]);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
         <Grid container sx={{ marginBottom: "20px" }}>
@@ -83,7 +77,7 @@ function ResultsViewerPage({ history }) {
           </CustomizedCard>
         </div>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

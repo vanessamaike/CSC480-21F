@@ -59,7 +59,7 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
     type1,
     type2,
     type3,
-    courseNames,
+    labels,
     children,
     setTab,
     tab,
@@ -89,8 +89,8 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
       ref={ref}
       className={tabClasses}
     >
-      {courseNames.map(course => {
-        return <StyledTab label= {course}/>
+      {labels.map(label => {
+        return <StyledTab label= {label}/>
       }) }
     </StyledTabs>
   );
