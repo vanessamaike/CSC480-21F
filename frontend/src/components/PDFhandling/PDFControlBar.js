@@ -1,4 +1,6 @@
+import { Grid } from '@mui/material';
 import React from 'react';
+import CustomizedButtons from "../../components/CustomizedButtons";
 
 const ControlPanel = (props) => {
   const { file, pageNumber, numPages, setPageNumber, scale, setScale } = props;
@@ -42,17 +44,21 @@ const ControlPanel = (props) => {
   };
 
   return (
-    <div >
-      <div>
-        <button
+    <div style={{ marginBottom: "10px"}}>
+      <div style={{
+        padding: "1px",
+        
+      }}>
+        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           onClick={goToFirstPage}
-        >first page</button>
-        <button
+        >first page</CustomizedButtons>
+        
+        <CustomizedButtons type3 model={"arrowL"} style={{ marginBottom: "10px"}}
           onClick={goToPreviousPage}
-        >previous</button>
-        <span>
+        ></CustomizedButtons>
+        <span style={{ marginBottom: "10px"}}>
           Page{' '}
-          <input
+          <input style={{ marginBottom: "10px"}}
             name="pageNumber"
             type="number"
             min={1}
@@ -62,27 +68,26 @@ const ControlPanel = (props) => {
           />{' '}
           of {numPages}
         </span>
-        <button
+        <CustomizedButtons type3 model={"arrow"} style={{ marginBottom: "10px"}}
           
           onClick={goToNextPage}
-          >next page</button>
-        <button
+          ></CustomizedButtons>
+        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           
           onClick={goToLastPage}
-          >last page</button>
+          >last page</CustomizedButtons>
       </div>
       <div >
-        <button
+        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           onClick={zoomOut}
-          >zoom out</button>
-        <span>{(scale * 100).toFixed()}%</span>
-        <button
+          >zoom out</CustomizedButtons>
+        <div style={{ marginBottom: "10px", paddingLeft: "10px"}}><span>{(scale * 100).toFixed()}%</span></div>
+        <CustomizedButtons type3 style={{ marginBottom: "10px"}}
           onClick={zoomIn}
-          >zoom in</button>
+          >zoom in</CustomizedButtons>
       </div>
       <div >
-        <button href={file} download={true} title="download">download
-        </button>
+      <CustomizedButtons type2 model={"download"} style={{ marginBottom: "10px"}} href={file} download={true} title="download"> Download PDF</CustomizedButtons>
       </div>
       <div >
       </div>

@@ -22,6 +22,7 @@ import StudentHomeDashboard from './pages/Student/StudentHomeDashboard';
 import SeeAllAssignmentPage from './pages/Student/SeeAllAssignmentPage';
 import StudentTeamsPage from './pages/Student/StudentTeamsPage';
 import {isMobile} from 'react-device-detect';
+import AssignmentViewer from './pages/Professor/AssignmentViewer';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
         <PrivateRoute exact path="/courseresult" component={CourseResultPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/studentsolutionqualitycheck" component={StudentSolutionQualityCheckPage} roleAccess={"professor"}></PrivateRoute>
+
 
         <PrivateRoute exact path="/studenthome" component={StudentHomeDashboard} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/seeallassignment" component={SeeAllAssignmentPage} roleAccess={"student"}></PrivateRoute>
