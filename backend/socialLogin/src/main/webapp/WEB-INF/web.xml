@@ -4,8 +4,4 @@
          version="3.1">
     <display-name>Hello Servlet</display-name>
 
-    <servlet>
-        <servlet-name>HelloServlet</servlet-name>
-        <servlet-class>Servlet</servlet-class>
-    </servlet>
 </web-app>
