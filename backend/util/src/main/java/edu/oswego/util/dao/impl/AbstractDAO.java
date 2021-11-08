@@ -16,32 +16,21 @@ public class AbstractDAO<T> implements GenericDAO<T> {
 
     public Connection getConnection() {
         try {
-            File file = new File(
-                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
-            Scanner sc = new Scanner(file);
+    
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/CSC480database";
-            String user = "";
-            String password = "";
+            String user = "root";
+            String password = "...";
 
-            while (sc.hasNextLine())
-            {
-                user = sc.nextLine();
-                password = sc.nextLine();
-            }
-
-
+          
 
             Connection con =  DriverManager.getConnection(url,user,password);
             return con;
         } catch (ClassNotFoundException | SQLException e) {
             return null;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
         }
-    }
+        }
 
     @Override
     public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {

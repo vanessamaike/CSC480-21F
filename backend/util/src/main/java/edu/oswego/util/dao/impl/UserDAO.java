@@ -5,7 +5,6 @@ package edu.oswego.util.dao.impl;
 import edu.oswego.util.dao.IUserDAO;
 import edu.oswego.util.mapper.UserMapper;
 import edu.oswego.util.objects.User;
-import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> implements IUserDAO {
@@ -60,6 +59,13 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
         String sql = "DELETE FROM user";
         update(sql);
     }
+    @Override
+    public User findOneWithEmail(String email) {
+        String sql = "SELECT * FROM user WHERE email = ?";
+        List<User> user = query(sql, new UserMapper(), email);
+        return user.isEmpty() ? null : user.get(0);
+    }
+
 
 
 }

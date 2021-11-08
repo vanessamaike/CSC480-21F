@@ -4,12 +4,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.json.JSONArray;
+import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
 
 import edu.oswego.util.objects.Student;
@@ -22,6 +26,8 @@ import edu.oswego.util.service.impl.StudentService;
  */
 
 
+@Produces(MediaType.APPLICATION_JSON)
+
 @Path("/parse")
 
 public class csvImport {
@@ -31,7 +37,7 @@ public class csvImport {
 
 
    @POST
-   public void parse(String payload) throws ClassNotFoundException, JsonProcessingException { //receive json array from frontEnd. Ask John for exact input if unsure
+   public int parse(String payload) throws ClassNotFoundException, JsonProcessingException { //receive json array from frontEnd. Ask John for exact input if unsure
 
     JSONObject obj = new JSONObject(payload);
     JSONArray studentsJSON = obj.getJSONArray("CSV_Contents");  //json array of csv contents
@@ -40,6 +46,14 @@ public class csvImport {
 
         String pay = studentsJSON.get(i).toString();
         List<String> individualStudent = Arrays.asList(pay.split(",")); //get individual lines of singular student
+
+    if (individualStudent.size() != 10) {
+
+        System.out.println("Hey! You Uploaded the Wrong CSV! Why are there not 10 commas in this line?");
+        
+        return 206;
+ 
+    } else {
         HashMap<String, String> hashmap = new HashMap<String, String>();
 
             for (int z = 0; z < individualStudent.size(); z++) { //for each individual line of student, get token only
@@ -54,7 +68,10 @@ public class csvImport {
         addToDatabase(hashmap.get("\"StudentID\""), hashmap.get("\"FirstName\""), hashmap.get("\"LastName\""), hashmap.get("\"Email\""),courseID);
 
      }
-    
+    }
+
+     return 202;
+
 	}
 
 
@@ -81,9 +98,7 @@ public class csvImport {
         Student studentToAdd = makeStudentWithoutSpecialCharacters(sId, fn, ln, em);
         studentToAdd = studentService.save(studentToAdd);
         studentService.setCourseForStudent(studentToAdd.getUserID(),courseId);
-        System.out.println("\n\n Successfully added Student to Database");
-
-        
+        System.out.println("\n\n Successfully added Student to Database");       
     }
 
     public Student makeStudentWithoutSpecialCharacters(String sId, String fn, String ln, String em) { 
@@ -94,7 +109,6 @@ public class csvImport {
         String lastName = ln.replace("\"", "");
         String email = em.replace("\"", "");
         Student studentToAdd = new Student(studentID, 0, firstName, lastName, email); //userId will be changed in backend
-
         return studentToAdd;
 
     }

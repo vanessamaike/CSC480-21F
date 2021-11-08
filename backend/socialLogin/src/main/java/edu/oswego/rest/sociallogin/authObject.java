@@ -10,8 +10,10 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 import com.ibm.websphere.security.jwt.JwtToken;
-import edu.oswego.rest.objects.User;
-import edu.oswego.rest.service.impl.UserService;
+import edu.oswego.util.objects.Course;
+import edu.oswego.util.objects.User;
+import edu.oswego.util.service.ICourseService;
+import edu.oswego.util.service.impl.UserService;
 
 import java.util.Collections;
 import java.util.Objects;

@@ -10,7 +10,7 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.sociallogin.logout;
+package edu.oswego.rest.sociallogin.logout;
 
 import javax.ws.rs.core.Response;
 
