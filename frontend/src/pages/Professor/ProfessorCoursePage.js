@@ -47,18 +47,13 @@ function TabPanel(props) {
 function ProfessorCourse({ history }) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
+
   const { user, isAuthenticated, authLoading } = getUser;
-  const [courses, setCourses] = React.useState([]);
+  const [filterType, setFilterType] = React.useState("All");
+  const [courses, setCourses] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [tab, setTab] = React.useState(0);
   const [courseNames, setCourseNames] = React.useState([]);
-  // useEffect(() => {
-  //   if(courses)
-  //   {
-  //     dispatch(getCoursesByUserId());
-  //     console.log("dispatch")
-  //   }
-  // }, [dispatch]);
   useEffect(() => {
     var nameLists = [];
     if (courses) {
@@ -85,6 +80,10 @@ function ProfessorCourse({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Course</Typography>
+        </Breadcrumbs>
         <>
           {loading === true ? (
             <Loading />
@@ -136,6 +135,7 @@ function ProfessorCourse({ history }) {
                   type1
                   setTab={setTab}
                   tab={tab}
+                  fullWidth={"fullWidth"}
                   labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => {
@@ -169,9 +169,15 @@ function ProfessorCourse({ history }) {
                                   justifyContent: "flex-end",
                                 }}
                               >
-                                <CustomizedButtons type3 model={"radio1"}>
-                                  Filter Assignment
-                                </CustomizedButtons>
+                                <CustomizedButtons
+                                type3
+                                model={"radio1"}
+                                fullwidth
+                                filterType={filterType}
+                                setFilterType={setFilterType}
+                              >
+                                Filter Assignment
+                              </CustomizedButtons>
                               </Grid>
                             </Grid>
                           }

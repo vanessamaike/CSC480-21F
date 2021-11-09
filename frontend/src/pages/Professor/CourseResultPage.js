@@ -19,6 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -29,13 +30,6 @@ import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
-
-const demoData = [
-  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
-  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
-  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
-  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
-];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,7 +51,7 @@ function TabPanel(props) {
 function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState(null);
 
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
@@ -98,6 +92,10 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Course Results</Typography>
+        </Breadcrumbs>
         <>
           {loading === true ? (
             <Loading />
@@ -130,6 +128,7 @@ function CourseResultPage({ history }) {
                   type3
                   setTab={setTab}
                   value={tab}
+                  fullWidth={"fullWidth"}
                   labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => (
@@ -174,7 +173,7 @@ function CourseResultPage({ history }) {
                             <>
                               {(filterType === "All" ||
                                 (filterType === "Completed") ===
-                                  assignment.solution[0].isReviewed) && (
+                                  assignment.solution.isReviewed) && (
                                 <ListItem
                                   button
                                   divider
@@ -193,7 +192,7 @@ function CourseResultPage({ history }) {
                                   />
 
                                   <>
-                                    {assignment.solution[0].isReviewed ===
+                                    {assignment.solution.isReviewed ===
                                     false ? (
                                       <>
                                         <ListItemText
@@ -201,7 +200,7 @@ function CourseResultPage({ history }) {
                                             display: "flex",
                                             justifyContent: "center",
                                           }}
-                                          primary={`submissions closed ${assignment.peerreview[0].dueDate}`}
+                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
                                         />
                                         <ListItemText
                                           primary={
@@ -230,7 +229,7 @@ function CourseResultPage({ history }) {
                                           display: "flex",
                                           justifyContent: "flex-end",
                                         }}
-                                        primary={`Completed ${assignment.solution[0].dueDate}`}
+                                        primary={`Completed ${assignment.solution.dueDate}`}
                                       />
                                     )}
                                   </>
@@ -238,11 +237,11 @@ function CourseResultPage({ history }) {
                               )}
                               {(filterType === "All" ||
                                 (filterType === "Completed") ===
-                                  assignment.peerreview[0].isReviewed) && (
+                                  assignment.peerreview.isReviewed) && (
                                 <ListItem
                                   button
                                   divider
-                                  onClick={() => history.push("/resultviewer")}
+                                  onClick={() => history.push("/studentpeerreviewqualitycheck")}
                                   secondaryAction={
                                     <IconButton edge="end">
                                       <BsArrowRightCircle />
@@ -255,7 +254,7 @@ function CourseResultPage({ history }) {
                                   />
 
                                   <>
-                                    {assignment.peerreview[0].isReviewed ===
+                                    {assignment.peerreview.isReviewed ===
                                     false ? (
                                       <>
                                         <ListItemText
@@ -263,7 +262,7 @@ function CourseResultPage({ history }) {
                                             display: "flex",
                                             justifyContent: "center",
                                           }}
-                                          primary={`submissions closed ${assignment.peerreview[0].dueDate}`}
+                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
                                         />
 
                                         <ListItemText
@@ -293,7 +292,7 @@ function CourseResultPage({ history }) {
                                           display: "flex",
                                           justifyContent: "flex-end",
                                         }}
-                                        primary={`Completed ${assignment.peerreview[0].dueDate}`}
+                                        primary={`Completed ${assignment.peerreview.dueDate}`}
                                       />
                                     )}
                                   </>

@@ -15,7 +15,7 @@ import bg from '../../images/multi_background_login.jpg'
 import { useSelector,useDispatch } from "react-redux";
 import { setUser, selectUser } from "../../features/userSlice";
 // styled components
-import NavBar from "../../components/NavBar/NavBar";
+import NavBarLogin from "../../components/NavBar/NavBarLogin";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -49,16 +49,25 @@ function RoleButton() {
   );
 }
 
-function LoginPage() {
+function LoginPage({history}) {
   const dispatch = useDispatch();
-  const userModel = {
+  const professorModel = {
     "userId": 1,
     "email": "dtran4@oswego.edu",
     "role": "professor"
   }
-  const handleLogin = () => {
-    dispatch(setUser(userModel));
-
+  const studentModel = {
+    "userId": 1,
+    "email": "dtran4@oswego.edu",
+    "role": "student"
+  }
+  const handleProfessorLogin = () => {
+    dispatch(setUser(professorModel));
+    history.push("./professorhome")
+  }
+  const handleStudentLogin = () => {
+    dispatch(setUser(studentModel));
+    history.push("./studenthome")
   }
   const responseGoogle = (response) => {
     console.log(response);
@@ -68,7 +77,7 @@ function LoginPage() {
   return (
 
     <CustomizedBody bg={bg}> 
-      <NavBar></NavBar>
+      <NavBarLogin></NavBarLogin>
       <div 
         style={{
           display: "flex",
@@ -101,13 +110,14 @@ function LoginPage() {
           style={{
             display: "flex",
             flexDirection: "column",
-            margin: "0 1em",
+            margin: "3em 1em",
             width: "422px",
-            height: "397px",
+            height: "auto",
             padding: "0.5em",
           }}
         >
           <CardHeader
+            sx={{paddingBottom:"0"}}
             title={
               <Typography
                 style={{ fontWeight: "600" }}
@@ -135,7 +145,7 @@ function LoginPage() {
             }}
           >
             <Stack spacing={2}>
-              <GoogleLogin
+              {/* <GoogleLogin
                 clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
                 buttonText="Professor"
                 onSuccess={responseGoogle}
@@ -148,8 +158,9 @@ function LoginPage() {
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
-              />
-              <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons>
+              /> */}
+              <CustomizedButtons style={{display: "flex", justifyContent: "center"}} fulllwidth type1 onClick={handleProfessorLogin}>I am a Professor </CustomizedButtons>
+              <CustomizedButtons style={{display: "flex", justifyContent: "center"}} fulllwidth type1 onClick={handleStudentLogin}>I am a Student </CustomizedButtons>
             </Stack>
           </CardContent>
         </CustomizedCard>

@@ -28,6 +28,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -38,31 +39,7 @@ import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 
-const demoData = [
-  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
-  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
-  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
-  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
-];
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      sx={{ borderRadius: "10px" }}
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box>{children}</Box>}
-    </div>
-  );
-}
-
-function CourseResultPage({ history }) {
+function StudentSolutionQualityCheckPage({ history }) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
@@ -85,6 +62,10 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Student Dashboard</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Peer Review Results</Typography>
+        </Breadcrumbs>
         <Grid
           container
           sx={{ marginBottom: "20px", display: "flex", alignItems: "center" }}
@@ -281,4 +262,4 @@ function CourseResultPage({ history }) {
   );
 }
 
-export default CourseResultPage;
+export default StudentSolutionQualityCheckPage;
