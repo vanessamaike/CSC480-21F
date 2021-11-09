@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // @mui components
+import Select from "@mui/material/Select";
+import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
 import {AiFillHome} from "react-icons/ai"
@@ -85,10 +87,12 @@ function NavBar({ history }) {
                 <Grid item xs={2} style={{paddingTop: "10px"}}>
                   <AiFillHome size="1.5em" style={{marginLeft: "5px"}}/>
                 </Grid>
-                  <CustomizedButtons style={{ color: "black",marginBottom: "10px"}} > username </CustomizedButtons>
+                <CustomizedButtons style={{ color: "black",marginBottom: "10px"}} > username </CustomizedButtons>
+                {/* <Select style={{border: "none"}}>
+                  <MenuItem value={10}></MenuItem>
+                </Select> */}
+                  
                 </div>
-                
-
               </Stack>
 
             </Grid>
