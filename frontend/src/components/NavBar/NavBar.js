@@ -10,18 +10,25 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { selectUser, setUser } from "../../features/userSlice";
 import { whiteColor, darkColor } from "../../styles/Style";
 import CustomizedContainer from "../CustomizedContainer";
 import { Grid, Stack, Button, Menu, MenuItem, Collapse } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 function NavBar({ history }) {
+  const dispatch = useDispatch();
   const nav = NavBarStyle();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, role } = getUser;
-
+  const handleLogOut = () => {
+    dispatch(setUser());
+  }
   const [dropdown, setDropdown] = React.useState(false);
-  const handleClick = (event) => {
+  const handleSignOut = () => {
+    handleLogOut()
+    sessionStorage.clear();
+  }
+  const handleClick = () => {
     setDropdown(!dropdown);
   };
 
@@ -107,7 +114,7 @@ function NavBar({ history }) {
                     to="/login"
                     style={{ textDecoration: "none", color: "#000" }}
                   >
-                    <Button variant="contained" className={nav.link} sx={{width: "130px"}}>
+                    <Button variant="contained" className={nav.link} sx={{width: "130px"}} onClick={handleSignOut}>
                       Sign out
                     </Button>
                   </Link>

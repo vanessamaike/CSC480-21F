@@ -15,7 +15,7 @@ import bg from '../../images/multi_background_login.jpg'
 import { useSelector,useDispatch } from "react-redux";
 import { setUser, selectUser } from "../../features/userSlice";
 // styled components
-import NavBar from "../../components/NavBar/NavBar";
+import NavBarLogin from "../../components/NavBar/NavBarLogin";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -49,7 +49,7 @@ function RoleButton() {
   );
 }
 
-function LoginPage() {
+function LoginPage({history}) {
   const dispatch = useDispatch();
   const professorModel = {
     "userId": 1,
@@ -63,9 +63,11 @@ function LoginPage() {
   }
   const handleProfessorLogin = () => {
     dispatch(setUser(professorModel));
+    history.push("./professorhome")
   }
   const handleStudentLogin = () => {
     dispatch(setUser(studentModel));
+    history.push("./studenthome")
   }
   const responseGoogle = (response) => {
     console.log(response);
@@ -75,7 +77,7 @@ function LoginPage() {
   return (
 
     <CustomizedBody bg={bg}> 
-      <NavBar></NavBar>
+      <NavBarLogin></NavBarLogin>
       <div 
         style={{
           display: "flex",
