@@ -38,9 +38,9 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
   //const classes = makeComponentStyles();
   const btnClasses = classNames({
     [classes.fullwidth]: fullwidth,
-    [classes.type1]: type1, //black color background
-    [classes.type2]: type2, //transparent color background
-    [classes.type3]: type3, //gray color background
+    [classes.type1]: type1,
+    [classes.type2]: type2,
+    [classes.type3]: type3,
     [classes.height1]: height1,
     [classes.height2]: height2,
     [classes.root]: true
@@ -59,8 +59,6 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {model === "radio3" ? <CustomizedRadios type={'radio3'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "checked" ? <BiCheckCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "expand" ? <IoIosArrowDropdown size="1.5em" style={{marginLeft: "5px"}} /> : <>
-      {model === "download" ? <IoDownloadOutline size="1.5em" style={{marginLeft: "5px"}} /> : <>
-      </>}
       </>}
       </>}
       </>}

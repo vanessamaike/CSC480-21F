@@ -9,14 +9,16 @@ import logo from "../../images/logo.png";
 
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 import { whiteColor, darkColor } from "../../styles/Style";
 import CustomizedContainer from "../CustomizedContainer";
 import { Grid, Stack } from "@mui/material";
 
 function NavBar({ history }) {
   const nav = NavBarStyle();
-
+  const getUser = useSelector(selectUser)
+  const {user, isAuthenticated, role} = getUser
   return (
     <div className={nav.root}>
       <AppBar
