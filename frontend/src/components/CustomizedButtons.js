@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 // @material-ui/core components
 import { IoDownloadOutline} from "react-icons/io5";
+import {AiFillHome} from "react-icons/ai"
 import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
 import {IoIosAddCircleOutline, IoIosArrowDropdown} from "react-icons/io";
@@ -51,6 +52,7 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {children}
       {model === "add" ? <IoIosAddCircleOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "download" ? <IoDownloadOutline size="1.5em" style={{marginLeft: "5px"}}/> : <>
+      {model === "home" ? <AiFillHome size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "arrow" ? <BsArrowRightCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "arrowL" ? <BsArrowLeftCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "switch" ? <CustomizedSwitch  setViewType={setViewType}/> : <>
@@ -59,6 +61,7 @@ const CustomizedButtons = React.forwardRef((props, ref) => {
       {model === "radio3" ? <CustomizedRadios type={'radio3'} filterType={filterType} setFilterType={setFilterType} /> : <>
       {model === "checked" ? <BiCheckCircle size="1.5em" style={{marginLeft: "5px"}}/> : <>
       {model === "expand" ? <IoIosArrowDropdown size="1.5em" style={{marginLeft: "5px"}} /> : <>
+      </>}
       </>}
       </>}
       </>}

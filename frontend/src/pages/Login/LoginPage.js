@@ -9,7 +9,6 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import GoogleLogin from "react-google-login";
 import axios from "axios";
 import bg from '../../images/multi_background_login.jpg'
 import { useSelector,useDispatch } from "react-redux";
@@ -19,6 +18,9 @@ import NavBar from "../../components/NavBar/NavBar";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
+import {signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {auth, provider} from "./firebase";
+
 function RoleButton() {
   return (
     <Box
@@ -49,6 +51,26 @@ function RoleButton() {
 }
 
 function LoginPage() {
+  const signIn = ()=>{
+    signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+  }
   const dispatch = useDispatch();
   const userModel = {
     "userId": 1,
@@ -134,20 +156,8 @@ function LoginPage() {
             }}
           >
             <Stack spacing={2}>
-              <GoogleLogin
-                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
-                buttonText="Professor"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={"single_host_origin"}
-              />
-              <GoogleLogin
-                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
-                buttonText="Student"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={"single_host_origin"}
-              />
+              <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons>
+              <CustomizedButtons type1 onClick={signIn}>Student Login</CustomizedButtons>
               <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons>
             </Stack>
           </CardContent>

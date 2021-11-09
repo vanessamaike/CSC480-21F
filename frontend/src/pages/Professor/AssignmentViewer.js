@@ -14,6 +14,7 @@ import {
     autocompleteClasses,
 } from "@mui/material";
 // styled components
+import AssignmentCreation from "./AssignmentCreation"
 import CustomizedTabs from "../../components/CustomizedTabs";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -173,7 +174,7 @@ function AssignmentViewer() {
                   variant="h7"
                   component="div"
                 >
-                  Peer Review Due:
+                  Peer Review Due: {}
                   </Typography>
                   </Grid>
                 </div>

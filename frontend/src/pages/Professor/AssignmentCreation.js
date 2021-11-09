@@ -35,7 +35,6 @@ import axios from "axios";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-
 function AssignmentCreation(){
     const [title, setTitle] = useState('');
     const [solutionDueDate, setSolutionDueDate] = useState('');
@@ -336,6 +335,7 @@ function AssignmentCreation(){
                                         }}
                                     >
                                         <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
+                                        
                                         <Typography
                                             style={{
                                                 display: "flex",
@@ -377,7 +377,7 @@ function AssignmentCreation(){
                         ></CardHeader>
                     </Card>
                 </Grid>
-                <Grid item xs={11} sx={{ display: "flex", justifyContent: "flex-end", margintop: "10px" }}>
+                <Grid item xs={11} sx={{ display: "flex", justifyContent: "flex-end", margintop: "5px",marginBottom: "10px" }}>
                     <CustomizedButtons type2 model={"type2"}> Save Draft  </CustomizedButtons>
                     <Box sx={{ p: 2 }}></Box>
                     <Link
@@ -385,6 +385,7 @@ function AssignmentCreation(){
                         style={{ textDecoration: "none", color: "#000" }}
                         >
                   <CustomizedButtons type1 >Publish</CustomizedButtons>
+                  <Box sx={{ p: 2 }}></Box>
                 </Link>
                     </Grid>
 
@@ -392,5 +393,4 @@ function AssignmentCreation(){
         </div>
     )
 }
-
 export default AssignmentCreation
