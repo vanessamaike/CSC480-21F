@@ -23,6 +23,7 @@ import CustomizedBody from "../../components/CustomizedBody";
 
 function ResultsViewerPage({ history }) {
   const [jsonData, setjsonData] = useState([]);
+  console.log(jsonData)
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
