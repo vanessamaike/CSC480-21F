@@ -27,8 +27,8 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public int save(Review review) {
         StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, " +
-                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
-        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen, assId)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
@@ -36,7 +36,7 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
         insert(sql.toString(), uniqueRandomId, review.getComments(),
                 review.getSubmissionTime(), targetStream,
                 review.getSignOff(),
-                review.getTeamID(), review.isSeen());
+                review.getTeamID(), review.isSeen(), review.getAssignmentId());
         return uniqueRandomId;
     }
 
@@ -45,6 +45,12 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
         String sql = "SELECT * FROM review";
         List<Review> review = query(sql, new ReviewMapper());
         return review.isEmpty() ? null : review;
+    }
+
+    @Override
+    public List<Review> findAllByAssId(int assId){
+        String sql = "SELECT * FROM review WHERE assId = ?";
+        return query(sql, new ReviewMapper(), assId);
     }
 
     @Override
@@ -57,13 +63,13 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public void update(Review review) {
         StringBuilder sql = new StringBuilder("UPDATE review SET comments = ? " +
-                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE reviewID = ?");
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, assId = ? WHERE reviewID = ?");
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
 
         update(sql.toString(),review.getComments(),
                 review.getSubmissionTime(), targetStream,
                 review.getSignOff() ,review.getTeamID(),
-                review.isSeen(), review.getReviewID());
+                review.isSeen(), review.getAssignmentId(), review.getReviewID());
     }
 
     @Override
