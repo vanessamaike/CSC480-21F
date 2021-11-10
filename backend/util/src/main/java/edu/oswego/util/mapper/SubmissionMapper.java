@@ -26,7 +26,8 @@ public class SubmissionMapper implements RowMapper<Submission>{
                     rs.getBytes("pdfDoc"),
                     rs.getString("signOff"),
                     rs.getInt("teamID"),
-                    rs.getBoolean("seen")
+                    rs.getBoolean("seen"),
+                    rs.getInt("assId")
             );
             return submission;
         }catch(SQLException e)
