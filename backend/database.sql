@@ -54,7 +54,8 @@ CREATE TABLE submission(
     comments longtext NOT NULL,
     signOff VARCHAR(255) NOT NULL,
     PdfDoc mediumblob NOT NULL,
-    seen boolean NOT NULL  
+    seen boolean NOT NULL,
+    assId int NOT NULL  
 );
 
 
@@ -65,7 +66,8 @@ CREATE TABLE review(
     comments longtext NOT NULL,
     signOff VARCHAR(255) NOT NULL,
     PdfDoc mediumblob NOT NULL,
-    seen boolean NOT NULL
+    seen boolean NOT NULL,
+    assId int NOT NULL
 );
 
 
