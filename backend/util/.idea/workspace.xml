@@ -5,40 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="741f949d-cad3-49fb-a21e-013d78282afe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20190722.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/SpecificCourseAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/SpecificCourseAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/csvImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/csvImport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../database.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../database.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/teamManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/teamManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server-paths-linux.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server-paths-linux.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server-paths-windows.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server-paths-windows.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../start-server.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../start-server.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../student/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../student/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../database.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cpr-util.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cpr-util.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/GenericDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ICourseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ICourseDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IStudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IStudentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AbstractDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AbstractDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/CourseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/CourseDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/StudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/StudentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/StudentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/StudentMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ICourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ICourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IStudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IStudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/GenericDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/GenericDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/impl/AbstractDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/impl/AbstractDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/mapper/StudentMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/mapper/StudentMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/objects/Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/objects/Student.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cpr-util.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cpr-util.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AssignmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AssignmentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/ReviewDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/ReviewDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/AssignmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/AssignmentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/ReviewMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/ReviewMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Assignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Review.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +42,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../documentDistributor" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">

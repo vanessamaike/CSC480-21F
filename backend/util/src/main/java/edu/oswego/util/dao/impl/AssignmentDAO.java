@@ -24,15 +24,17 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
 
     @Override
     public int save(Assignment assignment) {
-        StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, pdfDoc, settings, courseID, " +
-                "title, isTeamed, reviewStage, dueDateTime, reviewDateTime)");
-        sql.append(" VALUES(?, ?, ?, ?, ? , ? , ?, ?, ? )");
+        StringBuilder sql = new StringBuilder("INSERT INTO assignment (assignmentID, title, isTeamed," +
+                " reviewStage,courseID, solutionPdfDoc, peerReviewPdfDoc, settings, isDraft, " +
+                "publishDateTime, solutionDueDateTime, peerReviewDueDateTime)");
+        sql.append(" VALUES(?, ?, ?, ?, ? , ? , ?, ?, ? ,? ,? ,? )");
         int uniqueRandomId = generateUniqueRandomId();
-        InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
-         insert(sql.toString(), uniqueRandomId, targetStream,
-                 assignment.getSettings(),assignment.getCourseID(),
-                 assignment.getTitle(), assignment.isTeamed(), assignment.isReviewStage(),
-                 assignment.getDueDateTime() , assignment.getReviewDateTime());
+        InputStream solutionPdfDoc = new ByteArrayInputStream(assignment.getSolutionPdfDoc());
+        InputStream peerReviewPdfDoc = new ByteArrayInputStream(assignment.getPeerReviewPdfDoc());
+         insert(sql.toString(), uniqueRandomId, assignment.getTitle(), assignment.isTeamed(),
+                 assignment.isReviewStage(), assignment.getCourseID(), solutionPdfDoc,
+                 peerReviewPdfDoc, assignment.getSettings(),assignment.isDraft(),
+                 assignment.getPublishDateTime(), assignment.getSolutionDueDateTime(), assignment.getPeerReviewDueDateTime());
         return uniqueRandomId;
     }
 
@@ -55,10 +57,13 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
         StringBuilder sql = new StringBuilder("UPDATE assignment SET pdfDoc = ?, settings = ?, courseID = ? ," +
                 " title = ?, isTeamed = ?, reviewStage = ? , dueDateTime = ? , " +
                 " reviewDateTime = ? WHERE assignmentID = ?");
-        InputStream targetStream = new ByteArrayInputStream(assignment.getPdfDoc());
-        update(sql.toString(),targetStream,assignment.getSettings(),assignment.getCourseID(),
-                assignment.getTitle(), assignment.isTeamed(), assignment.isReviewStage(),
-                assignment.getDueDateTime(),assignment.getReviewDateTime(),assignment.getAssignmentID());
+        InputStream solutionPdfDoc = new ByteArrayInputStream(assignment.getSolutionPdfDoc());
+        InputStream peerReviewPdfDoc = new ByteArrayInputStream(assignment.getPeerReviewPdfDoc());
+        update(sql.toString(),assignment.getTitle(), assignment.isTeamed(),
+                assignment.isReviewStage(), assignment.getCourseID(), solutionPdfDoc,
+                peerReviewPdfDoc, assignment.getSettings(),assignment.isDraft(),
+                assignment.getPublishDateTime(), assignment.getSolutionDueDateTime(),
+                assignment.getPeerReviewDueDateTime(), assignment.getAssignmentID());
     }
 
     @Override

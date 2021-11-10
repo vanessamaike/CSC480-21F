@@ -27,8 +27,9 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public int save(Review review) {
         StringBuilder sql = new StringBuilder("INSERT INTO review (reviewId, " +
-                "comments, submissionTime, pdfDoc, signOff, teamID, seen, assId)");
-        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen, assId, submissionID," +
+                "listOfQCWordViolations, SDCheck, score )");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ? ,? , ? , ? )");
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
@@ -36,7 +37,9 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
         insert(sql.toString(), uniqueRandomId, review.getComments(),
                 review.getSubmissionTime(), targetStream,
                 review.getSignOff(),
-                review.getTeamID(), review.isSeen(), review.getAssignmentId());
+                review.getTeamID(), review.isSeen(), review.getAssignmentId(),
+                review.getSubmissionID(),review.getListOfQCWordViolations(),
+                review.isSDCheck(), review.getScore());
         return uniqueRandomId;
     }
 
@@ -63,13 +66,17 @@ public class ReviewDAO extends AbstractDAO<Review> implements IReviewDAO {
     @Override
     public void update(Review review) {
         StringBuilder sql = new StringBuilder("UPDATE review SET comments = ? " +
-                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, assId = ? WHERE reviewID = ?");
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, " +
+                "assId = ?, submissionID = ? , listOfQCWordViolations = ? , " +
+                "SDCheck = ?, score = ? WHERE reviewID = ?");
         InputStream targetStream = new ByteArrayInputStream(review.getPdfDoc());
 
         update(sql.toString(),review.getComments(),
                 review.getSubmissionTime(), targetStream,
                 review.getSignOff() ,review.getTeamID(),
-                review.isSeen(), review.getAssignmentId(), review.getReviewID());
+                review.isSeen(), review.getAssignmentId(),review.getSubmissionID(),
+                review.getListOfQCWordViolations(),
+                review.isSDCheck(), review.getScore(), review.getReviewID());
     }
 
     @Override

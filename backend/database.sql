@@ -35,39 +35,47 @@ CREATE TABLE course_team_student(
 );
 
 CREATE TABLE assignment( 
-	assignmentId int NOT NULL,
+    assignmentId int NOT NULL,
     title char(32) NOT NULL,
     isTeamed boolean NOT NULL,
     reviewStage boolean NOT NULL,
-    dueDateTime datetime NOT NULL,
-    reviewDateTime datetime NOT NULL,
-	courseId int NOT NULL,
-    pdfDoc mediumblob NOT NULL,
-    settings char(32) NOT NULL
-);
+    publishDateTime datetime NOT NULL
+    solutionDueDateTime datetime NOT NULL,
+    peerReviewDueDateTime datetime NOT NULL,
+    courseId int NOT NULL,
+    solutionPdfDoc mediumblob NOT NULL,
+    peerReviewPdfDoc mediumblob NOT NULL,
+    settings char(32) NOT NULL,
+     isDraft boolean NOT NULL
+); 
 
 
 CREATE TABLE submission(
-	submissionId int NOT NULL,
-	teamId int NOT NULL,
+    submissionId int NOT NULL,
+    teamId int NOT NULL,
     submissionTime datetime NOT NULL,
     comments longtext NOT NULL,
     signOff VARCHAR(255) NOT NULL,
     PdfDoc mediumblob NOT NULL,
     seen boolean NOT NULL,
+    listOfQCWordViolations string NOT NULL,
     assId int NOT NULL  
 );
 
 
 CREATE TABLE review(
-	reviewId int NOT NULL,
-	teamId int NOT NULL,
-	submissionTime datetime NOT NULL,
+    reviewId int NOT NULL,
+    teamId int NOT NULL,
+    submissionTime datetime NOT NULL,
     comments longtext NOT NULL,
     signOff VARCHAR(255) NOT NULL,
     PdfDoc mediumblob NOT NULL,
     seen boolean NOT NULL,
-    assId int NOT NULL
+    assId int NOT NULL,
+    submissionID int NOT NULL,
+    listOfQCWordViolations string NOT NULL,
+    SDCheck boolean NOT NULL,
+    score double NOT NULL
 );
 
 

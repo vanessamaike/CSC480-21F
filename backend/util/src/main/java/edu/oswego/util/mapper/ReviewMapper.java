@@ -18,7 +18,11 @@ public class ReviewMapper implements RowMapper<Review>{
                     rs.getString("signOff"),
                     rs.getInt("teamID"),
                     rs.getBoolean("seen"),
-                    rs.getInt("assId")
+                    rs.getInt("assId"),
+                    rs.getInt("submissionID"),
+                    rs.getString("listOfQCWordViolations"),
+                    rs.getBoolean("SDCheck"),
+                    rs.getFloat("score")
             );
             return review;
         }catch(SQLException e)

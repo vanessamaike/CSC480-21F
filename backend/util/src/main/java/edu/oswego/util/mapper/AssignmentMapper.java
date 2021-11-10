@@ -12,14 +12,17 @@ public class AssignmentMapper implements RowMapper<Assignment>{
         try {
             Assignment assignment = new Assignment(
                     rs.getInt("assignmentID"),
-                    rs.getBytes("pdfDoc"),
-                    rs.getString("settings"),
-                    rs.getInt("courseID"),
                     rs.getString("title"),
                     rs.getBoolean("isTeamed"),
                     rs.getBoolean("reviewStage"),
-                    rs.getObject("dueDateTime", LocalDateTime.class),
-                    rs.getObject("reviewDateTime", LocalDateTime.class)
+                    rs.getInt("courseID"),
+                    rs.getBytes("solutionPdfDoc"),
+                    rs.getBytes("peerReviewPdfDoc"),
+                    rs.getString("settings"),
+                    rs.getBoolean("isDraft"),
+                    rs.getObject("publishDateTime", LocalDateTime.class),
+                    rs.getObject("solutionDueDateTime", LocalDateTime.class),
+                    rs.getObject("peerReviewDueDateTime", LocalDateTime.class)
             );
             return assignment;
         }catch(SQLException e)

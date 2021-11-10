@@ -16,9 +16,17 @@ public class Review {
     private int assId;
 
 
+    private int submissionID;
+    private String listOfQCWordViolations;
+    private  boolean SDCheck;
+    private double score;
+
+
     public Review(int reviewID , String comments,
                   LocalDateTime submissionTime , byte[] pdfDoc,
-                  String signOff, int teamID, boolean seen, int assId){
+                  String signOff, int teamID, boolean seen, int assId,
+                  int submissionID, String listOfQCWordViolations,
+                  boolean SDCheck,double score ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -27,6 +35,10 @@ public class Review {
         this.submissionTime = submissionTime;
         this.seen = seen;
         this.assId = assId;
+        this.submissionID = submissionID;
+        this.listOfQCWordViolations = listOfQCWordViolations;
+        this.SDCheck = SDCheck;
+        this.score = score;
     }
 
     public Review(){
@@ -37,6 +49,11 @@ public class Review {
         this.comments = "";
         this.submissionTime = LocalDateTime.now();
         this.seen = false;
+        this.assId = 0;
+        this.submissionID = 0;
+        this.listOfQCWordViolations = "";
+        this.SDCheck = false;
+        this.score = 0;
     }
 
     public int getReviewID() {
@@ -95,5 +112,37 @@ public class Review {
 
     public int getAssignmentId(){
         return assId;
+    }
+
+    public int getSubmissionID() {
+        return submissionID;
+    }
+
+    public void setSubmissionID(int submissionID) {
+        this.submissionID = submissionID;
+    }
+
+    public String getListOfQCWordViolations() {
+        return listOfQCWordViolations;
+    }
+
+    public void setListOfQCWordViolations(String listOfQCWordViolations) {
+        this.listOfQCWordViolations = listOfQCWordViolations;
+    }
+
+    public boolean isSDCheck() {
+        return SDCheck;
+    }
+
+    public void setSDCheck(boolean SDCheck) {
+        this.SDCheck = SDCheck;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }
