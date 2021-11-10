@@ -5,14 +5,19 @@ import edu.oswego.util.dao.IStudentDAO;
 import edu.oswego.util.mapper.Course_Team_Student_Mapper;
 import edu.oswego.util.mapper.StudentMapper;
 import edu.oswego.util.objects.Course_Team_Student;
+import edu.oswego.util.objects.Encryptor;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.dao.impl.AbstractDAO;
 
+import java.io.File;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
-
+    Encryptor e = null;
+    //ClassLoader classLoader = this.getClass().getClassLoader();
     public int generateUniqueRandomUserId()
     {
         String sql = "SELECT (IF( (select count(userId) from student) = 0," +
@@ -39,8 +44,30 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
         StringBuilder sql = new StringBuilder("INSERT INTO student (studentId, userId, firstName,lastName,email) ");
         sql.append(" VALUES(?, ?, ?, ?, ? )");
         int uniqueRandomUserId = generateUniqueRandomUserId();
-         insertString(sql.toString(), student.getStudentID(), uniqueRandomUserId,student.getFirstName(),
-                student.getLastName(), student.getEmail());
+        String studentIDEncrypted;
+        String firstNameEncrypted;
+        String lastNameEncrypted;
+        String emailEncrypted;
+        {
+            try {
+                if(e==null) e = new Encryptor("secretKeys.json");
+                studentIDEncrypted = Arrays.toString(e.encrypt(student.getStudentID()));
+                firstNameEncrypted = Arrays.toString(e.encrypt(student.getFirstName()));
+                lastNameEncrypted = Arrays.toString(e.encrypt(student.getLastName()));
+                emailEncrypted = Arrays.toString(e.encrypt(student.getEmail()));
+            } catch (GeneralSecurityException ex) {
+                //In the event that the encryptor fails, values are stored as is.
+                //This could create database problems, but re-uploading the CSV / deleting and remaking
+                //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                studentIDEncrypted = student.getStudentID();
+                firstNameEncrypted = student.getFirstName();
+                lastNameEncrypted = student.getLastName();
+                emailEncrypted = student.getEmail();
+                ex.printStackTrace();
+            }
+        }
+        insertString(sql.toString(), studentIDEncrypted, uniqueRandomUserId, firstNameEncrypted,
+                lastNameEncrypted, emailEncrypted);
         return uniqueRandomUserId;
     }
 

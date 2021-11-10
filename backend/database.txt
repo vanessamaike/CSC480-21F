@@ -1,2 +1,2 @@
 root
-asdf1200
+password

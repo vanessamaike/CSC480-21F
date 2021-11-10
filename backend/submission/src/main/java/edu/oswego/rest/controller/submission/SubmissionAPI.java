@@ -2,7 +2,6 @@ package edu.oswego.rest.controller.submission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import edu.oswego.util.objects.Student;
@@ -15,18 +14,15 @@ import edu.oswego.util.utility.QualityCheck;
 
 import edu.oswego.util.service.ISubmissionService;
 import edu.oswego.util.service.impl.SubmissionService;
-
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +73,6 @@ public class SubmissionAPI {
     public String postSubmission(String payload) throws IOException {
         Submission submission = jsonb.fromJson(payload, Submission.class);
         String res = "";
-
         List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
 
@@ -120,19 +115,23 @@ public class SubmissionAPI {
 
         } catch (IOException e) {
             e.printStackTrace();
-
             return e.toString();
-
         }
         return res;
     }
 
     @PUT
-    public String updateSubmission(String payload) throws JsonProcessingException {
-        Submission submission = jsonb.fromJson(payload, Submission.class);
-        submission = submissionService.update(submission);
-        String res = jsonb.toJson(submission);
-        return res;
+    @Path("/setSeen/{submissionId}")
+    public String updateSetSeenSubmission(@PathParam("submissionId") String _submissionId) throws JsonProcessingException {
+        try {
+
+            Submission submission = submissionService.findOne(Integer.parseInt(_submissionId));
+            submission.setSeen(true);
+            submissionService.update(submission);
+            return jsonb.toJson(submission);
+        } catch (NumberFormatException e){
+            return "Submission ID provided was not formatted properly.";
+        }
     }
 
     @DELETE
