@@ -14,4 +14,6 @@ public interface ISubmissionDAO {
     void delete(Submission submission);
     void deleteAll();
     int generateUniqueRandomId();
+
+    List<Submission> findAllByAssId(int assId);
 }
