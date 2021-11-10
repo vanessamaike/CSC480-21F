@@ -8,6 +8,7 @@ import java.util.List;
 public interface ISubmissionService {
     Submission save(Submission submission);
     List<Submission> findAll();
+    List<Submission> findAllByAssId(int assId);
     List<Student> findAllStudents();
     Submission findOne(int submissionId);
     Submission update(Submission submission);
