@@ -27,17 +27,24 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     }
 
     @Override
+    public List<Submission> findAllByAssId(int assId) {
+        String sql = "SELECT * FROM submission WHERE assId = ?";
+        List<Submission> submission = query(sql, new SubmissionMapper(), assId);
+        return submission.isEmpty() ? null : submission;
+    }
+
+    @Override
     public int save(Submission submission) {
         StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, " +
-                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
-        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen, assId)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
 
         insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
-                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen());
+                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen(), submission.getAssignmentId());
         return uniqueRandomId;
     }
 
@@ -65,12 +72,12 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     @Override
     public void update(Submission submission) {
         StringBuilder sql = new StringBuilder("UPDATE submission SET comments = ?, " +
-                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE submissionID = ?");
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, assId = ? WHERE submissionID = ?");
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
         update(sql.toString(), submission.getComments(),
                 submission.getSubmissionTime() ,targetStream,
                 submission.getSignOff(),submission.getTeamID(),
-                submission.isSeen(), submission.getSubmissionID());
+                submission.isSeen(), submission.getAssignmentId(), submission.getSubmissionID());
     }
 
     @Override
