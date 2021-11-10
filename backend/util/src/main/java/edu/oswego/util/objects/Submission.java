@@ -12,10 +12,11 @@ public class Submission {
     @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
     private LocalDateTime submissionTime;
     private boolean seen;
+    private int assId;
 
     public Submission(int submissionID , String comments,
                       LocalDateTime submissionTime , byte[] pdfDoc,
-                      String signOff, int teamID , boolean seen ){
+                      String signOff, int teamID , boolean seen, int assId ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -23,6 +24,7 @@ public class Submission {
         this.comments = comments;
         this.submissionTime = submissionTime;
         this.seen = seen;
+        this.assId = assId;
     }
 
 
@@ -86,5 +88,13 @@ public class Submission {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public void setAssignmentId(int id){
+        this.assId = id;
+    }
+
+    public int getAssignmentId() {
+        return assId;
     }
 }
