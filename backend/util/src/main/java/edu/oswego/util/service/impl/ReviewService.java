@@ -26,6 +26,11 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
+    public List<Review> findAllByAssId(int assId){
+        return reviewDao.findAllByAssId(assId);
+    }
+
+    @Override
     public Review findOne(int reviewId) {
         return reviewDao.findOne(reviewId);
     }
@@ -46,4 +51,5 @@ public class ReviewService implements IReviewService {
     public void deleteAll() {
         reviewDao.deleteAll();
     }
+
 }
