@@ -12,4 +12,6 @@ public interface IReviewDAO {
     void delete(Review review);
     void deleteAll();
     int generateUniqueRandomId();
+
+    List<Review> findAllByAssId(int assId);
 }
