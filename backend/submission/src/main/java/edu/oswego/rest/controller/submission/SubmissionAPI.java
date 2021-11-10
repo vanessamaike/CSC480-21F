@@ -128,11 +128,17 @@ public class SubmissionAPI {
     }
 
     @PUT
-    public String updateSubmission(String payload) throws JsonProcessingException {
-        Submission submission = jsonb.fromJson(payload, Submission.class);
-        submission = submissionService.update(submission);
-        String res = jsonb.toJson(submission);
-        return res;
+    @Path("/setSeen/{submissionId}")
+    public String updateSetSeenSubmission(@PathParam("submissionId") String _submissionId) throws JsonProcessingException {
+        try {
+
+            Submission submission = submissionService.findOne(Integer.parseInt(_submissionId));
+            submission.setSeen(true);
+            submissionService.update(submission);
+            return jsonb.toJson(submission);
+        } catch (NumberFormatException e){
+            return "Submission ID provided was not formatted properly.";
+        }
     }
 
     @DELETE

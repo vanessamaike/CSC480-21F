@@ -51,6 +51,14 @@ public class AssignmentDAO extends AbstractDAO<Assignment> implements IAssignmen
     }
 
     @Override
+    public List<Assignment> findAssignmentsByCourseId(int courseId){
+        String sql = "SELECT * FROM assignment where courseID = ?";
+        List<Assignment> assignments = query(sql, new AssignmentMapper(), courseId);
+        return assignments.isEmpty() ? null : assignments;
+    }
+
+
+    @Override
     public void update(Assignment assignment) {
         StringBuilder sql = new StringBuilder("UPDATE assignment SET pdfDoc = ?, settings = ?, courseID = ? ," +
                 " title = ?, isTeamed = ?, reviewStage = ? , dueDateTime = ? , " +

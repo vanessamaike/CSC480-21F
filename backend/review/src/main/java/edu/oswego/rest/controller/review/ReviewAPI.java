@@ -22,6 +22,9 @@ import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.*;
 import java.io.File;
 
+
+import java.io.IOException;
+
 import java.nio.file.Files;
 
 import java.util.HashMap;
@@ -122,7 +125,6 @@ public class ReviewAPI {
                 res = "This PDF file is not accepted because it includes some profanity words: ";
                 for (Map.Entry value : violations.entrySet()){
                     System.out.println("Key: "+value.getKey() + " & Value: " + value.getValue());
-
                 }
             }
             else{
@@ -140,11 +142,17 @@ public class ReviewAPI {
     }
 
     @PUT
-    public String updateReview(String payload) throws JsonProcessingException {
-        Review review = jsonb.fromJson(payload, Review.class);
-        review = reviewService.update(review);
-        String res = jsonb.toJson(review);
-        return res;
+    @Path("/setSeen/{reviewId}")
+    public String updateReview(@PathParam("reviewId") String _reviewId) throws JsonProcessingException {
+        try {
+
+            Review review = reviewService.findOne(Integer.parseInt(_reviewId));
+            review.setSeen(true);
+            reviewService.update(review);
+            return jsonb.toJson(review);
+        } catch (NumberFormatException e){
+            return "Review ID provided was not formatted properly.";
+        }
     }
 
     @DELETE
