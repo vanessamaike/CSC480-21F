@@ -7,9 +7,8 @@ import edu.oswego.util.mapper.StudentMapper;
 import edu.oswego.util.objects.Course_Team_Student;
 import edu.oswego.util.objects.Encryptor;
 import edu.oswego.util.objects.Student;
-import edu.oswego.util.dao.impl.AbstractDAO;
 
-import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,14 +97,74 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     public List<Student> findAll() {
         String sql = "SELECT * FROM student";
         List<Student> students = query(sql, new StudentMapper());
-        return students;
+        List<Student> studentsDecrypted = new ArrayList<>();
+        for(Student s : students){
+            String studentIDDecrypted;
+            String firstNameDecrypted;
+            String lastNameDecrypted;
+            String emailDecrypted;
+            {
+                try {
+                    if(e==null) e = new Encryptor("secretKeys.json");
+                    studentIDDecrypted = e.decrypt(s.getStudentID().getBytes(StandardCharsets.UTF_8));
+                    firstNameDecrypted = e.decrypt(s.getFirstName().getBytes(StandardCharsets.UTF_8));
+                    lastNameDecrypted = e.decrypt(s.getLastName().getBytes(StandardCharsets.UTF_8));
+                    emailDecrypted = e.decrypt(s.getEmail().getBytes(StandardCharsets.UTF_8));
+                } catch (GeneralSecurityException ex) {
+                    //In the event that the encryptor fails, values are stored as is.
+                    //This could create database problems, but re-uploading the CSV / deleting and remaking
+                    //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                    studentIDDecrypted = s.getStudentID();
+                    firstNameDecrypted = s.getFirstName();
+                    lastNameDecrypted = s.getLastName();
+                    emailDecrypted = s.getEmail();
+                    ex.printStackTrace();
+                }
+            }
+            s.setStudentID(studentIDDecrypted);
+            s.setFirstName(firstNameDecrypted);
+            s.setLastName(lastNameDecrypted);
+            s.setEmail(emailDecrypted);
+            studentsDecrypted.add(s);
+        }
+        return studentsDecrypted;
     }
 
     @Override
     public Student findOne(int userId) {
         String sql = "SELECT * FROM student WHERE userID = ?";
         List<Student> student = query(sql, new StudentMapper(), userId);
-        return student.isEmpty() ? null : student.get(0);
+        if(student.isEmpty()) return null;
+        else{
+            Student s = student.get(0);
+            String studentIDDecrypted;
+            String firstNameDecrypted;
+            String lastNameDecrypted;
+            String emailDecrypted;
+            {
+                try {
+                    if(e==null) e = new Encryptor("secretKeys.json");
+                    studentIDDecrypted = e.decrypt(s.getStudentID().getBytes(StandardCharsets.UTF_8));
+                    firstNameDecrypted = e.decrypt(s.getFirstName().getBytes(StandardCharsets.UTF_8));
+                    lastNameDecrypted = e.decrypt(s.getLastName().getBytes(StandardCharsets.UTF_8));
+                    emailDecrypted = e.decrypt(s.getEmail().getBytes(StandardCharsets.UTF_8));
+                } catch (GeneralSecurityException ex) {
+                    //In the event that the encryptor fails, values are stored as is.
+                    //This could create database problems, but re-uploading the CSV / deleting and remaking
+                    //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                    studentIDDecrypted = s.getStudentID();
+                    firstNameDecrypted = s.getFirstName();
+                    lastNameDecrypted = s.getLastName();
+                    emailDecrypted = s.getEmail();
+                    ex.printStackTrace();
+                }
+            }
+            s.setStudentID(studentIDDecrypted);
+            s.setFirstName(firstNameDecrypted);
+            s.setLastName(lastNameDecrypted);
+            s.setEmail(emailDecrypted);
+            return s;
+        }
     }
 
     @Override
@@ -148,7 +207,29 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     public void update(Student student) {
         StringBuilder sql = new StringBuilder("UPDATE student SET studentId = ?, firstName = ?, lastName = ?, " +
                 "email = ? , teamID = ? WHERE userId = ?");
-        update(sql.toString(), student.getStudentID(),student.getFirstName() ,student.getLastName(), student.getEmail(),student.getUserID());
+        String studentIDEncrypted;
+        String firstNameEncrypted;
+        String lastNameEncrypted;
+        String emailEncrypted;
+        {
+            try {
+                if(e==null) e = new Encryptor("secretKeys.json");
+                studentIDEncrypted = Arrays.toString(e.encrypt(student.getStudentID()));
+                firstNameEncrypted = Arrays.toString(e.encrypt(student.getFirstName()));
+                lastNameEncrypted = Arrays.toString(e.encrypt(student.getLastName()));
+                emailEncrypted = Arrays.toString(e.encrypt(student.getEmail()));
+            } catch (GeneralSecurityException ex) {
+                //In the event that the encryptor fails, values are stored as is.
+                //This could create database problems, but re-uploading the CSV / deleting and remaking
+                //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                studentIDEncrypted = student.getStudentID();
+                firstNameEncrypted = student.getFirstName();
+                lastNameEncrypted = student.getLastName();
+                emailEncrypted = student.getEmail();
+                ex.printStackTrace();
+            }
+        }
+        update(sql.toString(), studentIDEncrypted, firstNameEncrypted , lastNameEncrypted, emailEncrypted, student.getUserID());
     }
 
     @Override
