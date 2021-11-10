@@ -13,11 +13,12 @@ public class Review {
     @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
     private LocalDateTime submissionTime;
     private boolean seen;
+    private int assId;
 
 
     public Review(int reviewID , String comments,
                   LocalDateTime submissionTime , byte[] pdfDoc,
-                  String signOff, int teamID, boolean seen){
+                  String signOff, int teamID, boolean seen, int assId){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -25,6 +26,7 @@ public class Review {
         this.comments = comments;
         this.submissionTime = submissionTime;
         this.seen = seen;
+        this.assId = assId;
     }
 
     public Review(){
@@ -85,5 +87,13 @@ public class Review {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public void setAssignmentId(int id){
+        this.assId = id;
+    }
+
+    public int getAssignmentId(){
+        return assId;
     }
 }
