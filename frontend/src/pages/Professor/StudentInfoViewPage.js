@@ -38,14 +38,11 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import {
-  selectCourses,
-  getCoursesByUserId,
-  getStudentsByCourseId,
-} from "../../features/coursesSlice";
+
 import Loading from "../../components/Loading";
 import axios from "axios";
 import CustomizedTextField from "../../components/CustomizedTextField";
+import { getTeamsByProfessor } from "../../axios/APIRequests";
 
 const AddStudentBox = (props) => {
   const { classes, handleAddStudent, handleCloseAddStudentBox } = props;
@@ -133,8 +130,7 @@ function StudentInfoViewPage({ history }) {
   const [teamKeys, setTeamKeys] = useState({});
 
   const dispatch = useDispatch();
-  //const getCourses = useSelector(selectCourses);
-  //const { courses, error } = getCourses;
+
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [loading, setLoading] = React.useState(true);
@@ -154,19 +150,18 @@ function StudentInfoViewPage({ history }) {
   }, [courses]);
 
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getCourses();
+    console.log(getTeamsByProfessor())
+    getTeamsByProfessor().then((value) => {
+        console.log(value);
+        setCourses(value);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-  console.log(courses);
-  console.log(loading);
+  // console.log(courses);
+  // console.log(loading);
   const handleClick = (key) => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
@@ -345,7 +340,7 @@ function StudentInfoViewPage({ history }) {
                                         display: "flex",
                                         justifyContent: "flex-end",
                                       }}
-                                      primary="3 team members"
+                                      primary={`${team.students.length} team members`}
                                     />
                                   </ListItem>
 

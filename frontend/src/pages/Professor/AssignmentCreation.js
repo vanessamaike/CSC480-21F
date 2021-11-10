@@ -34,8 +34,6 @@ import CustomizedBody from "../../components/CustomizedBody";
 import { red } from "@mui/material/colors";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPdf } from "../../features/pdfSlice";
-import { setPdf } from "../../features/pdfSlice";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import axios from "axios";
 import AssignmentViewer from "./AssignmentViewer";
@@ -50,41 +48,10 @@ function AssignmentCreation() {
   // for onchange event
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfFileError, setPdfFileError] = useState("");
-  const getPdf = useSelector(selectPdf);
-  const { viewPdf } = getPdf;
-  console.log(getPdf);
+
   // for submit event
   console.log(isPreviewMode);
-  const fileType = ["application/pdf"];
-  const handlePdfFileChange = (e) => {
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && fileType.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = (e) => {
-          setPdfFile(e.target.result);
-          setPdfFileError("");
-          //axios.post("pi.cs.oswego.edu:9081/api/assignment", e.target.result);
-          console.log(e.target.result);
-        };
-      } else {
-        setPdfFile(null);
-        setPdfFileError("Please select valid pdf file");
-      }
-    } else {
-      console.log("select your file");
-    }
-  };
-  const handlePdfFileSubmit = (e) => {
-    e.preventDefault();
-    if (pdfFile !== null) {
-      console.log("dispatch");
-      dispatch(setPdf(pdfFile));
-    } else {
-      dispatch(setPdf(null));
-    }
-  };
+
 
   return (
     <CustomizedBody bg={bg}>
@@ -306,50 +273,6 @@ function AssignmentCreation() {
                           Solution Due Date
                         </Typography>
                         <Box sx={{ p: 2 }}></Box>
-
-                        <form onSubmit={handlePdfFileSubmit}>
-                          <input
-                            type="file"
-                            required
-                            onChange={handlePdfFileChange}
-                          ></input>
-                          {pdfFileError && (
-                            <div
-                              style={{
-                                width: "100%",
-                                color: red,
-                                fontSize: "14px",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {pdfFileError}
-                            </div>
-                          )}
-                          <Box sx={{ display: "flex" }}>
-                            <CustomizedButtons
-                              type="submit"
-                              type1
-                              onChange={handlePdfFileChange}
-                              model={"type1"}
-                            >
-                              Upload{" "}
-                            </CustomizedButtons>
-                            <Typography
-                              style={{
-                                display: "flex",
-                                fontWeight: "600",
-                                alignItems: "center",
-                                marginTop: "10px",
-                                marginBottom: "10px",
-                                marginLeft: "10px",
-                              }}
-                              variant="subtitle1"
-                              component="div"
-                            >
-                              Solution Instructions
-                            </Typography>
-                          </Box>
-                        </form>
                       </Box>
                     </Stack>
                   }
@@ -421,49 +344,6 @@ function AssignmentCreation() {
                           Peer Review Due Date
                         </Typography>
                         <Box sx={{ p: 2 }}></Box>
-                        <form onSubmit={handlePdfFileSubmit}>
-                          <input
-                            type="file"
-                            required
-                            onChange={handlePdfFileChange}
-                          ></input>
-                          {pdfFileError && (
-                            <div
-                              style={{
-                                width: "100%",
-                                color: red,
-                                fontSize: "14px",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {pdfFileError}
-                            </div>
-                          )}
-                          <Box sx={{ display: "flex" }}>
-                            <CustomizedButtons
-                              type="submit"
-                              type1
-                              onChange={handlePdfFileChange}
-                              model={"type1"}
-                            >
-                              Upload{" "}
-                            </CustomizedButtons>
-                            <Typography
-                              style={{
-                                display: "flex",
-                                fontWeight: "600",
-                                alignItems: "center",
-                                marginTop: "10px",
-                                marginBottom: "10px",
-                                marginLeft: "10px",
-                              }}
-                              variant="subtitle1"
-                              component="div"
-                            >
-                              Peer Review Instructions
-                            </Typography>
-                          </Box>
-                        </form>
                       </Box>
                     </Stack>
                   }

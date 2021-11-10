@@ -25,7 +25,8 @@ export default function CustomizedRadios({type, filterType, setFilterType}) {
       >
       {type === "radio1" ? (<>
         <FormControlLabel value="Draft" control={<Radio />} label="Draft" />
-        <FormControlLabel value="Active" control={<Radio />} label="Active" /></>) : <>
+        <FormControlLabel value="Active" control={<Radio />} label="Active" />
+        <FormControlLabel value="All" control={<Radio />} label="All" /></>) : <>
         {type === "radio2" ? (<>
           <FormControlLabel value="Needs Review" control={<Radio />} label="Needs Review" />
         <FormControlLabel value="Completed" control={<Radio />} label="Completed" />

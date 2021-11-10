@@ -150,7 +150,7 @@ function ProfessorCourse({ history }) {
                           }}
                           title={
                             <Grid container>
-                              <Grid item xs={7}>
+                              <Grid item xs={6}>
                                 <CustomizedButtons
                                   type3
                                   model={"add"}
@@ -163,7 +163,7 @@ function ProfessorCourse({ history }) {
                               </Grid>
                               <Grid
                                 item
-                                xs={5}
+                                xs={6}
                                 sx={{
                                   display: "flex",
                                   justifyContent: "flex-end",
@@ -187,27 +187,41 @@ function ProfessorCourse({ history }) {
                             paddingTop: "0",
                           }}
                         >
-                          {course.assignments.map((assignment, key) => (
+                          {course.assignments.map((assignment, key) => {
+                            return (
+                              <>
+                                {(filterType === "All" || (filterType === "Draft") === assignment.isDraft) && (
                             <ListItem
                               key={key}
                               button
                               divider
                               secondaryAction={
-                                <IconButton edge="end" aria-label="delete">
+                                <IconButton edge="end">
                                   <BsArrowRightCircle />
                                 </IconButton>
                               }
                             >
                               <ListItemText primary={assignment.title} />
+                              {assignment.isCompleted === true ? (
                               <ListItemText
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                              primary={`Completed ${assignment.completedDate.replaceAll("-", "/")}`}
+                            />
+                              ) : (
+                                <ListItemText
                                 sx={{
                                   display: "flex",
                                   justifyContent: "flex-end",
                                 }}
-                                primary={assignment.solutionDueDate}
+                                primary={`Due ${assignment.completedDate.replaceAll("-", "/")}`}
                               />
-                            </ListItem>
-                          ))}
+                              )}
+
+                            </ListItem>)}</>)
+                })}
                         </CardContent>
                       </CustomizedCard>
                     </TabPanel>

@@ -19,14 +19,15 @@ import {
   ListItem,
   ListItemText,
   Stack,
-  Breadcrumbs
+  Breadcrumbs,
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
+import SuccessfulNotification from "../../components/SuccessfulNotification";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
@@ -92,9 +93,11 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary" style={{fontWeight:"600"}}>Course Results</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Course Results
+          </Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
@@ -120,7 +123,7 @@ function CourseResultPage({ history }) {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  {/* <SuccessfulNotification/> */}
+                  <SuccessfulNotification />
                 </Grid>
               </Grid>
               <div>
@@ -241,7 +244,11 @@ function CourseResultPage({ history }) {
                                 <ListItem
                                   button
                                   divider
-                                  onClick={() => history.push("/studentpeerreviewqualitycheck")}
+                                  onClick={() =>
+                                    history.push(
+                                      "/studentpeerreviewqualitycheck"
+                                    )
+                                  }
                                   secondaryAction={
                                     <IconButton edge="end">
                                       <BsArrowRightCircle />
@@ -315,3 +322,5 @@ function CourseResultPage({ history }) {
 }
 
 export default CourseResultPage;
+
+;

@@ -27,6 +27,7 @@ import {isMobile} from 'react-device-detect';
 import NewSolutionAssignmentView from './pages/Student/NewSolutionAssignmentView';
 import PeerReviewAssignmentView from './pages/Student/PeerReviewAssignmentView';
 import StudentPeerReviewResultsDisplay from './pages/Student/StudentPeerReviewResultsDisplay';
+import StudentResultPage from './pages/Student/StudentResultPage';
 function App() {
 
   return (
@@ -55,6 +56,7 @@ function App() {
         <PrivateRoute exact path="/newsolutionassignmentview" component={NewSolutionAssignmentView} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/peerreviewassignmentview" component={PeerReviewAssignmentView} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/studentpeerreviewresultsdisplay" component={StudentPeerReviewResultsDisplay} roleAccess={"student"}></PrivateRoute>
+        <PrivateRoute exact path="/studentresults" component={StudentResultPage} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/studentteams" component={StudentTeamsPage} roleAccess={"student"}></PrivateRoute>
       </Switch>
     </Router>)

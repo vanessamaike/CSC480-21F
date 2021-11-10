@@ -18,7 +18,6 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import CustomizedBody from "../../components/CustomizedBody";

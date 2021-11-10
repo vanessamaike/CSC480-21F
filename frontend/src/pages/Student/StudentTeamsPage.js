@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -34,6 +34,8 @@ import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
+import axios from "axios";
+import Loading from "../../components/Loading";
 
 const styles = (theme) => ({
   input: {
@@ -72,7 +74,33 @@ function StudentTeamsPage({ history }) {
   const handleOpenStudentModal = () => setIsStudentModalOpened(true);
   const handleCloseStudentModal = () => setIsStudentModalOpened(false);
   const [teamKeys, setTeamKeys] = useState({});
+  const [loading, setLoading] = React.useState(true);
+  const [courses, setCourses] = React.useState();
+  const [courseNames, setCourseNames] = React.useState([]);
 
+  useEffect(() => {
+    var courseNameLists = [];
+    if (courses) {
+      courses.map((course) => {
+        courseNameLists.push(course.code);
+      });
+      setCourseNames(courseNameLists);
+      console.log("`loading`");
+      setLoading(false);
+    }
+  }, [courses]);
+  useEffect(() => {
+    async function getCourses() {
+      try {
+        const response = await axios.get("http://localhost:3000/courses");
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getCourses();
+  }, []);
   const handleClick = key => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
@@ -93,6 +121,11 @@ function StudentTeamsPage({ history }) {
           <Typography color="text.primary">Courses</Typography>
           <Typography color="text.primary" style={{fontWeight:"800"}}>Students & Teams</Typography>
         </Breadcrumbs>
+        <>
+          {loading === true ? (
+            <Loading />
+          ) : (
+        <>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
             <Typography
@@ -122,9 +155,9 @@ function StudentTeamsPage({ history }) {
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type2 setValue={setTab} value={tab} fullWidth={"fullWidth"}></CustomizedTabs>
-          {[1, 2, 3, 4].map((id) => (
-            <TabPanel value={tab} index={id - 1}>
+          <CustomizedTabs type2 setTab={setTab} value={tab}  labels={courseNames} fullWidth={"fullWidth"}></CustomizedTabs>
+          {courses.map((course, key) => (
+            <TabPanel value={tab} index={key}>
               <CustomizedCard>
                 <CardHeader
                   sx={{
@@ -144,6 +177,7 @@ function StudentTeamsPage({ history }) {
                             <CustomizedButtons
                               type3
                               model={"add"}
+                              height1
                               onClick={handleOpenAddStudentBox}
                             >
                               Add Teammate
@@ -164,10 +198,17 @@ function StudentTeamsPage({ history }) {
                           divider
                           
                         >
-                          <ListItemText primary="Team Name" />
+                          <ListItemText primary={
+                            <Typography
+                              component="span"
+                              fontWeight="600"
+                              variant="body1"
+                            >
+                              Team {course.teams[key].teamId}
+                            </Typography> } />
                           <ListItemText
                             sx={{ display: "flex", justifyContent: "flex-end" }}
-                            primary="3 team members"
+                            primary={`${course.teams[key].students.length} team members`}
                           />
 
                         </ListItem>
@@ -175,7 +216,7 @@ function StudentTeamsPage({ history }) {
                       <Collapse in={true} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                           <>
-                        {[1, 2, 3].map((value, key) => (
+                        {course.teams[key].students.map((student, key) => (
                                 <ListItem
                                   key={key}
                                   button
@@ -191,7 +232,7 @@ function StudentTeamsPage({ history }) {
                                     </IconButton>
                                   }
                                 >
-                                  <ListItemText primary={`Student ${value} Name`} />
+                                  <ListItemText primary={`${student.firstName} ${student.lastName}`} />
                                 </ListItem>
                         ))}</>
                         </List>
@@ -202,6 +243,9 @@ function StudentTeamsPage({ history }) {
             </TabPanel>
           ))}
         </div>
+        </>
+          )}
+        </>
       </CustomizedContainer>
       <CustomizedModal
         modalType={"course"}

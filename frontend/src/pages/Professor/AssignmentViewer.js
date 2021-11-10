@@ -22,7 +22,6 @@ import NavBar from "../../components/NavBar/NavBar";
 import bg from "../../images/multi_background_dashboard.jpg";
 import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
 import { Document, Page, pdfjs } from "react-pdf";
-import { selectPdf } from "../../features/pdfSlice";
 // import viewPdf from "../../pdfsample/sample.pdf"
 import Loading from "../../components/Loading";
 function TabPanel(props) {

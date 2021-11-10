@@ -36,7 +36,6 @@ import CustomizedTables from "../../components/CustomizedTables";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 const jsonData = [

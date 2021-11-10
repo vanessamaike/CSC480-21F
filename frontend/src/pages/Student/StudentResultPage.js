@@ -19,7 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
-  Breadcrumbs
+  Breadcrumbs,
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -32,25 +32,25 @@ const demoData = [
     name: "Peer Review 1",
     date: "10/07/21",
     type: "Completed",
-    deadline: "Due 10/01/21",
+    deadline: "10/01/21",
   },
   {
     name: "Peer Review 2",
     date: "11/07/21",
     type: "Upcoming",
-    deadline: "Due 10/01/21",
+    deadline: "10/01/21",
   },
   {
     name: "Peer Review 3",
     date: "13/07/21",
     type: "Upcoming",
-    deadline: "Due 10/01/21",
+    deadline: "10/01/21",
   },
   {
     name: "Peer Review 4",
     date: "12/07/21",
     type: "Completed",
-    deadline: "Due 10/01/21",
+    deadline: "10/01/21",
   },
 ];
 
@@ -71,7 +71,7 @@ function TabPanel(props) {
   );
 }
 
-function SeeAllAssignmentPage({ history }) {
+function StudentResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
   const [items, setItems] = useState(demoData);
@@ -102,13 +102,13 @@ function SeeAllAssignmentPage({ history }) {
     }
     getCourses();
   }, []);
-  // useEffect(() => {
-  //   console.log(filterType);
-  //   const filteredItems = demoData.filter((item) => {
-  //     return item.type == filterType || filterType === "All";
-  //   });
-  //   setItems(filteredItems);
-  // }, [filterType]);
+  useEffect(() => {
+    console.log(filterType);
+    const filteredItems = demoData.filter((item) => {
+      return item.type == filterType || filterType === "All";
+    });
+    setItems(filteredItems);
+  }, [filterType]);
 
   console.log(filterType);
   console.log(items);
@@ -123,16 +123,17 @@ function SeeAllAssignmentPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary" style={{fontWeight:"600"}}>Assignments</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            CourseResults
+          </Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
             <Loading />
           ) : (
         <>
-
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={8}>
             <Typography
@@ -144,85 +145,44 @@ function SeeAllAssignmentPage({ history }) {
               variant="h6"
               component="div"
             >
-              Assignments by Course
+              Results
             </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-              <CustomizedButtons type1 onClick={() => history.push("/studentteams")}>View Teams</CustomizedButtons>
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type1 setTab={setTab} value={tab} fullWidth={"fullWidth"} labels={courseNames}></CustomizedTabs>
-          {courses.map((course,id) => (
+          <CustomizedTabs
+            type3
+            setTab={setTab}
+            value={tab}
+            fullWidth={"fullWidth"}
+            labels={courseNames}
+          ></CustomizedTabs>
+          {courses.map((course, id) => (
             <TabPanel value={tab} index={id - 1}>
               <CustomizedCard>
-                <CardHeader
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                  title={
-                    <Grid container>
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                      >
-                        <CustomizedButtons
-                          type3
-                          model={"radio3"}
-                          fullwidth
-                          filterType={filterType}
-                          setFilterType={setFilterType}
-                        >
-                          Filter Results
-                        </CustomizedButtons>
-                      </Grid>
-                    </Grid>
-                  }
-                ></CardHeader>
                 <CardContent
-                  sx={{
-                    paddingTop: "0",
-                  }}
                 >
                   {items.map((item) => (
-                      <ListItem
-                        button
-                        divider
-                        onClick={() => history.push("/resultviewer")}
-                        secondaryAction={
-                          <IconButton edge="end" aria-label="delete" >
-                            <BsArrowRightCircle />
-                          </IconButton>
-                        }
-                      >
-                        <ListItemText primary={`${item.name}`} />
-                        <>
-                          {item.type === "Upcoming" ? (
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                              primary={`${item.deadline}`}
-                            />
-                          ) : (
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                              primary={`${item.type}`}
-                            />
-                          )}
-                        </>
-                      </ListItem>
+                    <ListItem
+                      button
+                      divider
+                      onClick={() => history.push("/resultviewer")}
+                      secondaryAction={
+                        <IconButton edge="end" aria-label="delete">
+                          <BsArrowRightCircle />
+                        </IconButton>
+                      }
+                    >
+                      <ListItemText primary={`${item.name}`} />
+                      <ListItemText primary={"Complete " + `${item.deadline}`} />
+                      <ListItemText
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                        primary={"Score: " + `${item.deadline}`}
+                      />
+                    </ListItem>
                   ))}
                 </CardContent>
               </CustomizedCard>
@@ -238,4 +198,4 @@ function SeeAllAssignmentPage({ history }) {
   );
 }
 
-export default SeeAllAssignmentPage;
+export default StudentResultPage;
