@@ -45,7 +45,11 @@
 
     <build>
         <finalName>cpr-util</finalName>
-
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
 

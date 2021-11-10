@@ -13,6 +13,7 @@ import edu.oswego.util.service.impl.StudentService;
 import edu.oswego.util.utility.QualityCheck;
 import edu.oswego.util.utility.SD;
 
+
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -20,8 +21,10 @@ import javax.json.bind.JsonbBuilder;
 // JAX-RS
 import javax.ws.rs.*;
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,7 @@ public class ReviewAPI {
     public String postReview(String payload) throws IOException {
         Review review = jsonb.fromJson(payload, Review.class);
         String res = "";
+
         List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
 
@@ -90,6 +94,7 @@ public class ReviewAPI {
 
         /* =================== comment this if you want to use local pdf file ============*/
         //byte[] bytes = review.getPdfDoc();
+
 
         /*======================== SD =================================*/
 
@@ -118,7 +123,6 @@ public class ReviewAPI {
                 res = "This PDF file is not accepted because it includes some profanity words: ";
                 for (Map.Entry value : violations.entrySet()){
                     System.out.println("Key: "+value.getKey() + " & Value: " + value.getValue());
-
                 }
             }
             else{
@@ -130,16 +134,23 @@ public class ReviewAPI {
         } catch (IOException e) {
             e.printStackTrace();
             return e.toString();
+
         }
         return res;
     }
 
     @PUT
-    public String updateReview(String payload) throws JsonProcessingException {
-        Review review = jsonb.fromJson(payload, Review.class);
-        review = reviewService.update(review);
-        String res = jsonb.toJson(review);
-        return res;
+    @Path("/setSeen/{reviewId}")
+    public String updateReview(@PathParam("reviewId") String _reviewId) throws JsonProcessingException {
+        try {
+
+            Review review = reviewService.findOne(Integer.parseInt(_reviewId));
+            review.setSeen(true);
+            reviewService.update(review);
+            return jsonb.toJson(review);
+        } catch (NumberFormatException e){
+            return "Review ID provided was not formatted properly.";
+        }
     }
 
     @DELETE

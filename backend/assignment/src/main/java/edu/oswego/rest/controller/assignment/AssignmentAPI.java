@@ -72,6 +72,20 @@ public class AssignmentAPI {
         return res;
     }
 
+    @PUT
+    @Path("/setReviewStage/{assignmentId}")
+    public String updateSetReviewStageOfAssignment(@PathParam("assignmentId") String _assId) throws JsonProcessingException {
+        try{
+
+            Assignment assignment =  assignmentService.findOne(Integer.parseInt(_assId));
+            assignment.setReviewStage(true);
+            assignment = assignmentService.update(assignment);
+            return jsonb.toJson(assignment);
+        } catch (NumberFormatException e){
+            return "Assignment ID provided was not formatted properly.";
+        }
+    }
+
     @DELETE
     @Path("/{assignmentId}")
     public String deleteSpecificAssignment(@PathParam("assignmentId") String _assignmentId){
