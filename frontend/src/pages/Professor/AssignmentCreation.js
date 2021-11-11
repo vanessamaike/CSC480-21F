@@ -12,6 +12,9 @@ import {
     Stack,
     Radio,
 } from "@mui/material";
+import 'date-fns';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker'
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -37,8 +40,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 function AssignmentCreation(){
     const [title, setTitle] = useState('');
-    const [solutionDueDate, setSolutionDueDate] = useState('');
-    const [prDueDate, setPRDueDate] = useState('');
+    const [solutionDueDate, setSolutionDueDate] = useState(new Date());
+    (new Date());
+    const [prDueDate, setPRDueDate] = useState(new Date());
+    (new Date());
     const dispatch = useDispatch();
     // for onchange event
     const [pdfFile, setPdfFile]=useState(null);
@@ -82,6 +87,19 @@ function AssignmentCreation(){
         dispatch(setPdf(null))
       }
     }
+
+    const changeDate = (e) => {
+      setSolutionDueDate(e)
+    } 
+
+    const changeDate2 = (e) => {
+        setPRDueDate(e)
+      } 
+
+    //   setOptions({
+    //     theme: 'ios',
+    //     themeVariant: 'light'
+    // });
 
     return (
         <div
@@ -249,8 +267,10 @@ function AssignmentCreation(){
                                         sx={{
                                             display: "flex",
                                         }}
-                                    >
-                                        <TextField onChange={(e) => setSolutionDueDate(e.target.value)}></TextField>
+                                    >   
+                                        <div style={{paddingTop: "10px"}}>
+                                        <DatePicker selected = {solutionDueDate} onChange={changeDate}/>
+                                        </div>
                                         <Typography
                                             style={{
                                                 display: "flex",
@@ -334,8 +354,9 @@ function AssignmentCreation(){
                                             display: "flex",
                                         }}
                                     >
-                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
-                                        
+                                        <div style={{paddingTop: "10px"}}>
+                                        <DatePicker selected = {prDueDate} onChange={changeDate2}/>
+                                        </div>
                                         <Typography
                                             style={{
                                                 display: "flex",

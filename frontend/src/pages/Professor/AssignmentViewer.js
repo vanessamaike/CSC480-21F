@@ -226,6 +226,3 @@ function AssignmentViewer() {
 }
 
 export default AssignmentViewer
-{/* <div>
-              
-            </div> */}

@@ -108,6 +108,7 @@ function StudentTeamView({ history }) {
                     <CustomizedTabs
                         type2
                         setValue={setValue}
+                        fullWidth={"fullWidth"}
                         value={value}
                     ></CustomizedTabs>
                     {[1, 2, 3, 4].map((id) => (

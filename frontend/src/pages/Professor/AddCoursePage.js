@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Card, Typography, Container, CardContent, Stack } from "@mui/material";
+import {
+  Card,
+  Typography,
+  Container,
+  CardContent,
+  Stack,
+  Breadcrumbs,
+} from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -9,6 +16,8 @@ import axios from "axios";
 import { CSVReader } from "react-papaparse";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import { Box } from "@mui/system";
+import CustomizedBody from "../../components/CustomizedBody";
+import CustomizedTextField from "../../components/CustomizedTextField";
 
 const buttonRef = React.createRef();
 
@@ -48,16 +57,16 @@ function AddCoursePage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Course</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Create Course
+          </Typography>
+        </Breadcrumbs>
         <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
           Create Course
         </Typography>
@@ -65,6 +74,31 @@ function AddCoursePage() {
         <CustomizedCard>
           <CardContent>
             <div style={{ width: "100%" }}>
+              <Stack direction="column" spacing={2} sx={{display: "flex"}}>
+              <Typography
+                style={{ fontWeight: "600" }}
+                variant="body1"
+                component="div"
+              >
+                Course Settings:
+              </Typography>
+              <Stack direction="row" spacing={4} sx={{display: "flex", alignItems: "center"}}>
+                <CustomizedTextField>Course Title </CustomizedTextField>
+                <Typography
+                style={{ fontWeight: "600" }}
+                variant="body1"
+                component="div"
+                >
+                Course reference number (CRN) recommended
+              </Typography>
+              </Stack>
+              <Typography
+                variant="body2"
+                component="div"
+                >
+                Please upload the course student list CSV file provided by your administrator.
+              </Typography>
+              </Stack>
               <CSVReader
                 ref={buttonRef}
                 onDrop={handleOnDrop}
@@ -135,7 +169,7 @@ function AddCoursePage() {
           </CardContent>
         </CustomizedCard>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

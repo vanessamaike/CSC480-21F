@@ -11,39 +11,28 @@ import CustomizedTables from "../../components/CustomizedTables";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
   CardContent,
-  CardHeader,
-  Divider,
-  Box,
   Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  TextField,
-  Modal,
-  Fade,
+  Breadcrumbs
 } from "@mui/material";
 import CSVUploader from "../../components/CSVUploader";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { withStyles } from "@mui/styles";
+import CustomizedBody from "../../components/CustomizedBody";
 
 function ResultsViewerPage({ history }) {
   const [jsonData, setjsonData] = useState([]);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Courses</Typography>
+          <Typography color="text.primary">Course Name</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>New Assignment</Typography>
+        </Breadcrumbs>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={9}>
             <Typography
@@ -83,7 +72,7 @@ function ResultsViewerPage({ history }) {
           </CustomizedCard>
         </div>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

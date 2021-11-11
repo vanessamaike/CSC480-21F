@@ -20,7 +20,7 @@ import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import {signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {auth, provider} from "./firebase";
-
+import CustomizedBody from "../../components/CustomizedBody";
 function RoleButton() {
   return (
     <Box
@@ -59,6 +59,7 @@ function LoginPage() {
     const token = credential.accessToken;
     // The signed-in user info.
     const user = result.user;
+    console.log(user)
     // ...
   }).catch((error) => {
     // Handle Errors here.
@@ -71,15 +72,23 @@ function LoginPage() {
     // ...
   });
   }
+  
   const dispatch = useDispatch();
-  const userModel = {
+  const professorModel = {
     "userId": 1,
     "email": "dtran4@oswego.edu",
     "role": "professor"
   }
-  const handleLogin = () => {
-    dispatch(setUser(userModel));
-
+  const studentModel = {
+    "userId": 1,
+    "email": "dtran4@oswego.edu",
+    "role": "student"
+  }
+  const handleProfessorLogin = () => {
+    dispatch(setUser(professorModel));
+  }
+  const handleStudentLogin = () => {
+    dispatch(setUser(studentModel));
   }
   const responseGoogle = (response) => {
     console.log(response);
@@ -88,7 +97,7 @@ function LoginPage() {
   };
   return (
 
-    <div style ={{ backgroundImage:`url(${bg})`, height: "80vh", backgroundSize: "cover", paddingTop: "150px" }}> 
+    <CustomizedBody bg={bg}> 
       <NavBar></NavBar>
       <div 
         style={{
@@ -122,13 +131,14 @@ function LoginPage() {
           style={{
             display: "flex",
             flexDirection: "column",
-            margin: "0 1em",
+            margin: "3em 1em",
             width: "422px",
-            height: "397px",
+            height: "auto",
             padding: "0.5em",
           }}
         >
           <CardHeader
+            sx={{paddingBottom:"0"}}
             title={
               <Typography
                 style={{ fontWeight: "600" }}
@@ -158,12 +168,12 @@ function LoginPage() {
             <Stack spacing={2}>
               <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons>
               <CustomizedButtons type1 onClick={signIn}>Student Login</CustomizedButtons>
-              <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons>
+              {/* <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons> */}
             </Stack>
           </CardContent>
         </CustomizedCard>
       </div>
-    </div>
+    </CustomizedBody>
   );
 }
 

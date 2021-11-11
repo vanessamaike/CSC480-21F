@@ -19,6 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -27,12 +28,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
-const demoData = [
-  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
-  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
-  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
-  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
-];
+import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,18 +51,14 @@ function TabPanel(props) {
 function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [items, setItems] = useState(demoData);
+  const [courses, setCourses] = useState(null);
 
   const dispatch = useDispatch();
-  const getCourses = useSelector(selectCourses);
-  const { courses, loading, error } = getCourses;
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
-
+  const [loading, setLoading] = React.useState(true);
   const [courseNames, setCourseNames] = React.useState([]);
-  useEffect(() => {
-    dispatch(getCoursesByUserId());
-  }, [dispatch]);
+  console.log(filterType);
   useEffect(() => {
     var nameLists = [];
     if (courses) {
@@ -73,33 +66,47 @@ function CourseResultPage({ history }) {
         nameLists.push(course.code);
       });
       setCourseNames(nameLists);
+      setLoading(false);
     }
   }, [courses]);
   useEffect(() => {
-    console.log(filterType);
-    const filteredItems = demoData.filter((item) => {
-      return item.type == filterType || filterType === "All";
-    });
-    setItems(filteredItems);
-  }, [filterType]);
+    async function getCourses() {
+      try {
+        const response = await axios.get("http://localhost:3000/courses");
+        setCourses(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getCourses();
+  }, []);
+  // useEffect(() => {
+  //   console.log(filterType);
+  //   const filteredItems = courses.assignments.filter((assignment) => {
+  //     return item.type == filterType || filterType === "All";
+  //   });
+  //   setItems(filteredItems);
+  // }, [filterType]);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Course Results</Typography>
+        </Breadcrumbs>
         <>
-          {error === true || loading === true ? (
+          {loading === true ? (
             <Loading />
           ) : (
             <>
-              <Grid container sx={{ marginBottom: "20px" }}>
-                <Grid item xs={8}>
+              <Grid container spacing={15} sx={{ marginBottom: "20px" }}>
+                <Grid
+                  item
+                  xs={6}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
                   <Typography
                     style={{
                       display: "flex",
@@ -109,8 +116,11 @@ function CourseResultPage({ history }) {
                     variant="h6"
                     component="div"
                   >
-                    Results
+                    Quality Check
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  {/* <SuccessfulNotification/> */}
                 </Grid>
               </Grid>
               <div>
@@ -118,7 +128,8 @@ function CourseResultPage({ history }) {
                   type3
                   setTab={setTab}
                   value={tab}
-                  courseNames={courseNames}
+                  fullWidth={"fullWidth"}
+                  labels={courseNames}
                 ></CustomizedTabs>
                 {courses.map((course, key) => (
                   <TabPanel value={tab} index={key}>
@@ -157,56 +168,139 @@ function CourseResultPage({ history }) {
                           paddingTop: "0",
                         }}
                       >
-                        {items.map((item) => (
-                          <Link
-                            to="/resultviewer"
-                            style={{ textDecoration: "none", color: "#000" }}
-                          >
-                            <ListItem
-                              button
-                              divider
-                              secondaryAction={
-                                <IconButton edge="end" aria-label="delete">
-                                  <BsArrowRightCircle />
-                                </IconButton>
-                              }
-                            >
-                              <ListItemText primary={`${item.name}`} />
-                              <ListItemText
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                                primary={`Student submissions completed ${item.date}`}
-                              />
-                              <>
-                                {item.type === "Needs Review" ? (
-                                  <>
-                                    <FiberManualRecordIcon
-                                      sx={{ color: "#0DC38D" }}
-                                      fontSize="medium"
-                                    />
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`${item.type}`}
-                                    />
-                                  </>
-                                ) : (
+                        {course.assignments.map((assignment) => {
+                          return (
+                            <>
+                              {(filterType === "All" ||
+                                (filterType === "Completed") ===
+                                  assignment.solution.isReviewed) && (
+                                <ListItem
+                                  button
+                                  divider
+                                  onClick={() =>
+                                    history.push("/studentsolutionqualitycheck")
+                                  }
+                                  secondaryAction={
+                                    <IconButton edge="end">
+                                      <BsArrowRightCircle />
+                                    </IconButton>
+                                  }
+                                >
                                   <ListItemText
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "flex-end",
-                                    }}
-                                    primary={`${item.type}`}
+                                    sx={{ width: "30%" }}
+                                    primary={`${assignment.title} Solutions`}
                                   />
-                                )}
-                              </>
-                            </ListItem>
-                          </Link>
-                        ))}
+
+                                  <>
+                                    {assignment.solution.isReviewed ===
+                                    false ? (
+                                      <>
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                                        />
+                                        <ListItemText
+                                          primary={
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "flex-end",
+                                              }}
+                                            >
+                                              <FiberManualRecordIcon
+                                                sx={{
+                                                  color: "#0DC38D",
+                                                  marginRight: "10px",
+                                                }}
+                                                fontSize="medium"
+                                              />{" "}
+                                              <>Needs Review</>
+                                            </div>
+                                          }
+                                        />
+                                      </>
+                                    ) : (
+                                      <ListItemText
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                        primary={`Completed ${assignment.solution.dueDate}`}
+                                      />
+                                    )}
+                                  </>
+                                </ListItem>
+                              )}
+                              {(filterType === "All" ||
+                                (filterType === "Completed") ===
+                                  assignment.peerreview.isReviewed) && (
+                                <ListItem
+                                  button
+                                  divider
+                                  onClick={() => history.push("/studentpeerreviewqualitycheck")}
+                                  secondaryAction={
+                                    <IconButton edge="end">
+                                      <BsArrowRightCircle />
+                                    </IconButton>
+                                  }
+                                >
+                                  <ListItemText
+                                    sx={{ width: "30%" }}
+                                    primary={`${assignment.title} Peer Reviews`}
+                                  />
+
+                                  <>
+                                    {assignment.peerreview.isReviewed ===
+                                    false ? (
+                                      <>
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                                        />
+
+                                        <ListItemText
+                                          primary={
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "flex-end",
+                                              }}
+                                            >
+                                              <FiberManualRecordIcon
+                                                sx={{
+                                                  color: "#0DC38D",
+                                                  marginRight: "10px",
+                                                }}
+                                                fontSize="medium"
+                                              />{" "}
+                                              <>Needs Review</>
+                                            </div>
+                                          }
+                                        />
+                                      </>
+                                    ) : (
+                                      <ListItemText
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "flex-end",
+                                        }}
+                                        primary={`Completed ${assignment.peerreview.dueDate}`}
+                                      />
+                                    )}
+                                  </>
+                                </ListItem>
+                              )}
+                            </>
+                          );
+                        })}
                       </CardContent>
                     </CustomizedCard>
                   </TabPanel>
@@ -216,7 +310,7 @@ function CourseResultPage({ history }) {
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

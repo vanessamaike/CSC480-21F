@@ -19,6 +19,7 @@ import {
   ListItem,
   ListItemText,
   Stack,
+  Breadcrumbs
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
@@ -93,6 +94,10 @@ function SeeAllAssignmentPage({ history }) {
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
+      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary" style={{fontWeight:"600"}}>Assignments</Typography>
+        </Breadcrumbs>
         <Grid container sx={{ marginBottom: "20px" }}>
           <Grid item xs={8}>
             <Typography
@@ -112,16 +117,11 @@ function SeeAllAssignmentPage({ history }) {
             xs={4}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Link
-              to="/studentinfoview"
-              style={{ textDecoration: "none", color: "#fff" }}
-            >
-              <CustomizedButtons type1>View Teams</CustomizedButtons>
-            </Link>
+              <CustomizedButtons type1 onClick={() => history.push("/studentinfoview")}>View Teams</CustomizedButtons>
           </Grid>
         </Grid>
         <div>
-          <CustomizedTabs type1 setValue={setTab} value={tab}></CustomizedTabs>
+          <CustomizedTabs type1 setValue={setTab} value={tab} fullWidth={"fullWidth"} labels={["hihi", "haha", "huhu"]}></CustomizedTabs>
           {[1, 2, 3, 4].map((id) => (
             <TabPanel value={tab} index={id - 1}>
               <CustomizedCard>
@@ -157,15 +157,12 @@ function SeeAllAssignmentPage({ history }) {
                   }}
                 >
                   {items.map((item) => (
-                    <Link
-                      to="/resultviewer"
-                      style={{ textDecoration: "none", color: "#000" }}
-                    >
                       <ListItem
                         button
                         divider
+                        onClick={() => history.push("/resultviewer")}
                         secondaryAction={
-                          <IconButton edge="end" aria-label="delete">
+                          <IconButton edge="end" aria-label="delete" >
                             <BsArrowRightCircle />
                           </IconButton>
                         }
@@ -191,7 +188,6 @@ function SeeAllAssignmentPage({ history }) {
                           )}
                         </>
                       </ListItem>
-                    </Link>
                   ))}
                 </CardContent>
               </CustomizedCard>
