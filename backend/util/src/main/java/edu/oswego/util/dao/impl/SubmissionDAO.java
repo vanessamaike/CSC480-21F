@@ -36,15 +36,16 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     @Override
     public int save(Submission submission) {
         StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, " +
-                "comments, submissionTime, pdfDoc, signOff, teamID, seen, assId)");
-        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen, listOfQCWordViolations, assId)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
 
         insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
-                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen(), submission.getAssignmentId());
+                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen(),
+                submission.getListOfQCWordViolations(), submission.getAssignmentId());
         return uniqueRandomId;
     }
 
@@ -72,12 +73,14 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     @Override
     public void update(Submission submission) {
         StringBuilder sql = new StringBuilder("UPDATE submission SET comments = ?, " +
-                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, assId = ? WHERE submissionID = ?");
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, " +
+                "listOfQCWordViolations = ?, assId = ? WHERE submissionID = ?");
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
         update(sql.toString(), submission.getComments(),
                 submission.getSubmissionTime() ,targetStream,
                 submission.getSignOff(),submission.getTeamID(),
-                submission.isSeen(), submission.getAssignmentId(), submission.getSubmissionID());
+                submission.isSeen(), submission.getListOfQCWordViolations(),
+                submission.getAssignmentId(), submission.getSubmissionID());
     }
 
     @Override
