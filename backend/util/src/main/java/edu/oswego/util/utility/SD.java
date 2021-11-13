@@ -46,15 +46,15 @@ public class SD {
     }
 
     /**
-     * This method determines a file's score if it is an outlier. If it is not, it returns -1.0.
+     * This method returns a file's score if it is an outlier.
      * @param f The file to be checked.
      * @param dev The number of standard deviations away from the mean to set the limit.
-     * @return A double value that is the score if it is an outlier, else -1.0.
+     * @return A double value that is the score.
      * @throws IOException This occurs when the PDF file does not load properly.
      */
-    public double getOutlierScore(File f, double dev) throws IOException {
-        if(isOutlier(f, dev)) return score;
-        else return -1.0;
+    public double getScore(File f, double dev) throws IOException {
+        isOutlier(f, dev);
+        return score;
     }
 
     /**

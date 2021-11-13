@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class QualityCheck {
-    public HashMap<Integer, String> QC(byte[] pdfFile, String[] students) throws IOException{
+    public String QC(byte[] pdfFile, String[] students) throws IOException{
 
         PDDocument document = PDDocument.load(pdfFile);
         //Instantiate PDFTextStrip
@@ -24,10 +24,6 @@ public class QualityCheck {
         //Closing the document
         String token1;
         // create Scanner inFile1
-        /* TODO This file path will need to change when the server is deployed.
-         * Maybe we want to make this part of admin module? Maybe BLOB in user.
-         * Could be a secondary parameter, too.
-         */
         ClassLoader classLoader = this.getClass().getClassLoader();
         // Getting resource(File) from class loader
         File file =new File(classLoader.getResource("profanity.txt").getFile());
@@ -49,8 +45,7 @@ public class QualityCheck {
         //Collections.addAll(temps, students);
         String[] tempsArray = temps.toArray(new String[0]);
         int start = 0;
-        HashMap<Integer, String> retVal = new HashMap<>();
-        ArrayList<Integer> arr = new ArrayList<>();
+        StringBuilder retVal = new StringBuilder();
         for (String s : tempsArray) {
             Pattern r = Pattern.compile(s);
             //Create a Pattern object
@@ -58,10 +53,9 @@ public class QualityCheck {
             //matcher object
             if(m.find(start)){
                 start = m.start();
-                arr.add(m.start());
-                retVal.put(m.start(), s.substring(2,s.length()-2));
+                retVal.append(s, 2, s.length() - 2).append(",");
             }
         }
-        return retVal;
+        return retVal.substring(0, retVal.length()-2);
     }
 }
