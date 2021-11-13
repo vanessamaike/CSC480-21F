@@ -15,6 +15,7 @@ import edu.oswego.util.service.impl.CourseService;
 import edu.oswego.util.service.impl.ReviewService;
 import edu.oswego.util.service.impl.StudentService;
 import edu.oswego.util.utility.QualityCheck;
+import edu.oswego.util.utility.ResponseMessage;
 import edu.oswego.util.utility.SD;
 
 // Json-B
@@ -24,6 +25,7 @@ import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.io.*;
 
 import java.nio.file.Files;
@@ -41,6 +43,10 @@ public class ReviewAPI {
     private final ICourseService courseService;
     private final Jsonb jsonb = JsonbBuilder.create();
     private final authObject a = new authObject();
+    private final String unauth = "Unauthorized: You mus log in to view this page.";
+    private final String forbid = "Forbidden: You do not have access to this page.";
+    private final String errorm = "An error occurred: ";
+    private final String badnum = "The ID number provided was not formatted properly.";
 
 
     public ReviewAPI() {
@@ -50,38 +56,32 @@ public class ReviewAPI {
         courseService = new CourseService();
     }
 
-    /*
-    TODO the "HTTP error messages" that get returned because of the authorization process
-    will likely need to change at some point. This also applies to the error messages.
-     */
-
     @GET
-    public String getAllReviews(@HeaderParam("jwtToken") String jwtToken){
+    public Response getAllReviews(@HeaderParam("jwtToken") String jwtToken){
         try {
             JwtConsumer c = new JwtConsumer();
             String role = a.authUser(c.createJwt(jwtToken));
             if(role.equals("professor")){
                 List<Review> listOfReviews = reviewService.findAll();
                 String res = jsonb.toJson(listOfReviews);
-                if(listOfReviews != null) return res;
-                else return "There are not any reviews in the database.";
+                if(listOfReviews != null) return new ResponseMessage().sendMessage(res, 200);
+                else return new ResponseMessage().sendMessage("No reviews found.", 404);
             }
             else if(role.equals("student")){
-                return "403: Forbidden";
+                return new ResponseMessage().sendMessage(forbid, 403);
             }
             else {
-                return "401: Unauthorized";
+                return new ResponseMessage().sendMessage(unauth, 401);
             }
         } catch (Exception e){
-            System.out.println("Something went wrong with the authorizer.");
-            e.printStackTrace();
+            return new ResponseMessage().sendMessage(errorm+e, 500);
+
         }
-        return null;
     }
 
     @GET
     @Path("/{reviewId}")
-    public String getSpecificAnswer(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken){
+    public Response getSpecificAnswer(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken){
         try {
             JwtConsumer c = new JwtConsumer();
             String role = a.authUser(c.createJwt(jwtToken));
@@ -89,64 +89,63 @@ public class ReviewAPI {
             Review review = reviewService.findOne(reviewId);
             if(role.equals("professor")){
                 String res = jsonb.toJson(review);
-                if(review != null) return res;
-                else return "Review ID provided was not formatted properly.";
+                if(review != null) return new ResponseMessage().sendMessage(res, 200);
+
+                else return new ResponseMessage().sendMessage("No review found.", 404);
+
             }
             else if(role.equals("student")){
                 Assignment ass = assService.findOne(review.getAssignmentId());
                 if(ass.isReviewStage()){
-                    return jsonb.toJson(review);
+                    return new ResponseMessage().sendMessage(jsonb.toJson(review), 200);
                 }
-                else return "403: Forbidden";
+                else return new ResponseMessage().sendMessage(forbid, 403);
             }
             else {
-                return "401: Unauthorized";
+                return new ResponseMessage().sendMessage(unauth, 401);
             }
         } catch (NumberFormatException ne){
-            System.out.println("Review ID provided was not formatted properly.");
+            return new ResponseMessage().sendMessage(badnum, 500);
         } catch (Exception e){
-            System.out.println("Something went wrong with the authorizer.");
-            e.printStackTrace();
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 
     @GET
     @Path("/reviewsByAssignment/{assignmentId}")
-    public String getReviewsByAssignment(@PathParam("assignmentId") String _assID, @HeaderParam("jwtToken") String jwtToken){
+    public Response getReviewsByAssignment(@PathParam("assignmentId") String _assID, @HeaderParam("jwtToken") String jwtToken){
         try {
             JwtConsumer c = new JwtConsumer();
             String role = a.authUser(c.createJwt(jwtToken));
             if(role.equals("professor")){
                 List<Review> listOfReviews = reviewService.findAllByAssId(Integer.parseInt(_assID));
                 String res = jsonb.toJson(listOfReviews);
-                if(listOfReviews != null) return res;
-                else return "There are not any reviews in the database.";
+                if(listOfReviews != null)
+                    return new ResponseMessage().sendMessage(res, 200);
+                else
+                    return new ResponseMessage().sendMessage("No review found.", 404);
             }
             else if(role.equals("student")){
-                return "403: Forbidden";
+                return new ResponseMessage().sendMessage(forbid, 403);
             }
             else {
-                return "401: Unauthorized";
+                return new ResponseMessage().sendMessage(unauth, 401);
             }
         } catch (NumberFormatException ne){
-            System.out.println("Assignment ID provided was not formatted properly.");
+            return new ResponseMessage().sendMessage(badnum, 500);
         } catch (Exception e){
-            System.out.println("Something went wrong with the authorizer.");
-            e.printStackTrace();
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 
     @POST
-    public String postReview(String payload, @HeaderParam("jwtToken") String jwtToken) {
+    public Response postReview(String payload, @HeaderParam("jwtToken") String jwtToken) {
         Review review = jsonb.fromJson(payload, Review.class);
         String res;
 
         //This section calculates the student name list
         List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
-
         int i = 0;
         for(Student student : allStudents){
             students[i] = student.getFirstName();
@@ -189,24 +188,19 @@ public class ReviewAPI {
             if(role.equals("professor") || role.equals("student")){
                 review = reviewService.save(review);
                 res = jsonb.toJson(review);
+                return new ResponseMessage().sendMessage(res, 200);
             }
             else{
-                return "401: Unauthorized";
+                return new ResponseMessage().sendMessage(unauth, 401);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return e.toString();
-
-        } catch (Exception e) {
-            System.out.println("Something went wrong with the authorizer.");
-            return e.toString();
+        }  catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return res;
     }
 
     @PUT
     @Path("/setSeen/{reviewId}")
-    public String updateReview(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken) {
+    public Response updateReview(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken) {
 
         try {
             JwtConsumer c = new JwtConsumer();
@@ -215,22 +209,23 @@ public class ReviewAPI {
                 Review review = reviewService.findOne(Integer.parseInt(_reviewId));
                 review.setSeen(true);
                 reviewService.update(review);
-                return jsonb.toJson(review);
+                return new ResponseMessage().sendMessage(jsonb.toJson(review), 200);
             }
             else if(role.equals("student")){
-                return "403: Forbidden";
+                return new ResponseMessage().sendMessage(forbid, 403);
             }
-            else return "401: Unauthorized";
+            else
+                return new ResponseMessage().sendMessage(unauth, 401);
         } catch (NumberFormatException e){
-            return "Review ID provided was not formatted properly.";
+            return new ResponseMessage().sendMessage(badnum, 500);
         } catch (Exception e) {
-            return "The authorizor failed.";
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
     }
 
     @DELETE
     @Path("/{reviewId}")
-    public String deleteSpecificReview(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken){
+    public Response deleteSpecificReview(@PathParam("reviewId") String _reviewId, @HeaderParam("jwtToken") String jwtToken){
         try {
             JwtConsumer c = new JwtConsumer();
             String role = a.authUser(c.createJwt(jwtToken));
@@ -239,17 +234,19 @@ public class ReviewAPI {
                 Review review = reviewService.findOne(reviewId);
                 review = reviewService.delete(review);
                 String res = jsonb.toJson(review);
-                if(review != null) return res;
-                else return "Review ID provided was not formatted properly.";
+                if(review != null)
+                    return new ResponseMessage().sendMessage(res, 200);
+                else
+                    return new ResponseMessage().sendMessage("Review not found.", 404);
             } else if(role.equals("student")){
-                return "403: Forbidden";
-            } else return "401: Unauthorized";
+                return new ResponseMessage().sendMessage(forbid, 403);
+            } else
+                return new ResponseMessage().sendMessage(unauth, 401);
         } catch (NumberFormatException ne){
-            System.out.println("Review ID provided was not formatted properly.");
+            return new ResponseMessage().sendMessage(badnum, 500);
         } catch (Exception e) {
-            return "The authorizor failed.";
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 
 }
