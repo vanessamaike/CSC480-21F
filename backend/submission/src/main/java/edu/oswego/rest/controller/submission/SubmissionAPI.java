@@ -1,38 +1,38 @@
 package edu.oswego.rest.controller.submission;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.ibm.websphere.security.jwt.JwtConsumer;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 
 
+import edu.oswego.util.objects.authObject;
 import edu.oswego.util.service.IStudentService;
 import edu.oswego.util.service.impl.StudentService;
 import edu.oswego.util.utility.QualityCheck;
 
 import edu.oswego.util.service.ISubmissionService;
 import edu.oswego.util.service.impl.SubmissionService;
+import edu.oswego.util.utility.ResponseMessage;
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.HashMap;
+import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 
 @Path("/submission")
 public class SubmissionAPI {
     private static final long serialVersionUID = 1L;
-    private ISubmissionService submissionService;
-    private IStudentService studentService;
-    private Jsonb jsonb = JsonbBuilder.create();
+    private final ISubmissionService submissionService;
+    private final IStudentService studentService;
+    private final Jsonb jsonb = JsonbBuilder.create();
+    private final authObject a = new authObject();
+    private final String unauth = "Unauthorized: You mus log in to view this page.";
+    private final String forbid = "Forbidden: You do not have access to this page.";
+    private final String errorm = "An error occurred: ";
+    private final String badnum = "The ID number provided was not formatted properly.";
 
 
     public SubmissionAPI() {
@@ -41,114 +41,139 @@ public class SubmissionAPI {
     }
 
     @GET
-    public String getAllSubmissions(){
-        //TODO This method needs to ensure authentication
+    public Response getAllSubmissions(@HeaderParam("jwtToken") String jwtToken){
         try {
-            List<Submission> listOfAssignments = submissionService.findAll();
-            String res = jsonb.toJson(listOfAssignments);
-            if(listOfAssignments != null) return res;
-            else return "Submission ID provided was not formatted properly.";
-        } catch (NumberFormatException ne){
-            System.out.println("Assignment ID provided was not formatted properly.");
+            String role = a.authUser(new JwtConsumer().createJwt(jwtToken));
+            if(role.equals("professor")){
+                List<Submission> listOfAssignments = submissionService.findAll();
+                String res = jsonb.toJson(listOfAssignments);
+                if(listOfAssignments != null) {
+                    return new ResponseMessage().sendMessage(res, 200);
+                }
+                else return new ResponseMessage().sendMessage("No submissions found.", 404);
+            }
+            else if(role.equals("student")){
+                return new ResponseMessage().sendMessage(forbid, 403);
+            }
+            else{
+                return new ResponseMessage().sendMessage(unauth, 401);
+            }
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 
     @GET
     @Path("/{submissionId}")
-    public String getSpecificSubmission(@PathParam("submissionId") String _submissionId){
-        //TODO This method needs to ensure authentication
+    public Response getSpecificSubmission(@PathParam("submissionId") String _submissionId, @HeaderParam("jwtToken") String jwtToken){
         try {
-            int submissionId = Integer.parseInt(_submissionId);
-            Submission submission = submissionService.findOne(submissionId);
-            String res = jsonb.toJson(submission);
-            if(submission != null) return res;
-            else return "Submission ID provided was not formatted properly.";
-        } catch (NumberFormatException ne){
-            System.out.println("Submission ID provided was not formatted properly.");
+            String role = a.authUser(new JwtConsumer().createJwt(jwtToken));
+            if(role.equals("professor")||role.equals("student")){
+                List<Submission> listOfAssignments = submissionService.findAll();
+                String res = jsonb.toJson(listOfAssignments);
+                if(listOfAssignments != null) {
+                    return new ResponseMessage().sendMessage(res, 200);
+                }
+                else return new ResponseMessage().sendMessage("No such submission found.", 200);
+            }
+            else{
+                return new ResponseMessage().sendMessage(unauth, 401);
+            }
+        } catch (NumberFormatException e){
+            return new ResponseMessage().sendMessage(badnum, 500);
+
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
+
         }
-        return null;
     }
+
     @POST
-    public String postSubmission(String payload) throws IOException {
+    public Response postSubmission(String payload, @HeaderParam("jwtToken") String jwtToken) {
         Submission submission = jsonb.fromJson(payload, Submission.class);
-        String res = "";
+
+        //This section calculates the student name list
         List<Student> allStudents = studentService.findAll();
         String[] students = new String[allStudents.size()*2];
-
         int i = 0;
-
         for(Student student : allStudents){
             students[i] = student.getFirstName();
             students[i + 1 ] = student.getLastName();
             i = i + 2;
         }
 
-        ClassLoader classLoader = this.getClass().getClassLoader();
-
-        /*======= Use this if you want to use local pdf File ===========*/
-        File pdfFile = new File(classLoader.getResource("a.pdf").getFile());
-        byte[] bytes = Files.readAllBytes(pdfFile.toPath());
-
-        /*========= comment this if you want to use local pdf file =======*/
-        //byte[] bytes = submission.getPdfDoc();
-
         try {
+            JwtConsumer c = new JwtConsumer();
+            String role = a.authUser(c.createJwt(jwtToken));
             QualityCheck qc = new QualityCheck();
+            String violations = qc.QC(submission.getPdfDoc(), students);
+            submission.setListOfQCWordViolations(violations);
 
-            HashMap<Integer, String> violations = qc.QC(bytes, students);
-            if ( violations.size() > 0) {
-                //TODO edit the response if the pdf is not accepted
-
-                System.out.println("This PDF file is not accepted because it includes some profanity words : ");
-                res = "This PDF file is not accepted because it includes some profanity words: ";
-                for (Map.Entry value : violations.entrySet()){
-                    System.out.println("Key: "+value.getKey() + " & Value: " + value.getValue());
-
-                }
+            if(role.equals("student") || role.equals("professor")){
+                submission = submissionService.save(submission);
+                return new ResponseMessage().sendMessage(jsonb.toJson(submission), 200);
             }
             else{
-                System.out.println("This PDF file is accepted to store to database ");
-                submission = submissionService.save(submission);
-                res = jsonb.toJson(submission);
+                return new ResponseMessage().sendMessage(unauth, 401);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return e.toString();
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
+
         }
-        return res;
     }
 
     @PUT
     @Path("/setSeen/{submissionId}")
-    public String updateSetSeenSubmission(@PathParam("submissionId") String _submissionId) throws JsonProcessingException {
+    public Response updateSetSeenSubmission(@PathParam("submissionId") String _submissionId, @HeaderParam("jwtToken") String jwtToken) {
         try {
+            String role = a.authUser(new JwtConsumer().createJwt(jwtToken));
+            if(role.equals("professor")){
+                Submission submission = submissionService.findOne(Integer.parseInt(_submissionId));
+                submission.setSeen(true);
+                submissionService.update(submission);
+                return new ResponseMessage().sendMessage(jsonb.toJson(submission), 200);
+            }
+            else if(role.equals("student")) {
+                return new ResponseMessage().sendMessage(forbid, 403);
 
-            Submission submission = submissionService.findOne(Integer.parseInt(_submissionId));
-            submission.setSeen(true);
-            submissionService.update(submission);
-            return jsonb.toJson(submission);
+            }
+            else{
+                return new ResponseMessage().sendMessage(unauth, 401);
+            }
         } catch (NumberFormatException e){
-            return "Submission ID provided was not formatted properly.";
+            return new ResponseMessage().sendMessage(badnum, 500);
+
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
     }
 
     @DELETE
     @Path("/{submissionId}")
-    public String deleteSpecificSubmission(@PathParam("submissionId") String _submissionId){
-        //TODO This method needs to ensure authentication
+    public Response deleteSpecificSubmission(@PathParam("submissionId") String _submissionId, @HeaderParam("jwtToken") String jwtToken){
         try {
-
-            int submissionId = Integer.parseInt(_submissionId);
-            Submission submission = submissionService.findOne(submissionId);
-            submission = submissionService.delete(submission);
-            String res = jsonb.toJson(submission);
-            if(submission != null) return res;
-            else return "Submission ID provided was not formatted properly.";
-        } catch (NumberFormatException ne){
-            System.out.println("Submission ID provided was not formatted properly.");
+            String role = a.authUser(new JwtConsumer().createJwt(jwtToken));
+            if(role.equals("professor")){
+                int submissionId = Integer.parseInt(_submissionId);
+                Submission submission = submissionService.findOne(submissionId);
+                submission = submissionService.delete(submission);
+                String res = jsonb.toJson(submission);
+                if(submission != null) {
+                    return new ResponseMessage().sendMessage(res, 200);
+                }
+                return new ResponseMessage().sendMessage("Submission not found.", 404);
+            }
+            else if(role.equals("student")) {
+                return new ResponseMessage().sendMessage(forbid, 403);
+            }
+            else{
+                return new ResponseMessage().sendMessage(unauth, 401);
+            }
+        } catch (NumberFormatException e){
+            return new ResponseMessage().sendMessage(badnum, 500);
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 }
