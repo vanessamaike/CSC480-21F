@@ -12,11 +12,12 @@ public class Submission {
     @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
     private LocalDateTime submissionTime;
     private boolean seen;
+    private String listOfQCWordViolations;
     private int assId;
 
     public Submission(int submissionID , String comments,
                       LocalDateTime submissionTime , byte[] pdfDoc,
-                      String signOff, int teamID , boolean seen, int assId ){
+                      String signOff, int teamID , boolean seen, String v, int assId ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -24,6 +25,7 @@ public class Submission {
         this.comments = comments;
         this.submissionTime = submissionTime;
         this.seen = seen;
+        this.listOfQCWordViolations = v;
         this.assId = assId;
     }
 
@@ -92,6 +94,14 @@ public class Submission {
 
     public void setAssignmentId(int id){
         this.assId = id;
+    }
+
+    public void setListOfQCWordViolations(String v){
+        this.listOfQCWordViolations = v;
+    }
+
+    public String getListOfQCWordViolations(){
+        return listOfQCWordViolations;
     }
 
     public int getAssignmentId() {
