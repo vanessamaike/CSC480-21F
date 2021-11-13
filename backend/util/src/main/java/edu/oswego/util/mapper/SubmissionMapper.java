@@ -27,6 +27,7 @@ public class SubmissionMapper implements RowMapper<Submission>{
                     rs.getString("signOff"),
                     rs.getInt("teamID"),
                     rs.getBoolean("seen"),
+                    rs.getString("listOfQCWordViolations"),
                     rs.getInt("assId")
             );
             return submission;
