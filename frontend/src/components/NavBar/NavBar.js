@@ -5,7 +5,8 @@ import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
-import logo from "../../images/logo.png";
+import studentLogo from "../../images/student_logo.png";
+import professorLogo from "../../images/professor_logo.png";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
@@ -31,7 +32,6 @@ function NavBar({ history }) {
   const handleClick = () => {
     setDropdown(!dropdown);
   };
-console.log(getUser)
   return (
     <div className={nav.root}>
       <AppBar
@@ -56,7 +56,7 @@ console.log(getUser)
                 to="/professorhome"
                 style={{ textDecoration: "none", color: "#000" }}
               >
-                <img className={nav.logo} src={`${logo}`} />
+                <img className={nav.logo} src={`${professorLogo}`} />
               </Link>
             </Grid>
               <Grid
@@ -85,7 +85,7 @@ console.log(getUser)
                     to="/courseresult"
                     style={{ textDecoration: "none", color: "#000" }}
                   >
-                    <div className={nav.link}>Qualily Check</div>
+                    <div className={nav.link}>Quality Check</div>
                   </Link>
                   <Link
                     to="/studentinfoview"
@@ -103,7 +103,7 @@ console.log(getUser)
                 to="/studenthome"
                 style={{ textDecoration: "none", color: "#000" }}
               >
-                <img className={nav.logo} src={`${logo}`} />
+                <img className={nav.logo} src={`${studentLogo}`} />
               </Link>
             </Grid>
               <Grid

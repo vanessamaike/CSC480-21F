@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 // @mui components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { BsArrowRightCircle } from "react-icons/bs";
+import { TiDelete } from "react-icons/ti";
+import { MdDelete } from "react-icons/md";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -20,6 +21,7 @@ import {
   Stack,
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedModal from "../../components/CustomizedModal";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,6 +29,12 @@ import { selectUser } from "../../features/userSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
+import {
+  getAssignmentsByProfessor,
+  getCoursesByProfessor,
+  deleteAssignmentByProfessor
+} from "../../axios/APIRequests";
+import { MdOutlineCancel } from "react-icons/md";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -50,13 +58,28 @@ function ProfessorCourse({ history }) {
 
   const { user, isAuthenticated, authLoading } = getUser;
   const [filterType, setFilterType] = React.useState("All");
-  const [courses, setCourses] = React.useState(null);
+  const [courses, setCourses] = React.useState();
   const [loading, setLoading] = React.useState(true);
   const [tab, setTab] = React.useState(0);
   const [courseNames, setCourseNames] = React.useState([]);
+  const [isAssignmentModalOpened, setIsAssignmentModalOpened] = useState(false);
+  const handleOpenAssignmentModal = () => setIsAssignmentModalOpened(true);
+  const handleCloseAssignmentModal = () => setIsAssignmentModalOpened(false);
+  const [deletedAssignmentID, setDeletedAssignmentID] = useState()
+  const handleGetAssignmentByProfessor = () => {
+    getAssignmentsByProfessor()
+    .then((value) => {
+      console.log(value);
+      setCourses(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   useEffect(() => {
     var nameLists = [];
-    if (courses) {
+    console.log(courses);
+    if (courses !== undefined && courses.length !== 0) {
       courses.map((course) => {
         nameLists.push(course.code);
       });
@@ -65,24 +88,29 @@ function ProfessorCourse({ history }) {
     }
   }, [courses]);
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getCourses();
+    handleGetAssignmentByProfessor()
   }, []);
+ 
+  const handleDeleteAssignment = () => {
+    deleteAssignmentByProfessor(deletedAssignmentID)
+      .then((value) => {
+        console.log(value);
+        handleGetAssignmentByProfessor()
+        handleCloseAssignmentModal(true)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary" style={{fontWeight:"600"}}>Course</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Course
+          </Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
@@ -152,10 +180,12 @@ function ProfessorCourse({ history }) {
                             <Grid container>
                               <Grid item xs={6}>
                                 <CustomizedButtons
-                                  type3
+                                  type2
                                   model={"add"}
                                   onClick={() =>
-                                    history.push("/assignmentcreation")
+                                    history.push("/assignmentcreation", {
+                                      courseID: course.courseID,
+                                    })
                                   }
                                 >
                                   Create New Assignment
@@ -170,14 +200,14 @@ function ProfessorCourse({ history }) {
                                 }}
                               >
                                 <CustomizedButtons
-                                type3
-                                model={"radio1"}
-                                fullwidth
-                                filterType={filterType}
-                                setFilterType={setFilterType}
-                              >
-                                Filter Assignment
-                              </CustomizedButtons>
+                                  type3
+                                  model={"radio1"}
+                                  fullwidth
+                                  filterType={filterType}
+                                  setFilterType={setFilterType}
+                                >
+                                  Filter Assignment
+                                </CustomizedButtons>
                               </Grid>
                             </Grid>
                           }
@@ -190,38 +220,128 @@ function ProfessorCourse({ history }) {
                           {course.assignments.map((assignment, key) => {
                             return (
                               <>
-                                {(filterType === "All" || (filterType === "Draft") === assignment.isDraft) && (
-                            <ListItem
-                              key={key}
-                              button
-                              divider
-                              secondaryAction={
-                                <IconButton edge="end">
-                                  <BsArrowRightCircle />
-                                </IconButton>
-                              }
-                            >
-                              <ListItemText primary={assignment.title} />
-                              {assignment.isCompleted === true ? (
-                              <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                              primary={`Completed ${assignment.completedDate.replaceAll("-", "/")}`}
-                            />
-                              ) : (
-                                <ListItemText
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "flex-end",
-                                }}
-                                primary={`Due ${assignment.completedDate.replaceAll("-", "/")}`}
-                              />
-                              )}
-
-                            </ListItem>)}</>)
-                })}
+                                {(filterType === "All" ||
+                                  (filterType === "Draft") ===
+                                    assignment.draft) && (
+                                  <ListItem
+                                    key={key}
+                                    button
+                                    divider
+                                    secondaryAction={
+                                      <IconButton edge="end">
+                                        <MdDelete
+                                          style={{
+                                            color: "red",
+                                            size: "1.5em",
+                                          }}
+                                          onClick={()=>{
+                                            handleOpenAssignmentModal()
+                                            setDeletedAssignmentID(assignment.assignmentID)
+                                          }}
+                                        />
+                                      </IconButton>
+                                    }
+                                  >
+                                    <ListItemText
+                                      onClick={() =>{
+                                        console.log("go")
+                                        history.push("/assignmentdisplay", {
+                                          assignment: assignment,
+                                        })}
+                                      }
+                                      sx={{ fontWeight: "800" }}
+                                      primary={
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          <Typography
+                                            style={{
+                                              display: "flex",
+                                              alignItems: "center",
+                                              fontWeight: "600",
+                                            }}
+                                            variant="body1"
+                                            component="div"
+                                          >
+                                            {assignment.title}
+                                          </Typography>
+                                          <Stack direction="row">
+                                            <Typography
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                fontWeight: "600",
+                                              }}
+                                              variant="body1"
+                                              component="div"
+                                            >
+                                              Preview
+                                            </Typography>
+                                          </Stack>
+                                        </div>
+                                      }
+                                      secondary={
+                                        <Grid container>
+                                          <Grid
+                                            item
+                                            xs={12}
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                            }}
+                                          >
+                                            <Typography
+                                              variant="body2"
+                                              component="div"
+                                            >
+                                              Solution
+                                            </Typography>
+                                            <Typography
+                                              variant="body2"
+                                              component="div"
+                                            >
+                                              Due Date:{" "}
+                                              {new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}
+                                            </Typography>
+                                          </Grid>
+                                          <Grid
+                                            item
+                                            xs={12}
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                            }}
+                                          >
+                                            <Typography
+                                              variant="body2"
+                                              component="div"
+                                            >
+                                              Peer Review
+                                            </Typography>
+                                            <Typography
+                                              variant="body2"
+                                              component="div"
+                                            >
+                                              Due Date:{" "}
+                                              {new Date(
+                                                assignment.peerReviewDueDateTime
+                                              ).toLocaleString()}
+                                            </Typography>
+                                          </Grid>
+                                        </Grid>
+                                      }
+                                    />
+                                  </ListItem>
+                                )}
+                              </>
+                            );
+                          })}
                         </CardContent>
                       </CustomizedCard>
                     </TabPanel>
@@ -231,6 +351,12 @@ function ProfessorCourse({ history }) {
             </>
           )}
         </>
+        <CustomizedModal
+        modalType={"assignment"}
+        isAssignmentModalOpened={isAssignmentModalOpened}
+        handleCloseAssignmentModal={handleCloseAssignmentModal}
+        handleDeleteAssignment={handleDeleteAssignment}
+      />
       </CustomizedContainer>
     </CustomizedBody>
   );

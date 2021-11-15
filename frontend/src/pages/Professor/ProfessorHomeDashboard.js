@@ -36,6 +36,7 @@ import axios from "axios";
 import Loading from "../../components/Loading";
 import { getCoursesByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
 import { BsArrowRightCircle } from "react-icons/bs";
+
 function CourseBar({ course, history }) {
   return (
     <Stack spacing={0}>
@@ -75,17 +76,24 @@ function CourseBar({ course, history }) {
 function ProfessorHomeDashBoard({ history }) {
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState([]);
+
   useEffect(() => {
-    getCoursesByProfessor()
+    console.log(courses);
+    if(courses !== undefined && courses.length !== 0){
+      setLoading(false)
+    }
+  }, [courses])
+
+  useEffect(() => {
+      getCoursesByProfessor()
       .then((value) => {
         setCourses(value);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  console.log(courses);
+
   return (
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>

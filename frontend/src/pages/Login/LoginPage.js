@@ -53,12 +53,12 @@ function LoginPage({history}) {
   const dispatch = useDispatch();
   const professorModel = {
     "userId": 1,
-    "email": "dtran4@oswego.edu",
+    "email": "username@oswego.edu",
     "role": "professor"
   }
   const studentModel = {
     "userId": 1,
-    "email": "dtran4@oswego.edu",
+    "email": "username@oswego.edu",
     "role": "student"
   }
   const handleProfessorLogin = () => {

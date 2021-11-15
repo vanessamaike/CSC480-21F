@@ -22,8 +22,9 @@ import NavBar from "../../components/NavBar/NavBar";
 import bg from "../../images/multi_background_dashboard.jpg";
 import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
 import { Document, Page, pdfjs } from "react-pdf";
-// import viewPdf from "../../pdfsample/sample.pdf"
+
 import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -41,7 +42,10 @@ function TabPanel(props) {
   );
 }
 
-function AssignmentViewer({ viewPdf, setIsPreviewMode }) {
+function AssignmentViewer({
+  history,
+  location,
+}) {
   const [scale, setScale] = useState(1.0);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -49,14 +53,20 @@ function AssignmentViewer({ viewPdf, setIsPreviewMode }) {
   const isLastPage = pageNumber === numPages;
   const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = React.useState(0);
-  console.log(viewPdf);
+  //const [isPreV, setisPreV] = useState(initialState)
+  //const [assignment, setAssignment] = useState();
+
+  var assignment = location.state.assignment;
+  var solutionPdf = assignment.solutionPdfDoc;
+  var peerReviewPdf = assignment.peerReviewPdfDoc;
+
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setIsLoading(false);
   }
-  const handlePreviewMode = () => {
-    setIsPreviewMode(false)
-  }
+  // const handlePreviewMode = () => {
+  //   setIsPreviewMode(false);
+  // };
   const goToPreviousPage = () => {
     if (!isFirstPage) setPageNumber(pageNumber - 1);
   };
@@ -65,141 +75,196 @@ function AssignmentViewer({ viewPdf, setIsPreviewMode }) {
   };
 
   return (
-      <CustomizedContainer>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Assignment
-            </Typography>
-          </Grid>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={2}>
-            <Link
-              to="/assignmentcreation"
-              style={{ textDecoration: "none", color: "#000" }}
-            >
-              <CustomizedButtons type2 onClick={handlePreviewMode}> Close Preview</CustomizedButtons>
-            </Link>
-          </Grid>
-        </Grid>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: "90px",
-            backgroundColor: "white",
-            overflowY: "auto",
-            padding: "10px",
-            marginBottom: "20px",
-            borderRadius: "10px",
-          }}
-        >
-          <Grid item xs={4}>
-            <Typography
-              style={{
-                padding: "30px",
-                display: "flex",
-                textAlign: "center",
-                marginBottom: "10px",
-                fontWeight: "300px",
-              }}
-              variant="h7"
-              component="div"
-            >
-              Publish Date:
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography
-              style={{
-                padding: "30px",
-                display: "flex",
-                textAlign: "center",
-                marginBottom: "10px",
-                fontWeight: "300px",
-              }}
-              variant="h7"
-              component="div"
-            >
-              Solution Due Date:
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography
-              style={{
-                padding: "30px",
-                display: "flex",
-                textAlign: "center",
-                marginBottom: "10px",
-                fontWeight: "300px",
-              }}
-              variant="h7"
-              component="div"
-            >
-              Peer Review Due:
-            </Typography>
-          </Grid>
+    <CustomizedBody bg={bg}>
+    <NavBar fixed></NavBar>
+    <CustomizedContainer>
+    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+
+          <Typography
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontWeight: "600",
+            }}
+            variant="h6"
+            component="div"
+          >
+            {assignment.title}
+          </Typography>
+          <CustomizedButtons
+            type2
+            onClick={() => {
+              history.push("/assignmentcreation",  {assignment : assignment ,
+                 courseID: location.state.courseID 
+                } );
+            }}
+          >
+            Close Preview
+          </CustomizedButtons>
         </div>
-        <div>
-          <CustomizedTabs
-            type1
-            setTab={setTab}
-            tab={tab}
-            labels={["Solution", "Peer Review"]}
-          ></CustomizedTabs>
-          {["Solution", "Peer Review"].map((course, key) => {
-            return (
-              <TabPanel value={tab} index={key}>
-                <CustomizedCard>
-                  <Container
+      <CustomizedCard sx={{ margin: "20px 0" }}>
+        <CardContent>
+        <Grid container>
+              <Grid item xs={12}>
+                <Stack direction="row" spacing={1}>
+                  <Typography
                     style={{
-                      alignItems: "center",
-                      marginLeft: "100px",
                       display: "flex",
-                      padding: "10px",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Publish Date:
+                  </Typography>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    {new Date().toDateString()}
+                  </Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={6}>
+              <Stack direction="row" spacing={1}>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                  variant="body1"
+                  component="div"
+                >
+                  Solution Due Date:
+                 
+                </Typography>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                  }}
+                  variant="body1"
+                  component="div"
+                >
+                  {new Date(assignment.solutionDueDateTime).toLocaleString()}
+                </Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={6}>
+              <Stack direction="row" spacing={1}>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                  variant="body1"
+                  component="div"
+                >
+                  Peer Review Due:
+                </Typography>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                  }}
+                  variant="body1"
+                  component="div"
+                >
+                  {new Date(assignment.peerReviewDueDateTime).toLocaleString()}
+                </Typography>
+                </Stack>
+              </Grid>
+            </Grid>
+        </CardContent>
+      </CustomizedCard>
+      <div>
+        <CustomizedTabs
+          type1
+          setTab={setTab}
+          tab={tab}
+          labels={["Solution", "Peer Review"]}
+        ></CustomizedTabs>
+        <TabPanel value={tab} index={0}>
+          <CustomizedCard>
+            <CardContent>
+              {solutionPdf && (
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <CustomizedButtons
+                    model={"arrowL"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToPreviousPage}
+                  ></CustomizedButtons>
+                  <Document
+                    file={{ data: solutionPdf }}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} scale={scale} />
+                  </Document>
+                  <CustomizedButtons
+                    model={"arrow"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToNextPage}
+                  ></CustomizedButtons>
+                </div>
+              )}
+            </CardContent>
+          </CustomizedCard>
+        </TabPanel>
+        <TabPanel value={tab} index={1}>
+          <CustomizedCard>
+            <CardContent>
+              <>
+                {peerReviewPdf && (
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    {viewPdf && (
-                      <>
-                        <CustomizedButtons
-                          model={"arrowL"}
-                          style={{ color: "black", marginBottom: "10px" }}
-                          onClick={goToPreviousPage}
-                        ></CustomizedButtons>
-                        <Document
-                          file={viewPdf}
-                          onLoadSuccess={onDocumentLoadSuccess}
-                        >
-                          <Page pageNumber={pageNumber} scale={scale} />
-                        </Document>
-                        <CustomizedButtons
-                          model={"arrow"}
-                          style={{ color: "black", marginBottom: "10px" }}
-                          onClick={goToNextPage}
-                        ></CustomizedButtons>
-                      </>
-                    )}
-                  </Container>
-                </CustomizedCard>
-              </TabPanel>
-            );
-          })}
-        </div>
-      </CustomizedContainer>
+                    <CustomizedButtons
+                      model={"arrowL"}
+                      style={{ color: "black", marginBottom: "10px" }}
+                      onClick={goToPreviousPage}
+                    ></CustomizedButtons>
+                    <Document
+                      file={{ data: peerReviewPdf }}
+                      onLoadSuccess={onDocumentLoadSuccess}
+                    >
+                      <Page pageNumber={pageNumber} scale={scale} />
+                    </Document>
+                    <CustomizedButtons
+                      model={"arrow"}
+                      style={{ color: "black", marginBottom: "10px" }}
+                      onClick={goToNextPage}
+                    ></CustomizedButtons>
+                  </div>
+                )}
+              </>
+            </CardContent>
+          </CustomizedCard>
+        </TabPanel>
+      </div>
+    </CustomizedContainer>
+    </CustomizedBody>
   );
 }
 
 export default AssignmentViewer;
-{
-  /* <div>
-              
-            </div> */
-}

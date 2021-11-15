@@ -43,7 +43,7 @@ function CourseBar({ course, history }) {
         {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
       <List dense={true}>
-        <ListItem button onClick={() => history.push("/studentsolutionqualitycheck")}>
+        <ListItem button onClick={() => history.push("/newsolutionassignmentview")}>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -55,7 +55,7 @@ function CourseBar({ course, history }) {
             primary={`Due ${course.assignments[0].solution.dueDate}`}
           />
         </ListItem>
-        <ListItem button onClick={() => history.push("/studentpeerreviewqualitycheck")}>
+        <ListItem button onClick={() => history.push("/peerreviewassignmentview")}>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -76,10 +76,15 @@ function StudentHomeDashBoard({ history }) {
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState([]);
   useEffect(() => {
+    console.log(courses);
+    if(courses !== undefined && courses.length !== 0){
+      setLoading(false)
+    }
+  }, [courses])
+  useEffect(() => {
     getCoursesByProfessor()
       .then((value) => {
         setCourses(value);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -219,7 +224,7 @@ function StudentHomeDashBoard({ history }) {
                             <ListItem
                             button
                             divider
-                            onClick={() => history.push("/studentpeerreviewqualitycheck")}
+                            onClick={() => history.push("/peerreviewassignmentview")}
                             secondaryAction={
                               <IconButton edge="end">
                                 <BsArrowRightCircle />

@@ -166,7 +166,7 @@ function StudentResultPage({ history }) {
                     <ListItem
                       button
                       divider
-                      onClick={() => history.push("/resultviewer")}
+                      onClick={() => history.push("/studentpeerreviewresultsdisplay")}
                       secondaryAction={
                         <IconButton edge="end" aria-label="delete">
                           <BsArrowRightCircle />

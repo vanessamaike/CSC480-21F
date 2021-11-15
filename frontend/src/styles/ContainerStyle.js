@@ -20,7 +20,7 @@ const ContainerStyle = makeStyles((theme) => ({
       maxWidth: "960px",
     },
     "@media (min-width: 1200px)": {
-      maxWidth: "1100px",
+      maxWidth: "1024px",
     },
   },
 }));

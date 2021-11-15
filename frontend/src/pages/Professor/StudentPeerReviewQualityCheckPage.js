@@ -9,9 +9,7 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
 import viewPdf from "../../pdf/sample.pdf";
-
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -191,13 +189,22 @@ function StudentPeerReviewQualityCheckPage({ history }) {
 
   const [scale, setScale] = useState(1.0);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
+  const isFirstPage = pageNumber === 1;
+  const isLastPage = pageNumber === numPages;
+
   const [isLoading, setIsLoading] = useState(true);
   // for submit event
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setIsLoading(false);
   }
+  const goToPreviousPage = () => {
+    if (!isFirstPage) setPageNumber(pageNumber - 1);
+  };
+  const goToNextPage = () => {
+    if (!isLastPage) setPageNumber(pageNumber + 1);
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -234,7 +241,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                 history.push("./courseresult");
               }}
             >
-              Send for Reviews
+              Send Feedback
             </CustomizedButtons>
           </Grid>
         </Grid>
@@ -270,7 +277,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                   Submissions closed 11:59pm 10/7/21
                 </Typography>
               </Stack>
-              <CustomizedButtons type3 model={"download"}>
+              <CustomizedButtons type3 model={"download"} href={viewPdf} download={true}>
                 Download Solutions
               </CustomizedButtons>
             </CardContent>
@@ -423,8 +430,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                               variant="body2"
                               component="div"
                             >
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit.
+                              Lorem ipsum 
                             </Typography>
                           </ListItem>
                         ))}
@@ -441,15 +447,25 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                   </Collapse>
                 </List>
                 {viewPdf && (
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Document
-                      file={viewPdf}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNumber} scale={scale} />
-                    </Document>
-                  </div>
-                )}
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <CustomizedButtons
+                    model={"arrowL"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToPreviousPage}
+                  ></CustomizedButtons>
+                  <Document
+                    file={viewPdf}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} scale={scale} />
+                  </Document>
+                  <CustomizedButtons
+                    model={"arrow"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToNextPage}
+                  ></CustomizedButtons>
+                </div>
+              )}
               </CardContent>
             </CustomizedCard>
           </TabPanel>

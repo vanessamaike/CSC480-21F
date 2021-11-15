@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { MdOutlineCancel, MdTurnedInNot } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -42,11 +43,23 @@ import { selectUser } from "../../features/userSlice";
 import Loading from "../../components/Loading";
 import axios from "axios";
 import CustomizedTextField from "../../components/CustomizedTextField";
-import { getTeamsByProfessor } from "../../axios/APIRequests";
+import {
+  getTeamsByProfessor,
+  deleteStudentByProfessor,
+  deleteCourseByProfessor,
+  postNewStudentByProfessor,
+} from "../../axios/APIRequests";
 
 const AddStudentBox = (props) => {
-  const { classes, handleAddStudent, handleCloseAddStudentBox } = props;
-
+  const {
+    classes,
+    handleAddStudent,
+    setFirstName,
+    setLastName,
+    setSID,
+    setEmail,
+    handleCloseAddStudentBox,
+  } = props;
   return (
     <Box
       sx={{
@@ -83,10 +96,18 @@ const AddStudentBox = (props) => {
               alignItems: "center",
             }}
           >
-            <CustomizedTextField>First Name</CustomizedTextField>
-            <CustomizedTextField>Last Name</CustomizedTextField>
-            <CustomizedTextField>Student ID</CustomizedTextField>
-            <CustomizedTextField>Email</CustomizedTextField>
+            <CustomizedTextField handleTextFieldChange={setFirstName}>
+              First Name
+            </CustomizedTextField>
+            <CustomizedTextField handleTextFieldChange={setLastName}>
+              Last Name
+            </CustomizedTextField>
+            <CustomizedTextField handleTextFieldChange={setSID}>
+              Student ID
+            </CustomizedTextField>
+            <CustomizedTextField handleTextFieldChange={setEmail}>
+              Email
+            </CustomizedTextField>
             <CustomizedButtons type1 height1 onClick={handleAddStudent}>
               Add
             </CustomizedButtons>
@@ -120,7 +141,13 @@ function StudentInfoViewPage({ history }) {
   const [isOpenedAddStudentBox, setIsOpenedAddStudentBox] = useState(false);
   const [isCourseModalOpened, setIsCourseModalOpened] = useState(false);
   const [isStudentModalOpened, setIsStudentModalOpened] = useState(false);
-  const handleAddStudent = () => setIsOpenedAddStudentBox(false);
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [sID, setSID] = useState();
+  const [email, setEmail] = useState();
+
+  const [deletedStudentID, setDeletedStudentID] = useState()
+
   const handleOpenAddStudentBox = () => setIsOpenedAddStudentBox(true);
   const handleCloseAddStudentBox = () => setIsOpenedAddStudentBox(false);
   const handleOpenCourseModal = () => setIsCourseModalOpened(true);
@@ -129,17 +156,24 @@ function StudentInfoViewPage({ history }) {
   const handleCloseStudentModal = () => setIsStudentModalOpened(false);
   const [teamKeys, setTeamKeys] = useState({});
 
-  const dispatch = useDispatch();
-
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState();
   const [courseNames, setCourseNames] = React.useState([]);
-
+  const handleGetTeamsByProfessor = () => {
+    getTeamsByProfessor()
+    .then((value) => {
+      console.log(value);
+      setCourses(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   useEffect(() => {
     var courseNameLists = [];
-    if (courses) {
+    if (courses !== undefined && courses.length !== 0) {
       courses.map((course) => {
         courseNameLists.push(course.code);
       });
@@ -150,22 +184,56 @@ function StudentInfoViewPage({ history }) {
   }, [courses]);
 
   useEffect(() => {
-    console.log(getTeamsByProfessor())
-    getTeamsByProfessor().then((value) => {
+    handleGetTeamsByProfessor()
+  }, []);
+  const handleClick = (key) => () => {
+    setTeamKeys({ [key]: !teamKeys[key] });
+  };
+  const handleDeleteCourse = () => {
+    const deletedCourseID = courses[tab].courseID; //tab is the index of chosen course
+    deleteCourseByProfessor(deletedCourseID)
+      .then((value) => {
         console.log(value);
-        setCourses(value);
-        setLoading(false);
+        handleCloseCourseModal(true)
+        handleGetTeamsByProfessor()
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  // console.log(courses);
-  // console.log(loading);
-  const handleClick = (key) => () => {
-    setTeamKeys({ [key]: !teamKeys[key] });
   };
-
+  const handleDeleteStudent = () => {
+    console.log(deletedStudentID);
+    deleteStudentByProfessor(deletedStudentID)
+      .then((value) => {
+        console.log(value);
+        handleCloseStudentModal(true)
+        handleGetTeamsByProfessor()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleAddStudent = () => {
+    var newStudent = {
+      firstName: firstName,
+      lastName: lastName,
+      studentID: sID,
+      email: email,
+    };
+    var json = {
+      courseID: 57964,
+      student: newStudent,
+    };
+    const json_ = JSON.stringify(json);
+    postNewStudentByProfessor(json_)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    setIsOpenedAddStudentBox(false);
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -208,7 +276,8 @@ function StudentInfoViewPage({ history }) {
                   <CustomizedButtons
                     type2
                     model={"add"}
-                    onClick={handleOpenCourseModal}
+                    onClick={()=>{
+                      handleOpenCourseModal()}}
                   >
                     Delete Course
                   </CustomizedButtons>
@@ -222,8 +291,8 @@ function StudentInfoViewPage({ history }) {
                   fullWidth={"fullWidth"}
                   labels={courseNames}
                 ></CustomizedTabs>
-                {courses.map((course, key) => (
-                  <TabPanel value={tab} index={key}>
+                {courses.map((course, key) => {
+                  return <TabPanel value={tab} index={key}>
                     <CustomizedCard>
                       <CardHeader
                         sx={{
@@ -268,7 +337,14 @@ function StudentInfoViewPage({ history }) {
                                 unmountOnExit
                               >
                                 <AddStudentBox
-                                  handleAddStudent={handleAddStudent} handleCloseAddStudentBox={handleCloseAddStudentBox}
+                                  handleAddStudent={handleAddStudent}
+                                  setFirstName={setFirstName}
+                                  setLastName={setLastName}
+                                  setSID={setSID}
+                                  setEmail={setEmail}
+                                  handleCloseAddStudentBox={
+                                    handleCloseAddStudentBox
+                                  }
                                 ></AddStudentBox>
                               </Collapse>
                             )}
@@ -282,35 +358,54 @@ function StudentInfoViewPage({ history }) {
                       >
                         {viewType === "Student List" ? (
                           <List component="nav">
-                            {course.students.map((student) => (
-                              <ListItem
-                                button
-                                divider
-                                secondaryAction={
-                                  <IconButton
-                                    edge="end"
-                                    aria-label="delete"
-                                    onClick={handleOpenStudentModal}
+                            {course.students.length !== 0 ? (
+                              <>
+                                {course.students.map((student) => (
+                                  <ListItem
+                                    button
+                                    divider
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                        onClick={()=>{
+                                          setDeletedStudentID(student.userID)
+                                          handleOpenStudentModal()}}
+                                      >
+                                        <MdDelete style={{
+                                            color: "#347DEB",
+                                            size: "1.5em",
+                                          }}/>
+                                      </IconButton>
+                                    }
                                   >
-                                    <MdOutlineCancel />
-                                  </IconButton>
-                                }
-                              >
-                                <ListItemText
-                                  primary={`${student.firstName} ${student.lastName}`}
-                                />
+                                    <ListItemText
+                                      primary={`${student.firstName} ${student.lastName}`}
+                                    />
+                                    <ListItemText
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                      }}
+                                      primary="Added via CSV upload 08/13/21"
+                                    />
+                                  </ListItem>
+                                ))}
+                              </>
+                            ) : (
+                              <ListItem>
                                 <ListItemText
                                   sx={{
                                     display: "flex",
                                     justifyContent: "flex-end",
                                   }}
-                                  primary="Added via CSV upload 08/13/21"
+                                  primary="There is no student in this course"
                                 />
                               </ListItem>
-                            ))}
+                            )}
                           </List>
                         ) : (
-                          <List component="nav" >
+                          <List component="nav">
                             {course.teams.map((team, key) => {
                               const open = teamKeys[key] || false;
                               return (
@@ -361,7 +456,9 @@ function StudentInfoViewPage({ history }) {
                                               <IconButton
                                                 edge="end"
                                                 aria-label="delete"
-                                                onClick={handleOpenStudentModal}
+                                                onClick={()=>{
+                                                  setDeletedStudentID(student.userID)
+                                                  handleOpenStudentModal()}}
                                               >
                                                 <MdOutlineCancel />
                                               </IconButton>
@@ -383,7 +480,7 @@ function StudentInfoViewPage({ history }) {
                       </CardContent>
                     </CustomizedCard>
                   </TabPanel>
-                ))}
+                })}
               </div>
             </>
           )}
@@ -393,11 +490,13 @@ function StudentInfoViewPage({ history }) {
         modalType={"course"}
         isCourseModalOpened={isCourseModalOpened}
         handleCloseCourseModal={handleCloseCourseModal}
+        handleDeleteCourse={handleDeleteCourse}
       />
       <CustomizedModal
         modalType={"student"}
         isStudentModalOpened={isStudentModalOpened}
         handleCloseStudentModal={handleCloseStudentModal}
+        handleDeleteStudent={handleDeleteStudent}
       />
     </CustomizedBody>
   );
