@@ -7,9 +7,21 @@ function PrivateRoute({ component: Component, roleAccess, ...children }) {
   const {user, isAuthenticated} = getUser
   console.log(isAuthenticated)
 
-    if (isAuthenticated === true && roleAccess === user.role) {
-      return <Route {...children} render={props => <Component {...props} />} />;
+    if (isAuthenticated === true) {
+      if(roleAccess === user.role){
+        return <Route {...children} render={props => <Component {...props} />} />;
+      }
+      else{
+        if(user.role === "professor"){
+          return <Redirect to="professorhome" />;
+        }
+        else{
+          return <Redirect to="studenthome" />;
+        }
+      }
+      
     }
+
     return <Redirect to="login" />;
   }
   

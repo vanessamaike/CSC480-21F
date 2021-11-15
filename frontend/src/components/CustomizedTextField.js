@@ -10,11 +10,15 @@ import { Box, TextField } from "@mui/material";
 import ButtonStyle from "../styles/ButtonStyle";
 
 const CustomizedTextField = React.forwardRef((props, ref) => {
-  const { text, handleTextFieldChange, comments, children, ...rest } = props;
+  const { text, value , handleTextFieldChange, comments,isDisabled, number, children, ...rest } = props;
+  var defaultValue = ""
+  if(value){
+    defaultValue = value
+  }
 
-
-  // ===== Handle Comments ============
+    // ===== Handle Comments ============
   const handleTextField = (event) => {
+    event.preventDefault();
     handleTextFieldChange(event.target.value);
   };
 
@@ -27,7 +31,20 @@ const CustomizedTextField = React.forwardRef((props, ref) => {
     <Box>
       <>
         {" "}
-        {Comment ? (
+        {number? (
+          <TextField
+            disabled={isDisabled}
+            sx={{ bgcolor: "#fff", width: "100px" }}
+            label={children}
+            id="outlined-size-small"
+            size="small"
+            type="number"
+            InputProps={{ inputProps: { min: 0, max: 10 } }}
+            onChange={handleTextField}
+          />
+        ) : (
+<>
+        {comments ? (
           <TextField
             sx={{ bgcolor: "#fff" }}
             label={children}
@@ -43,8 +60,10 @@ const CustomizedTextField = React.forwardRef((props, ref) => {
             label={children}
             id="outlined-size-small"
             size="small"
+            value= {defaultValue}
             onChange={handleTextField}
           />
+        )}</>
         )}
       </>
     </Box>
