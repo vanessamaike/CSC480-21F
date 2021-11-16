@@ -57,7 +57,7 @@ function CustomizedPdfUploader(props) {
           //reader.readAsDataURL(selectedFile);
           reader.readAsArrayBuffer(selectedFile);
           reader.onloadend = (e) => {
-            let unit8Array = new Int8Array(e.target.result);
+            let unit8Array = new Uint8Array(e.target.result);
             let byteArray = unit8Array.toString().split(",").map(Number);
            
             if (multiplePdf) {

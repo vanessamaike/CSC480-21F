@@ -20,6 +20,7 @@ import Loading from "../../components/Loading";
 import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedTextField from "../../components/CustomizedTextField";
+import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF";
 function PeerReviewAssignmentView({ history , location}) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
@@ -39,9 +40,7 @@ function PeerReviewAssignmentView({ history , location}) {
   useEffect(() => {
     if (assignment !== undefined) {
       // =========== Handle PDF Download From Byte Array ==================
-      var blob = new Blob([assignment.peerReviewPdfDoc], { type: "application/pdf" });
-      blob = window.URL.createObjectURL(blob);
-      setLinkDownload(blob)
+      setLinkDownload(handleConvertByteArrayToPdf(assignment.peerReviewPdfDoc))
       setLoading(false);
     }
   }, [assignment]);

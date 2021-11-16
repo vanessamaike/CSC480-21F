@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 // @mui components
 import Typography from "@mui/material/Typography";
 //PDF
@@ -21,6 +22,7 @@ import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedTextField from "../../components/CustomizedTextField";
 import { getTeamIdByStudentAndCourse, postNewSolutionByStudent } from "../../axios/APIRequests";
+import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF";
 
 function NewSolutionAssignmentView({ history, location }) {
   const dispatch = useDispatch();
@@ -40,17 +42,11 @@ function NewSolutionAssignmentView({ history, location }) {
   const [linkDownload, setLinkDownload] = useState();
   const [teamId, setTeamId] = useState();
 
-
- 
-
   useEffect(() => {
+    
     if (assignment !== undefined) {
       // =========== Handle PDF Download From Byte Array ==================
-      var blob = new Blob([assignment.solutionPdfDoc], {
-        type: "application/pdf",
-      });
-      blob = window.URL.createObjectURL(blob);
-      setLinkDownload(blob);
+      setLinkDownload(handleConvertByteArrayToPdf(assignment.solutionPdfDoc))
       getTeamIdByStudentAndCourse(assignment.courseID)
         .then((value) => {
           setTeamId(value.teamID);
@@ -66,7 +62,7 @@ function NewSolutionAssignmentView({ history, location }) {
     setAssignment(location.state.assignment);
   }, []);
 
-
+  
  // submissionId int NOT NULL,
   //   teamId int NOT NULL, ==== OK =====
   //   submissionTime datetime NOT NULL,
@@ -190,8 +186,9 @@ function NewSolutionAssignmentView({ history, location }) {
                         type3
                         model={"download"}
                         href={linkDownload}
-                        download={"SolutionInstructor.pdf"}
+                        download={"SolutionInstructor"}
                         title="download"
+                    
                       >
                         Download Instructions
                       </CustomizedButtons>

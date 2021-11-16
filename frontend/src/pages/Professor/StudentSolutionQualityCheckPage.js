@@ -40,6 +40,7 @@ import { selectUser } from "../../features/userSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import { getQualityCheckSolutionByProfessor } from "../../axios/APIRequests";
+import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,7 +77,6 @@ function StudentSolutionQualityCheckPage({ history, location }) {
   const [assignment, setAssignment] = useState();
   const [linkDownload, setLinkDownload] = useState();
 
-
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
@@ -98,14 +98,12 @@ function StudentSolutionQualityCheckPage({ history, location }) {
     console.log(assignmentID);
     getQualityCheckSolutionByProfessor(assignmentID)
       .then((value) => {
+        console.log(value)
         setAssignment(value);
         if (value !== undefined) {
           setLoading(false);
-          var blob = new Blob([value.solutionPdfDoc], {
-            type: "application/pdf",
-          });
-          blob = window.URL.createObjectURL(blob);
-          setLinkDownload(blob);
+          setLinkDownload(handleConvertByteArrayToPdf(value.teams[tab].pdfDoc))
+         
         }
         console.log(value);
       })
@@ -113,7 +111,6 @@ function StudentSolutionQualityCheckPage({ history, location }) {
         console.log(err);
       });
   }, []);
-
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -195,14 +192,6 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         Submissions closed 11:59pm 10/7/21
                       </Typography>
                     </Stack>
-                    <CustomizedButtons
-                      type3
-                      model={"download"}
-                      href={linkDownload}
-                      download={"SolutionInstructor.pdf"}
-                    >
-                      Download Solutions
-                    </CustomizedButtons>
                   </CardContent>
                 </CustomizedCard>
                 <div
@@ -213,7 +202,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                     marginTop: "20px",
                   }}
                 >
-                  {assignment.teams.map((team,key) => {
+                  {assignment.teams.map((team, key) => {
                     return (
                       <TabPanel value={tab} index={key}>
                         <CustomizedCard style={{ width: "875px" }}>
@@ -228,7 +217,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                     justifyContent: "space-between",
                                   }}
                                 >
-                                  <Stack direction="row" spacing={3}>
+                                  <Stack direction="column" spacing={1}>
                                     <Typography
                                       style={{
                                         display: "flex",
@@ -253,8 +242,18 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                         team.submission.submissionTime
                                       ).toLocaleString()}
                                     </Typography>
+
                                   </Stack>
-                                  <Stack
+                                  <Stack direction="column" spacing={1}>
+                                  <CustomizedButtons
+                                      type3
+                                      model={"download"}
+                                      href={linkDownload}
+                                      download={"SolutionInstructor.pdf"}
+                                    >
+                                      Download Solutions
+                                    </CustomizedButtons>
+                                    <Stack
                                     sx={{
                                       display: "flex",
                                       flexDirection: "row",
@@ -283,6 +282,8 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       <GoTriangleUp size="1em" />
                                     )}
                                   </Stack>
+                                  </Stack>
+
                                 </div>
                                 <Collapse
                                   in={openErrors}
@@ -308,20 +309,22 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       Error Found
                                     </Typography>
                                     <List>
-                                      {team.submission.listOfQCWordViolations.split(",").map((word, key) => (
-                                        <ListItem key={key}>
-                                          <Typography
-                                            style={{
-                                              display: "flex",
-                                              textAlign: "center",
-                                            }}
-                                            variant="body2"
-                                            component="div"
-                                          >
-                                            {word}
-                                          </Typography>
-                                        </ListItem>
-                                      ))}
+                                      {team.submission.listOfQCWordViolations
+                                        .split(",")
+                                        .map((word, key) => (
+                                          <ListItem key={key}>
+                                            <Typography
+                                              style={{
+                                                display: "flex",
+                                                textAlign: "center",
+                                              }}
+                                              variant="body2"
+                                              component="div"
+                                            >
+                                              {word}
+                                            </Typography>
+                                          </ListItem>
+                                        ))}
                                     </List>
                                     <Stack direction="row" spacing={3}>
                                       <CustomizedButtons type1 height1>
@@ -351,7 +354,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                     onClick={goToPreviousPage}
                                   ></CustomizedButtons>
                                   <Document
-                                    file={{data : team.submission.pdfDoc}}
+                                    file={{ data: team.submission.pdfDoc }}
                                     onLoadSuccess={onDocumentLoadSuccess}
                                   >
                                     <Page
@@ -419,6 +422,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                       display: "flex",
                       flexDirection: "column",
                       height: "250px",
+                      marginLeft: "20px",
                       justifyContent: "center",
                     }}
                   >
@@ -430,7 +434,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                       scrollButtons
                       allowScrollButtonsMobile
                     >
-                      {assignment.teams.map((team,key) => (
+                      {assignment.teams.map((team, key) => (
                         <Tab label={`Team ${team.teamID}`} />
                       ))}
                     </Tabs>
