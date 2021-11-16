@@ -2,8 +2,12 @@ package edu.oswego.rest.controller.student;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibm.websphere.security.jwt.InvalidConsumerException;
+import com.ibm.websphere.security.jwt.InvalidTokenException;
+import com.ibm.websphere.security.jwt.JwtConsumer;
 import edu.oswego.util.objects.Course;
 import edu.oswego.util.objects.User;
+import edu.oswego.util.objects.authObject;
 import edu.oswego.util.service.ICourseService;
 import edu.oswego.util.service.IStudentService;
 import edu.oswego.util.service.impl.CourseService;
@@ -15,20 +19,28 @@ import javax.json.bind.JsonbBuilder;
 
 // JAX-RS
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 //util
 import edu.oswego.util.objects.Student;
+import edu.oswego.util.utility.ResponseMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 @Path("/student")
 public class StudentAPI {
     private static final long serialVersionUID = 1L;
-    private IStudentService studentService;
-    private ICourseService courseService;
+    private final IStudentService studentService;
+    private final ICourseService courseService;
+    private final authObject a = new authObject();
+    private final String unauth = "Unauthorized: You mus log in to view this page.";
+    private final String forbid = "Forbidden: You do not have access to this page.";
+    private final String errorm = "An error occurred: ";
+    private final String badnum = "The ID number provided was not formatted properly.";
 
-    private Jsonb jsonb = JsonbBuilder.create();
+
+    private final Jsonb jsonb = JsonbBuilder.create();
 
 
     public StudentAPI() {
@@ -37,8 +49,8 @@ public class StudentAPI {
     }
 
     @GET
-    public String getAllStudents(){
-        //TODO This method needs to ensure authentication
+    public Response getAllStudents(){
+        /*
         try {
             List<Student> listOfStudents = studentService.findAll();
             String res = jsonb.toJson(listOfStudents);
@@ -47,13 +59,14 @@ public class StudentAPI {
         } catch (NumberFormatException ne){
             System.out.println("There are not any students on the database");
         }
-        return null;
+        */
+        return new ResponseMessage().sendMessage(forbid, 403);
     }
 
     @GET
     @Path("/{userID}")
-    public String getSpecificStudent(@PathParam("userID") int userID){
-        //TODO This method needs to ensure authentication
+    public Response getSpecificStudent(@PathParam("userID") int userID){
+        /*
         try {
             Student student = studentService.findOne(userID);
             String res = jsonb.toJson(student);
@@ -62,52 +75,75 @@ public class StudentAPI {
         } catch (NumberFormatException ne){
             System.out.println("Student ID provided was not formatted properly.");
         }
-        return null;
+         */
+        return new ResponseMessage().sendMessage(forbid, 403);
     }
+
     @POST
-    public String postStudent(String payload) throws JsonProcessingException {
-        JSONObject obj = new JSONObject(payload);
-        JSONObject studentJSON = obj.getJSONObject("student"); //get array of json of student array
-        int courseID = obj.getInt("courseID");
+    public Response postStudent(String payload, @HeaderParam("jwtToken") String jwtToken) {
+        try {
+            JwtConsumer c = new JwtConsumer();
+            String role = a.authUser(c.createJwt(jwtToken));
 
-        Student student = jsonb.fromJson(studentJSON.toString(), Student.class);
-        Course course = courseService.findOne(courseID);
+            if(role.equals("professor")){
+                JSONObject obj = new JSONObject(payload);
+                JSONObject studentJSON = obj.getJSONObject("student"); //get array of json of student array
+                int courseID = obj.getInt("courseID");
 
-        if(course == null)
-        {
-            //TODO update the response
-            return "There are not any courseID matched with the input courseID to create the student";
-        }
-        else{
-            student = studentService.save(student);
-            studentService.setCourseForStudent(student.getUserID(),courseID);
-            String res = jsonb.toJson(student);
-            return res;
+                Student student = jsonb.fromJson(studentJSON.toString(), Student.class);
+                Course course = courseService.findOne(courseID);
+
+                if(course == null)
+                    return new ResponseMessage().sendMessage("This course does not exist.", 404);
+                else{
+                    student = studentService.save(student);
+                    studentService.setCourseForStudent(student.getUserID(),courseID);
+                    return new ResponseMessage().sendMessage(jsonb.toJson(student), 200);
+                }
+            } else if(role.equals("student"))
+                return new ResponseMessage().sendMessage(forbid, 403);
+            else
+                return new ResponseMessage().sendMessage(unauth, 401);
+        } catch (Exception e) {
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
     }
 
     @PUT
-    public String updateStudent(String payload) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    public Response updateStudent(String payload) {
+        /*
         Student student = jsonb.fromJson(payload, Student.class);
         student = studentService.update(student);
         String res = jsonb.toJson(student);
         return res;
+         */
+        return new ResponseMessage().sendMessage(forbid, 403);
     }
 
     @DELETE
     @Path("/{userId}")
-    public String deleteSpecificStudent(@PathParam("userId") int userId){
-        //TODO This method needs to ensure authentication
+    public Response deleteSpecificStudent(@PathParam("userId") int userId, @HeaderParam("jwtToken") String jwtToken){
         try {
-            Student student = studentService.findOne(userId);
-            student = studentService.delete(student);
-            String res = jsonb.toJson(student);
-            if(student != null) return res;
-            else return "Student ID provided was not formatted properly.";
+            JwtConsumer c = new JwtConsumer();
+            String role = a.authUser(c.createJwt(jwtToken));
+
+            if(role.equals("professor")){
+                Student student = studentService.findOne(userId);
+                student = studentService.delete(student);
+                String res = jsonb.toJson(student);
+                if(student != null)
+                    return new ResponseMessage().sendMessage(res, 200);
+                else
+                    return new ResponseMessage().sendMessage("User was not found.", 404);
+            } else if(role.equals("student")){
+                return new ResponseMessage().sendMessage(forbid, 403);
+            } else
+                return new ResponseMessage().sendMessage(unauth, 401);
         } catch (NumberFormatException ne){
-            System.out.println("Student ID provided was not formatted properly.");
+            return new ResponseMessage().sendMessage(badnum, 500);
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage().sendMessage(errorm+e, 500);
         }
-        return null;
     }
 }
