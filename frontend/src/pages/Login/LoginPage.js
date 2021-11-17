@@ -60,6 +60,16 @@ function LoginPage() {
     // The signed-in user info.
     const user = result.user;
     console.log(user)
+    await axios.post('pi.cs.oswego.edu:9087/api/user', {}, {
+    headers: {
+    // 'application/json' is the modern content-type for JSON, but some
+    // older servers may use 'text/json'.
+    // See: http://bit.ly/text-json
+    'Authentication': token,
+  }
+});
+
+res.data.headers['Authentication']; // text/json
     // ...
   }).catch((error) => {
     // Handle Errors here.
