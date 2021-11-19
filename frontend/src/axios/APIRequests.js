@@ -104,6 +104,14 @@ export const getCoursesByStudent = async () => {
       console.error(error);
     }
 }
+export const getResultsByStudent = async () => {
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/course/assignment/result/student`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 export const getAssignmenstByStudent = async () => {
     try {
       const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/course/assignment/student`);
@@ -156,8 +164,9 @@ export const getQualityCheckSolutionByProfessor = async (assignmentID) => {//{us
     console.error(error);
   }
 }
-export const getQualityCheckPeerReviewByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
+export const getQualityCheckPeerReviewByProfesssor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
   try {
+    console.log("sent")
     const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/peerreview/qualityCheck`);
     return response.data;
   } catch (error) {

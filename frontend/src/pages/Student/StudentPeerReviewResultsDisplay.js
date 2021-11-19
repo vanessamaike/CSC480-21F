@@ -24,7 +24,7 @@ import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedTabs from "../../components/CustomizedTabs";
 
 
-function StudentPeerReviewResultsDisplay({ history }) {
+function StudentPeerReviewResultsDisplay({ history, location }) {
   let reviews = [assignmentPdf1, assignmentPdf2, assignmentPdf3];
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);

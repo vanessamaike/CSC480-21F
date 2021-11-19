@@ -8,7 +8,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
-
+import { getResultsByStudent } from "../../axios/APIRequests";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
@@ -91,17 +91,16 @@ function StudentResultPage({ history }) {
     }
   }, [courses]);
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getCourses();
+    getResultsByStudent()
+      .then((value) => {
+        console.log(value);
+        setCourses(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+  
   useEffect(() => {
     console.log(filterType);
     const filteredItems = demoData.filter((item) => {
@@ -109,9 +108,6 @@ function StudentResultPage({ history }) {
     });
     setItems(filteredItems);
   }, [filterType]);
-
-  console.log(filterType);
-  console.log(items);
   return (
     <div
       style={{
@@ -158,31 +154,47 @@ function StudentResultPage({ history }) {
             labels={courseNames}
           ></CustomizedTabs>
           {courses.map((course, id) => (
-            <TabPanel value={tab} index={id - 1}>
+            <TabPanel value={tab} index={id}>
               <CustomizedCard>
                 <CardContent
                 >
-                  {items.map((item) => (
-                    <ListItem
+                  {course.assignments.map((assignment) => (<>
+                    {(assignment.averageScore !== -1) ? (
+                      <ListItem
                       button
                       divider
-                      onClick={() => history.push("/studentpeerreviewresultsdisplay")}
+                      onClick={() => history.push("/studentpeerreviewresultsdisplay",{ assignmentID: assignment.assignmentID})}
                       secondaryAction={
                         <IconButton edge="end" aria-label="delete">
                           <BsArrowRightCircle />
                         </IconButton>
                       }
                     >
-                      <ListItemText primary={`${item.name}`} />
-                      <ListItemText primary={"Complete " + `${item.deadline}`} />
+                      <ListItemText primary={`${assignment.title}`} />
+                      <ListItemText primary={"Completed"} />
                       <ListItemText
                         sx={{
                           display: "flex",
                           justifyContent: "flex-end",
                         }}
-                        primary={"Score: " + `${item.deadline}`}
+                        primary={"Score: " + `${assignment.averageScore}`}
                       />
                     </ListItem>
+                    ) : (
+                      <ListItem
+                      button
+                      divider
+                      disabled
+                      secondaryAction={
+                        <IconButton edge="end" aria-label="delete">
+                          <BsArrowRightCircle />
+                        </IconButton>
+                      }
+                    >
+                      <ListItemText primary={`${assignment.title}`} />
+                      <ListItemText primary={"In process"} />
+                    </ListItem>
+                    )}</>
                   ))}
                 </CardContent>
               </CustomizedCard>

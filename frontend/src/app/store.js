@@ -19,9 +19,7 @@ const persistConfig = {
 const reducer = combineReducers({
     userReducer,
 })
-const customizedMiddleware = getDefaultMiddleware({
-  serializableCheck: false
-})
+
 const persistReducer_ = persistReducer(persistConfig, reducer);
 const store = configureStore({
   reducer: persistReducer_,

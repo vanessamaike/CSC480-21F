@@ -202,7 +202,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         variant="body1"
                         component="div"
                       >
-                        {assignment.title}
+                        {`${assignment.title} Solution`}
                       </Typography>
                       <Typography
                         style={{
@@ -212,7 +212,9 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         variant="body2"
                         component="div"
                       >
-                        Submissions closed 11:59pm 10/7/21
+                        {`Submissions closed ${new Date(
+                            assignment.solutionDueDateTime
+                          ).toLocaleString()}`}
                       </Typography>
                     </Stack>
                     <div style={{ display: "flex", alignItems: "center" }}>
