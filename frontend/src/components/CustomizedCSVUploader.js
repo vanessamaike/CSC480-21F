@@ -33,6 +33,7 @@ function CustomizedCSVUploader(props) {
   const fileType = ["text/csv"];
   const handlePdfFileChange = (e) => {
     let arrayPdfFiles = []
+    console.log(e.target.files)
     for (let i = 0; i < e.target.files.length; i++) {
       console.log(e.target.files[i]);
       let selectedFile = e.target.files[i];
@@ -41,25 +42,37 @@ function CustomizedCSVUploader(props) {
           setFileName(selectedFile.name);
           let reader = new FileReader();
           //reader.readAsDataURL(selectedFile);
-          reader.readAsArrayBuffer(selectedFile);
+          reader.readAsText(selectedFile);
           reader.onloadend = (e) => {
-            console.log(e.target.result)
             //let unit8Array = new Uint8Array(e.target.result);
-            let byteArray = e.target.result//unit8Array//.split(',')
+            let text = e.target.result//unit8Array//.split(',')
+            var lines = text.toString().split("\n")
+            var result = [];
+            var headers=lines[0].split(",");
+            for(var i=1;i<lines.length-1;i++){
+
+              var obj = {};
+              var currentline=lines[i].split(",");
+              for(var j=0;j<headers.length;j++){
+                obj[headers[j]] = currentline[j];
+            }
+              result.push(obj);
+            }
+            
             if(multipleCSV){
-              arrayPdfFiles = [...arrayPdfFiles,byteArray]
+              arrayPdfFiles = [...arrayPdfFiles,result]
               setCSVFile(arrayPdfFiles);
               setPdfFileError("");
             }
             else{
-                setCSVFile(byteArray);
+                setCSVFile(result);
               setPdfFileError("");
             }
             
           };
         } else {
             setCSVFile(null);
-          setPdfFileError("Please select valid pdf file");
+          setPdfFileError("Please select valid csv file");
         }
       } else {
         console.log("select your file");

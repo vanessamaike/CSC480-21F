@@ -1,7 +1,5 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import userReducer from '../features/userSlice'
-import coursesReducer from '../features/coursesSlice'
-import pdfReducer from '../features/pdfSlice'
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/";
 import storageSession from 'redux-persist/lib/storage/session'
@@ -19,9 +17,7 @@ const persistConfig = {
   whitelist: ['userReducer']
 };
 const reducer = combineReducers({
-    coursesReducer,
     userReducer,
-    pdfReducer,
 })
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Stack, Typography } from "@mui/material";
 import CustomizedTextField from "./CustomizedTextField";
 import CustomizedButtons from "./CustomizedButtons";
-
+import viewPdf from "../pdfsample/sample.pdf";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -10,7 +10,8 @@ import classNames from "classnames";
 import ButtonStyle from "../styles/ButtonStyle";
 
 function CustomizedPdfUploader(props) {
-  const { setPdfFile, multiplePdf, ...rest } = props;
+  const { id, pdfFileName, setPdfFileName, setPdfFile, multiplePdf, ...rest } =
+    props;
 
   // Styles
   const classes = ButtonStyle();
@@ -30,32 +31,43 @@ function CustomizedPdfUploader(props) {
   const [pdfFileError, setPdfFileError] = useState("");
   const [fileName, setFileName] = useState("");
 
+  useEffect(() => {
+    if (pdfFileName !== undefined) {
+      setFileName(pdfFileName);
+    }
+  }, [pdfFileName]);
+
   const fileType = ["application/pdf"];
   const handlePdfFileChange = (e) => {
-    let arrayPdfFiles = []
+    let arrayPdfFiles = [];
     for (let i = 0; i < e.target.files.length; i++) {
-      console.log(e.target.files[i]);
       let selectedFile = e.target.files[i];
       if (selectedFile) {
         if (selectedFile && fileType.includes(selectedFile.type)) {
           setFileName(selectedFile.name);
+           
+          if(pdfFileName !== undefined)
+          {
+             
+              setPdfFileName(selectedFile.name);
+          }
+        
+        
           let reader = new FileReader();
           //reader.readAsDataURL(selectedFile);
           reader.readAsArrayBuffer(selectedFile);
           reader.onloadend = (e) => {
-            
-            let unit8Array = new Uint8Array(e.target.result);
-            let byteArray = unit8Array//.split(',')
-            if(multiplePdf){
-              arrayPdfFiles = [...arrayPdfFiles,byteArray]
+            let unit8Array = new Int8Array(e.target.result);
+            let byteArray = unit8Array.toString().split(",").map(Number);
+           
+            if (multiplePdf) {
+              arrayPdfFiles = [...arrayPdfFiles, byteArray];
               setPdfFile(arrayPdfFiles);
               setPdfFileError("");
-            }
-            else{
+            } else {
               setPdfFile(byteArray);
               setPdfFileError("");
             }
-            
           };
         } else {
           setPdfFile(null);
@@ -73,7 +85,7 @@ function CustomizedPdfUploader(props) {
         {multiplePdf === true ? (
           <input
             type="file"
-            id="file"
+            id={id}
             accept="application/pdf"
             class="inputfile"
             multiple
@@ -83,7 +95,7 @@ function CustomizedPdfUploader(props) {
         ) : (
           <input
             type="file"
-            id="file"
+            id={id}
             accept="application/pdf"
             class="inputfile"
             className={inputStyleClasses}
@@ -91,7 +103,7 @@ function CustomizedPdfUploader(props) {
           />
         )}
 
-        <label for="file">
+        <label for={id}>
           <span id="file-name" class="file-box"></span>
           <span class={uploadBtnClasses}>Upload PDF file</span>
         </label>

@@ -14,13 +14,14 @@ import bg from '../../images/multi_background_login.jpg'
 import { useSelector,useDispatch } from "react-redux";
 import { setUser, selectUser } from "../../features/userSlice";
 // styled components
-import NavBar from "../../components/NavBar/NavBar";
+import NavBarLogin from "../../components/NavBar/NavBarLogin";
 import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import {signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {auth, provider} from "./firebase";
 import CustomizedBody from "../../components/CustomizedBody";
+import {studentToken} from "../../axios/APIRequests";
 function RoleButton() {
   return (
     <Box
@@ -50,7 +51,7 @@ function RoleButton() {
   );
 }
 
-function LoginPage() {
+function LoginPage({history}) {
   const signIn = ()=>{
     signInWithPopup(auth, provider)
   .then((result) => {
@@ -59,18 +60,12 @@ function LoginPage() {
     const token = credential.accessToken;
     // The signed-in user info.
     const user = result.user;
-    console.log(user)
-    await axios.post('pi.cs.oswego.edu:9087/api/user', {}, {
-    headers: {
-    // 'application/json' is the modern content-type for JSON, but some
-    // older servers may use 'text/json'.
-    // See: http://bit.ly/text-json
-    'Authentication': token,
-  }
-});
-
-res.data.headers['Authentication']; // text/json
-    // ...
+    console.log(user);
+    studentToken(token)
+    .then(function (response) {
+      console.log(response);
+      history.push("/course");
+    })
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
@@ -86,19 +81,21 @@ res.data.headers['Authentication']; // text/json
   const dispatch = useDispatch();
   const professorModel = {
     "userId": 1,
-    "email": "dtran4@oswego.edu",
+    "email": "username@oswego.edu",
     "role": "professor"
   }
   const studentModel = {
     "userId": 1,
-    "email": "dtran4@oswego.edu",
+    "email": "username@oswego.edu",
     "role": "student"
   }
   const handleProfessorLogin = () => {
     dispatch(setUser(professorModel));
+    history.push("./professorhome")
   }
   const handleStudentLogin = () => {
     dispatch(setUser(studentModel));
+    history.push("./studenthome")
   }
   const responseGoogle = (response) => {
     console.log(response);
@@ -108,7 +105,7 @@ res.data.headers['Authentication']; // text/json
   return (
 
     <CustomizedBody bg={bg}> 
-      <NavBar></NavBar>
+      <NavBarLogin></NavBarLogin>
       <div 
         style={{
           display: "flex",

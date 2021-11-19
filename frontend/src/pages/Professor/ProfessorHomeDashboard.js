@@ -34,15 +34,17 @@ import CustomizedDivider from "../../components/CustomizedDivider";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import { getCoursesByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
+import { BsArrowRightCircle } from "react-icons/bs";
 
-function CourseBar({ course }) {
+function CourseBar({ course, history }) {
   return (
     <Stack spacing={0}>
-      <CustomizedButtons type3 fullwidth model={"arrow"}>
+      <CustomizedButtons type3 fullwidth model={"arrow"} onClick={() => history.push("/course")}>
         {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
       <List dense={true}>
-        <ListItem button>
+        <ListItem button onClick={() => history.push("/studentsolutionqualitycheck")}>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -54,7 +56,7 @@ function CourseBar({ course }) {
             primary={`Due ${course.assignments[0].solution.dueDate}`}
           />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => history.push("/studentpeerreviewqualitycheck")}>
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -74,20 +76,24 @@ function CourseBar({ course }) {
 function ProfessorHomeDashBoard({ history }) {
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState([]);
+
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        setLoading(false);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
+    console.log(courses);
+    if(courses !== undefined && courses.length !== 0){
+      setLoading(false)
     }
-    getCourses();
+  }, [courses])
+
+  useEffect(() => {
+      getCoursesByProfessor()
+      .then((value) => {
+        setCourses(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-  console.log(courses);
+
   return (
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
@@ -113,7 +119,7 @@ function ProfessorHomeDashBoard({ history }) {
                     <ListItem>
                       <ListItemIcon>
                         <FiberManualRecordIcon
-                          sx={{ color: "#0DC38D" }}
+                          sx={{ color: "#347DEB" }}
                           fontSize="medium"
                         />
                       </ListItemIcon>
@@ -122,7 +128,7 @@ function ProfessorHomeDashBoard({ history }) {
                           <Typography
                             component="span"
                             fontWeight="600"
-                            variant="body1"
+                            variant="h6"
                           >
                             Assignments by Course
                           </Typography>
@@ -132,7 +138,10 @@ function ProfessorHomeDashBoard({ history }) {
                   </List>
                 }
               ></CardHeader>
-              <CustomizedDivider type1 sx={{marginBottom: "15px"}}></CustomizedDivider>
+              <CustomizedDivider
+                type1
+                sx={{ marginBottom: "15px" }}
+              ></CustomizedDivider>
               <CardContent
                 sx={{
                   paddingTop: "0",
@@ -149,7 +158,7 @@ function ProfessorHomeDashBoard({ history }) {
                     <Stack spacing={2}>
                       {courses.map((course, key) => {
                         return (
-                          <CourseBar course={course} key={key}></CourseBar>
+                          <CourseBar course={course} key={key} history={history}></CourseBar>
                         );
                       })}
                     </Stack>
@@ -167,7 +176,7 @@ function ProfessorHomeDashBoard({ history }) {
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem
                         secondaryAction={
-                          <CustomizedButtons type1 height1>
+                          <CustomizedButtons type1 height1 onClick={()=>{history.push("./courseresult")}}>
                             See All
                           </CustomizedButtons>
                         }
@@ -183,7 +192,7 @@ function ProfessorHomeDashBoard({ history }) {
                             <Typography
                               component="span"
                               fontWeight="600"
-                              variant="body1"
+                              variant="h6"
                             >
                               Results to Review
                             </Typography>
@@ -193,42 +202,80 @@ function ProfessorHomeDashBoard({ history }) {
                     </List>
                   }
                 ></CardHeader>
-                <CustomizedDivider type1 sx={{marginBottom: "15px"}}></CustomizedDivider>
-                <CardContent sx={{ paddingTop: 0 ,
+                <CustomizedDivider
+                  type1
+                  sx={{ marginBottom: "15px" }}
+                ></CustomizedDivider>
+                <CardContent
+                  sx={{
+                    paddingTop: 0,
                     display: "flex",
-                    justifyContent: "center",}}>
+                    justifyContent: "center",
+                  }}
+                >
                   {loading === true ? (
                     <CircularProgress
                       className={loading.loading}
                     ></CircularProgress>
                   ) : (
-                    <List sx={{width: "100%"}} >
-                      <ListItem
-                        disablePadding
-                        secondaryAction={
-                          <ListItemText primary="Final submissions completed on 10/05/21" />
-                        }
-                      >
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <BiCheckCircle size="1.5em"></BiCheckCircle>
-                          </ListItemIcon>
-                          <ListItemText primary="Peer Review" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem
-                        disablePadding
-                        secondaryAction={
-                          <ListItemText primary="Final submissions completed on 10/05/21" />
-                        }
-                      >
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <BiCheckCircle size="1.5em"></BiCheckCircle>
-                          </ListItemIcon>
-                          <ListItemText primary="Peer Review" />
-                        </ListItemButton>
-                      </ListItem>
+                    <List sx={{ width: "100%" }}>
+                      {courses.map((course, key) => {
+                        return (<>{course.assignments.map((assignment, key) => {
+                        return (
+                          <>
+                          {(assignment.peerreview.isReviewed === true) ? (
+                            <ListItem
+                            button
+                            divider
+                            onClick={() => history.push("/studentpeerreviewqualitycheck")}
+                            secondaryAction={
+                              <IconButton edge="end">
+                                <BsArrowRightCircle />
+                              </IconButton>
+                            }
+                          >
+                            <ListItemText
+                              sx={{ width: "30%" }}
+                              primary={`${assignment.title} Peer Reviews`}
+                            />
+                            <ListItemText
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                              primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                            />
+                          
+                            <ListItemText
+                              primary={
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <FiberManualRecordIcon
+                                    sx={{
+                                      color: "#0DC38D",
+                                      marginRight: "10px",
+                                    }}
+                                    fontSize="medium"
+                                  />{" "}
+                                  <>Needs Review</>
+                                </div>
+                              }
+                            />
+                          </ListItem>
+                          ) : (
+                            <></>
+                          )}
+                          </>
+                          
+                        );
+                      })}
+                        </>)
+                      })}
                     </List>
                   )}
                 </CardContent>
@@ -237,7 +284,7 @@ function ProfessorHomeDashBoard({ history }) {
             <Grid item xs={12}>
               <CustomizedCard>
                 <CardHeader
-                sx={{ paddingBottom: "8px" }}
+                  sx={{ paddingBottom: "8px" }}
                   title={
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem>
@@ -252,7 +299,7 @@ function ProfessorHomeDashBoard({ history }) {
                             <Typography
                               component="span"
                               fontWeight="600"
-                              variant="body1"
+                              variant="h6"
                             >
                               Manage Students & Teams by Course
                             </Typography>
@@ -262,7 +309,10 @@ function ProfessorHomeDashBoard({ history }) {
                     </List>
                   }
                 ></CardHeader>
-                <CustomizedDivider type1 sx={{marginBottom: "15px"}}></CustomizedDivider>
+                <CustomizedDivider
+                  type1
+                  sx={{ marginBottom: "15px" }}
+                ></CustomizedDivider>
                 <CardContent
                   sx={{
                     paddingTop: 0,
@@ -283,6 +333,7 @@ function ProfessorHomeDashBoard({ history }) {
                               <CustomizedButtons
                                 type2
                                 fullwidth
+                                onClick={() => {history.push("./studentinfoview")}}
                                 model={"arrow"}
                                 key={key}
                               >

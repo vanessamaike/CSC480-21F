@@ -14,6 +14,7 @@ import ProfessorCoursePage from './pages/Professor/ProfessorCoursePage';
 import AddCoursePage from './pages/Professor/AddCoursePage';
 import AddCoursePage1 from './pages/Professor/AddCoursePage1';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
+
 import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
 import CourseResultPage from './pages/Professor/CourseResultPage';
 import ResultsViewerPage from './pages/Professor/ResultsViewerPage';
@@ -27,7 +28,11 @@ import {isMobile} from 'react-device-detect';
 import NewSolutionAssignmentView from './pages/Student/NewSolutionAssignmentView';
 import PeerReviewAssignmentView from './pages/Student/PeerReviewAssignmentView';
 import StudentPeerReviewResultsDisplay from './pages/Student/StudentPeerReviewResultsDisplay';
+import StudentResultPage from './pages/Student/StudentResultPage';
 import AssignmentViewer from './pages/Professor/AssignmentViewer';
+import AssignmentDisplay from './pages/Professor/AssignmentDisplay';
+import AssignmentEdit from './pages/Professor/AssignmentEdit';
+
 function App() {
 
   return (
@@ -43,11 +48,14 @@ function App() {
         <PrivateRoute exact path="/testing" component={TestingPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/course" component={ProfessorCoursePage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/coursecreation" component={AddCoursePage1} roleAccess={"professor"}></PrivateRoute>
-        <Route exact path="/assignmentcreation" component={AssignmentCreation} roleAccess={"professor"}></Route>
-        <Route exact path="/assignmentviewer" component={AssignmentViewer} roleAccess={"professor"}></Route>
+        <PrivateRoute exact path="/assignmentcreation" component={AssignmentCreation} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/assignmentviewer" component={AssignmentViewer} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/assignmentdisplay" component={AssignmentDisplay} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/assignmentedit" component={AssignmentEdit} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/studentinfoview" component={StudentInfoViewPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/courseresult" component={CourseResultPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/resultviewer" component={ResultsViewerPage} roleAccess={"professor"}></PrivateRoute>
+        
         <PrivateRoute exact path="/studentsolutionqualitycheck" component={StudentSolutionQualityCheckPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/studentpeerreviewqualitycheck" component={StudentPeerReviewQualityCheckPage} roleAccess={"professor"}></PrivateRoute>
 
@@ -57,6 +65,7 @@ function App() {
         <PrivateRoute exact path="/newsolutionassignmentview" component={NewSolutionAssignmentView} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/peerreviewassignmentview" component={PeerReviewAssignmentView} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/studentpeerreviewresultsdisplay" component={StudentPeerReviewResultsDisplay} roleAccess={"student"}></PrivateRoute>
+        <PrivateRoute exact path="/studentresults" component={StudentResultPage} roleAccess={"student"}></PrivateRoute>
         <PrivateRoute exact path="/studentteams" component={StudentTeamsPage} roleAccess={"student"}></PrivateRoute>
       </Switch>
     </Router>)

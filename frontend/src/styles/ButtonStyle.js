@@ -45,6 +45,10 @@ const ButtonStyle = makeStyles((theme) => ({
     backgroundColor: grayColor,
     color: darkColor,
   },
+  type4: {
+    backgroundColor: "transparent",
+    color: darkColor,
+  },
 }));
 
 export default ButtonStyle;

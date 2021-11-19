@@ -9,9 +9,7 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
 import viewPdf from "../../pdf/sample.pdf";
-
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -32,20 +30,134 @@ import {
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
+import CustomizedTables from "../../components/CustomizedTables";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
-
-const demoData = [
-  { name: "Peer Review 1", date: "10/07/21", type: "Completed" },
-  { name: "Peer Review 2", date: "11/07/21", type: "Needs Review" },
-  { name: "Peer Review 3", date: "13/07/21", type: "Needs Review" },
-  { name: "Peer Review 4", date: "12/07/21", type: "Completed" },
-];
-
+const jsonData = [
+  [
+    "Team Name",
+    "An98Wi00",
+    "Br00Mi99",
+    "Br99Da99",
+    "Ch99Sa00",
+    "Do99",
+    "Na99Ma96",
+    "Pa99mi99",
+    "Po94Ch87",
+    "AVERAGE"
+  ],
+  [
+    "An98Wi00",
+    "",
+    "9",
+    "",
+    "7",
+    "",
+    "",
+    "",
+    "",
+    "8"
+  ],
+  [
+    "Br00Mi99",
+    "",
+    "",
+    "",
+    "12.5",
+    "",
+    "",
+    "",
+    "",
+    "12.5"
+  ],
+  [
+    "Br99Da99",
+    "",
+    "12",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "12"
+  ],
+  [
+    "Ch99Sa00",
+    "17.75",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "17.75"
+  ],
+  [
+    "Do99",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  [
+    "Na99Ma96",
+    "12.75",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "12.75"
+  ],
+  [
+    "Pa99mi99",
+    "12",
+    "14",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "13"
+  ],
+  [
+    "Po94Ch97",
+    "",
+    "",
+    "",
+    "14.5",
+    "",
+    "",
+    "",
+    "",
+    "14.5"
+  ],
+  [
+    "AVERAGE",
+    "14.16666667",
+    "11.66666667",
+    "",
+    "11.33333333",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
+]
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -65,6 +177,7 @@ function TabPanel(props) {
 
 function StudentPeerReviewQualityCheckPage({ history }) {
   const [tab, setTab] = useState(0);
+  //const [jsonData, setjsonData] = useState([]);
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
@@ -76,13 +189,22 @@ function StudentPeerReviewQualityCheckPage({ history }) {
 
   const [scale, setScale] = useState(1.0);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
+  const isFirstPage = pageNumber === 1;
+  const isLastPage = pageNumber === numPages;
+
   const [isLoading, setIsLoading] = useState(true);
   // for submit event
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setIsLoading(false);
   }
+  const goToPreviousPage = () => {
+    if (!isFirstPage) setPageNumber(pageNumber - 1);
+  };
+  const goToNextPage = () => {
+    if (!isLastPage) setPageNumber(pageNumber + 1);
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -119,7 +241,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                 history.push("./courseresult");
               }}
             >
-              Send for Reviews
+              Send Feedback
             </CustomizedButtons>
           </Grid>
         </Grid>
@@ -155,7 +277,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                   Submissions closed 11:59pm 10/7/21
                 </Typography>
               </Stack>
-              <CustomizedButtons type3 model={"download"}>
+              <CustomizedButtons type3 model={"download"} href={viewPdf} download={true}>
                 Download Solutions
               </CustomizedButtons>
             </CardContent>
@@ -205,12 +327,9 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                 </List>
                 {viewPdf && (
                   <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Document
-                      file={viewPdf}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNumber} scale={scale} />
-                    </Document>
+                    <CustomizedTables
+                      jsonData={jsonData.slice(0, -1)}
+                    ></CustomizedTables>
                   </div>
                 )}
               </CardContent>
@@ -311,8 +430,7 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                               variant="body2"
                               component="div"
                             >
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit.
+                              Lorem ipsum 
                             </Typography>
                           </ListItem>
                         ))}
@@ -329,15 +447,25 @@ function StudentPeerReviewQualityCheckPage({ history }) {
                   </Collapse>
                 </List>
                 {viewPdf && (
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Document
-                      file={viewPdf}
-                      onLoadSuccess={onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNumber} scale={scale} />
-                    </Document>
-                  </div>
-                )}
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <CustomizedButtons
+                    model={"arrowL"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToPreviousPage}
+                  ></CustomizedButtons>
+                  <Document
+                    file={viewPdf}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} scale={scale} />
+                  </Document>
+                  <CustomizedButtons
+                    model={"arrow"}
+                    style={{ color: "black", marginBottom: "10px" }}
+                    onClick={goToNextPage}
+                  ></CustomizedButtons>
+                </div>
+              )}
               </CardContent>
             </CustomizedCard>
           </TabPanel>

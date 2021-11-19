@@ -19,17 +19,19 @@ import {
   ListItem,
   ListItemText,
   Stack,
-  Breadcrumbs
+  Breadcrumbs,
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedContainer from "../../components/CustomizedContainer";
+import SuccessfulNotification from "../../components/SuccessfulNotification";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
+
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
+import { getAssignmentsByProfessor } from "../../axios/APIRequests";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,17 +53,18 @@ function TabPanel(props) {
 function CourseResultPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [courses, setCourses] = useState(null);
+  const [courses, setCourses] = useState();
 
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [loading, setLoading] = React.useState(true);
   const [courseNames, setCourseNames] = React.useState([]);
-  console.log(filterType);
+
   useEffect(() => {
     var nameLists = [];
-    if (courses) {
+
+    if (courses !== undefined && courses.length !== 0) {
       courses.map((course) => {
         nameLists.push(course.code);
       });
@@ -70,16 +73,13 @@ function CourseResultPage({ history }) {
     }
   }, [courses]);
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getCourses();
+    getAssignmentsByProfessor()
+      .then((value) => {
+        setCourses(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   // useEffect(() => {
   //   console.log(filterType);
@@ -92,9 +92,11 @@ function CourseResultPage({ history }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-      <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
           <Typography color="text.primary">Home</Typography>
-          <Typography color="text.primary" style={{fontWeight:"600"}}>Course Results</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Course Results
+          </Typography>
         </Breadcrumbs>
         <>
           {loading === true ? (
@@ -120,7 +122,7 @@ function CourseResultPage({ history }) {
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  {/* <SuccessfulNotification/> */}
+                  <SuccessfulNotification />
                 </Grid>
               </Grid>
               <div>
@@ -172,13 +174,13 @@ function CourseResultPage({ history }) {
                           return (
                             <>
                               {(filterType === "All" ||
-                                (filterType === "Completed") ===
-                                  assignment.solution.isReviewed) && (
+                                (filterType === "Completed") === assignment.reviewStage//assignment.solution.isReviewed
+                                  ) && (
                                 <ListItem
                                   button
                                   divider
                                   onClick={() =>
-                                    history.push("/studentsolutionqualitycheck")
+                                    history.push("/studentsolutionqualitycheck", {assignmentID: assignment.assignmentID})
                                   }
                                   secondaryAction={
                                     <IconButton edge="end">
@@ -192,15 +194,17 @@ function CourseResultPage({ history }) {
                                   />
 
                                   <>
-                                    {assignment.solution.isReviewed ===
-                                    false ? (
+                                    { //assignment.solution.isReviewed 
+                                     assignment.reviewStage  === false ? (
                                       <>
                                         <ListItemText
                                           sx={{
                                             display: "flex",
                                             justifyContent: "center",
                                           }}
-                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                                          primary={`submissions closed ${new Date(
+                                            assignment.solutionDueDateTime
+                                          ).toLocaleString()}`}
                                         />
                                         <ListItemText
                                           primary={
@@ -229,19 +233,25 @@ function CourseResultPage({ history }) {
                                           display: "flex",
                                           justifyContent: "flex-end",
                                         }}
-                                        primary={`Completed ${assignment.solution.dueDate}`}
+                                        primary={`Completed ${new Date(
+                                          assignment.solutionDueDateTime
+                                        ).toLocaleString()}`}
                                       />
                                     )}
                                   </>
                                 </ListItem>
                               )}
                               {(filterType === "All" ||
-                                (filterType === "Completed") ===
-                                  assignment.peerreview.isReviewed) && (
+                                (filterType === "Completed") === assignment.reviewStage//assignment.peerreview.isReviewed
+                                  ) && (
                                 <ListItem
                                   button
                                   divider
-                                  onClick={() => history.push("/studentpeerreviewqualitycheck")}
+                                  onClick={() =>
+                                    history.push(
+                                      "/studentpeerreviewqualitycheck",{assignmentID: assignment.assignmentID}
+                                    )
+                                  }
                                   secondaryAction={
                                     <IconButton edge="end">
                                       <BsArrowRightCircle />
@@ -254,15 +264,17 @@ function CourseResultPage({ history }) {
                                   />
 
                                   <>
-                                    {assignment.peerreview.isReviewed ===
-                                    false ? (
+                                    {//assignment.peerreview.isReviewed 
+                                     assignment.reviewStage === false ? (
                                       <>
                                         <ListItemText
                                           sx={{
                                             display: "flex",
                                             justifyContent: "center",
                                           }}
-                                          primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                                          primary={`submissions closed ${new Date(
+                                            assignment.peerReviewDueDateTime
+                                          ).toLocaleString()}`}
                                         />
 
                                         <ListItemText
@@ -292,7 +304,9 @@ function CourseResultPage({ history }) {
                                           display: "flex",
                                           justifyContent: "flex-end",
                                         }}
-                                        primary={`Completed ${assignment.peerreview.dueDate}`}
+                                        primary={`Completed ${new Date(
+                                          assignment.peerReviewDueDateTime
+                                        ).toLocaleString()}`}
                                       />
                                     )}
                                   </>
@@ -315,3 +329,5 @@ function CourseResultPage({ history }) {
 }
 
 export default CourseResultPage;
+
+;
