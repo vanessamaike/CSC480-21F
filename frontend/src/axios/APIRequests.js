@@ -23,6 +23,17 @@ export const deleteCourseByProfessor = async (courseID) => {
   }
 }
 
+export const studentToken = async (token) => {
+  try {
+    const response = await axios.post('pi.cs.oswego.edu:9087/api/user', {}, {
+      headers: {'Authentication': token,}});
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 //93716
 export const getTeamsByProfessor = async () => {
     try {
