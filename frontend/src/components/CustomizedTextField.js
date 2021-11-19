@@ -50,6 +50,8 @@ const CustomizedTextField = React.forwardRef((props, ref) => {
             InputProps={{ inputProps: { min: 0, max: 10 } }}
             onChange={handleTextField}
           />
+
+
         ) : (
           <>
             {comments ? (

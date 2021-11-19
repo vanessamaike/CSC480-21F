@@ -41,7 +41,7 @@ function NewSolutionAssignmentView({ history, location }) {
   const [submissionPdfFile, setSubmissionPdfFile] = useState();
   const [linkDownload, setLinkDownload] = useState();
   const [teamId, setTeamId] = useState();
-
+  var ErrorMessage = "Please upload your pdf file before submitting !!!"
   useEffect(() => {
     
     if (assignment !== undefined) {
@@ -62,24 +62,13 @@ function NewSolutionAssignmentView({ history, location }) {
     setAssignment(location.state.assignment);
   }, []);
 
-  
- // submissionId int NOT NULL,
-  //   teamId int NOT NULL, ==== OK =====
-  //   submissionTime datetime NOT NULL,
-  //   comments longtext NOT NULL,  ===== OK =====
-  //   signOff VARCHAR(255) NOT NULL,
-  //   PdfDoc mediumblob NOT NULL,  ===== OK =====
-  //   seen boolean NOT NULL, ===== False ======
-  //   listOfQCWordViolations VARCHAR(255) NOT NULL,
-  //   assId int NOT NULL  ====== OK ======
-
 
   //======= handle send request to backend =====
   const handleSubmitFile = (event) => {
     //TODO add function to send request to backend
 
     if (submissionPdfFile.length === 0) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       var newSubmission = {
         teamID: teamId,
@@ -94,13 +83,14 @@ function NewSolutionAssignmentView({ history, location }) {
       postNewSolutionByStudent(json)
         .then(function (response) {
           console.log(response);
+          history.push("/seeallassignment");
         })
         .catch(function (error) {
           console.log(error);
         });
     }
 
-    //history.push("/seeallassignment");
+    
   };
 
   // for submit event

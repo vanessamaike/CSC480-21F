@@ -6,6 +6,10 @@ import {
   CardContent,
   Stack,
   Breadcrumbs,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -26,22 +30,24 @@ const buttonRef = React.createRef();
 function AddCoursePage1({ history }) {
   const [newCourse, setNewCourse] = useState()
   const [title, setTitle] = useState("");
-  const [section, setSection] = useState("");
   const [submissionType, setSubmissionType] = React.useState("Manually Set Teams");
   const [isTeamed, setIsTeamed] = useState(true);
   const [numberOfTeam, setNumberOfTeam] = React.useState(2);
   const [csvFile, setCSVFile] = useState(null);
-
+  var ErrorMessage = "Please fill out !!!"
   const [isDisabled, setIsDisabled] = useState(true);
   const [isPublishing, setIsPublishing] = useState(false);
- 
+  const handleChangeTeams = (event) => {
+    setNumberOfTeam(event.target.value);
+  };
   useEffect(() => {
     const DiableTeamInput = () => {
       if(submissionType === "Randomized Teams"){
-        setIsDisabled(!isDisabled)
+        setIsDisabled(false)
         setIsTeamed(true)
       }
       else if (submissionType === "Independent"){
+        setIsDisabled(true)
         setIsTeamed(false)
       }
       else{
@@ -52,16 +58,15 @@ function AddCoursePage1({ history }) {
   }, [submissionType])
 
   const handleAddCourse = () => {
-    if( title==="" || section === "" )
+    if( title===""  || csvFile === null)
     {
-      console.log("error")
+      alert(ErrorMessage)
     }
     else{
     var newCourse = {
       userID: 87369,
       "title": title,
       "code": title,
-      "sectionNumber": section,
     };
     var json = {
       "csvContents": csvFile,
@@ -73,8 +78,7 @@ function AddCoursePage1({ history }) {
     
     postNewCourseByProfessor(json_)
       .then(function (response) {
-        setIsPublishing(false)
-        console.log(response);
+        history.push("./course")
       })
       .catch(function (error) {
         console.log(error);
@@ -93,109 +97,112 @@ function AddCoursePage1({ history }) {
             Create Course
           </Typography>
         </Breadcrumbs>
-        
+
         <>
-        <Typography style={{ fontWeight: "600" }} variant="h6" component="div">
-          Create Course
-        </Typography>
-        <div style={{ padding: "10px" }}></div>
-        <CustomizedCard>
-          <CardContent>
-            <div style={{ width: "100%" }}>
-              <Stack direction="column" spacing={2} sx={{ display: "flex" }}>
-                <Typography
-                  style={{ fontWeight: "600" }}
-                  variant="body1"
-                  component="div"
-                >
-                  Course Settings:
-                </Typography>
-                <Stack
-                  direction="row"
-                  spacing={4}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <CustomizedTextField value={title} handleTextFieldChange={setTitle}>
-                    Course Title{" "}
-                  </CustomizedTextField>
+          <Typography
+            style={{ fontWeight: "600" }}
+            variant="h6"
+            component="div"
+          >
+            Create Course
+          </Typography>
+          <div style={{ padding: "10px" }}></div>
+          <CustomizedCard>
+            <CardContent>
+              <div style={{ width: "100%" }}>
+                <Stack direction="column" spacing={2} sx={{ display: "flex" }}>
                   <Typography
                     style={{ fontWeight: "600" }}
                     variant="body1"
                     component="div"
                   >
-                    Course reference number (CRN) recommended
+                    Course Settings:
                   </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={4}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <CustomizedTextField
+                      value={title}
+                      handleTextFieldChange={setTitle}
+                    >
+                      Course Title To Display{" "}
+                    </CustomizedTextField>
+                    <Typography
+                      style={{ fontWeight: "600" }}
+                      variant="body1"
+                      component="div"
+                    >
+                      Course reference number (CRN) recommended
+                    </Typography>
+                  </Stack>
+                  <Typography
+                    style={{ fontWeight: "600" }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Please select team settings:
+                  </Typography>
+                  <Stack direction="row" spacing={1} >
+                    <CustomizedButtons
+                      type4
+                      model={"radio4"}
+                      filterType={submissionType}
+                      setFilterType={setSubmissionType}
+                    ></CustomizedButtons>
+                    <FormControl sx={{ width: "100px", height: "10px" }} disabled={isDisabled}>
+                      <InputLabel id="demo-simple-select-label">
+                        Teams
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={numberOfTeam}
+                        label="Teams"
+                        onChange={handleChangeTeams}
+                      >
+                        {Array.from(Array(5).keys()).map((index, key) => (
+                          <MenuItem value={index + 2} key={key}>
+                            {index + 2}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Stack>
+                  <Typography variant="body2" component="div">
+                    Please upload the course student list CSV file provided by
+                    your administrator.
+                  </Typography>
+                  <CustomizedCSVUploader
+                    setCSVFile={setCSVFile}
+                  ></CustomizedCSVUploader>
                 </Stack>
-                <Stack
-                  direction="row"
-                  spacing={4}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <CustomizedTextField value={section} handleTextFieldChange={setSection}>
-                    Course Section{" "}
-                  </CustomizedTextField>
-                  
-                </Stack>
-                <Typography
-                  style={{ fontWeight: "600" }}
-                  variant="body1"
-                  component="div"
-                >
-                  Please select team settings:
-                </Typography>
-                <Stack direction="row" spacing={1}>
-
-                <CustomizedButtons
-                  type4
-                  model={"radio4"}
-                  filterType={submissionType}
-                  setFilterType={setSubmissionType}
-                ></CustomizedButtons>
-                <CustomizedTextField
-                  handleTextFieldChange={setNumberOfTeam}
-                  number
-                  isDisabled={isDisabled}
-                >
-                  Teams
-                </CustomizedTextField>
-                </Stack>
-                <Typography variant="body2" component="div">
-                  Please upload the course student list CSV file provided by
-                  your administrator.
-                </Typography>
-                <CustomizedCSVUploader
-                  setCSVFile={setCSVFile}
-                ></CustomizedCSVUploader>
-              </Stack>
-            </div>
-          </CardContent>
-        </CustomizedCard>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "20px",
-          }}
-        >
-          <Stack direction="row" spacing={2}>
-            <CustomizedButtons
-              type2
-              height1
-              onClick={() => {
-                history.push("./professorhome");
-              }}
-            >
-              Cancel
-            </CustomizedButtons>
-            <CustomizedButtons
-              type1
-              height1
-              onClick={handleAddCourse}
-            >
-              Publish
-            </CustomizedButtons>
-          </Stack>
-        </div>
+              </div>
+            </CardContent>
+          </CustomizedCard>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "20px",
+            }}
+          >
+            <Stack direction="row" spacing={2}>
+              <CustomizedButtons
+                type2
+                height1
+                onClick={() => {
+                  history.push("./professorhome");
+                }}
+              >
+                Cancel
+              </CustomizedButtons>
+              <CustomizedButtons type1 height1 onClick={handleAddCourse}>
+                Publish
+              </CustomizedButtons>
+            </Stack>
+          </div>
         </>
       </CustomizedContainer>
     </CustomizedBody>

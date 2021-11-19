@@ -240,37 +240,40 @@ function SeeAllAssignmentPage({ history }) {
                                 (filterType === "Completed") === true
                                  // assignment.peerreview.isCompleted
                                   ) && (
-                                <ListItem
-                                  key={key}
-                                  button
-                                  divider
-                                  onClick={() => {history.push("./peerreviewassignmentview", {assignment: assignment})}}
-                                  secondaryAction={
-                                    <IconButton edge="end">
-                                      <BsArrowRightCircle />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText primary={`${assignment.title} Peer Review`} />
-                                  {true//assignment.peerreview.isCompleted === true 
-                                   ? (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Completed ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
-                                    />
-                                  ) : (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Due ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
-                                    />
-                                  )}
-                                </ListItem>
+                                    <>
+                                    {assignment.reviewStage === true && <ListItem
+                                      key={key}
+                                      button
+                                      divider
+                                      onClick={() => {history.push("./peerreviewassignmentview", {assignmentID: assignment.assignmentID})}}
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <BsArrowRightCircle />
+                                        </IconButton>
+                                      }
+                                    >
+                                      <ListItemText primary={`${assignment.title} Peer Review`} />
+                                      {true//assignment.peerreview.isCompleted === true 
+                                       ? (
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                          }}
+                                          primary={`Completed ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
+                                        />
+                                      ) : (
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                          }}
+                                          primary={`Due ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
+                                        />
+                                      )}
+                                    </ListItem>}
+                                    </>
+                                
                               )}
                             </>
                           );

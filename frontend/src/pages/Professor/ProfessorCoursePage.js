@@ -32,7 +32,8 @@ import axios from "axios";
 import {
   getAssignmentsByProfessor,
   getCoursesByProfessor,
-  deleteAssignmentByProfessor
+  deleteAssignmentByProfessor,
+  getSubmissionsToReviewByStudent
 } from "../../axios/APIRequests";
 import { MdOutlineCancel } from "react-icons/md";
 function TabPanel(props) {
@@ -71,6 +72,13 @@ function ProfessorCourse({ history }) {
     .then((value) => {
       console.log(value);
       setCourses(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    getSubmissionsToReviewByStudent(11759)
+    .then((value) => {
+      console.log(value);
     })
     .catch((err) => {
       console.log(err);

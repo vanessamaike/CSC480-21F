@@ -44,7 +44,7 @@ function AssignmentCreation({ history, location }) {
   const [prDueDate, setPRDueDate] = useState(new Date());
   const [solutionPdfFileName, setSolutionPdfFileName] = useState("");
   const [peerReviewPdfFileName, setPeerReviewPdfFileName] = useState("");
-
+  var ErrorMessage = "Please fill out !!!"
   const [disablePublishBtn, setDisablePublishBtn] = useState(true)
   useEffect(() => {
     if (location.state.assignment == undefined) return
@@ -91,7 +91,7 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+        alert(ErrorMessage)
     } else{
       var assignment = {
         courseID: location.state.courseID,
@@ -117,7 +117,7 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       const json = JSON.stringify(newAssignment);
       console.log(json);
@@ -137,7 +137,7 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       var tempAss = {...newAssignment, draft: false}
       console.log(tempAss)

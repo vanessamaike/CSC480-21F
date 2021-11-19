@@ -39,8 +39,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
-import { getQualityCheckSolutionByProfessor } from "../../axios/APIRequests";
-import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF"
+import { getQualityCheckSolutionByProfessor, sendAssignReviewByProfessor } from "../../axios/APIRequests";
+import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,6 +76,8 @@ function StudentSolutionQualityCheckPage({ history, location }) {
   const [tab, setTab] = React.useState(0);
   const [assignment, setAssignment] = useState();
   const [linkDownload, setLinkDownload] = useState();
+  const [submittedTeam, setSubmittedTeam] = useState(0)
+  const [totalTeam, setTotalTeam] = useState(0)
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
@@ -98,12 +100,12 @@ function StudentSolutionQualityCheckPage({ history, location }) {
     console.log(assignmentID);
     getQualityCheckSolutionByProfessor(assignmentID)
       .then((value) => {
-        console.log(value)
+        console.log(value);
         setAssignment(value);
         if (value !== undefined) {
           setLoading(false);
-          setLinkDownload(handleConvertByteArrayToPdf(value.teams[tab].pdfDoc))
-         
+          setSubmittedTeam(value.teams.filter((team) => team.submission !== undefined).length)
+          setTotalTeam(value.teams.length)
         }
         console.log(value);
       })
@@ -111,6 +113,29 @@ function StudentSolutionQualityCheckPage({ history, location }) {
         console.log(err);
       });
   }, []);
+  useEffect(() => {
+    if(assignment !== undefined){
+      setLinkDownload(handleConvertByteArrayToPdf(assignment.teams[tab].submission.pdfDoc));
+    }
+  }, [tab])
+  const handleSendForReview = () => {
+    sendAssignReviewByProfessor(assignment.assignmentID)
+    .then(function (response) {
+      console.log(response);
+       //history.push("./courseresult");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    // if(submittedTeam !== totalTeam){
+    //   alert("There is a team that has not submitted yet!")
+    // }
+    // else {
+      
+     
+    // }
+    
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -152,9 +177,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                   <CustomizedButtons
                     type1
                     model={"checked"}
-                    onClick={() => {
-                      history.push("./courseresult");
-                    }}
+                    onClick={handleSendForReview}
                   >
                     Send for Reviews
                   </CustomizedButtons>
@@ -192,6 +215,19 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         Submissions closed 11:59pm 10/7/21
                       </Typography>
                     </Stack>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Typography
+                        style={{
+                          display: "flex",
+                          textAlign: "center",
+                          fontWeight: "600"
+                        }}
+                        variant="body2"
+                        component="div"
+                      >
+                        {`${submittedTeam} out of ${totalTeam} teams submited`}
+                      </Typography>
+                    </div>
                   </CardContent>
                 </CustomizedCard>
                 <div
@@ -242,11 +278,11 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                         team.submission.submissionTime
                                       ).toLocaleString()}
                                     </Typography>
-
                                   </Stack>
                                   <Stack direction="column" spacing={1}>
-                                  <CustomizedButtons
+                                    <CustomizedButtons
                                       type3
+                                      height1
                                       model={"download"}
                                       href={linkDownload}
                                       download={"SolutionInstructor.pdf"}
@@ -254,36 +290,35 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       Download Solutions
                                     </CustomizedButtons>
                                     <Stack
-                                    sx={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      justifyContent: "space-between",
-                                      alignItems: "center",
-                                      width: "130px",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={handleClick}
-                                  >
-                                    <FcHighPriority size="1.5em" />
-                                    <Typography
-                                      style={{
+                                      sx={{
                                         display: "flex",
-                                        textAlign: "center",
-                                        fontWeight: "600",
+                                        flexDirection: "row",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        width: "130px",
+                                        cursor: "pointer",
                                       }}
-                                      variant="body2"
-                                      component="div"
+                                      onClick={handleClick}
                                     >
-                                      View Errors
-                                    </Typography>
-                                    {openErrors === false ? (
-                                      <GoTriangleDown size="1em" />
-                                    ) : (
-                                      <GoTriangleUp size="1em" />
-                                    )}
+                                      <FcHighPriority size="1.5em" />
+                                      <Typography
+                                        style={{
+                                          display: "flex",
+                                          textAlign: "center",
+                                          fontWeight: "600",
+                                        }}
+                                        variant="body2"
+                                        component="div"
+                                      >
+                                        View Errors
+                                      </Typography>
+                                      {openErrors === false ? (
+                                        <GoTriangleDown size="1em" />
+                                      ) : (
+                                        <GoTriangleUp size="1em" />
+                                      )}
+                                    </Stack>
                                   </Stack>
-                                  </Stack>
-
                                 </div>
                                 <Collapse
                                   in={openErrors}
@@ -384,7 +419,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                     justifyContent: "space-between",
                                   }}
                                 >
-                                  <Stack direction="row" spacing={3}>
+                                  <Stack direction="row" spacing={1}>
                                     <Typography
                                       style={{
                                         display: "flex",

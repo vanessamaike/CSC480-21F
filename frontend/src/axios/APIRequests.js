@@ -2,7 +2,7 @@ import axios from "axios";
 
 var userID = 87369
 
-var studentID = 47199
+var studentID = 13985 //97536//67252//73816//54261//47199
 
 export const getCoursesByProfessor = async () => {
   try {
@@ -112,7 +112,14 @@ export const getAssignmenstByStudent = async () => {
       console.error(error);
     }
 }
-
+export const getSubmissionsToReviewByStudent = async (assignmentID) => {
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/reviews`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 export const getTeamIdByStudentAndCourse = async (courseID) => {
   try {
     console.log(courseID)
@@ -126,16 +133,41 @@ export const getTeamIdByStudentAndCourse = async (courseID) => {
 export const postNewSolutionByStudent = async (json) => {
   try {
 
-    const response = await axios.post("http://192.168.1.106:9080/api/submission", json);
+    const response = await axios.post("http://192.168.1.106:9080/api/solution", json);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export const postNewPeerReviewByStudent = async (json) => {
+  try {
+
+    const response = await axios.post("http://192.168.1.106:9080/api/review", json);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export const getQualityCheckSolutionByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/solution/qualityCheck`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export const getQualityCheckPeerReviewByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/peerreview/qualityCheck`);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export const getQualityCheckSolutionByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
+export const sendAssignReviewByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
   try {
-    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/solution/qualityCheck`);
+    const response = await axios.post(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/assignReview`);
     return response.data;
   } catch (error) {
     console.error(error);

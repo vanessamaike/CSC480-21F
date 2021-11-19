@@ -428,7 +428,7 @@ function StudentInfoViewPage({ history }) {
                                     onClick={handleClick(key)}
                                   >
                                     <ListItemText
-                                      primary={`Team ` + team.teamId}
+                                      primary={`Team ${key + 1}`}
                                     />
                                     <ListItemText
                                       sx={{
