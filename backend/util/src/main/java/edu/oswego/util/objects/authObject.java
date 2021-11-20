@@ -36,7 +36,7 @@ public class authObject {
 
 
     @Consumes(MediaType.APPLICATION_JSON)
-    public String authUser(JwtToken token) throws Exception {
+    public String authUser(JwtToken token) {
 
         User userPopulated = new User();
         String role = "NotAuthenticated";
@@ -47,7 +47,13 @@ public class authObject {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
                 .setAudience(Collections.singletonList(CLIENT_ID)).build();
 
-        GoogleIdToken idToken = verifier.verify(token.compact());
+        GoogleIdToken idToken;
+
+        try{
+            idToken = verifier.verify(token.compact());
+        } catch (Exception e){
+            idToken = null;
+        }
 
         if (idToken != null) {
 
@@ -61,6 +67,8 @@ public class authObject {
             }
 
         }
+
+        //TODO wishlist item; expire tokens / do not validate if DoS-like behavior
 
         return role;
     }
