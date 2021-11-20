@@ -86,35 +86,35 @@ function AssignmentDisplay({ history, location }) {
           }}
         >
           <Stack direction="row" spacing={1}>
-          <Typography
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-           {assignment.title}
-          </Typography>
-          {assignment.draft === true ? (
-          <Typography
-            style={{
-              display: "flex",
-              color: "#777",
-              fontWeight: "500",
-              alignItems: "center",
-            }}
-            variant="h6"
-            component="div"
-          >
-           (Draft)
-          </Typography>
-          ) : (
-            <></>
-          )}
+            <Typography
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontWeight: "600",
+              }}
+              variant="h6"
+              component="div"
+            >
+              {assignment.title}
+            </Typography>
+            {assignment.draft === true ? (
+              <Typography
+                style={{
+                  display: "flex",
+                  color: "#777",
+                  fontWeight: "500",
+                  alignItems: "center",
+                }}
+                variant="h6"
+                component="div"
+              >
+                (Draft)
+              </Typography>
+            ) : (
+              <></>
+            )}
           </Stack>
-          
+
           <Stack direction="row" spacing={2}>
             <CustomizedButtons
               type1
@@ -239,14 +239,11 @@ function AssignmentDisplay({ history, location }) {
             <CustomizedCard>
               <CardContent>
                 {solutionPdf && (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    p={10}
                   >
                     <CustomizedButtons
                       model={"arrowL"}
@@ -264,24 +261,17 @@ function AssignmentDisplay({ history, location }) {
                       style={{ color: "black", marginBottom: "10px" }}
                       onClick={goToNextPage}
                     ></CustomizedButtons>
-                  </div>
+                  </Stack>
                 )}
               </CardContent>
             </CustomizedCard>
           </TabPanel>
           <TabPanel value={tab} index={1}>
-            <CustomizedCard>
+            <CustomizedCard s>
               <CardContent>
                 <>
                   {peerReviewPdf && (
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                    <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                     >
                       <CustomizedButtons
                         model={"arrowL"}
@@ -299,7 +289,7 @@ function AssignmentDisplay({ history, location }) {
                         style={{ color: "black", marginBottom: "10px" }}
                         onClick={goToNextPage}
                       ></CustomizedButtons>
-                    </div>
+                    </Stack>
                   )}
                 </>
               </CardContent>

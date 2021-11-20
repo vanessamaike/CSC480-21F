@@ -34,14 +34,14 @@ import CustomizedDivider from "../../components/CustomizedDivider";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 import Loading from "../../components/Loading";
-import { getCoursesByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
+import { getAssignmentsByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
 import { BsArrowRightCircle } from "react-icons/bs";
 
 function CourseBar({ course, history }) {
   return (
     <Stack spacing={0}>
       <CustomizedButtons type3 fullwidth model={"arrow"} onClick={() => history.push("/course")}>
-        {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
+        {`${course.title}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
       <List dense={true}>
         <ListItem button onClick={() => history.push("/studentsolutionqualitycheck")}>
@@ -53,7 +53,7 @@ function CourseBar({ course, history }) {
             }
           />
           <ListItemText
-            primary={`Due ${course.assignments[0].solution.dueDate}`}
+            primary={`Due ${course.assignments[0].solutiondueDateTime}`}
           />
         </ListItem>
         <ListItem button onClick={() => history.push("/studentpeerreviewqualitycheck")}>
@@ -65,7 +65,7 @@ function CourseBar({ course, history }) {
             }
           />
           <ListItemText
-            primary={`Due ${course.assignments[0].peerreview.dueDate}`}
+            primary={`Due ${course.assignments[0].peerReviewdueDateTime}`}
           />
         </ListItem>
       </List>
@@ -85,7 +85,7 @@ function ProfessorHomeDashBoard({ history }) {
   }, [courses])
 
   useEffect(() => {
-      getCoursesByProfessor()
+    getAssignmentsByProfessor()
       .then((value) => {
         setCourses(value);
       })
@@ -223,7 +223,7 @@ function ProfessorHomeDashBoard({ history }) {
                         return (<>{course.assignments.map((assignment, key) => {
                         return (
                           <>
-                          {(assignment.peerreview.isReviewed === true) ? (
+                          {(assignment.reviewStage === true) ? (
                             <ListItem
                             button
                             divider
@@ -243,7 +243,7 @@ function ProfessorHomeDashBoard({ history }) {
                                 display: "flex",
                                 justifyContent: "center",
                               }}
-                              primary={`submissions closed ${assignment.peerreview.dueDate}`}
+                              primary={`submissions closed ${assignment.peerReviewDueDateTime}`}
                             />
                           
                             <ListItemText

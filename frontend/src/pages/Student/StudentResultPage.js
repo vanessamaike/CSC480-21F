@@ -100,7 +100,7 @@ function StudentResultPage({ history }) {
         console.log(err);
       });
   }, []);
-  
+
   useEffect(() => {
     console.log(filterType);
     const filteredItems = demoData.filter((item) => {
@@ -129,82 +129,105 @@ function StudentResultPage({ history }) {
           {loading === true ? (
             <Loading />
           ) : (
-        <>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Results
-            </Typography>
-          </Grid>
-        </Grid>
-        <div>
-          <CustomizedTabs
-            type3
-            setTab={setTab}
-            value={tab}
-            fullWidth={"fullWidth"}
-            labels={courseNames}
-          ></CustomizedTabs>
-          {courses.map((course, id) => (
-            <TabPanel value={tab} index={id}>
-              <CustomizedCard>
-                <CardContent
-                >
-                  {course.assignments.map((assignment) => (<>
-                    {(assignment.averageScore !== -1) ? (
-                      <ListItem
-                      button
-                      divider
-                      onClick={() => history.push("/studentpeerreviewresultsdisplay",{ assignmentID: assignment.assignmentID})}
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <BsArrowRightCircle />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemText primary={`${assignment.title}`} />
-                      <ListItemText primary={"Completed"} />
-                      <ListItemText
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                        }}
-                        primary={"Score: " + `${assignment.averageScore}`}
-                      />
-                    </ListItem>
-                    ) : (
-                      <ListItem
-                      button
-                      divider
-                      disabled
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <BsArrowRightCircle />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemText primary={`${assignment.title}`} />
-                      <ListItemText primary={"In process"} />
-                    </ListItem>
-                    )}</>
-                  ))}
-                </CardContent>
-              </CustomizedCard>
-            </TabPanel>
-          ))}
-        </div>
-        </>
+            <>
+              <Grid container sx={{ marginBottom: "20px" }}>
+                <Grid item xs={8}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Results
+                  </Typography>
+                </Grid>
+              </Grid>
+              <div>
+                <CustomizedTabs
+                  type3
+                  setTab={setTab}
+                  value={tab}
+                  fullWidth={"fullWidth"}
+                  labels={courseNames}
+                ></CustomizedTabs>
+                {courses.map((course, id) => (
+                  <TabPanel value={tab} index={id}>
+                    <CustomizedCard>
+                      <CardContent>
+                        {course.assignments.map((assignment) => (
+                          <>
+                            {!assignment.draft && (
+                              <>
+                                {assignment.averageScore !== -1 ? (
+                                  <ListItem
+                                    button
+                                    divider
+                                    onClick={() =>
+                                      history.push(
+                                        "/studentpeerreviewresultsdisplay",
+                                        {
+                                          assignmentID: assignment.assignmentID,
+                                        }
+                                      )
+                                    }
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                      >
+                                        <BsArrowRightCircle />
+                                      </IconButton>
+                                    }
+                                  >
+                                    <ListItemText
+                                      primary={`${assignment.title}`}
+                                    />
+                                    <ListItemText primary={"Completed"} />
+                                    <ListItemText
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                      }}
+                                      primary={
+                                        "Score: " + `${assignment.averageScore}`
+                                      }
+                                    />
+                                  </ListItem>
+                                ) : (
+                                  <ListItem
+                                    button
+                                    divider
+                                    disabled
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                      >
+                                        <BsArrowRightCircle />
+                                      </IconButton>
+                                    }
+                                  >
+                                    <ListItemText
+                                      primary={`${assignment.title}`}
+                                    />
+                                    <ListItemText primary={"In process"} />
+                                  </ListItem>
+                                )}
+                              </>
+                            )}
+                          </>
+                        ))}
+                      </CardContent>
+                    </CustomizedCard>
+                  </TabPanel>
+                ))}
+              </div>
+            </>
           )}
         </>
-
       </CustomizedContainer>
     </div>
   );

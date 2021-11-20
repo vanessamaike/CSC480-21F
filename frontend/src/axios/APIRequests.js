@@ -2,7 +2,7 @@ import axios from "axios";
 
 var userID = 87369
 
-var studentID = 13985 //97536//67252//73816//54261//47199
+var studentID = 73816 //97536//67252//73816//54261//13985
 
 export const getCoursesByProfessor = async () => {
   try {
@@ -31,6 +31,14 @@ export const getTeamsByProfessor = async () => {
     } catch (error) {
       console.error(error);
     }
+}
+export const getTeamsByStudent = async () => {
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${userID}/course/team`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 export const getAssignmentsByProfessor = async () => {
   try {
@@ -112,6 +120,14 @@ export const getResultsByStudent = async () => {
     console.error(error);
   }
 }
+export const getPeerReviewResulttByStudent = async (assignmentID) => {
+  try {
+    const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/result/student`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 export const getAssignmenstByStudent = async () => {
     try {
       const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/course/assignment/student`);
@@ -120,6 +136,7 @@ export const getAssignmenstByStudent = async () => {
       console.error(error);
     }
 }
+
 export const getSubmissionsToReviewByStudent = async (assignmentID) => {
   try {
     const response = await axios.get(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/reviews`);
@@ -177,6 +194,30 @@ export const getQualityCheckPeerReviewByProfesssor = async (assignmentID) => {//
 export const sendAssignReviewByProfessor = async (assignmentID) => {//{userId}/assignment/{assignmentId}/qualitycheck/solution
   try {
     const response = await axios.post(`http://192.168.1.106:9080/api/professor/${studentID}/assignment/${assignmentID}/assignReview`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const loginAuth = async (token) => { //http://192.168.1.106:9080/api/professor/testAuth
+  try {
+    let axiosConfig = {
+      headers: {
+          "Content-Type": 'application/json;charset=UTF-8',
+          "Accept": "application/json, ",
+          "Origin" : "*",
+          "Authorization" : "1444"
+      },
+      origin: "*"
+    };
+    let a = {
+      a : 1
+    }
+    let json_ = JSON.stringify(a);
+    //axios.defaults.headers.common['Authorization'] = `${token}`
+    const response = await axios.post(`http://192.168.1.106:9080/api/professor/testAuth1`,json_);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -76,13 +76,6 @@ function ProfessorCourse({ history }) {
     .catch((err) => {
       console.log(err);
     });
-    getSubmissionsToReviewByStudent(11759)
-    .then((value) => {
-      console.log(value);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
   }
   useEffect(() => {
     var nameLists = [];
@@ -275,7 +268,8 @@ function ProfessorCourse({ history }) {
                                             variant="body1"
                                             component="div"
                                           >
-                                            {assignment.title}
+                                           {assignment.title}
+                                          
                                           </Typography>
                                           <Stack direction="row">
                                             <Typography

@@ -36,14 +36,13 @@ function NewSolutionAssignmentView({ history, location }) {
   const isFirstPage = pageNumber === 1;
   const isLastPage = pageNumber === numPages;
   // ========= main variable =======
-  const [comments, setComments] = React.useState("");
+
   const [assignment, setAssignment] = useState();
   const [submissionPdfFile, setSubmissionPdfFile] = useState();
   const [linkDownload, setLinkDownload] = useState();
   const [teamId, setTeamId] = useState();
   var ErrorMessage = "Please upload your pdf file before submitting !!!"
   useEffect(() => {
-    
     if (assignment !== undefined) {
       // =========== Handle PDF Download From Byte Array ==================
       setLinkDownload(handleConvertByteArrayToPdf(assignment.solutionPdfDoc))
@@ -72,7 +71,6 @@ function NewSolutionAssignmentView({ history, location }) {
     } else {
       var newSubmission = {
         teamID: teamId,
-        comments: comments,
         pdfDoc: submissionPdfFile,
         seen: false,
         assignmentID: assignment.assignmentID,
@@ -136,9 +134,8 @@ function NewSolutionAssignmentView({ history, location }) {
               </Grid>
             </Grid>
             <div>
-              <CustomizedCard style={{ marginTop: "20px" }}>
+              <CustomizedCard style={{ marginTop: "20px"}}>
                 <CardContent>
-                  <List>
                     <div
                       style={{
                         display: "flex",
@@ -183,15 +180,8 @@ function NewSolutionAssignmentView({ history, location }) {
                         Download Instructions
                       </CustomizedButtons>
                     </div>
-                  </List>
                   {assignmentPdf && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "10px",
-                      }}
+                    <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                     >
                       <CustomizedButtons
                         model={"arrowL"}
@@ -209,10 +199,10 @@ function NewSolutionAssignmentView({ history, location }) {
                         style={{ color: "black", marginBottom: "10px" }}
                         onClick={goToNextPage}
                       ></CustomizedButtons>
-                    </div>
+                    </Stack>
                   )}
                 </CardContent>
-              </CustomizedCard>{" "}
+              </CustomizedCard>
               <CustomizedCard
                 style={{ marginTop: "20px", marginBottom: "20px" }}
               >
@@ -231,12 +221,6 @@ function NewSolutionAssignmentView({ history, location }) {
                     </Typography>
 
                     <Stack direction="row" spacing={3}>
-                      <CustomizedTextField
-                        comments
-                        handleTextFieldChange={setComments}
-                      >
-                        Comments
-                      </CustomizedTextField>
                       <CustomizedPdfUploader
                         id="submission"
                         setPdfFile={setSubmissionPdfFile}

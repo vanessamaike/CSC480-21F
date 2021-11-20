@@ -11,8 +11,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
-import bg from '../../images/multi_background_login.jpg'
-import { useSelector,useDispatch } from "react-redux";
+import bg from "../../images/multi_background_login.jpg";
+import { useSelector, useDispatch } from "react-redux";
 import { setUser, selectUser } from "../../features/userSlice";
 // styled components
 import NavBarLogin from "../../components/NavBar/NavBarLogin";
@@ -20,6 +20,9 @@ import { Stack } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedBody from "../../components/CustomizedBody";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {auth, provider} from "./firebase";
+import { loginAuth } from "../../axios/APIRequests";
 function RoleButton() {
   return (
     <Box
@@ -49,36 +52,72 @@ function RoleButton() {
   );
 }
 
-function LoginPage({history}) {
+function LoginPage({ history }) {
   const dispatch = useDispatch();
   const professorModel = {
-    "userId": 1,
-    "email": "username@oswego.edu",
-    "role": "professor"
-  }
+    userId: 1,
+    email: "username@oswego.edu",
+    role: "professor",
+  };
   const studentModel = {
-    "userId": 1,
-    "email": "username@oswego.edu",
-    "role": "student"
-  }
+    userId: 1,
+    email: "username@oswego.edu",
+    role: "student",
+  };
   const handleProfessorLogin = () => {
     dispatch(setUser(professorModel));
-    history.push("./professorhome")
-  }
+    history.push("./professorhome");
+  };
   const handleStudentLogin = () => {
     dispatch(setUser(studentModel));
-    history.push("./studenthome")
-  }
+    history.push("./studenthome");
+  };
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
     //axios.post("http://localhost9080", response);
   };
-  return (
 
-    <CustomizedBody bg={bg}> 
+  const signIn = () => {
+    loginAuth("token")
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    // signInWithPopup(auth, provider)
+    //   .then((result) => {
+    //     // This gives you a Google Access Token. You can use it to access the Google API.
+    //     const credential = GoogleAuthProvider.credentialFromResult(result);
+    //     const token = credential.accessToken;
+    //     // The signed-in user info.
+    //     const user = result.user;
+    //     console.log(user);
+    //     console.log(token);
+    //     // loginAuth(token)
+    //     //   .then(function (response) {
+    //     //     console.log(response);
+    //     //   })
+    //     //   .catch(function (error) {
+    //     //     console.log(error);
+    //     //   });
+    //   })
+    //   .catch((error) => {
+    //     // Handle Errors here.
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // The email of the user's account used.
+    //     const email = error.email;
+    //     // The AuthCredential type that was used.
+    //     const credential = GoogleAuthProvider.credentialFromError(error);
+    //     // ...
+    //   });
+  };
+  return (
+    <CustomizedBody bg={bg}>
       <NavBarLogin></NavBarLogin>
-      <div 
+      <div
         style={{
           display: "flex",
           justifyContent: "space-around",
@@ -103,7 +142,8 @@ function LoginPage({history}) {
             A proven system to improve student grade outcomes.
           </Typography>
           <Typography variant="h6" component="div">
-          Distribute assignments and collect peer reviews with accuracy and efficiency while utilizing this effective learning method. 
+            Distribute assignments and collect peer reviews with accuracy and
+            efficiency while utilizing this effective learning method.
           </Typography>
         </div>
         <CustomizedCard
@@ -117,7 +157,7 @@ function LoginPage({history}) {
           }}
         >
           <CardHeader
-            sx={{paddingBottom:"0"}}
+            sx={{ paddingBottom: "0" }}
             title={
               <Typography
                 style={{ fontWeight: "600" }}
@@ -145,6 +185,7 @@ function LoginPage({history}) {
             }}
           >
             <Stack spacing={2}>
+            <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons>
               {/* <GoogleLogin
                 clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
                 buttonText="Professor"
@@ -159,8 +200,22 @@ function LoginPage({history}) {
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
               /> */}
-              <CustomizedButtons style={{display: "flex", justifyContent: "center"}} fulllwidth type1 onClick={handleProfessorLogin}>I am a Professor </CustomizedButtons>
-              <CustomizedButtons style={{display: "flex", justifyContent: "center"}} fulllwidth type1 onClick={handleStudentLogin}>I am a Student </CustomizedButtons>
+              <CustomizedButtons
+                style={{ display: "flex", justifyContent: "center" }}
+                fulllwidth
+                type1
+                onClick={handleProfessorLogin}
+              >
+                I am a Professor{" "}
+              </CustomizedButtons>
+              <CustomizedButtons
+                style={{ display: "flex", justifyContent: "center" }}
+                fulllwidth
+                type1
+                onClick={handleStudentLogin}
+              >
+                I am a Student{" "}
+              </CustomizedButtons>
             </Stack>
           </CardContent>
         </CustomizedCard>

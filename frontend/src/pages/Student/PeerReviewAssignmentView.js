@@ -72,7 +72,7 @@ function PeerReviewAssignmentView({ history, location }) {
   useEffect(() => {
     if (location.state.assignmentID == undefined) return;
     var assignmentID = location.state.assignmentID;
-    getSubmissionsToReviewByStudent(11759)
+    getSubmissionsToReviewByStudent(assignmentID)
       .then((value) => {
         if (peerReviewInfo === undefined) {
           setPeerReviewInfo(value);
@@ -80,8 +80,6 @@ function PeerReviewAssignmentView({ history, location }) {
         getTeamIdByStudentAndCourse(value.courseID)
         .then((value) => {
           setTeamId(value.teamID);
-
-
         })
         .catch((err) => {
           console.log(err);
@@ -204,7 +202,7 @@ function PeerReviewAssignmentView({ history, location }) {
             <div>
               <CustomizedCard style={{ marginTop: "20px" }}>
                 <CardContent>
-                  <Stack direction="row" spacing={3}>
+                  <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
                     <Stack direction="row" spacing={3}>
                       <Typography
                         style={{
@@ -252,8 +250,8 @@ function PeerReviewAssignmentView({ history, location }) {
               >
                 {peerReviewInfo.teams.map((team, key) => {
                   return (
-                    <TabPanel value={tab} index={key}>
-                      <CustomizedCard style={{ width: "875px" }}>
+                    <TabPanel value={tab} index={key} style={{ flex:1}}>
+                      <CustomizedCard >
                         <CardContent>
                           <div
                             style={{
@@ -287,13 +285,7 @@ function PeerReviewAssignmentView({ history, location }) {
                             </CustomizedButtons>
                           </div>
                           {team.submission.pdfDoc && (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                padding: "10px",
-                              }}
+                            <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                             >
                               <CustomizedButtons
                                 model={"arrowL"}
@@ -311,7 +303,7 @@ function PeerReviewAssignmentView({ history, location }) {
                                 style={{ color: "black", marginBottom: "10px" }}
                                 onClick={goToNextPage}
                               ></CustomizedButtons>
-                            </div>
+                            </Stack>
                           )}
                           <Stack direction="column" spacing={3}>
                             <Typography
@@ -327,13 +319,6 @@ function PeerReviewAssignmentView({ history, location }) {
                             </Typography>
 
                             <Stack direction="row" spacing={3} alignItems="center">
-                              {/* <CustomizedTextField
-                                value={score}
-                                number
-                                handleTextFieldChange={setScore}
-                              >
-                                Score
-                              </CustomizedTextField> */}
                               <FormControl sx={{width:"100px"}}>
                                 <InputLabel id="demo-simple-select-label">
                                   Score
@@ -392,6 +377,8 @@ function PeerReviewAssignmentView({ history, location }) {
               justifyContent="flex-end"
               alignItems="center"
               spacing={2}
+              mt={3}
+              mr={20}
             >
               <CustomizedButtons type2>Cancel</CustomizedButtons>
               <CustomizedButtons type1 onClick={handleSubmitFile}>

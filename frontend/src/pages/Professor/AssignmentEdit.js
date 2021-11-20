@@ -31,7 +31,10 @@ import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-import { editAssignmentByProfessor, postNewAssignmentByProfessor } from "../../axios/APIRequests";
+import {
+  editAssignmentByProfessor,
+  postNewAssignmentByProfessor,
+} from "../../axios/APIRequests";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function AssignmentEdit({ history, location }) {
@@ -44,22 +47,18 @@ function AssignmentEdit({ history, location }) {
   const [solutionDueDate, setSolutionDueDate] = useState(new Date());
   const [prDueDate, setPRDueDate] = useState(new Date());
 
-  
-
   useEffect(() => {
     if (location.state.assignment !== undefined) {
-     
       var assignment = location.state.assignment;
       console.log(assignment);
       setTitle(assignment.title);
       setSolutionDueDate(new Date(assignment.solutionDueDateTime));
       setPRDueDate(new Date(assignment.peerReviewDueDateTime));
-      setSolutionPdfFileName(assignment.solutionPdfFileName)
-      setPeerReviewPdfFileName(assignment.peerReviewPdfFileName)
-      setSolutionPdfDoc(assignment.solutionPdfDoc)
-      setPeerReviewPdfDoc(assignment.peerReviewPdfDoc)
+      setSolutionPdfFileName(assignment.solutionPdfFileName);
+      setPeerReviewPdfFileName(assignment.peerReviewPdfFileName);
+      setSolutionPdfDoc(assignment.solutionPdfDoc);
+      setPeerReviewPdfDoc(assignment.peerReviewPdfDoc);
     }
- 
   }, []);
   console.log(newAssignment);
   useEffect(() => {
@@ -70,8 +69,8 @@ function AssignmentEdit({ history, location }) {
         title: title,
         solutionPdfDoc: solutionPdfDoc,
         peerReviewPdfDoc: peerReviewPdfDoc,
-        solutionPdfFileName : solutionPdfFileName,
-        peerReviewPdfFileName:peerReviewPdfFileName,
+        solutionPdfFileName: solutionPdfFileName,
+        peerReviewPdfFileName: peerReviewPdfFileName,
         solutionDueDateTime: solutionDueDate.toJSON().split(".")[0],
         peerReviewDueDateTime: prDueDate.toJSON().split(".")[0],
       });
@@ -100,7 +99,6 @@ function AssignmentEdit({ history, location }) {
         .catch(function (error) {
           console.log(error);
         });
-      
     }
   };
 
@@ -117,19 +115,26 @@ function AssignmentEdit({ history, location }) {
               New Assignment
             </Typography>
           </Breadcrumbs>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography
-                style={{ fontWeight: "600" }}
-                variant="body1"
-                component="div"
-              >
-                Build New Assignment
-              </Typography>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              style={{ fontWeight: "600" }}
+              variant="body1"
+              component="div"
+            >
+              Build New Assignment
+            </Typography>
 
-              <CustomizedButtons onClick={handleApplyChange} type1>
+            <CustomizedButtons onClick={handleApplyChange} type1>
               Apply Changes
             </CustomizedButtons>
-            </div>
+          </div>
 
           {/* First Box */}
           <CustomizedCard sx={{ marginBottom: "30px", marginTop: "30px" }}>
@@ -268,9 +273,7 @@ function AssignmentEdit({ history, location }) {
               justifyContent: "flex-end",
               margintop: "10px",
             }}
-          >
-           
-          </Grid>
+          ></Grid>
         </CustomizedContainer>
       </>
     </CustomizedBody>

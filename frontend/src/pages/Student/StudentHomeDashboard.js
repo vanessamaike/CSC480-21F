@@ -34,16 +34,27 @@ import CustomizedDivider from "../../components/CustomizedDivider";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 import Loading from "../../components/Loading";
-import { getCoursesByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
+import {
+  getAssignmenstByStudent,
+  getTeamsByProfessor,
+} from "../../axios/APIRequests";
 import { BsArrowRightCircle } from "react-icons/bs";
 function CourseBar({ course, history }) {
   return (
     <Stack spacing={0}>
-      <CustomizedButtons type3 fullwidth model={"arrow"} onClick={() => history.push("/course")}>
-        {`${course.code}, Section ${course.sectionNumber}, ${course.semester}`}
+      <CustomizedButtons
+        type3
+        fullwidth
+        model={"arrow"}
+        onClick={() => history.push("/course")}
+      >
+        {`${course.title}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
       <List dense={true}>
-        <ListItem button onClick={() => history.push("/newsolutionassignmentview")}>
+        <ListItem
+          button
+          onClick={() => history.push("/newsolutionassignmentview")}
+        >
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -52,10 +63,15 @@ function CourseBar({ course, history }) {
             }
           />
           <ListItemText
-            primary={`Due ${course.assignments[0].solution.dueDate}`}
+            primary={`Due ${new Date(
+              course.assignments[0].solutiondueDateTime
+            ).toLocaleString()}`}
           />
         </ListItem>
-        <ListItem button onClick={() => history.push("/peerreviewassignmentview")}>
+        <ListItem
+          button
+          onClick={() => history.push("/peerreviewassignmentview")}
+        >
           <ListItemText
             primary={
               <Typography component="span" fontWeight="600" variant="body2">
@@ -64,7 +80,9 @@ function CourseBar({ course, history }) {
             }
           />
           <ListItemText
-            primary={`Due ${course.assignments[0].peerreview.dueDate}`}
+            primary={`Due ${new Date(
+              course.assignments[0].peerReviewdueDateTime
+            ).toLocaleString()}`}
           />
         </ListItem>
       </List>
@@ -77,13 +95,14 @@ function StudentHomeDashBoard({ history }) {
   const [courses, setCourses] = React.useState([]);
   useEffect(() => {
     console.log(courses);
-    if(courses !== undefined && courses.length !== 0){
-      setLoading(false)
+    if (courses !== undefined && courses.length !== 0) {
+      setLoading(false);
     }
-  }, [courses])
+  }, [courses]);
   useEffect(() => {
-    getCoursesByProfessor()
+    getAssignmenstByStudent()
       .then((value) => {
+        console.log(value);
         setCourses(value);
       })
       .catch((err) => {
@@ -155,7 +174,11 @@ function StudentHomeDashBoard({ history }) {
                     <Stack spacing={2}>
                       {courses.map((course, key) => {
                         return (
-                          <CourseBar course={course} key={key} history={history}></CourseBar>
+                          <CourseBar
+                            course={course}
+                            key={key}
+                            history={history}
+                          ></CourseBar>
                         );
                       })}
                     </Stack>
@@ -173,7 +196,13 @@ function StudentHomeDashBoard({ history }) {
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem
                         secondaryAction={
-                          <CustomizedButtons type1 height1 onClick={()=>{history.push("./seeallassignment")}}>
+                          <CustomizedButtons
+                            type1
+                            height1
+                            onClick={() => {
+                              history.push("./seeallassignment");
+                            }}
+                          >
                             See All
                           </CustomizedButtons>
                         }
@@ -217,61 +246,67 @@ function StudentHomeDashBoard({ history }) {
                   ) : (
                     <List sx={{ width: "100%" }}>
                       {courses.map((course, key) => {
-                        return (<>{course.assignments.map((assignment, key) => {
                         return (
                           <>
-                          {(assignment.peerreview.isReviewed === true) ? (
-                            <ListItem
-                            button
-                            divider
-                            onClick={() => history.push("/peerreviewassignmentview")}
-                            secondaryAction={
-                              <IconButton edge="end">
-                                <BsArrowRightCircle />
-                              </IconButton>
-                            }
-                          >
-                            <ListItemText
-                              sx={{ width: "30%" }}
-                              primary={`${assignment.title} Peer Reviews`}
-                            />
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                              primary={`submissions closed ${assignment.peerreview.dueDate}`}
-                            />
-                          
-                            <ListItemText
-                              primary={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "flex-end",
-                                  }}
-                                >
-                                  <FiberManualRecordIcon
-                                    sx={{
-                                      color: "#0DC38D",
-                                      marginRight: "10px",
-                                    }}
-                                    fontSize="medium"
-                                  />{" "}
-                                  <>Needs Review</>
-                                </div>
-                              }
-                            />
-                          </ListItem>
-                          ) : (
-                            <></>
-                          )}
+                            {course.assignments.map((assignment, key) => {
+                              return (
+                                <>
+                                  {assignment.reviewStage === true ? (
+                                    <ListItem
+                                      button
+                                      divider
+                                      onClick={() =>
+                                        history.push(
+                                          "/peerreviewassignmentview"
+                                        )
+                                      }
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <BsArrowRightCircle />
+                                        </IconButton>
+                                      }
+                                    >
+                                      <ListItemText
+                                        sx={{ width: "30%" }}
+                                        primary={`${assignment.title} Peer Reviews`}
+                                      />
+                                      <ListItemText
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                        }}
+                                        primary={`submissions closed ${assignment.peerReviewDueDateTime}`}
+                                      />
+
+                                      <ListItemText
+                                        primary={
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              alignItems: "center",
+                                              justifyContent: "flex-end",
+                                            }}
+                                          >
+                                            <FiberManualRecordIcon
+                                              sx={{
+                                                color: "#0DC38D",
+                                                marginRight: "10px",
+                                              }}
+                                              fontSize="medium"
+                                            />{" "}
+                                            <>Needs Review</>
+                                          </div>
+                                        }
+                                      />
+                                    </ListItem>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </>
+                              );
+                            })}
                           </>
-                          
                         );
-                      })}
-                        </>)
                       })}
                     </List>
                   )}
@@ -284,12 +319,15 @@ function StudentHomeDashBoard({ history }) {
                   sx={{ paddingBottom: "8px" }}
                   title={
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
-                      <ListItem button onClick={() => history.push("/studentteams")}
-                            secondaryAction={
-                              <IconButton edge="end">
-                                <BsArrowRightCircle />
-                              </IconButton>
-                            }>
+                      <ListItem
+                        button
+                        onClick={() => history.push("/studentteams")}
+                        secondaryAction={
+                          <IconButton edge="end">
+                            <BsArrowRightCircle />
+                          </IconButton>
+                        }
+                      >
                         <ListItemIcon>
                           <FiberManualRecordIcon
                             sx={{ color: "#6F40DC" }}
@@ -303,7 +341,7 @@ function StudentHomeDashBoard({ history }) {
                               fontWeight="600"
                               variant="h6"
                             >
-                             Manage Teams
+                              Manage Teams
                             </Typography>
                           }
                         />
@@ -311,15 +349,13 @@ function StudentHomeDashBoard({ history }) {
                     </List>
                   }
                 ></CardHeader>
-                
               </CustomizedCard>
             </Grid>
             <Grid
               item
               xs={12}
               sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
-            </Grid>
+            ></Grid>
           </Grid>
         </Grid>
       </CustomizedContainer>

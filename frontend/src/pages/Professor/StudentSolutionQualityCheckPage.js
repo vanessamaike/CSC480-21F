@@ -114,7 +114,8 @@ function StudentSolutionQualityCheckPage({ history, location }) {
       });
   }, []);
   useEffect(() => {
-    if(assignment !== undefined){
+    if(assignment === undefined) return
+    if(assignment.teams[tab].submission !== undefined){
       setLinkDownload(handleConvertByteArrayToPdf(assignment.teams[tab].submission.pdfDoc));
     }
   }, [tab])
@@ -122,7 +123,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
     sendAssignReviewByProfessor(assignment.assignmentID)
     .then(function (response) {
       console.log(response);
-       //history.push("./courseresult");
+      history.push("./courseresult");
     })
     .catch(function (error) {
       console.log(error);
@@ -232,28 +233,15 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                     </div>
                   </CardContent>
                 </CustomizedCard>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginTop: "20px",
-                  }}
-                >
+                <Stack direction="row" justifyContent="space-between" mt={3}>
                   {assignment.teams.map((team, key) => {
                     return (
-                      <TabPanel value={tab} index={key}>
-                        <CustomizedCard style={{ width: "875px" }}>
+                      <TabPanel value={tab} index={key} style={{ flex: 1}}>
+                        <CustomizedCard>
                           {team.submission !== undefined ? (
                             <CardContent>
-                              <List>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    marginBottom: "20px",
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                  }}
+                              <Stack direction="column">
+                                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}
                                 >
                                   <Stack direction="column" spacing={1}>
                                     <Typography
@@ -281,13 +269,12 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       ).toLocaleString()}
                                     </Typography>
                                   </Stack>
-                                  <Stack direction="column" spacing={1}>
+                                  <Stack direction="column" spacing={1} alignItems="flex-end" >
                                     <CustomizedButtons
                                       type3
-                                      height1
                                       model={"download"}
                                       href={linkDownload}
-                                      download={"SolutionInstructor.pdf"}
+                                      download={"Solution.pdf"}
                                     >
                                       Download Solutions
                                     </CustomizedButtons>
@@ -321,7 +308,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       )}
                                     </Stack>
                                   </Stack>
-                                </div>
+                                </Stack>
                                 <Collapse
                                   in={openErrors}
                                   timeout="auto"
@@ -373,14 +360,9 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                     </Stack>
                                   </div>
                                 </Collapse>
-                              </List>
+                              </Stack>
                               {team.submission.pdfDoc && (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
+                                <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                                 >
                                   <CustomizedButtons
                                     model={"arrowL"}
@@ -407,7 +389,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                     }}
                                     onClick={goToNextPage}
                                   ></CustomizedButtons>
-                                </div>
+                                </Stack>
                               )}
                             </CardContent>
                           ) : (
@@ -476,7 +458,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                       ))}
                     </Tabs>
                   </CustomizedCard>
-                </div>
+                </Stack>
               </div>
             </>
           )}

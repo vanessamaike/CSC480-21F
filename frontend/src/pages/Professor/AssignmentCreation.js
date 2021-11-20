@@ -141,7 +141,7 @@ function AssignmentCreation({ history, location }) {
     } else {
       var tempAss = {...newAssignment, draft: false}
       console.log(tempAss)
-      const json = JSON.stringify(newAssignment);
+      const json = JSON.stringify(tempAss);
       console.log(json);
       postNewAssignmentByProfessor(json)
         .then(function (response) {
