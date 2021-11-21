@@ -144,7 +144,7 @@ function NewSolutionAssignmentView({ history, location }) {
                         justifyContent: "space-between",
                       }}
                     >
-                      <Stack direction="row" spacing={1}>
+                      <Stack direction="row" spacing={1} alignItems="center">
                         <Typography
                           style={{
                             display: "flex",
@@ -207,7 +207,7 @@ function NewSolutionAssignmentView({ history, location }) {
                 style={{ marginTop: "20px", marginBottom: "20px" }}
               >
                 <CardContent>
-                  <Stack direction="column" spacing={3}>
+                  <Stack direction="row" spacing={1} alignItems="center">
                     <Typography
                       style={{
                         display: "flex",
@@ -219,13 +219,10 @@ function NewSolutionAssignmentView({ history, location }) {
                     >
                       Submit Solution as a PDF attachment:
                     </Typography>
-
-                    <Stack direction="row" spacing={3}>
                       <CustomizedPdfUploader
                         id="submission"
                         setPdfFile={setSubmissionPdfFile}
                       ></CustomizedPdfUploader>
-                    </Stack>
                   </Stack>
                 </CardContent>
               </CustomizedCard>

@@ -27,33 +27,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { getAssignmenstByStudent } from "../../axios/APIRequests";
-
-const demoData = [
-  {
-    name: "Peer Review 1",
-    date: "10/07/21",
-    type: "Completed",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 2",
-    date: "11/07/21",
-    type: "Upcoming",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 3",
-    date: "13/07/21",
-    type: "Upcoming",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 4",
-    date: "12/07/21",
-    type: "Completed",
-    deadline: "Due 10/01/21",
-  },
-];
+import CustomizedBody from "../../components/CustomizedBody";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,14 +49,13 @@ function TabPanel(props) {
 function SeeAllAssignmentPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [items, setItems] = useState(demoData);
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState();
   const [courseNames, setCourseNames] = React.useState([]);
 
   useEffect(() => {
     var courseNameLists = [];
-    if (courses) {
+    if (courses !== undefined && courses.length !== 0) {
       console.log(courses);
       courses.map((course) => {
         courseNameLists.push(course.code);
@@ -104,13 +77,7 @@ function SeeAllAssignmentPage({ history }) {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
+    <CustomizedBody bg={bg}
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
@@ -204,7 +171,7 @@ function SeeAllAssignmentPage({ history }) {
                                 <>
                                   {(filterType === "All" ||
                                     (filterType === "Completed") ===
-                                      assignment.solution.isCompleted) && (
+                                      assignment.isSolutionCompleted) && (
                                     <ListItem
                                       key={key}
                                       button
@@ -224,7 +191,7 @@ function SeeAllAssignmentPage({ history }) {
                                       <ListItemText
                                         primary={`${assignment.title} Solution`}
                                       />
-                                      {false ? ( //assignment.solution.isCompleted === true
+                                      {assignment.isSolutionCompleted ? (
                                         <ListItemText
                                           sx={{
                                             display: "flex",
@@ -248,8 +215,7 @@ function SeeAllAssignmentPage({ history }) {
                                     </ListItem>
                                   )}
                                   {(filterType === "All" ||
-                                    (filterType === "Completed") === true) && (
-                                    // assignment.peerreview.isCompleted
+                                    (filterType === "Completed") === assignment.isPeerReviewCompleted) && (
                                     <>
                                       {assignment.reviewStage === true && (
                                         <ListItem
@@ -274,7 +240,7 @@ function SeeAllAssignmentPage({ history }) {
                                           <ListItemText
                                             primary={`${assignment.title} Peer Review`}
                                           />
-                                          {true ? ( //assignment.peerreview.isCompleted === true
+                                          {assignment.isPeerReviewCompleted ? ( //assignment.peerreview.isCompleted === true
                                             <ListItemText
                                               sx={{
                                                 display: "flex",
@@ -313,7 +279,7 @@ function SeeAllAssignmentPage({ history }) {
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

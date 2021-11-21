@@ -26,6 +26,7 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
 
 const demoData = [
   {
@@ -81,7 +82,7 @@ function StudentResultPage({ history }) {
 
   useEffect(() => {
     var courseNameLists = [];
-    if (courses) {
+    if (courses !== undefined && courses.length !== 0) {
       courses.map((course) => {
         courseNameLists.push(course.code);
       });
@@ -109,13 +110,7 @@ function StudentResultPage({ history }) {
     setItems(filteredItems);
   }, [filterType]);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
+    <CustomizedBody bg={bg}
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
@@ -192,7 +187,7 @@ function StudentResultPage({ history }) {
                                         justifyContent: "flex-end",
                                       }}
                                       primary={
-                                        "Score: " + `${assignment.averageScore}`
+                                        "Score: " + `${Math.round(assignment.averageScore)}`
                                       }
                                     />
                                   </ListItem>
@@ -229,7 +224,7 @@ function StudentResultPage({ history }) {
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

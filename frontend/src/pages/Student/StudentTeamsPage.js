@@ -35,7 +35,7 @@ import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedTextField from "../../components/CustomizedTextField";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import Loading from "../../components/Loading";
-import { getTeamsByProfessor } from "../../axios/APIRequests";
+import { getTeamsByProfessor, getTeamsByStudent } from "../../axios/APIRequests";
 
 const styles = (theme) => ({
   input: {
@@ -82,7 +82,7 @@ function StudentTeamsPage({ history }) {
     }
   }, [courses]);
   useEffect(() => {
-    getTeamsByProfessor()
+    getTeamsByStudent()
     .then((value) => {
       console.log(value);
       setCourses(value);
@@ -96,8 +96,7 @@ function StudentTeamsPage({ history }) {
   };
 
   return (
-    <CustomizedBody bg={bg}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
         <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>

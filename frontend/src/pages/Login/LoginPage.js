@@ -113,6 +113,9 @@ function LoginPage({ history }) {
     //     const credential = GoogleAuthProvider.credentialFromError(error);
     //     // ...
     //   });
+    const responseGoogle = (response) => {
+      console.log(response);
+    }
   };
   return (
     <CustomizedBody bg={bg}>
@@ -185,16 +188,17 @@ function LoginPage({ history }) {
             }}
           >
             <Stack spacing={2}>
-            <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons>
+            {/* 149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com */}
+            {/* <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons> */}
               {/* <GoogleLogin
-                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
+                clientId="51547256571-4hgvg5mtjrdit2bnaft8k2b5j44e6l3b.apps.googleusercontent.com"
                 buttonText="Professor"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}
               />
               <GoogleLogin
-                clientId="149755873109-56q9cfqarsfn3kd1vc9isegskpi4s32v.apps.googleusercontent.com"
+                clientId="51547256571-4hgvg5mtjrdit2bnaft8k2b5j44e6l3b.apps.googleusercontent.com"
                 buttonText="Student"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}

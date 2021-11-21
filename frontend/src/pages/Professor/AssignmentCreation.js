@@ -167,7 +167,7 @@ function AssignmentCreation({ history, location }) {
                 New Assignment
               </Typography>
             </Breadcrumbs>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
 
                 <Typography
                   style={{ fontWeight: "600" }}
@@ -182,7 +182,7 @@ function AssignmentCreation({ history, location }) {
                 >
                   Preview
                 </CustomizedButtons>
-            </div>
+            </Stack>
 
             {/* First Box */}
             <CustomizedCard sx={{ marginBottom: "30px", marginTop: "30px" }}>

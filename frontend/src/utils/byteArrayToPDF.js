@@ -83,7 +83,7 @@ export const handleConvertByteArrayToPdf = (byteArr) => {
   if (byteArr === "") {
     alert("Input must not be empty !");
   } else {
-    console.log(byteArr);
+    
     let data = byteArr.toString().trim().replace(/ /g, "");
     data.replace(/\r?\n|\r/g, "");
     let arrData = JSON.parse("[" + data + "]");

@@ -86,8 +86,8 @@ function StudentPeerReviewResultsDisplay({ history, location }) {
   useEffect(() => {
    
     if(peerReviewResult !== undefined){
-      console.log(peerReviewResult.peerReview[tab][0].pdfDoc)
-      setLinkDownload(handleConvertByteArrayToPdf(peerReviewResult.peerReview[tab][0].pdfDoc));
+     //console.log(peerReviewResult.peerReview[tab].pdfDoc)
+      setLinkDownload(handleConvertByteArrayToPdf(peerReviewResult.peerReview[tab].pdfDoc));
     }
   }, [peerReviewResult,tab])
   // for submit event
@@ -150,7 +150,9 @@ function StudentPeerReviewResultsDisplay({ history, location }) {
                     variant="body1"
                     component="div"
                   >
-                    {`Averaged Score: ${peerReviewResult.averageScore}/20`}
+                    {`Averaged Score: ${Math.round(
+                    peerReviewResult.averageScore
+                  )}`}
                   </Typography>
                 </Stack>
               </CardContent>
@@ -169,7 +171,10 @@ function StudentPeerReviewResultsDisplay({ history, location }) {
                 <TabPanel value={tab} index={key}>
                   <CustomizedCard>
                     <CardContent>
-                      <Stack direction="row" justifyContent="flex-end">
+                      <Stack direction="row" justifyContent="space-between">
+                        <CustomizedButtons type2>
+                          Score : {review.score}
+                        </CustomizedButtons>
                         <CustomizedButtons
                           type3
                           model={"download"}
@@ -179,15 +184,20 @@ function StudentPeerReviewResultsDisplay({ history, location }) {
                           Download Reviews
                         </CustomizedButtons>
                       </Stack>
-                      {review[0].pdfDoc && (
-                        <Stack direction="row" justifyContent="center" alignItems="center" p={1}>
+                      {review.pdfDoc && (
+                        <Stack
+                          direction="row"
+                          justifyContent="center"
+                          alignItems="center"
+                          p={1}
+                        >
                           <CustomizedButtons
                             model={"arrowL"}
                             style={{ color: "black", marginBottom: "10px" }}
                             onClick={goToPreviousPage}
                           ></CustomizedButtons>
                           <Document
-                            file={{ data: review[0].pdfDoc }}
+                            file={{ data: review.pdfDoc }}
                             onLoadSuccess={onDocumentLoadSuccess}
                           >
                             <Page pageNumber={pageNumber} scale={scale} />

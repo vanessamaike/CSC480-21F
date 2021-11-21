@@ -36,7 +36,7 @@ import axios from "axios";
 import Loading from "../../components/Loading";
 import {
   getAssignmenstByStudent,
-  getTeamsByProfessor,
+  getResultsByStudent,
 } from "../../axios/APIRequests";
 import { BsArrowRightCircle } from "react-icons/bs";
 function CourseBar({ course, history }) {
@@ -45,46 +45,60 @@ function CourseBar({ course, history }) {
       <CustomizedButtons
         type3
         fullwidth
-        model={"arrow"}
-        onClick={() => history.push("/course")}
+        
+        onClick={() => history.push("/studentresults")}
       >
         {`${course.title}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
-      <List dense={true}>
-        <ListItem
-          button
-          onClick={() => history.push("/newsolutionassignmentview")}
-        >
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                {`${course.assignments[0].title} Solution`}
-              </Typography>
-            }
-          />
-          <ListItemText
-            primary={`Due ${new Date(
-              course.assignments[0].solutiondueDateTime
-            ).toLocaleString()}`}
-          />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => history.push("/peerreviewassignmentview")}
-        >
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                {`${course.assignments[0].title} Peer Review`}
-              </Typography>
-            }
-          />
-          <ListItemText
-            primary={`Due ${new Date(
-              course.assignments[0].peerReviewdueDateTime
-            ).toLocaleString()}`}
-          />
-        </ListItem>
+      <List dense={true} sx={{flex:1}}>
+        {course.assignments.map((assignment) => (
+          <>
+            {!assignment.draft && (
+              <>
+                {assignment.averageScore !== -1 ? (
+                  <ListItem
+                    button
+                    divider
+                    onClick={() =>
+                      history.push("/studentpeerreviewresultsdisplay", {
+                        assignmentID: assignment.assignmentID,
+                      })
+                    }
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <BsArrowRightCircle />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={`${assignment.title}`} />
+                    <ListItemText primary={"Completed"} />
+                    <ListItemText
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                      primary={"Score: " + `${Math.round(assignment.averageScore)}`}
+                    />
+                  </ListItem>
+                ) : (
+                  <ListItem
+                    button
+                    divider
+                    disabled
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <BsArrowRightCircle />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={`${assignment.title}`} />
+                    <ListItemText primary={"In process"} />
+                  </ListItem>
+                )}
+              </>
+            )}
+          </>
+        ))}
       </List>
     </Stack>
   );
@@ -92,24 +106,34 @@ function CourseBar({ course, history }) {
 
 function StudentHomeDashBoard({ history }) {
   const [loading, setLoading] = React.useState(true);
-  const [courses, setCourses] = React.useState([]);
+  const [assignmentCourses, setAssignmentCourses] = React.useState([]);
+  const [resultCourses, setResultCourses] = React.useState([]);
   useEffect(() => {
-    console.log(courses);
-    if (courses !== undefined && courses.length !== 0) {
-      setLoading(false);
-    }
-  }, [courses]);
+    console.log(assignmentCourses);
+    if (assignmentCourses === undefined || assignmentCourses.length === 0) return
+    if (resultCourses === undefined || resultCourses.length === 0) return
+    setLoading(false);
+  }, [assignmentCourses,resultCourses ]);
   useEffect(() => {
     getAssignmenstByStudent()
       .then((value) => {
         console.log(value);
-        setCourses(value);
+        setAssignmentCourses(value);
+        getResultsByStudent()
+          .then((value) => {
+            console.log(value);
+            setResultCourses(value);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  console.log(courses);
+  console.log(assignmentCourses)
+  console.log(resultCourses)
   return (
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>
@@ -171,8 +195,8 @@ function StudentHomeDashBoard({ history }) {
                       className={loading.loading}
                     ></CircularProgress>
                   ) : (
-                    <Stack spacing={2}>
-                      {courses.map((course, key) => {
+                    <Stack sx={{flex:1}} spacing={2}>
+                      {resultCourses.map((course, key) => {
                         return (
                           <CourseBar
                             course={course}
@@ -245,62 +269,108 @@ function StudentHomeDashBoard({ history }) {
                     ></CircularProgress>
                   ) : (
                     <List sx={{ width: "100%" }}>
-                      {courses.map((course, key) => {
+                      {assignmentCourses.map((course, key) => {
                         return (
                           <>
                             {course.assignments.map((assignment, key) => {
                               return (
                                 <>
-                                  {assignment.reviewStage === true ? (
-                                    <ListItem
-                                      button
-                                      divider
-                                      onClick={() =>
-                                        history.push(
-                                          "/peerreviewassignmentview"
-                                        )
-                                      }
-                                      secondaryAction={
-                                        <IconButton edge="end">
-                                          <BsArrowRightCircle />
-                                        </IconButton>
-                                      }
-                                    >
-                                      <ListItemText
-                                        sx={{ width: "30%" }}
-                                        primary={`${assignment.title} Peer Reviews`}
-                                      />
-                                      <ListItemText
-                                        sx={{
-                                          display: "flex",
-                                          justifyContent: "center",
-                                        }}
-                                        primary={`submissions closed ${assignment.peerReviewDueDateTime}`}
-                                      />
-
-                                      <ListItemText
-                                        primary={
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              justifyContent: "flex-end",
-                                            }}
-                                          >
-                                            <FiberManualRecordIcon
+                                  {!assignment.draft && (
+                                    <>
+                                      {!assignment.isSolutionCompleted && (
+                                        <ListItem
+                                          key={key}
+                                          button
+                                          divider
+                                          onClick={() => {
+                                            history.push(
+                                              "./newsolutionassignmentview",
+                                              { assignment: assignment }
+                                            );
+                                          }}
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            primary={`${assignment.title} Solution`}
+                                          />
+                                          {assignment.isSolutionCompleted ? (
+                                            <ListItemText
                                               sx={{
-                                                color: "#0DC38D",
-                                                marginRight: "10px",
+                                                display: "flex",
+                                                justifyContent: "flex-end",
                                               }}
-                                              fontSize="medium"
-                                            />{" "}
-                                            <>Needs Review</>
-                                          </div>
-                                        }
-                                      />
-                                    </ListItem>
-                                  ) : (
-                                    <></>
+                                              primary={`Completed ${new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          ) : (
+                                            <ListItemText
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                              }}
+                                              primary={`Due ${new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          )}
+                                        </ListItem>
+                                      )}
+                                      {!assignment.isPeerReviewCompleted && (
+                                        <>
+                                          {assignment.reviewStage === true && (
+                                            <ListItem
+                                              key={key}
+                                              button
+                                              divider
+                                              onClick={() => {
+                                                history.push(
+                                                  "./peerreviewassignmentview",
+                                                  {
+                                                    assignmentID:
+                                                      assignment.assignmentID,
+                                                  }
+                                                );
+                                              }}
+                                              secondaryAction={
+                                                <IconButton edge="end">
+                                                  <BsArrowRightCircle />
+                                                </IconButton>
+                                              }
+                                            >
+                                              <ListItemText
+                                                primary={`${assignment.title} Peer Review`}
+                                              />
+                                              {assignment.isPeerReviewCompleted ? ( //assignment.peerreview.isCompleted === true
+                                                <ListItemText
+                                                  sx={{
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                  }}
+                                                  primary={`Completed ${new Date(
+                                                    assignment.peerReviewDueDateTime
+                                                  ).toLocaleString()}`}
+                                                />
+                                              ) : (
+                                                <ListItemText
+                                                  sx={{
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                  }}
+                                                  primary={`Due ${new Date(
+                                                    assignment.peerReviewDueDateTime
+                                                  ).toLocaleString()}`}
+                                                />
+                                              )}
+                                            </ListItem>
+                                          )}
+                                        </>
+                                      )}
+                                    </>
                                   )}
                                 </>
                               );

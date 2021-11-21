@@ -31,9 +31,7 @@ import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 import {
   getAssignmentsByProfessor,
-  getCoursesByProfessor,
   deleteAssignmentByProfessor,
-  getSubmissionsToReviewByStudent
 } from "../../axios/APIRequests";
 import { MdOutlineCancel } from "react-icons/md";
 function TabPanel(props) {
@@ -247,7 +245,7 @@ function ProfessorCourse({ history }) {
                                       onClick={() =>{
                                         console.log("go")
                                         history.push("/assignmentdisplay", {
-                                          assignment: assignment,
+                                          assignmentID: assignment.assignmentID,
                                         })}
                                       }
                                       sx={{ fontWeight: "800" }}

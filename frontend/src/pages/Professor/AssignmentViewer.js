@@ -75,14 +75,7 @@ function AssignmentViewer({ history, location }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed></NavBar>
       <CustomizedContainer>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography
             style={{
               display: "flex",
@@ -105,7 +98,7 @@ function AssignmentViewer({ history, location }) {
           >
             Close Preview
           </CustomizedButtons>
-        </div>
+        </Stack>
         <CustomizedCard sx={{ margin: "20px 0" }}>
           <CardContent>
             <Grid container>

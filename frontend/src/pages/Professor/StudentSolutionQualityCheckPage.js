@@ -253,7 +253,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       variant="body1"
                                       component="div"
                                     >
-                                      {`Team ${team.teamID}`}
+                                      {`Team ${team.teamName}`}
                                     </Typography>
                                     <Typography
                                       style={{
@@ -413,7 +413,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       variant="body1"
                                       component="div"
                                     >
-                                      {`Team ${team.teamID}`}
+                                      {`Team ${team.teamName}`}
                                     </Typography>
                                   </Stack>
                                   <Typography
@@ -454,7 +454,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                       allowScrollButtonsMobile
                     >
                       {assignment.teams.map((team, key) => (
-                        <Tab label={`Team ${team.teamID}`} />
+                        <Tab label={`Team ${team.teamName}`} />
                       ))}
                     </Tabs>
                   </CustomizedCard>

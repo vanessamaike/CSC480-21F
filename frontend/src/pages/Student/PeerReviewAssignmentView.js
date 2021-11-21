@@ -203,7 +203,7 @@ function PeerReviewAssignmentView({ history, location }) {
               <CustomizedCard style={{ marginTop: "20px" }}>
                 <CardContent>
                   <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
-                    <Stack direction="row" spacing={3}>
+                    <Stack direction="row" spacing={1}>
                       <Typography
                         style={{
                           display: "flex",
@@ -253,13 +253,7 @@ function PeerReviewAssignmentView({ history, location }) {
                     <TabPanel value={tab} index={key} style={{ flex:1}}>
                       <CustomizedCard >
                         <CardContent>
-                          <div
-                            style={{
-                              display: "flex",
-                              marginBottom: "20px",
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                            }}
+                          <Stack direction="row" justifyContent="space-between" alignItems="center"
                           >
                             <Stack direction="column" spacing={1}>
                               <Typography
@@ -271,19 +265,18 @@ function PeerReviewAssignmentView({ history, location }) {
                                 variant="body1"
                                 component="div"
                               >
-                                {`Team ${team.teamID}`}
+                                {`Submission ${key + 1}`}
                               </Typography>
                             </Stack>
                             <CustomizedButtons
-                              type3
-                              height1
+                              type2
                               model={"download"}
                               href={submissionLinkDownload}
                               download={"Solution.pdf"}
                             >
-                              Download Solution
+                              Download Peer Review PDF
                             </CustomizedButtons>
-                          </div>
+                          </Stack>
                           {team.submission.pdfDoc && (
                             <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                             >
@@ -366,7 +359,7 @@ function PeerReviewAssignmentView({ history, location }) {
                     allowScrollButtonsMobile
                   >
                     {peerReviewInfo.teams.map((team, key) => (
-                      <Tab label={`Team ${team.teamID}`} />
+                      <Tab label={`Submission ${key + 1}`} />
                     ))}
                   </Tabs>
                 </CustomizedCard>

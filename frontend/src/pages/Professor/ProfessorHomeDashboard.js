@@ -34,41 +34,78 @@ import CustomizedDivider from "../../components/CustomizedDivider";
 import CustomizedBody from "../../components/CustomizedBody";
 import axios from "axios";
 import Loading from "../../components/Loading";
-import { getAssignmentsByProfessor, getTeamsByProfessor } from "../../axios/APIRequests";
+import {
+  getAssignmentsByProfessor,
+  getTeamsByProfessor,
+} from "../../axios/APIRequests";
 import { BsArrowRightCircle } from "react-icons/bs";
 
 function CourseBar({ course, history }) {
   return (
-    <Stack spacing={0}>
-      <CustomizedButtons type3 fullwidth model={"arrow"} onClick={() => history.push("/course")}>
+    <Stack spacing={0} >
+      <CustomizedButtons
+        type3
+        fullwidth
+        model={"arrow"}
+        onClick={() => history.push("/course")}
+      >
         {`${course.title}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
-      <List dense={true}>
-        <ListItem button onClick={() => history.push("/studentsolutionqualitycheck")}>
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                {`${course.assignments[0].title} Solution`}
-              </Typography>
-            }
-          />
-          <ListItemText
-            primary={`Due ${course.assignments[0].solutiondueDateTime}`}
-          />
-        </ListItem>
-        <ListItem button onClick={() => history.push("/studentpeerreviewqualitycheck")}>
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                {`${course.assignments[0].title} Peer Review`}
-              </Typography>
-            }
-          />
-          <ListItemText
-            primary={`Due ${course.assignments[0].peerReviewdueDateTime}`}
-          />
-        </ListItem>
-      </List>
+      <>
+        {course.assignments.length !== 0 ? (
+          <List dense={true} sx={{flex:1}}>
+            {course.assignments.map((assignment) => (
+                <>
+                {!assignment.isSolutionCompleted && (
+                  <ListItem
+                    button
+                    onClick={() => history.push("/assignmentdisplay", {
+                      assignmentID: assignment.assignmentID,
+                    })}
+                  >
+                    
+                    <ListItemText
+                      primary={
+                        <Typography component="span" fontWeight="600" variant="body2">
+                          {`${assignment.title} Solution`}
+                        </Typography>
+                      }
+                    />
+                    <ListItemText
+                      primary={`Due ${new Date(
+                        assignment.solutionDueDateTime
+                      ).toLocaleDateString()}`}
+                    />
+                  </ListItem>
+                )}
+                {!assignment.isPeerReviewCompleted && (
+                  <ListItem
+                    button
+                    onClick={() => history.push("/assignmentdisplay", {
+                      assignmentID: assignment.assignmentID,
+                    })}
+                  >
+                    <ListItemText
+                      primary={
+                        <Typography component="span" fontWeight="600" variant="body2">
+                          {`${assignment.title} Peer Review`}
+                        </Typography>
+                      }
+                    />
+                    <ListItemText
+                      primary={`Due ${new Date(
+                        assignment.peerReviewDueDateTime
+                      ).toLocaleDateString()}`}
+                    />
+                  </ListItem>
+                )}
+                </>
+              ))}
+          </List>
+        ) : (
+          <Stack alignItems="center" p={2} >No Assignment</Stack>
+        )}
+      </>
     </Stack>
   );
 }
@@ -79,10 +116,14 @@ function ProfessorHomeDashBoard({ history }) {
 
   useEffect(() => {
     console.log(courses);
-    if(courses !== undefined && courses.length !== 0){
-      setLoading(false)
+    if (courses !== undefined && courses.length !== 0) {
+      courses.map((course, key) => {
+        if (course.assignments !== undefined) {
+          setLoading(false);
+        }
+      });
     }
-  }, [courses])
+  }, [courses]);
 
   useEffect(() => {
     getAssignmentsByProfessor()
@@ -155,10 +196,14 @@ function ProfessorHomeDashBoard({ history }) {
                       className={loading.loading}
                     ></CircularProgress>
                   ) : (
-                    <Stack spacing={2}>
+                    <Stack sx={{flex:1}} spacing={1}>
                       {courses.map((course, key) => {
                         return (
-                          <CourseBar course={course} key={key} history={history}></CourseBar>
+                          <CourseBar
+                            course={course}
+                            key={key}
+                            history={history}
+                          ></CourseBar>
                         );
                       })}
                     </Stack>
@@ -176,7 +221,13 @@ function ProfessorHomeDashBoard({ history }) {
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem
                         secondaryAction={
-                          <CustomizedButtons type1 height1 onClick={()=>{history.push("./courseresult")}}>
+                          <CustomizedButtons
+                            type1
+                            height1
+                            onClick={() => {
+                              history.push("./courseresult");
+                            }}
+                          >
                             See All
                           </CustomizedButtons>
                         }
@@ -194,7 +245,7 @@ function ProfessorHomeDashBoard({ history }) {
                               fontWeight="600"
                               variant="h6"
                             >
-                              Results to Review
+                              Quality Check
                             </Typography>
                           }
                         />
@@ -220,61 +271,54 @@ function ProfessorHomeDashBoard({ history }) {
                   ) : (
                     <List sx={{ width: "100%" }}>
                       {courses.map((course, key) => {
-                        return (<>{course.assignments.map((assignment, key) => {
                         return (
                           <>
-                          {(assignment.reviewStage === true) ? (
-                            <ListItem
-                            button
-                            divider
-                            onClick={() => history.push("/studentpeerreviewqualitycheck")}
-                            secondaryAction={
-                              <IconButton edge="end">
-                                <BsArrowRightCircle />
-                              </IconButton>
-                            }
-                          >
-                            <ListItemText
-                              sx={{ width: "30%" }}
-                              primary={`${assignment.title} Peer Reviews`}
-                            />
-                            <ListItemText
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                              primary={`submissions closed ${assignment.peerReviewDueDateTime}`}
-                            />
-                          
-                            <ListItemText
-                              primary={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "flex-end",
-                                  }}
-                                >
-                                  <FiberManualRecordIcon
-                                    sx={{
-                                      color: "#0DC38D",
-                                      marginRight: "10px",
-                                    }}
-                                    fontSize="medium"
-                                  />{" "}
-                                  <>Needs Review</>
-                                </div>
-                              }
-                            />
-                          </ListItem>
-                          ) : (
-                            <></>
-                          )}
+                            {course.assignments.length !== 0 ? (
+                              <>
+                                {course.assignments.map((assignment, key) => {
+                                  return (
+                                    <>
+                                      {assignment.reviewStage === true ? (
+                                        <ListItem
+                                          button
+                                          divider
+                                          onClick={() =>
+                                            history.push(
+                                              "/studentpeerreviewqualitycheck", {assignmentID: assignment.assignmentID}
+                                            )
+                                          }
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            sx={{ width: "30%" }}
+                                            primary={`${assignment.title}`}
+                                          />
+                                          <ListItemText
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                            primary={`submissions closed ${new Date(
+                                              assignment.peerReviewDueDateTime
+                                            ).toLocaleString()}`}
+                                          />
+                                        </ListItem>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </>
+                                  );
+                                })}
+                              </>
+                            ) : (
+                              <Stack sx={{flex:1}} alignItems="center">No Assignment</Stack>
+                            )}
                           </>
-                          
                         );
-                      })}
-                        </>)
                       })}
                     </List>
                   )}
@@ -333,7 +377,9 @@ function ProfessorHomeDashBoard({ history }) {
                               <CustomizedButtons
                                 type2
                                 fullwidth
-                                onClick={() => {history.push("./studentinfoview")}}
+                                onClick={() => {
+                                  history.push("./studentinfoview");
+                                }}
                                 model={"arrow"}
                                 key={key}
                               >

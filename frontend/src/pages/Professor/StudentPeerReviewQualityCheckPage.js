@@ -43,7 +43,8 @@ import {
   sendAssignReviewByProfessor,
 } from "../../axios/APIRequests";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
-
+import { GrDocumentMissing } from "react-icons/gr";
+import { BsFillFileEarmarkExcelFill } from "react-icons/bs";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -229,116 +230,151 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                     </CustomizedButtons>
                   </CardContent>
                 </CustomizedCard>
-                <Stack
-                  direction="row"
-                  alignItems="flex-start"
-                >
-                  <Stack sx={{flex:1}}>
+                <Stack direction="row" alignItems="flex-start">
+                  <Stack sx={{ flex: 1 }}>
                     <CustomizedTabs
                       type3
                       setTab={setTab}
                       value={tab}
                       labels={["Outlier Display", "Peer Reviews"]}
                     ></CustomizedTabs>
-                    <TabPanel value={tab} index={0} >
+                    <TabPanel value={tab} index={0}>
                       <CustomizedCard>
                         <CardContent>
-                          <Stack direction="column" mb={1} justifyContent="space-between">
-                              <Typography
-                                style={{
-                                  display: "flex",
-                                  textAlign: "center",
-                                  fontWeight: "600"
-                                }}
-                                variant="body1"
-                                component="div"
-                              >
-                                All reviews given and received, noted by team
-                                name.
-                              </Typography>
-                              <List component="nav">
-                            {assignment.outlier.map((team, key) => {
-                              const open = teamKeys[key] || false;
-                              return (
-                                <div key={key}>
-                                  <ListItem
-                                    button
-                                    divider
-                                    secondaryAction={
-                                      <IconButton
-                                        edge="end"
-                                        aria-label="delete"
-                                      >
-                                        {open ? (
-                                          <IoIosArrowDropup />
+                          <Stack
+                            direction="column"
+                            mb={1}
+                            justifyContent="space-between"
+                          >
+                            <Typography
+                              style={{
+                                display: "flex",
+                                textAlign: "center",
+                                fontWeight: "600",
+                              }}
+                              variant="body1"
+                              component="div"
+                            >
+                              All reviews given and received, noted by team
+                              name.
+                            </Typography>
+                            <List component="nav">
+                              {assignment.outlier.map((team, key) => {
+                                const open = teamKeys[key] || false;
+                                return (
+                                  <div key={key}>
+                                    <ListItem
+                                      button
+                                      divider
+                                      secondaryAction={
+                                        <>
+                                        {team.peerReview.length === 0 ? (
+                                          <BsFillFileEarmarkExcelFill style={{color:"red"}}/>
                                         ) : (
-                                          <IoIosArrowDropdown />
-                                        )}
-                                      </IconButton>
-                                    }
-                                    onClick={handleExpand(key)}
-                                  >
-                                    <ListItemText
-                                      sx={{ fontWeight: "600" }}
-                                      primary={
-                                        `Team ${team.teamID}`}
-                                    />
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Average Score: ${Math.round(
-                                        team.averageScore
-                                      )}`}
-                                    />
-                                  </ListItem>
-
-                                  <Collapse
-                                    in={open}
-                                    timeout="auto"
-                                    unmountOnExit
-                                  >
-                                    <List component="div" disablePadding>
+                                        <IconButton
+                                          edge="end"
+                                          aria-label="delete"
+                                        >
+                                          {open ? (
+                                            <IoIosArrowDropup />
+                                          ) : (
+                                            <IoIosArrowDropdown />
+                                          )}
+                                        </IconButton>)}</>
+                                      }
+                                      onClick={handleExpand(key)}
+                                    >
+                                      <ListItemText
+                                        sx={{ fontWeight: "600" }}
+                                        primary={`Team ${team.teamName}`}
+                                      />
                                       <>
-                                        {team.peerReview.map((review, key) => (
-                                          <ListItem
-                                            key={key}
-                                            button
-                                            sx={{ pl: 4 }}
-                                            divider
-                                          >
-                                            <ListItemText
-                                              primary={`Team ${review.teamID}`}
-                                            />
-                                            <>
-                                              {review.score === undefined ? (
-                                                <ListItemText
+                                        {team.peerReview.length === 0 ? (
+                                          <ListItemText
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "flex-end",
+                                            }}
+                                            primary={`This team has not submit the solution
+                                          `}
+                                          />
+                                        ) : (
+                                          <>
+                                            {team.averageScore === -1 ? (
+                                              <ListItemText
                                                 sx={{
                                                   display: "flex",
                                                   justifyContent: "flex-end",
                                                 }}
-                                                  primary={`In Process`}
-                                                />
-                                              ) : (
-                                                <ListItemText
+                                                primary={`No team reviews the solution of this team
+                                          `}
+                                              />
+                                            ) : (
+                                              <ListItemText
                                                 sx={{
                                                   display: "flex",
                                                   justifyContent: "flex-end",
                                                 }}
-                                                  primary={`Score: ${review.score}`}
-                                                />
-                                              )}
-                                            </>
-                                          </ListItem>
-                                        ))}
+                                                primary={`Average Score: ${Math.round(
+                                                  team.averageScore
+                                                )}`}
+                                              />
+                                            )}
+                                          </>
+                                        )}
                                       </>
-                                    </List>
-                                  </Collapse>
-                                </div>
-                              );
-                            })}
-                          </List>
+                                    </ListItem>
+
+                                    <Collapse
+                                      in={open}
+                                      timeout="auto"
+                                      unmountOnExit
+                                    >
+                                      <List component="div" disablePadding>
+                                        <>
+                                          {team.peerReview.map(
+                                            (review, key) => (
+                                              <ListItem
+                                                key={key}
+                                                button
+                                                sx={{ pl: 4 }}
+                                                divider
+                                              >
+                                                <ListItemText
+                                                  primary={`Team ${review.teamName}`}
+                                                />
+                                                <>
+                                                  {review.score ===
+                                                  undefined ? (
+                                                    <ListItemText
+                                                      sx={{
+                                                        display: "flex",
+                                                        justifyContent:
+                                                          "flex-end",
+                                                      }}
+                                                      primary={`In Process`}
+                                                    />
+                                                  ) : (
+                                                    <ListItemText
+                                                      sx={{
+                                                        display: "flex",
+                                                        justifyContent:
+                                                          "flex-end",
+                                                      }}
+                                                      primary={`Score: ${review.score}`}
+                                                    />
+                                                  )}
+                                                </>
+                                              </ListItem>
+                                            )
+                                          )}
+                                        </>
+                                      </List>
+                                    </Collapse>
+                                  </div>
+                                );
+                              })}
+                            </List>
                           </Stack>
                         </CardContent>
                       </CustomizedCard>
@@ -346,275 +382,273 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                     <TabPanel value={tab} index={1}>
                       <CustomizedCard>
                         <CardContent>
-                            {assignment.teams.map((team, key) => {
-                              return (
-                                <TabPanel value={teamTab} index={key} >
-                                  {team.peerReview.length !== 0 ? (
-                                    <Stack direction="column" alignItems="center" spacing={4}>
-                                      <Tabs
-                                        value={submissionTab}
-                                        onChange={handleChangeSubmissionTab}
-                                        variant="scrollable"
-                                        scrollButtons
-                                        allowScrollButtonsMobile
-                                      >
-                                        {team.peerReview.map(
-                                          (peerreview, key) => (
-                                            <Tab
-                                              label={`Peer Review ${peerreview.reviewID}`}
-                                            />
-                                          )
-                                        )}
-                                      </Tabs>
+                          {assignment.teams.map((team, key) => {
+                            return (
+                              <TabPanel value={teamTab} index={key}>
+                                {team.peerReview.length !== 0 ? (
+                                  <Stack
+                                    direction="column"
+                                    alignItems="center"
+                                    spacing={4}
+                                  >
+                                    <Tabs
+                                      value={submissionTab}
+                                      onChange={handleChangeSubmissionTab}
+                                      variant="scrollable"
+                                      scrollButtons
+                                      allowScrollButtonsMobile
+                                    >
                                       {team.peerReview.map(
-                                        (peerreview, key2) => {
-                                          return (
-                                            <TabPanel
-                                              value={submissionTab}
-                                              index={key2}
+                                        (peerreview, key) => (
+                                          <Tab
+                                            label={`Peer Review ${peerreview.reviewID}`}
+                                          />
+                                        )
+                                      )}
+                                    </Tabs>
+                                    {team.peerReview.map((peerreview, key2) => {
+                                      return (
+                                        <TabPanel
+                                          value={submissionTab}
+                                          index={key2}
+                                        >
+                                          <Stack
+                                            sx={{ flex: 1 }}
+                                            direction="column"
+                                            justifyContent="center"
+                                            alignItems="space-between"
+                                          >
+                                            <Stack
+                                              direction="column"
+                                              spacing={1}
                                             >
-                                                <Stack sx={{flex:1}} direction="column" justifyContent="center" alignItems="space-between">
-                                                  <Stack direction="column" spacing={1}>
-                                                    <Stack direction="row" justifyContent="space-between">
-                                                      <Stack
-                                                        direction="column"
-                                                        spacing={1}
-                                                      >
-                                                        <Typography
-                                                          style={{
-                                                            display: "flex",
-                                                            textAlign: "center",
-                                                            fontWeight: "600",
-                                                          }}
-                                                          variant="body1"
-                                                          component="div"
-                                                        >
-                                                          {`Team ${peerreview.teamID}`}
-                                                        </Typography>
-                                                        <Typography
-                                                          style={{
-                                                            display: "flex",
-                                                            textAlign: "center",
-                                                          }}
-                                                          variant="body1"
-                                                          component="div"
-                                                        >
-                                                          {`Submitted at ${new Date(
-                                                            peerreview.submissionTime
-                                                          ).toLocaleString()}`}
-                                                        </Typography>
-                                                      </Stack>
-                                                      <Stack
-                                                        direction="column"
-                                                        alignItems="flex-end"
-                                                        spacing={1}
-                                                      >
-                                                        <CustomizedButtons
-                                                          type3
-                                                          height1
-                                                          model={"download"}
-                                                          href={linkDownload}
-                                                          download={
-                                                            "PeerReview.pdf"
-                                                          }
-                                                        >
-                                                          Download Peer Review
-                                                        </CustomizedButtons>
-                                                        <Stack
-                                                          sx={{
-                                                            display: "flex",
-                                                            flexDirection:
-                                                              "row",
-                                                            justifyContent:
-                                                              "space-between",
-                                                            alignItems:
-                                                              "center",
-                                                            width: "130px",
-                                                            cursor: "pointer",
-                                                          }}
-                                                          onClick={handleClick}
-                                                        >
-                                                          <FcHighPriority size="1.5em" />
+                                              <Stack
+                                                direction="row"
+                                                justifyContent="space-between"
+                                              >
+                                                <Stack
+                                                  direction="column"
+                                                  spacing={1}
+                                                >
+                                                  <Typography
+                                                    style={{
+                                                      display: "flex",
+                                                      textAlign: "center",
+                                                      fontWeight: "600",
+                                                    }}
+                                                    variant="body1"
+                                                    component="div"
+                                                  >
+                                                    {`Team ${peerreview.teamID}`}
+                                                  </Typography>
+                                                  <Typography
+                                                    style={{
+                                                      display: "flex",
+                                                      textAlign: "center",
+                                                    }}
+                                                    variant="body1"
+                                                    component="div"
+                                                  >
+                                                    {`Submitted at ${new Date(
+                                                      peerreview.submissionTime
+                                                    ).toLocaleString()}`}
+                                                  </Typography>
+                                                </Stack>
+                                                <Stack
+                                                  direction="column"
+                                                  alignItems="flex-end"
+                                                  spacing={1}
+                                                >
+                                                  <CustomizedButtons
+                                                    type3
+                                                    height1
+                                                    model={"download"}
+                                                    href={linkDownload}
+                                                    download={"PeerReview.pdf"}
+                                                  >
+                                                    Download Peer Review
+                                                  </CustomizedButtons>
+                                                  <Stack
+                                                    sx={{
+                                                      display: "flex",
+                                                      flexDirection: "row",
+                                                      justifyContent:
+                                                        "space-between",
+                                                      alignItems: "center",
+                                                      width: "130px",
+                                                      cursor: "pointer",
+                                                    }}
+                                                    onClick={handleClick}
+                                                  >
+                                                    <FcHighPriority size="1.5em" />
+                                                    <Typography
+                                                      style={{
+                                                        display: "flex",
+                                                        textAlign: "center",
+                                                        fontWeight: "600",
+                                                      }}
+                                                      variant="body2"
+                                                      component="div"
+                                                    >
+                                                      View Errors
+                                                    </Typography>
+                                                    {openErrors === false ? (
+                                                      <GoTriangleDown size="1em" />
+                                                    ) : (
+                                                      <GoTriangleUp size="1em" />
+                                                    )}
+                                                  </Stack>
+                                                </Stack>
+                                              </Stack>
+                                              <Collapse
+                                                in={openErrors}
+                                                timeout="auto"
+                                                unmountOnExit
+                                              >
+                                                <div
+                                                  style={{
+                                                    backgroundColor: "#F2F4F5",
+                                                    borderRadius: "10px",
+                                                    padding:
+                                                      "20px 20px 30px 30px",
+                                                  }}
+                                                >
+                                                  <Typography
+                                                    style={{
+                                                      display: "flex",
+                                                      textAlign: "center",
+                                                      fontWeight: "600",
+                                                    }}
+                                                    variant="body1"
+                                                    component="div"
+                                                  >
+                                                    Error Found
+                                                  </Typography>
+                                                  <List>
+                                                    {peerreview.listOfQCWordViolations
+                                                      .split(",")
+                                                      .map((word, key) => (
+                                                        <ListItem key={key}>
                                                           <Typography
                                                             style={{
                                                               display: "flex",
                                                               textAlign:
                                                                 "center",
-                                                              fontWeight: "600",
                                                             }}
                                                             variant="body2"
                                                             component="div"
                                                           >
-                                                            View Errors
+                                                            {word}
                                                           </Typography>
-                                                          {openErrors ===
-                                                          false ? (
-                                                            <GoTriangleDown size="1em" />
-                                                          ) : (
-                                                            <GoTriangleUp size="1em" />
-                                                          )}
-                                                        </Stack>
-                                                      </Stack>
-                                                    </Stack>
-                                                    <Collapse
-                                                      in={openErrors}
-                                                      timeout="auto"
-                                                      unmountOnExit
+                                                        </ListItem>
+                                                      ))}
+                                                  </List>
+                                                  <Stack
+                                                    direction="row"
+                                                    spacing={3}
+                                                  >
+                                                    <CustomizedButtons
+                                                      type1
+                                                      height1
                                                     >
-                                                      <div
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#F2F4F5",
-                                                          borderRadius: "10px",
-                                                          padding:
-                                                            "20px 20px 30px 30px",
-                                                        }}
-                                                      >
-                                                        <Typography
-                                                          style={{
-                                                            display: "flex",
-                                                            textAlign: "center",
-                                                            fontWeight: "600",
-                                                          }}
-                                                          variant="body1"
-                                                          component="div"
-                                                        >
-                                                          Error Found
-                                                        </Typography>
-                                                        <List>
-                                                          {peerreview.listOfQCWordViolations
-                                                            .split(",")
-                                                            .map(
-                                                              (word, key) => (
-                                                                <ListItem
-                                                                  key={key}
-                                                                >
-                                                                  <Typography
-                                                                    style={{
-                                                                      display:
-                                                                        "flex",
-                                                                      textAlign:
-                                                                        "center",
-                                                                    }}
-                                                                    variant="body2"
-                                                                    component="div"
-                                                                  >
-                                                                    {word}
-                                                                  </Typography>
-                                                                </ListItem>
-                                                              )
-                                                            )}
-                                                        </List>
-                                                        <Stack
-                                                          direction="row"
-                                                          spacing={3}
-                                                        >
-                                                          <CustomizedButtons
-                                                            type1
-                                                            height1
-                                                          >
-                                                            Reupload PDF
-                                                          </CustomizedButtons>
-                                                          <CustomizedButtons
-                                                            type2
-                                                            height1
-                                                          >
-                                                            Reject PDF
-                                                          </CustomizedButtons>
-                                                        </Stack>
-                                                      </div>
-                                                    </Collapse>
+                                                      Reupload PDF
+                                                    </CustomizedButtons>
+                                                    <CustomizedButtons
+                                                      type2
+                                                      height1
+                                                    >
+                                                      Reject PDF
+                                                    </CustomizedButtons>
                                                   </Stack>
-                                                  {peerreview.pdfDoc && (
-                                                    <Stack
-                                                      direction="row"
-                                                      justifyContent="center"
-                                                      alignItems="center"
-                                                      p={1}
-                                                      height={825}
-                                                    >
-                                                      <CustomizedButtons
-                                                        model={"arrowL"}
-                                                        style={{
-                                                          color: "black",
-                                                          marginBottom: "10px",
-                                                        }}
-                                                        onClick={
-                                                          goToPreviousPage
-                                                        }
-                                                      ></CustomizedButtons>
-                                                      <Document
-                                                        file={{
-                                                          data: peerreview.pdfDoc,
-                                                        }}
-                                                        onLoadSuccess={
-                                                          onDocumentLoadSuccess
-                                                        }
-                                                      >
-                                                        <Page
-                                                          pageNumber={
-                                                            pageNumber
-                                                          }
-                                                          scale={scale}
-                                                        />
-                                                      </Document>
-                                                      <CustomizedButtons
-                                                        model={"arrow"}
-                                                        style={{
-                                                          color: "black",
-                                                          marginBottom: "10px",
-                                                        }}
-                                                        onClick={goToNextPage}
-                                                      ></CustomizedButtons>
-                                                    </Stack>
-                                                  )}
-                                                </Stack>
-                                            </TabPanel>
-                                          );
-                                        }
-                                      )}
-                                    </Stack>
-                                  ) : (
-                                    <Stack
-                                      sx={{ height: "100%", flex: 1 }}
-                                      direction="row"
-                                      justifyContent="center"
-                                      alignItems="center"
-                                    >
-                                      This team has not done Peer Review
-                                    </Stack>
-                                  )}
-                                </TabPanel>
-                              );
-                            })}
+                                                </div>
+                                              </Collapse>
+                                            </Stack>
+                                            {peerreview.pdfDoc && (
+                                              <Stack
+                                                direction="row"
+                                                justifyContent="center"
+                                                alignItems="center"
+                                                p={1}
+                                                height={825}
+                                              >
+                                                <CustomizedButtons
+                                                  model={"arrowL"}
+                                                  style={{
+                                                    color: "black",
+                                                    marginBottom: "10px",
+                                                  }}
+                                                  onClick={goToPreviousPage}
+                                                ></CustomizedButtons>
+                                                <Document
+                                                  file={{
+                                                    data: peerreview.pdfDoc,
+                                                  }}
+                                                  onLoadSuccess={
+                                                    onDocumentLoadSuccess
+                                                  }
+                                                >
+                                                  <Page
+                                                    pageNumber={pageNumber}
+                                                    scale={scale}
+                                                  />
+                                                </Document>
+                                                <CustomizedButtons
+                                                  model={"arrow"}
+                                                  style={{
+                                                    color: "black",
+                                                    marginBottom: "10px",
+                                                  }}
+                                                  onClick={goToNextPage}
+                                                ></CustomizedButtons>
+                                              </Stack>
+                                            )}
+                                          </Stack>
+                                        </TabPanel>
+                                      );
+                                    })}
+                                  </Stack>
+                                ) : (
+                                  <Stack
+                                    sx={{ height: "100%", flex: 1 }}
+                                    direction="row"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                  >
+                                    This team has not done Peer Review
+                                  </Stack>
+                                )}
+                              </TabPanel>
+                            );
+                          })}
                         </CardContent>
                       </CustomizedCard>
                     </TabPanel>
                   </Stack>
-                  {tab !== 0 && 
-                  <CustomizedCard
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "250px",
-                      marginLeft: "20px",
-                      marginTop: "47px",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Tabs
-                      value={teamTab}
-                      orientation="vertical"
-                      onChange={handleChangeTeamTab}
-                      variant="scrollable"
-                      scrollButtons
-                      allowScrollButtonsMobile
+                  {tab !== 0 && (
+                    <CustomizedCard
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "250px",
+                        marginLeft: "20px",
+                        marginTop: "47px",
+                        justifyContent: "center",
+                      }}
                     >
-                      {assignment.teams.map((team, key) => (
-                        <Tab label={`Team ${team.teamID}`} />
-                      ))}
-                    </Tabs>
-                  </CustomizedCard>}
+                      <Tabs
+                        value={teamTab}
+                        orientation="vertical"
+                        onChange={handleChangeTeamTab}
+                        variant="scrollable"
+                        scrollButtons
+                        allowScrollButtonsMobile
+                      >
+                        {assignment.teams.map((team, key) => (
+                          <Tab label={`Team ${team.teamName}`} />
+                        ))}
+                      </Tabs>
+                    </CustomizedCard>
+                  )}
                 </Stack>
               </Stack>
             </>
