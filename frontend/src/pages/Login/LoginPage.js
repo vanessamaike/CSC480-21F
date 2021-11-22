@@ -22,6 +22,7 @@ import {signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {auth, provider} from "./firebase";
 import CustomizedBody from "../../components/CustomizedBody";
 import {studentToken} from "../../axios/APIRequests";
+import GoogleLogin from "react-google-login";
 function RoleButton() {
   return (
     <Box
@@ -61,7 +62,8 @@ function LoginPage({history}) {
     // The signed-in user info.
     const user = result.user;
     console.log(user);
-    studentToken(token)
+    console.log(user.accessToken);
+    studentToken(user.accessToken)
     .then(function (response) {
       console.log(response);
       history.push("/course");
@@ -100,6 +102,7 @@ function LoginPage({history}) {
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
+    //studentToken(response);
     //axios.post("http://localhost9080", response);
   };
   return (
@@ -173,9 +176,29 @@ function LoginPage({history}) {
             }}
           >
             <Stack spacing={2}>
+              {/* <GoogleLogin
+                clientId="254864561871-tivhg4lmqrbn0al0itqai8l5qqvijj1u.apps.googleusercontent.com"
+                clientSecret="KJpsOGRqzacxZd6480_1nAzp"
+                buttonText="Professor"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+              />
+              <GoogleLogin
+                clientId="254864561871-tivhg4lmqrbn0al0itqai8l5qqvijj1u.apps.googleusercontent.com"
+                clientSecret="KJpsOGRqzacxZd6480_1nAzp"
+                buttonText="Student"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+              /> */}
               <CustomizedButtons type1 onClick={signIn}>Professor Login</CustomizedButtons>
               <CustomizedButtons type1 onClick={signIn}>Student Login</CustomizedButtons>
               {/* <CustomizedButtons fulllwidth type2 onClick={handleLogin}>Log in</CustomizedButtons> */}
+              {/* <GoogleLogin clientId="51547256571-4hgvg5mtjrdit2bnaft8k2b5j44e6l3b.apps.googleusercontent.com" 
+              clientSecret="yHaw9rujnQAE49xYZJ-roJ3c"
+              /> */}
+
             </Stack>
           </CardContent>
         </CustomizedCard>

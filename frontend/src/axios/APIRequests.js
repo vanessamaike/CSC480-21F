@@ -25,7 +25,7 @@ export const deleteCourseByProfessor = async (courseID) => {
 
 export const studentToken = async (token) => {
   try {
-    const response = await axios.post('pi.cs.oswego.edu:9087/api/user', {}, {
+    const response = await axios.post('http://res-dhcp-129-3-138-104:9080/api/user', {}, {
       headers: {'Authentication': token,}});
     console.log(response);
     return response.data;
