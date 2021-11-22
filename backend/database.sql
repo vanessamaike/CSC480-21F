@@ -1,32 +1,29 @@
-use CSC480database;     
+use CSC480database;    
 
-
-
-CREATE TABLE user(
-	userId int NOT NULL,
-    email VARCHAR(32) NOT NULL,
-    settings VARCHAR(32) NOT NULL,
-    role char(32) NOT NULL
+CREATE TABLE team (
+	teamID int NOT NULL,
+    teamName int NOT NULL
 );
 
-
+CREATE TABLE student(
+	studentId longtext NOT NULL,
+    userId int NOT NULL,
+    firstName longtext NOT NULL,
+    lastName longtext NOT NULL,
+    email longtext NOT NULL
+);
 CREATE TABLE course(
 	courseId int NOT NULL,
     userId int NOT NULL,
+	isTeamed boolean NOT NULL,
 	title VARCHAR(32) NOT NULL,
     code VARCHAR(32) NOT NULL,
     sectionNumber VARCHAR(32) NOT NULL,
     endDate date NOT NULL,
+    semester VARCHAR(32) NOT NULL,
     settings CHAR(32) NOT NULL
 );
 
-CREATE TABLE student(
-	studentId VARCHAR(32) NOT NULL,
-    userId int NOT NULL,
-    firstName VARCHAR(32) NOT NULL,
-    lastName VARCHAR(32) NOT NULL,
-    email VARCHAR(32) NOT NULL
-);
 
 CREATE TABLE course_team_student(
 	teamId int NOT NULL,
@@ -37,18 +34,19 @@ CREATE TABLE course_team_student(
 CREATE TABLE assignment( 
     assignmentId int NOT NULL,
     title char(32) NOT NULL,
-    isTeamed boolean NOT NULL,
     reviewStage boolean NOT NULL,
-    publishDateTime datetime NOT NULL
+    resultStage boolean NOT NULL,
+    publishDateTime datetime NOT NULL,
     solutionDueDateTime datetime NOT NULL,
     peerReviewDueDateTime datetime NOT NULL,
     courseId int NOT NULL,
     solutionPdfDoc mediumblob NOT NULL,
     peerReviewPdfDoc mediumblob NOT NULL,
     settings char(32) NOT NULL,
-     isDraft boolean NOT NULL
+     isDraft boolean NOT NULL,
+     solutionPdfFileName VARCHAR(32) NOT NULL,
+     peerReviewPdfFileName VARCHAR(32) NOT NULL
 ); 
-
 
 CREATE TABLE submission(
     submissionId int NOT NULL,
@@ -58,10 +56,15 @@ CREATE TABLE submission(
     signOff VARCHAR(255) NOT NULL,
     PdfDoc mediumblob NOT NULL,
     seen boolean NOT NULL,
-    listOfQCWordViolations string NOT NULL,
+    listOfQCWordViolations VARCHAR(255) NOT NULL,
     assId int NOT NULL  
 );
 
+CREATE TABLE submission_team(
+	submissionId int NOT NULL,
+	teamId int NOT NULL,
+    assignmentId int NOT NULL
+);
 
 CREATE TABLE review(
     reviewId int NOT NULL,
@@ -73,25 +76,13 @@ CREATE TABLE review(
     seen boolean NOT NULL,
     assId int NOT NULL,
     submissionID int NOT NULL,
-    listOfQCWordViolations string NOT NULL,
+    listOfQCWordViolations VARCHAR(255) NOT NULL,
     SDCheck boolean NOT NULL,
-    score double NOT NULL
+    score int NOT NULL
 );
-
-
-CREATE TABLE question(
-	questionId int NOT NULL,
-	question VARCHAR(1024) NOT NULL,
-    assignmentId int NOT NULL,
-    value tinyint NOT NULL
+CREATE TABLE user(
+	userId int NOT NULL,
+    email VARCHAR(32) NOT NULL,
+    settings VARCHAR(32) NOT NULL,
+    role char(32) NOT NULL
 );
-
-CREATE TABLE answer(
-	answerId int NOT NULL,
-	submissionId int NOT NULL,
-    questionId int NOT NULL,
-    score float NOT NULL,
-    possible float NOT NULL,
-    answer VARCHAR(8000) NOT NULL
-);
-
