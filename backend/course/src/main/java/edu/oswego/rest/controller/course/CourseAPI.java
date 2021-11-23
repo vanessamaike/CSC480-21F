@@ -4,17 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.oswego.util.objects.Course;
-import edu.oswego.rest.service.ICourseService;
-import edu.oswego.rest.service.impl.CourseService;
+import edu.oswego.util.objects.User;
+import edu.oswego.util.service.ICourseService;
+import edu.oswego.util.service.IUserService;
+import edu.oswego.util.service.impl.CourseService;
 
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 // JAX-RS
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.sql.SQLOutput;
 import java.util.List;
 
+import edu.oswego.util.service.impl.UserService;
+import edu.oswego.util.utility.ResponseMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,21 +29,23 @@ public class CourseAPI {
 
     private static final long serialVersionUID = 1L;
     private ICourseService courseService;
+    private IUserService userService;
     private Jsonb jsonb = JsonbBuilder.create();
 
     public CourseAPI() {
         courseService = new CourseService();
+        userService = new UserService();
     }
 
 
     @GET
-    public String getAllCourses(){
+    public Response getAllCourses(){
         //TODO This method needs to ensure authentication
         try {
             List<Course> listOfCourses = courseService.findAll();
             String res =  jsonb.toJson(listOfCourses);
-            if(listOfCourses != null) return res;
-            else return "There are not any courses in the database";
+            if(listOfCourses != null) return new ResponseMessage().sendMessage(res,200);
+            else return new ResponseMessage().sendMessage("There are not any courses in the database",200);
         } catch (NumberFormatException ne){
             System.out.println("There are not any courses in the database");
         }
@@ -47,41 +54,52 @@ public class CourseAPI {
 
     @GET
     @Path("/{courseId}")
-    public String getSpecificCourse(@PathParam("courseId") String _courseId){
+    public Response getSpecificCourse(@PathParam("courseId") String _courseId){
         //TODO This method needs to ensure authentication
         try {
 
             int courseId = Integer.parseInt(_courseId);
             Course course = courseService.findOne(courseId);
-            String res =  jsonb.toJson(course);
-            if(course != null) return res;
-            else return "Course ID provided was not formatted properly.";
+            Object object = Course.class.cast(course);
+            Course a = (Course)object;
+            String res =  jsonb.toJson(a);
+            if(course != null) return new ResponseMessage().sendMessage(res,200);
+            else return new ResponseMessage().sendMessage("Course ID provided was not formatted properly.",200);
         } catch (NumberFormatException ne){
             System.out.println("Course ID provided was not formatted properly.");
         }
         return null;
     }
     @POST
-    public String postCourse(String payload) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    public Response postCourse(String payload) throws JsonProcessingException {
+
         Course course = jsonb.fromJson(payload, Course.class);
-        course = courseService.save(course);
-        String res =  jsonb.toJson(course);
-        return res;
+
+        User user = userService.findOne(course.getUserID());
+
+        if(user == null)
+        {
+            //TODO update the response
+            return new ResponseMessage().sendMessage( "There are not any userID matched with the input userID to create the course",200);
+        }
+        else{
+            if(user.getRole().equals("professor") )
+            {
+                course = courseService.save(course);
+                String res =  jsonb.toJson(course);
+                return new ResponseMessage().sendMessage(res,200);
+            }
+            else {
+                return new ResponseMessage().sendMessage("Only professor can create a course",200);
+            }
+
+        }
     }
 
-    @PUT
-    public String updateCourse(String payload) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Course course = jsonb.fromJson(payload, Course.class);
-        course = courseService.update(course);
-        String res = jsonb.toJson(course);
-        return res;
-    }
 
-    @DELETE
-    @Path("/{courseId}")
-    public String deleteSpecificCourse(@PathParam("courseId") String _courseId){
+    @POST
+    @Path("/delete/{courseId}")
+    public Response deleteSpecificCourse(@PathParam("courseId") String _courseId){
         //TODO This method needs to ensure authentication
         try {
 
@@ -89,8 +107,8 @@ public class CourseAPI {
             Course course = courseService.findOne(courseId);
             course = courseService.delete(course);
             String res = jsonb.toJson(course);
-            if(course != null) return res;
-            else return "Course ID provided was not formatted properly.";
+            if(course != null) return new ResponseMessage().sendMessage(res,200);
+            else return new ResponseMessage().sendMessage("Course ID provided was not formatted properly.",200);
         } catch (NumberFormatException ne){
             System.out.println("Course ID provided was not formatted properly.");
         }
