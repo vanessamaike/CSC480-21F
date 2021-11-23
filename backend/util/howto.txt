@@ -1,8 +1,0 @@
-Run 'mvn clean install' on the util directory
-add the following dependency to the pom.xml of the service
-
-<dependency>
-    <groupId>edu.oswego</groupId>
-    <artifactId>cpr-util</artifactId>
-    <version>1.0</version>
-</dependency>
