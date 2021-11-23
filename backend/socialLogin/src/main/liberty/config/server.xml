@@ -9,7 +9,6 @@
         <feature>jsonb-1.0</feature>
         <feature>jwt-1.0</feature>
         <feature>socialLogin-1.0</feature>
-        
     </featureManager>
     <httpEndpoint httpPort="5685"
                   httpsPort="5705"
