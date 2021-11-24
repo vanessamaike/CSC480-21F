@@ -1,9 +1,8 @@
-package edu.oswego.rest.controller.review;
+package edu.oswego.rest.controller.student;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 @ApplicationPath("api")
-public class ReviewApplication extends Application {
-
+public class StudentApplication extends Application {
 }
