@@ -55,6 +55,13 @@ public class ProfessorAPI{
         auth = new authObject();
     }
 
+    @GET
+    @Path("/nah")
+    public void Poop(){
+
+        System.out.println("Poop");
+
+    }
 
     @POST
     @Path("/{userId}/course/team") // For Professor

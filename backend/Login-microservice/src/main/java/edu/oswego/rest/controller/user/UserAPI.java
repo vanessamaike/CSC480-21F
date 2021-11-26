@@ -38,6 +38,7 @@ public class UserAPI {
             System.out.println("User ID provided was not formatted properly.");
         }
         return null;
+
     }
     @POST
     public String postUser(String payload) throws JsonProcessingException {

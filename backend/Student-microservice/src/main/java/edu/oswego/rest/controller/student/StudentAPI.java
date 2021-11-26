@@ -232,6 +232,8 @@ public class StudentAPI {
 
         JSONObject json = new JSONObject(assignment);
 
+
+
         JSONArray listOfSubmissionsJSON = new JSONArray();
         if(submission_teams != null)
         {
@@ -292,38 +294,42 @@ public class StudentAPI {
             List<Assignment> assignments  = assignmentService.findAssignmentsByCourseId(course.getCourseID());
             Integer teamId = studentService.findDistinctTeamIDByCourseIDAndUserId(course.getCourseID(),userId);
             JSONArray listOfAssignmentsJSON = new JSONArray();
-            for(Assignment assignment : assignments){
-                Submission submissionInTeam = submissionService.findTheLatestSubmissionByAssignmentIdAndTeamId(assignment.getAssignmentID(),teamId);
-                double average = -1;
-                if(submissionInTeam != null)
-                {
-                    List<Submission_Team> submission_teams = submissionTeamService.findBySubmissionIdAndAssignmentId(submissionInTeam.getSubmissionID(),assignment.getAssignmentID());
-                    if(submission_teams != null) {
-                        List<Integer> scores = new ArrayList<>();
-                        for(Submission_Team st : submission_teams){
-                            Review review = reviewService.findTheLatestReviewBySubmissionIdAndAssignmentIdAndTeamId(st.getSubmissionId(),st.getAssignmentId(),st.getTeamId());
-                            if(review != null)
-                            {
-                                scores.add(review.getScore());
+            if(assignments != null)
+            {
+                for(Assignment assignment : assignments){
+                    Submission submissionInTeam = submissionService.findTheLatestSubmissionByAssignmentIdAndTeamId(assignment.getAssignmentID(),teamId);
+                    double average = -1;
+                    if(submissionInTeam != null)
+                    {
+                        List<Submission_Team> submission_teams = submissionTeamService.findBySubmissionIdAndAssignmentId(submissionInTeam.getSubmissionID(),assignment.getAssignmentID());
+                        if(submission_teams != null) {
+                            List<Integer> scores = new ArrayList<>();
+                            for(Submission_Team st : submission_teams){
+                                Review review = reviewService.findTheLatestReviewBySubmissionIdAndAssignmentIdAndTeamId(st.getSubmissionId(),st.getAssignmentId(),st.getTeamId());
+                                if(review != null)
+                                {
+                                    scores.add(review.getScore());
+                                }
                             }
-                        }
-                        // Get the average score
-                        int sum = 0;
-                        for(int s : scores)
-                        {
-                            sum = sum + s;
-                        }
+                            // Get the average score
+                            int sum = 0;
+                            for(int s : scores)
+                            {
+                                sum = sum + s;
+                            }
 
-                        if(scores.size() != 0 )
-                        {
-                            average = (double) sum / scores.size();
-                        }
+                            if(scores.size() != 0 )
+                            {
+                                average = (double) sum / scores.size();
+                            }
 
+                        }
                     }
+                    JSONObject assignmentJSON = new JSONObject(assignment);
+                    assignmentJSON.put("averageScore",average);
+                    listOfAssignmentsJSON.put(assignmentJSON);
                 }
-                JSONObject assignmentJSON = new JSONObject(assignment);
-                assignmentJSON.put("averageScore",average);
-                listOfAssignmentsJSON.put(assignmentJSON);
+
             }
 
             courseJSON.put("assignments",listOfAssignmentsJSON);
@@ -434,49 +440,53 @@ public class StudentAPI {
             JSONObject courseJSON = new JSONObject(course);
             JSONArray listOfAssignmentsJSON = new JSONArray();
             List<Assignment> assignments  = assignmentService.findAssignmentsByCourseId(course.getCourseID());
-            for (Assignment assignment : assignments)
+            if(assignments != null)
             {
-                JSONObject assignmentJSON = new JSONObject(assignment);
-
-                // To check if they complete the solution or not
-                Integer teamId = studentService.findDistinctTeamIDByCourseIDAndUserId(assignment.getCourseID(),userId);
-                Submission submissionInTeam = submissionService.findTheLatestSubmissionByAssignmentIdAndTeamId(assignment.getAssignmentID(),teamId);
-                if(submissionInTeam != null)
+                for (Assignment assignment : assignments)
                 {
-                    assignmentJSON.put("isSolutionCompleted", true);
-                }
-                else{
-                    assignmentJSON.put("isSolutionCompleted", false);
-                }
+                    JSONObject assignmentJSON = new JSONObject(assignment);
 
-                // To check if they complete review or not
-                List<Submission_Team> submission_teams = submissionTeamService.findByTeamIdAndAssignmentId(teamId,assignment.getAssignmentID());
-                List<Review> listOfReviews = new ArrayList<>();
-
-                if(submission_teams != null)
-                {
-                    for(Submission_Team st : submission_teams){
-                        Review review = reviewService.findTheLatestReviewBySubmissionIdAndAssignmentIdAndTeamId(st.getSubmissionId(),st.getAssignmentId(),st.getTeamId());
-
-                        if(review != null)
-                        {
-                            listOfReviews.add(review);
-                        }
-                    }
-
-                    if(submission_teams.size() == listOfReviews.size())
+                    // To check if they complete the solution or not
+                    Integer teamId = studentService.findDistinctTeamIDByCourseIDAndUserId(assignment.getCourseID(),userId);
+                    Submission submissionInTeam = submissionService.findTheLatestSubmissionByAssignmentIdAndTeamId(assignment.getAssignmentID(),teamId);
+                    if(submissionInTeam != null)
                     {
-                        assignmentJSON.put("isPeerReviewCompleted", true);
+                        assignmentJSON.put("isSolutionCompleted", true);
                     }
                     else{
-                        assignmentJSON.put("isPeerReviewCompleted", false);
+                        assignmentJSON.put("isSolutionCompleted", false);
                     }
 
+                    // To check if they complete review or not
+                    List<Submission_Team> submission_teams = submissionTeamService.findByTeamIdAndAssignmentId(teamId,assignment.getAssignmentID());
+                    List<Review> listOfReviews = new ArrayList<>();
+
+                    if(submission_teams != null)
+                    {
+                        for(Submission_Team st : submission_teams){
+                            Review review = reviewService.findTheLatestReviewBySubmissionIdAndAssignmentIdAndTeamId(st.getSubmissionId(),st.getAssignmentId(),st.getTeamId());
+
+                            if(review != null)
+                            {
+                                listOfReviews.add(review);
+                            }
+                        }
+
+                        if(submission_teams.size() == listOfReviews.size())
+                        {
+                            assignmentJSON.put("isPeerReviewCompleted", true);
+                        }
+                        else{
+                            assignmentJSON.put("isPeerReviewCompleted", false);
+                        }
+
+
+                    }
+                    listOfAssignmentsJSON.put(assignmentJSON);
 
                 }
-                listOfAssignmentsJSON.put(assignmentJSON);
-
             }
+
 
             courseJSON.put("assignments",listOfAssignmentsJSON);
             listOfCoursesJSON.put(courseJSON);
