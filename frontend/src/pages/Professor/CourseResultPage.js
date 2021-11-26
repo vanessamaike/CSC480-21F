@@ -75,6 +75,7 @@ function CourseResultPage({ history }) {
   useEffect(() => {
     getAssignmentsByProfessor()
       .then((value) => {
+        console.log(value);
         setCourses(value);
       })
       .catch((err) => {
@@ -103,12 +104,7 @@ function CourseResultPage({ history }) {
             <Loading />
           ) : (
             <>
-              <Grid container spacing={15} sx={{ marginBottom: "20px" }}>
-                <Grid
-                  item
-                  xs={6}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                   <Typography
                     style={{
                       display: "flex",
@@ -120,11 +116,8 @@ function CourseResultPage({ history }) {
                   >
                     Quality Check
                   </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <SuccessfulNotification />
-                </Grid>
-              </Grid>
+
+              </Stack>
               <div>
                 <CustomizedTabs
                   type3
@@ -173,144 +166,168 @@ function CourseResultPage({ history }) {
                         {course.assignments.map((assignment) => {
                           return (
                             <>
-                              {(filterType === "All" ||
-                                (filterType === "Completed") === assignment.reviewStage//assignment.solution.isReviewed
-                                  ) && (
-                                <ListItem
-                                  button
-                                  divider
-                                  onClick={() =>
-                                    history.push("/studentsolutionqualitycheck", {assignmentID: assignment.assignmentID})
-                                  }
-                                  secondaryAction={
-                                    <IconButton edge="end">
-                                      <BsArrowRightCircle />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText
-                                    sx={{ width: "30%" }}
-                                    primary={`${assignment.title} Solutions`}
-                                  />
+                              {!assignment.draft && (
+                                <>
+                                  {(filterType === "All" ||
+                                    (filterType === "Completed") === false) && ( //assignment.solution.isReviewed
+                                    <ListItem
+                                      button
+                                      divider
+                                      onClick={() =>
+                                        history.push(
+                                          "/studentsolutionqualitycheck",
+                                          {
+                                            assignmentID:
+                                              assignment.assignmentID,
+                                          }
+                                        )
+                                      }
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <BsArrowRightCircle />
+                                        </IconButton>
+                                      }
+                                    >
+                                      <ListItemText
+                                        sx={{ width: "30%" }}
+                                        primary={`${assignment.title} Solutions`}
+                                      />
 
-                                  <>
-                                    { //assignment.solution.isReviewed 
-                                     assignment.reviewStage  === false ? (
                                       <>
-                                        <ListItemText
-                                          sx={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                          }}
-                                          primary={`submissions closed ${new Date(
-                                            assignment.solutionDueDateTime
-                                          ).toLocaleString()}`}
-                                        />
-                                        <ListItemText
-                                          primary={
-                                            <div
-                                              style={{
+                                        {
+                                          //assignment.solution.isReviewed
+                                          assignment.reviewStage === false ? (
+                                            <>
+                                              <ListItemText
+                                                sx={{
+                                                  display: "flex",
+                                                  justifyContent: "center",
+                                                }}
+                                                primary={`Due ${new Date(
+                                                  assignment.solutionDueDateTime
+                                                ).toLocaleString()}`}
+                                              />
+                                              <ListItemText
+                                                primary={
+                                                  <div
+                                                    style={{
+                                                      display: "flex",
+                                                      alignItems: "center",
+                                                      justifyContent:
+                                                        "flex-end",
+                                                    }}
+                                                  >
+                                                    <FiberManualRecordIcon
+                                                      sx={{
+                                                        color: "#0DC38D",
+                                                        marginRight: "10px",
+                                                      }}
+                                                      fontSize="medium"
+                                                    />{" "}
+                                                    <>Needs Review</>
+                                                  </div>
+                                                }
+                                              />
+                                            </>
+                                          ) : (
+                                            <ListItemText
+                                              sx={{
                                                 display: "flex",
-                                                alignItems: "center",
                                                 justifyContent: "flex-end",
                                               }}
-                                            >
-                                              <FiberManualRecordIcon
-                                                sx={{
-                                                  color: "#0DC38D",
-                                                  marginRight: "10px",
-                                                }}
-                                                fontSize="medium"
-                                              />{" "}
-                                              <>Needs Review</>
-                                            </div>
-                                          }
-                                        />
+                                              primary={`Completed ${new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          )
+                                        }
                                       </>
-                                    ) : (
-                                      <ListItemText
-                                        sx={{
-                                          display: "flex",
-                                          justifyContent: "flex-end",
-                                        }}
-                                        primary={`Completed ${new Date(
-                                          assignment.solutionDueDateTime
-                                        ).toLocaleString()}`}
-                                      />
-                                    )}
-                                  </>
-                                </ListItem>
-                              )}
-                              {(filterType === "All" ||
-                                (filterType === "Completed") === assignment.reviewStage//assignment.peerreview.isReviewed
-                                  ) && (
-                                <ListItem
-                                  button
-                                  divider
-                                  onClick={() =>
-                                    history.push(
-                                      "/studentpeerreviewqualitycheck",{assignmentID: assignment.assignmentID}
-                                    )
-                                  }
-                                  secondaryAction={
-                                    <IconButton edge="end">
-                                      <BsArrowRightCircle />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText
-                                    sx={{ width: "30%" }}
-                                    primary={`${assignment.title} Peer Reviews`}
-                                  />
-
-                                  <>
-                                    {//assignment.peerreview.isReviewed 
-                                     assignment.reviewStage === false ? (
-                                      <>
-                                        <ListItemText
-                                          sx={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                          }}
-                                          primary={`submissions closed ${new Date(
-                                            assignment.peerReviewDueDateTime
-                                          ).toLocaleString()}`}
-                                        />
-
-                                        <ListItemText
-                                          primary={
-                                            <div
-                                              style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "flex-end",
-                                              }}
-                                            >
-                                              <FiberManualRecordIcon
-                                                sx={{
-                                                  color: "#0DC38D",
-                                                  marginRight: "10px",
-                                                }}
-                                                fontSize="medium"
-                                              />{" "}
-                                              <>Needs Review</>
-                                            </div>
+                                    </ListItem>
+                                  )}
+                                  {assignment.reviewStage && (
+                                    <>
+                                      {(filterType === "All" ||
+                                        (filterType === "Completed") ===
+                                          false) && ( //assignment.peerreview.isReviewed
+                                        <ListItem
+                                          button
+                                          divider
+                                          onClick={() =>
+                                            history.push(
+                                              "/studentpeerreviewqualitycheck",
+                                              {
+                                                assignmentID:
+                                                  assignment.assignmentID,
+                                              }
+                                            )
                                           }
-                                        />
-                                      </>
-                                    ) : (
-                                      <ListItemText
-                                        sx={{
-                                          display: "flex",
-                                          justifyContent: "flex-end",
-                                        }}
-                                        primary={`Completed ${new Date(
-                                          assignment.peerReviewDueDateTime
-                                        ).toLocaleString()}`}
-                                      />
-                                    )}
-                                  </>
-                                </ListItem>
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            sx={{ width: "30%" }}
+                                            primary={`${assignment.title} Peer Reviews`}
+                                          />
+
+                                          <>
+                                            {
+                                              //assignment.peerreview.isReviewed
+                                              assignment.reviewStage ===
+                                              false ? (
+                                                <>
+                                                  <ListItemText
+                                                    sx={{
+                                                      display: "flex",
+                                                      justifyContent: "center",
+                                                    }}
+                                                    primary={`submissions closed ${new Date(
+                                                      assignment.peerReviewDueDateTime
+                                                    ).toLocaleString()}`}
+                                                  />
+
+                                                  <ListItemText
+                                                    primary={
+                                                      <div
+                                                        style={{
+                                                          display: "flex",
+                                                          alignItems: "center",
+                                                          justifyContent:
+                                                            "flex-end",
+                                                        }}
+                                                      >
+                                                        <FiberManualRecordIcon
+                                                          sx={{
+                                                            color: "#0DC38D",
+                                                            marginRight: "10px",
+                                                          }}
+                                                          fontSize="medium"
+                                                        />{" "}
+                                                        <>Needs Review</>
+                                                      </div>
+                                                    }
+                                                  />
+                                                </>
+                                              ) : (
+                                                <ListItemText
+                                                  sx={{
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                  }}
+                                                  primary={`Completed ${new Date(
+                                                    assignment.peerReviewDueDateTime
+                                                  ).toLocaleString()}`}
+                                                />
+                                              )
+                                            }
+                                          </>
+                                        </ListItem>
+                                      )}
+                                    </>
+                                  )}
+                                </>
                               )}
                             </>
                           );
@@ -329,5 +346,3 @@ function CourseResultPage({ history }) {
 }
 
 export default CourseResultPage;
-
-;

@@ -37,6 +37,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
     fontSize: theme.typography.pxToRem(15),
     marginRight: theme.spacing(0.5),
     borderRadius: "10px 10px 0 0",
+    width:"200px",
     color: "#000",
     fontWeight: "600",
     zIndex: 1,
@@ -71,7 +72,6 @@ const CustomizedTabs = React.forwardRef((props, ref) => {
   };
   // Styles
   const classes = TabStyle();
-  //const classes = makeComponentStyles();
   const tabClasses = classNames({
     [classes.type1]: type1,
     [classes.type2]: type2,

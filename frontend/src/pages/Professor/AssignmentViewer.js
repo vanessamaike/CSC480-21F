@@ -42,10 +42,7 @@ function TabPanel(props) {
   );
 }
 
-function AssignmentViewer({
-  history,
-  location,
-}) {
+function AssignmentViewer({ history, location }) {
   const [scale, setScale] = useState(1.0);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -76,10 +73,9 @@ function AssignmentViewer({
 
   return (
     <CustomizedBody bg={bg}>
-    <NavBar fixed></NavBar>
-    <CustomizedContainer>
-    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-
+      <NavBar fixed></NavBar>
+      <CustomizedContainer>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography
             style={{
               display: "flex",
@@ -94,17 +90,18 @@ function AssignmentViewer({
           <CustomizedButtons
             type2
             onClick={() => {
-              history.push("/assignmentcreation",  {assignment : assignment ,
-                 courseID: location.state.courseID 
-                } );
+              history.push("/assignmentcreation", {
+                assignment: assignment,
+                courseID: location.state.courseID,
+              });
             }}
           >
             Close Preview
           </CustomizedButtons>
-        </div>
-      <CustomizedCard sx={{ margin: "20px 0" }}>
-        <CardContent>
-        <Grid container>
+        </Stack>
+        <CustomizedCard sx={{ margin: "20px 0" }}>
+          <CardContent>
+            <Grid container>
               <Grid item xs={12}>
                 <Stack direction="row" spacing={1}>
                   <Typography
@@ -131,113 +128,77 @@ function AssignmentViewer({
                 </Stack>
               </Grid>
               <Grid item xs={6}>
-              <Stack direction="row" spacing={1}>
-                <Typography
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                    fontWeight: "600",
-                  }}
-                  variant="body1"
-                  component="div"
-                >
-                  Solution Due Date:
-                 
-                </Typography>
-                <Typography
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                  }}
-                  variant="body1"
-                  component="div"
-                >
-                  {new Date(assignment.solutionDueDateTime).toLocaleString()}
-                </Typography>
+                <Stack direction="row" spacing={1}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Solution Due Date:
+                  </Typography>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    {new Date(assignment.solutionDueDateTime).toLocaleString()}
+                  </Typography>
                 </Stack>
               </Grid>
               <Grid item xs={6}>
-              <Stack direction="row" spacing={1}>
-                <Typography
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                    fontWeight: "600",
-                  }}
-                  variant="body1"
-                  component="div"
-                >
-                  Peer Review Due:
-                </Typography>
-                <Typography
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                  }}
-                  variant="body1"
-                  component="div"
-                >
-                  {new Date(assignment.peerReviewDueDateTime).toLocaleString()}
-                </Typography>
+                <Stack direction="row" spacing={1}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Peer Review Due:
+                  </Typography>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    {new Date(
+                      assignment.peerReviewDueDateTime
+                    ).toLocaleString()}
+                  </Typography>
                 </Stack>
               </Grid>
             </Grid>
-        </CardContent>
-      </CustomizedCard>
-      <div>
-        <CustomizedTabs
-          type1
-          setTab={setTab}
-          tab={tab}
-          labels={["Solution", "Peer Review"]}
-        ></CustomizedTabs>
-        <TabPanel value={tab} index={0}>
-          <CustomizedCard>
-            <CardContent>
-              {solutionPdf && (
-                <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <CustomizedButtons
-                    model={"arrowL"}
-                    style={{ color: "black", marginBottom: "10px" }}
-                    onClick={goToPreviousPage}
-                  ></CustomizedButtons>
-                  <Document
-                    file={{ data: solutionPdf }}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                  >
-                    <Page pageNumber={pageNumber} scale={scale} />
-                  </Document>
-                  <CustomizedButtons
-                    model={"arrow"}
-                    style={{ color: "black", marginBottom: "10px" }}
-                    onClick={goToNextPage}
-                  ></CustomizedButtons>
-                </div>
-              )}
-            </CardContent>
-          </CustomizedCard>
-        </TabPanel>
-        <TabPanel value={tab} index={1}>
-          <CustomizedCard>
-            <CardContent>
-              <>
-                {peerReviewPdf && (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+          </CardContent>
+        </CustomizedCard>
+        <div>
+          <CustomizedTabs
+            type1
+            setTab={setTab}
+            tab={tab}
+            labels={["Solution", "Peer Review"]}
+          ></CustomizedTabs>
+          <TabPanel value={tab} index={0}>
+            <CustomizedCard>
+              <CardContent>
+                {solutionPdf && (
+                  <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  p={1}
+                  height={825}
                   >
                     <CustomizedButtons
                       model={"arrowL"}
@@ -245,7 +206,7 @@ function AssignmentViewer({
                       onClick={goToPreviousPage}
                     ></CustomizedButtons>
                     <Document
-                      file={{ data: peerReviewPdf }}
+                      file={{ data: solutionPdf }}
                       onLoadSuccess={onDocumentLoadSuccess}
                     >
                       <Page pageNumber={pageNumber} scale={scale} />
@@ -255,14 +216,47 @@ function AssignmentViewer({
                       style={{ color: "black", marginBottom: "10px" }}
                       onClick={goToNextPage}
                     ></CustomizedButtons>
-                  </div>
+                  </Stack>
                 )}
-              </>
-            </CardContent>
-          </CustomizedCard>
-        </TabPanel>
-      </div>
-    </CustomizedContainer>
+              </CardContent>
+            </CustomizedCard>
+          </TabPanel>
+          <TabPanel value={tab} index={1}>
+            <CustomizedCard>
+              <CardContent>
+                <>
+                  {peerReviewPdf && (
+                    <Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                      p={1}
+                      height={825}
+                    >
+                      <CustomizedButtons
+                        model={"arrowL"}
+                        style={{ color: "black", marginBottom: "10px" }}
+                        onClick={goToPreviousPage}
+                      ></CustomizedButtons>
+                      <Document
+                        file={{ data: peerReviewPdf }}
+                        onLoadSuccess={onDocumentLoadSuccess}
+                      >
+                        <Page pageNumber={pageNumber} scale={scale} />
+                      </Document>
+                      <CustomizedButtons
+                        model={"arrow"}
+                        style={{ color: "black", marginBottom: "10px" }}
+                        onClick={goToNextPage}
+                      ></CustomizedButtons>
+                    </Stack>
+                  )}
+                </>
+              </CardContent>
+            </CustomizedCard>
+          </TabPanel>
+        </div>
+      </CustomizedContainer>
     </CustomizedBody>
   );
 }

@@ -11,7 +11,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser, setUser } from "../../features/userSlice";
+import { selectUser,selectUserName, setUser } from "../../features/userSlice";
 import { whiteColor, darkColor } from "../../styles/Style";
 import CustomizedContainer from "../CustomizedContainer";
 import { Grid, Stack, Button, Menu, MenuItem, Collapse } from "@mui/material";
@@ -20,6 +20,7 @@ function NavBar({ history }) {
   const dispatch = useDispatch();
   const nav = NavBarStyle();
   const getUser = useSelector(selectUser);
+  const getUserName = useSelector(selectUserName);
   const { user, isAuthenticated, role } = getUser;
   const handleLogOut = () => {
     dispatch(setUser());
@@ -163,7 +164,7 @@ function NavBar({ history }) {
                     sx={{ color: "#000",textTransform: "unset",width: "130px" }}
                     endIcon={<KeyboardArrowDownIcon />}
                   >
-                    {(user.email.split("@")[0])}
+                    {getUserName}
                   </Button>
                 </Stack>
                 <Collapse

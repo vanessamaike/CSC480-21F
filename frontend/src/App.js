@@ -1,18 +1,16 @@
-import logo from './logo.svg';
+
 import './App.css';
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import PrivateRoute from './routing/PrivateRoute'
 import PublicRoute from './routing/PublicRoute'
 //Custom Pages
-import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
 import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
 //professor
 import TestingPage from './pages/TestingPage';
 import ProfessorCoursePage from './pages/Professor/ProfessorCoursePage';
 import AddCoursePage from './pages/Professor/AddCoursePage';
-import AddCoursePage1 from './pages/Professor/AddCoursePage1';
 import AssignmentCreation from './pages/Professor/AssignmentCreation';
 
 import StudentInfoViewPage from './pages/Professor/StudentInfoViewPage';
@@ -37,7 +35,7 @@ function App() {
 
   return (
   <>
-    { isMobile == true ? (
+    { isMobile === true ? (
       <div> This content is unavailable on mobile</div>
     ) : (
       <Router>
@@ -47,7 +45,7 @@ function App() {
         <PrivateRoute exact path="/professorhome" component={ProfessorHomeDashboard} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/testing" component={TestingPage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/course" component={ProfessorCoursePage} roleAccess={"professor"}></PrivateRoute>
-        <PrivateRoute exact path="/coursecreation" component={AddCoursePage1} roleAccess={"professor"}></PrivateRoute>
+        <PrivateRoute exact path="/coursecreation" component={AddCoursePage} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/assignmentcreation" component={AssignmentCreation} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/assignmentviewer" component={AssignmentViewer} roleAccess={"professor"}></PrivateRoute>
         <PrivateRoute exact path="/assignmentdisplay" component={AssignmentDisplay} roleAccess={"professor"}></PrivateRoute>

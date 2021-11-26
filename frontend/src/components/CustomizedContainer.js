@@ -4,11 +4,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-// @material-ui/core components
-import { makeStyles } from '@mui/styles';
-import {IoIosAddCircleOutline} from "react-icons/io";
-import {BsArrowRightCircle} from "react-icons/bs";
-
 // core components
 import ContainerStyle from "../styles/ContainerStyle";
 import { Container } from "@mui/material";

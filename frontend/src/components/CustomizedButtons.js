@@ -6,7 +6,6 @@ import classNames from "classnames";
 
 // @material-ui/core components
 import { IoDownloadOutline} from "react-icons/io5";
-import { makeStyles } from '@mui/styles';
 import Button from "@mui/material/Button";
 import {IoIosAddCircleOutline, IoIosArrowDropdown} from "react-icons/io";
 import {BsArrowRightCircle, BsArrowLeftCircle} from "react-icons/bs";

@@ -10,18 +10,26 @@ import { Box, TextField } from "@mui/material";
 import ButtonStyle from "../styles/ButtonStyle";
 
 const CustomizedTextField = React.forwardRef((props, ref) => {
-  const { text, value , handleTextFieldChange, comments,isDisabled, number, children, ...rest } = props;
-  var defaultValue = ""
-  if(value){
-    defaultValue = value
+  const {
+    text,
+    value,
+    handleTextFieldChange,
+    comments,
+    isDisabled,
+    number,
+    children,
+    ...rest
+  } = props;
+  var defaultValue = "";
+  if (value) {
+    defaultValue = value;
   }
 
-    // ===== Handle Comments ============
+  // ===== Handle Comments ============
   const handleTextField = (event) => {
     event.preventDefault();
     handleTextFieldChange(event.target.value);
   };
-
 
   // Styles
   const classes = ButtonStyle();
@@ -31,7 +39,7 @@ const CustomizedTextField = React.forwardRef((props, ref) => {
     <Box>
       <>
         {" "}
-        {number? (
+        {number ? (
           <TextField
             disabled={isDisabled}
             sx={{ bgcolor: "#fff", width: "100px" }}
@@ -42,28 +50,31 @@ const CustomizedTextField = React.forwardRef((props, ref) => {
             InputProps={{ inputProps: { min: 0, max: 10 } }}
             onChange={handleTextField}
           />
+
+
         ) : (
-<>
-        {comments ? (
-          <TextField
-            sx={{ bgcolor: "#fff" }}
-            label={children}
-            id="outlined-size-small"
-            size="small"
-            multiline
-            maxRows={4}
-            onChange={handleTextField}
-          />
-        ) : (
-          <TextField
-            sx={{ bgcolor: "#fff" }}
-            label={children}
-            id="outlined-size-small"
-            size="small"
-            value= {defaultValue}
-            onChange={handleTextField}
-          />
-        )}</>
+          <>
+            {comments ? (
+              <TextField
+                sx={{ bgcolor: "#fff" }}
+                label={children}
+                id="outlined-size-small"
+                size="small"
+                multiline
+                maxRows={4}
+                onChange={handleTextField}
+              />
+            ) : (
+              <TextField
+                sx={{ bgcolor: "#fff" }}
+                label={children}
+                id="outlined-size-small"
+                size="small"
+                value={defaultValue}
+                onChange={handleTextField}
+              />
+            )}
+          </>
         )}
       </>
     </Box>

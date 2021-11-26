@@ -8,7 +8,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
-
+import { getResultsByStudent } from "../../axios/APIRequests";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
@@ -26,6 +26,7 @@ import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
 
 const demoData = [
   {
@@ -81,7 +82,7 @@ function StudentResultPage({ history }) {
 
   useEffect(() => {
     var courseNameLists = [];
-    if (courses) {
+    if (courses !== undefined && courses.length !== 0) {
       courses.map((course) => {
         courseNameLists.push(course.code);
       });
@@ -91,17 +92,16 @@ function StudentResultPage({ history }) {
     }
   }, [courses]);
   useEffect(() => {
-    async function getCourses() {
-      try {
-        const response = await axios.get("http://localhost:3000/courses");
-        setCourses(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getCourses();
+    getResultsByStudent()
+      .then((value) => {
+        console.log(value);
+        setCourses(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
   useEffect(() => {
     console.log(filterType);
     const filteredItems = demoData.filter((item) => {
@@ -109,17 +109,8 @@ function StudentResultPage({ history }) {
     });
     setItems(filteredItems);
   }, [filterType]);
-
-  console.log(filterType);
-  console.log(items);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
+    <CustomizedBody bg={bg}
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
@@ -133,68 +124,107 @@ function StudentResultPage({ history }) {
           {loading === true ? (
             <Loading />
           ) : (
-        <>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Results
-            </Typography>
-          </Grid>
-        </Grid>
-        <div>
-          <CustomizedTabs
-            type3
-            setTab={setTab}
-            value={tab}
-            fullWidth={"fullWidth"}
-            labels={courseNames}
-          ></CustomizedTabs>
-          {courses.map((course, id) => (
-            <TabPanel value={tab} index={id - 1}>
-              <CustomizedCard>
-                <CardContent
-                >
-                  {items.map((item) => (
-                    <ListItem
-                      button
-                      divider
-                      onClick={() => history.push("/studentpeerreviewresultsdisplay")}
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
-                          <BsArrowRightCircle />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemText primary={`${item.name}`} />
-                      <ListItemText primary={"Complete " + `${item.deadline}`} />
-                      <ListItemText
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                        }}
-                        primary={"Score: " + `${item.deadline}`}
-                      />
-                    </ListItem>
-                  ))}
-                </CardContent>
-              </CustomizedCard>
-            </TabPanel>
-          ))}
-        </div>
-        </>
+            <>
+              <Grid container sx={{ marginBottom: "20px" }}>
+                <Grid item xs={8}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Results
+                  </Typography>
+                </Grid>
+              </Grid>
+              <div>
+                <CustomizedTabs
+                  type3
+                  setTab={setTab}
+                  value={tab}
+                  fullWidth={"fullWidth"}
+                  labels={courseNames}
+                ></CustomizedTabs>
+                {courses.map((course, id) => (
+                  <TabPanel value={tab} index={id}>
+                    <CustomizedCard>
+                      <CardContent>
+                        {course.assignments.map((assignment) => (
+                          <>
+                            {!assignment.draft && (
+                              <>
+                                {assignment.averageScore !== -1 ? (
+                                  <ListItem
+                                    button
+                                    divider
+                                    onClick={() =>
+                                      history.push(
+                                        "/studentpeerreviewresultsdisplay",
+                                        {
+                                          assignmentID: assignment.assignmentID,
+                                        }
+                                      )
+                                    }
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                      >
+                                        <BsArrowRightCircle />
+                                      </IconButton>
+                                    }
+                                  >
+                                    <ListItemText
+                                      primary={`${assignment.title}`}
+                                    />
+                                    <ListItemText primary={"Completed"} />
+                                    <ListItemText
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                      }}
+                                      primary={
+                                        "Score: " + `${Math.round(assignment.averageScore)}`
+                                      }
+                                    />
+                                  </ListItem>
+                                ) : (
+                                  <ListItem
+                                    button
+                                    divider
+                                    disabled
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                      >
+                                        <BsArrowRightCircle />
+                                      </IconButton>
+                                    }
+                                  >
+                                    <ListItemText
+                                      primary={`${assignment.title}`}
+                                    />
+                                    <ListItemText primary={"In process"} />
+                                  </ListItem>
+                                )}
+                              </>
+                            )}
+                          </>
+                        ))}
+                      </CardContent>
+                    </CustomizedCard>
+                  </TabPanel>
+                ))}
+              </div>
+            </>
           )}
         </>
-
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

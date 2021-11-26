@@ -13,6 +13,7 @@ const ButtonStyle = makeStyles((theme) => ({
     textAlign: "center",
     justifyContent: "space-between",
     alignItems: "center",
+    cursor: "pointer"
   },
   displayNone:{
     display : "none",

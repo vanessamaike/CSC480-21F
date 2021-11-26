@@ -1,7 +1,6 @@
-import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from '../features/userSlice'
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/";
 import storageSession from 'redux-persist/lib/storage/session'
 import {
   FLUSH,
@@ -19,9 +18,7 @@ const persistConfig = {
 const reducer = combineReducers({
     userReducer,
 })
-const customizedMiddleware = getDefaultMiddleware({
-  serializableCheck: false
-})
+
 const persistReducer_ = persistReducer(persistConfig, reducer);
 const store = configureStore({
   reducer: persistReducer_,

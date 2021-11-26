@@ -27,33 +27,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { getAssignmenstByStudent } from "../../axios/APIRequests";
-
-const demoData = [
-  {
-    name: "Peer Review 1",
-    date: "10/07/21",
-    type: "Completed",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 2",
-    date: "11/07/21",
-    type: "Upcoming",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 3",
-    date: "13/07/21",
-    type: "Upcoming",
-    deadline: "Due 10/01/21",
-  },
-  {
-    name: "Peer Review 4",
-    date: "12/07/21",
-    type: "Completed",
-    deadline: "Due 10/01/21",
-  },
-];
+import CustomizedBody from "../../components/CustomizedBody";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,15 +49,13 @@ function TabPanel(props) {
 function SeeAllAssignmentPage({ history }) {
   const [tab, setTab] = useState(0);
   const [filterType, setFilterType] = useState("All");
-  const [items, setItems] = useState(demoData);
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState();
   const [courseNames, setCourseNames] = React.useState([]);
 
   useEffect(() => {
-
     var courseNameLists = [];
-    if (courses) {
+    if (courses !== undefined && courses.length !== 0) {
       console.log(courses);
       courses.map((course) => {
         courseNameLists.push(course.code);
@@ -95,24 +67,17 @@ function SeeAllAssignmentPage({ history }) {
   }, [courses]);
   useEffect(() => {
     getAssignmenstByStudent()
-    .then((value) => {
-      console.log(value);
-      setCourses(value);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((value) => {
+        console.log(value);
+        setCourses(value);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
+    <CustomizedBody bg={bg}
     >
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
@@ -202,75 +167,105 @@ function SeeAllAssignmentPage({ history }) {
                         {course.assignments.map((assignment, key) => {
                           return (
                             <>
-                           
-                              {(filterType === "All" || (filterType === "Completed") === assignment.solution.isCompleted ) && (
-                                <ListItem
-                                  key={key}
-                                  button
-                                  divider
-                                  onClick={() => {history.push("./newsolutionassignmentview", {assignment: assignment})}}
-                                  secondaryAction={
-                                    <IconButton edge="end">
-                                      <BsArrowRightCircle />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText primary={`${assignment.title} Solution`} />
-                                  {false //assignment.solution.isCompleted === true 
-                                  ? (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
+                              {!assignment.draft && (
+                                <>
+                                  {(filterType === "All" ||
+                                    (filterType === "Completed") ===
+                                      assignment.isSolutionCompleted) && (
+                                    <ListItem
+                                      key={key}
+                                      button
+                                      divider
+                                      onClick={() => {
+                                        history.push(
+                                          "./newsolutionassignmentview",
+                                          { assignment: assignment }
+                                        );
                                       }}
-                                      primary={`Completed ${new Date(assignment.solutionDueDateTime).toLocaleString()}`}
-                                    />
-                                  ) : (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Due ${new Date(assignment.solutionDueDateTime).toLocaleString()}`}
-                                    />
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <BsArrowRightCircle />
+                                        </IconButton>
+                                      }
+                                    >
+                                      <ListItemText
+                                        primary={`${assignment.title} Solution`}
+                                      />
+                                      {assignment.isSolutionCompleted ? (
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                          }}
+                                          primary={`Completed ${new Date(
+                                            assignment.solutionDueDateTime
+                                          ).toLocaleString()}`}
+                                        />
+                                      ) : (
+                                        <ListItemText
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                          }}
+                                          primary={`Due ${new Date(
+                                            assignment.solutionDueDateTime
+                                          ).toLocaleString()}`}
+                                        />
+                                      )}
+                                    </ListItem>
                                   )}
-                                </ListItem>
-                              )}
-                              {(filterType === "All" ||
-                                (filterType === "Completed") === true
-                                 // assignment.peerreview.isCompleted
-                                  ) && (
-                                <ListItem
-                                  key={key}
-                                  button
-                                  divider
-                                  onClick={() => {history.push("./peerreviewassignmentview", {assignment: assignment})}}
-                                  secondaryAction={
-                                    <IconButton edge="end">
-                                      <BsArrowRightCircle />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText primary={`${assignment.title} Peer Review`} />
-                                  {true//assignment.peerreview.isCompleted === true 
-                                   ? (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Completed ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
-                                    />
-                                  ) : (
-                                    <ListItemText
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "flex-end",
-                                      }}
-                                      primary={`Due ${new Date(assignment.peerReviewDueDateTime).toLocaleString()}`}
-                                    />
+                                  {(filterType === "All" ||
+                                    (filterType === "Completed") === assignment.isPeerReviewCompleted) && (
+                                    <>
+                                      {assignment.reviewStage === true && (
+                                        <ListItem
+                                          key={key}
+                                          button
+                                          divider
+                                          onClick={() => {
+                                            history.push(
+                                              "./peerreviewassignmentview",
+                                              {
+                                                assignmentID:
+                                                  assignment.assignmentID,
+                                              }
+                                            );
+                                          }}
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            primary={`${assignment.title} Peer Review`}
+                                          />
+                                          {assignment.isPeerReviewCompleted ? ( //assignment.peerreview.isCompleted === true
+                                            <ListItemText
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                              }}
+                                              primary={`Completed ${new Date(
+                                                assignment.peerReviewDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          ) : (
+                                            <ListItemText
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                              }}
+                                              primary={`Due ${new Date(
+                                                assignment.peerReviewDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          )}
+                                        </ListItem>
+                                      )}
+                                    </>
                                   )}
-                                </ListItem>
+                                </>
                               )}
                             </>
                           );
@@ -284,7 +279,7 @@ function SeeAllAssignmentPage({ history }) {
           )}
         </>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

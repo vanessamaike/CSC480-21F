@@ -1,8 +1,5 @@
 import React, { useState , useEffect} from "react";
 import { Stack, Typography } from "@mui/material";
-import CustomizedTextField from "./CustomizedTextField";
-import CustomizedButtons from "./CustomizedButtons";
-import viewPdf from "../pdfsample/sample.pdf";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -17,13 +14,12 @@ function CustomizedPdfUploader(props) {
   const classes = ButtonStyle();
 
   const inputStyleClasses = classNames({
-    [classes.root]: true,
     [classes.displayNone]: true,
   });
 
   const uploadBtnClasses = classNames({
     [classes.type1]: true,
-    [classes.height3]: true,
+    [classes.height1]: true,
     [classes.root]: true,
   });
 
@@ -81,7 +77,7 @@ function CustomizedPdfUploader(props) {
 
   return (
     <div>
-      <Stack direction="row" spacing={3}>
+      <Stack direction="row" spacing={3} alignItems="center">
         {multiplePdf === true ? (
           <input
             type="file"
@@ -113,7 +109,7 @@ function CustomizedPdfUploader(props) {
             textAlign: "center",
             fontWeight: "500",
           }}
-          variant="h6"
+          variant="body1"
           component="div"
         >
           {fileName}
@@ -122,9 +118,9 @@ function CustomizedPdfUploader(props) {
     </div>
   );
 
+
+}
   CustomizedPdfUploader.propTypes = {
     multiplePdf: PropTypes.bool,
   };
-}
-
 export default CustomizedPdfUploader;

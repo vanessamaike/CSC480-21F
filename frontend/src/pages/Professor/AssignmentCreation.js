@@ -44,7 +44,7 @@ function AssignmentCreation({ history, location }) {
   const [prDueDate, setPRDueDate] = useState(new Date());
   const [solutionPdfFileName, setSolutionPdfFileName] = useState("");
   const [peerReviewPdfFileName, setPeerReviewPdfFileName] = useState("");
-
+  var ErrorMessage = "Please fill out !!!"
   const [disablePublishBtn, setDisablePublishBtn] = useState(true)
   useEffect(() => {
     if (location.state.assignment == undefined) return
@@ -91,7 +91,7 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+        alert(ErrorMessage)
     } else{
       var assignment = {
         courseID: location.state.courseID,
@@ -117,11 +117,11 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       const json = JSON.stringify(newAssignment);
       console.log(json);
-      postNewAssignmentByProfessor(json)
+      postNewAssignmentByProfessor(newAssignment)
         .then(function (response) {
           console.log(response);
           history.push("/course");
@@ -137,13 +137,13 @@ function AssignmentCreation({ history, location }) {
       solutionPdfFile.length === 0 ||
       peerReviewPdfFile.length === 0
     ) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       var tempAss = {...newAssignment, draft: false}
       console.log(tempAss)
-      const json = JSON.stringify(newAssignment);
+      const json = JSON.stringify(tempAss);
       console.log(json);
-      postNewAssignmentByProfessor(json)
+      postNewAssignmentByProfessor(tempAss)
         .then(function (response) {
           console.log(response);
           history.push("/course");
@@ -167,7 +167,7 @@ function AssignmentCreation({ history, location }) {
                 New Assignment
               </Typography>
             </Breadcrumbs>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
 
                 <Typography
                   style={{ fontWeight: "600" }}
@@ -182,7 +182,7 @@ function AssignmentCreation({ history, location }) {
                 >
                   Preview
                 </CustomizedButtons>
-            </div>
+            </Stack>
 
             {/* First Box */}
             <CustomizedCard sx={{ marginBottom: "30px", marginTop: "30px" }}>

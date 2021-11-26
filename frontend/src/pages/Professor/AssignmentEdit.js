@@ -21,21 +21,24 @@ import TextField from "@mui/material/TextField";
 import CustomizedBody from "../../components/CustomizedBody";
 // Worker
 import { Document, Page, pdfjs } from "react-pdf";
-import { useSelector, useDispatch } from "react-redux";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedTextField from "../../components/CustomizedTextField";
-import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedCard from "../../components/CustomizedCard";
-import AssignmentViewer from "./AssignmentViewer";
 import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
-import { editAssignmentByProfessor, postNewAssignmentByProfessor } from "../../axios/APIRequests";
+import {
+  editAssignmentByProfessor,
+  getSpecificAssignment,
+} from "../../axios/APIRequests";
+import Loading from "../../components/Loading";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function AssignmentEdit({ history, location }) {
+  const [loading, setLoading] = React.useState(true);
   const [newAssignment, setNewAssignment] = useState();
+  const [assignment, setAssignment] = useState();
   const [title, setTitle] = useState("");
   const [solutionPdfDoc, setSolutionPdfDoc] = useState([]);
   const [peerReviewPdfDoc, setPeerReviewPdfDoc] = useState([]);
@@ -43,35 +46,40 @@ function AssignmentEdit({ history, location }) {
   const [peerReviewPdfFileName, setPeerReviewPdfFileName] = useState("");
   const [solutionDueDate, setSolutionDueDate] = useState(new Date());
   const [prDueDate, setPRDueDate] = useState(new Date());
-
-  
-
   useEffect(() => {
-    if (location.state.assignment !== undefined) {
-     
-      var assignment = location.state.assignment;
-      console.log(assignment);
+    if (assignment !== undefined && assignment.length !== 0) {
       setTitle(assignment.title);
       setSolutionDueDate(new Date(assignment.solutionDueDateTime));
       setPRDueDate(new Date(assignment.peerReviewDueDateTime));
-      setSolutionPdfFileName(assignment.solutionPdfFileName)
-      setPeerReviewPdfFileName(assignment.peerReviewPdfFileName)
-      setSolutionPdfDoc(assignment.solutionPdfDoc)
-      setPeerReviewPdfDoc(assignment.peerReviewPdfDoc)
+      setSolutionPdfFileName(assignment.solutionPdfFileName);
+      setPeerReviewPdfFileName(assignment.peerReviewPdfFileName);
+      setSolutionPdfDoc(assignment.solutionPdfDoc);
+      setPeerReviewPdfDoc(assignment.peerReviewPdfDoc);
+      setLoading(false);
     }
- 
+  }, [assignment]);
+  useEffect(() => {
+    var assignmentID = location.state.assignmentID
+    getSpecificAssignment(assignmentID)
+    .then((value) => {
+      console.log(value);
+      setAssignment(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }, []);
   console.log(newAssignment);
   useEffect(() => {
     const generateAssignment = () => {
       setNewAssignment({
-        ...location.state.assignment,
+        ...assignment,
         courseID: location.state.courseID,
         title: title,
         solutionPdfDoc: solutionPdfDoc,
         peerReviewPdfDoc: peerReviewPdfDoc,
-        solutionPdfFileName : solutionPdfFileName,
-        peerReviewPdfFileName:peerReviewPdfFileName,
+        solutionPdfFileName: solutionPdfFileName,
+        peerReviewPdfFileName: peerReviewPdfFileName,
         solutionDueDateTime: solutionDueDate.toJSON().split(".")[0],
         peerReviewDueDateTime: prDueDate.toJSON().split(".")[0],
       });
@@ -90,17 +98,16 @@ function AssignmentEdit({ history, location }) {
     } else {
       const json = JSON.stringify(newAssignment);
       console.log(json);
-      editAssignmentByProfessor(json)
+      editAssignmentByProfessor(newAssignment)
         .then(function (response) {
           history.push("/assignmentdisplay", {
-            assignment: newAssignment,
+            assignmentID: assignment.assignmentID,
             courseID: location.state.courseID,
           });
         })
         .catch(function (error) {
           console.log(error);
         });
-      
     }
   };
 
@@ -117,19 +124,24 @@ function AssignmentEdit({ history, location }) {
               New Assignment
             </Typography>
           </Breadcrumbs>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography
-                style={{ fontWeight: "600" }}
-                variant="body1"
-                component="div"
-              >
-                Build New Assignment
-              </Typography>
+          <>
+          {loading === true ? (
+            <Loading />
+          ) : (
+            <>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography
+              style={{ fontWeight: "600" }}
+              variant="body1"
+              component="div"
+            >
+              Build New Assignment
+            </Typography>
 
-              <CustomizedButtons onClick={handleApplyChange} type1>
+            <CustomizedButtons onClick={handleApplyChange} type1>
               Apply Changes
             </CustomizedButtons>
-            </div>
+          </Stack>
 
           {/* First Box */}
           <CustomizedCard sx={{ marginBottom: "30px", marginTop: "30px" }}>
@@ -259,18 +271,9 @@ function AssignmentEdit({ history, location }) {
               </Stack>
             </CardContent>
           </CustomizedCard>
-
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              margintop: "10px",
-            }}
-          >
-           
-          </Grid>
+          </>
+          )}
+        </>
         </CustomizedContainer>
       </>
     </CustomizedBody>

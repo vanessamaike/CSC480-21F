@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 // @mui components
 import Typography from "@mui/material/Typography";
 //PDF
@@ -21,6 +22,7 @@ import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedTextField from "../../components/CustomizedTextField";
 import { getTeamIdByStudentAndCourse, postNewSolutionByStudent } from "../../axios/APIRequests";
+import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF";
 
 function NewSolutionAssignmentView({ history, location }) {
   const dispatch = useDispatch();
@@ -34,23 +36,16 @@ function NewSolutionAssignmentView({ history, location }) {
   const isFirstPage = pageNumber === 1;
   const isLastPage = pageNumber === numPages;
   // ========= main variable =======
-  const [comments, setComments] = React.useState("");
+
   const [assignment, setAssignment] = useState();
   const [submissionPdfFile, setSubmissionPdfFile] = useState();
   const [linkDownload, setLinkDownload] = useState();
   const [teamId, setTeamId] = useState();
-
-
- 
-
+  var ErrorMessage = "Please upload your pdf file before submitting !!!"
   useEffect(() => {
     if (assignment !== undefined) {
       // =========== Handle PDF Download From Byte Array ==================
-      var blob = new Blob([assignment.solutionPdfDoc], {
-        type: "application/pdf",
-      });
-      blob = window.URL.createObjectURL(blob);
-      setLinkDownload(blob);
+      setLinkDownload(handleConvertByteArrayToPdf(assignment.solutionPdfDoc))
       getTeamIdByStudentAndCourse(assignment.courseID)
         .then((value) => {
           setTeamId(value.teamID);
@@ -67,27 +62,15 @@ function NewSolutionAssignmentView({ history, location }) {
   }, []);
 
 
- // submissionId int NOT NULL,
-  //   teamId int NOT NULL, ==== OK =====
-  //   submissionTime datetime NOT NULL,
-  //   comments longtext NOT NULL,  ===== OK =====
-  //   signOff VARCHAR(255) NOT NULL,
-  //   PdfDoc mediumblob NOT NULL,  ===== OK =====
-  //   seen boolean NOT NULL, ===== False ======
-  //   listOfQCWordViolations VARCHAR(255) NOT NULL,
-  //   assId int NOT NULL  ====== OK ======
-
-
   //======= handle send request to backend =====
   const handleSubmitFile = (event) => {
     //TODO add function to send request to backend
 
     if (submissionPdfFile.length === 0) {
-      console.log("error");
+      alert(ErrorMessage)
     } else {
       var newSubmission = {
         teamID: teamId,
-        comments: comments,
         pdfDoc: submissionPdfFile,
         seen: false,
         assignmentID: assignment.assignmentID,
@@ -95,16 +78,17 @@ function NewSolutionAssignmentView({ history, location }) {
 
       const json = JSON.stringify(newSubmission);
       console.log(newSubmission);
-      postNewSolutionByStudent(json)
+      postNewSolutionByStudent(newSubmission)
         .then(function (response) {
           console.log(response);
+          history.push("/seeallassignment");
         })
         .catch(function (error) {
           console.log(error);
         });
     }
 
-    //history.push("/seeallassignment");
+    
   };
 
   // for submit event
@@ -150,9 +134,8 @@ function NewSolutionAssignmentView({ history, location }) {
               </Grid>
             </Grid>
             <div>
-              <CustomizedCard style={{ marginTop: "20px" }}>
+              <CustomizedCard style={{ marginTop: "20px"}}>
                 <CardContent>
-                  <List>
                     <div
                       style={{
                         display: "flex",
@@ -161,7 +144,7 @@ function NewSolutionAssignmentView({ history, location }) {
                         justifyContent: "space-between",
                       }}
                     >
-                      <Stack direction="row" spacing={1}>
+                      <Stack direction="row" spacing={1} alignItems="center">
                         <Typography
                           style={{
                             display: "flex",
@@ -190,21 +173,15 @@ function NewSolutionAssignmentView({ history, location }) {
                         type3
                         model={"download"}
                         href={linkDownload}
-                        download={"SolutionInstructor.pdf"}
+                        download={"SolutionInstructor"}
                         title="download"
+                    
                       >
                         Download Instructions
                       </CustomizedButtons>
                     </div>
-                  </List>
                   {assignmentPdf && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "10px",
-                      }}
+                    <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                     >
                       <CustomizedButtons
                         model={"arrowL"}
@@ -222,15 +199,15 @@ function NewSolutionAssignmentView({ history, location }) {
                         style={{ color: "black", marginBottom: "10px" }}
                         onClick={goToNextPage}
                       ></CustomizedButtons>
-                    </div>
+                    </Stack>
                   )}
                 </CardContent>
-              </CustomizedCard>{" "}
+              </CustomizedCard>
               <CustomizedCard
                 style={{ marginTop: "20px", marginBottom: "20px" }}
               >
                 <CardContent>
-                  <Stack direction="column" spacing={3}>
+                  <Stack direction="row" spacing={1} alignItems="center">
                     <Typography
                       style={{
                         display: "flex",
@@ -242,19 +219,10 @@ function NewSolutionAssignmentView({ history, location }) {
                     >
                       Submit Solution as a PDF attachment:
                     </Typography>
-
-                    <Stack direction="row" spacing={3}>
-                      <CustomizedTextField
-                        comments
-                        handleTextFieldChange={setComments}
-                      >
-                        Comments
-                      </CustomizedTextField>
                       <CustomizedPdfUploader
                         id="submission"
                         setPdfFile={setSubmissionPdfFile}
                       ></CustomizedPdfUploader>
-                    </Stack>
                   </Stack>
                 </CardContent>
               </CustomizedCard>

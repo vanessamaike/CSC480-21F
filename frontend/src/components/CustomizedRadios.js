@@ -37,7 +37,6 @@ export default function CustomizedRadios({type, filterType, setFilterType}) {
         <FormControlLabel value="Completed" control={<Radio />} label="Completed" />
         <FormControlLabel value="All" control={<Radio />} label="All" /></>) : <>
         {type === "radio4" ? (<>
-        <FormControlLabel value="Manually Set Teams" control={<Radio />} label="Manually Set Teams (student-defined)" />
         <FormControlLabel value="Independent" control={<Radio />} label="Independent" />
         <FormControlLabel value="Randomized Teams" control={<Radio />} label="Randomized Teams" />
         </>) : <>

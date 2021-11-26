@@ -23,6 +23,9 @@ import bg from "../../images/multi_background_dashboard.jpg";
 import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
 import { Document, Page, pdfjs } from "react-pdf";
 
+import {
+  getSpecificAssignment,
+} from "../../axios/APIRequests";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 function TabPanel(props) {
@@ -50,22 +53,35 @@ function AssignmentDisplay({ history, location }) {
   const isLastPage = pageNumber === numPages;
   const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = React.useState(0);
-  //const [isPreV, setisPreV] = useState(initialState)
-  //const [assignment, setAssignment] = useState();
+  const [assignment, setAssignment] = useState()
+  const [loading, setLoading] = React.useState(true);
+  const [solutionPdf, setSolutionPdf] = useState()
+  const [peerReviewPdf, setPeerReviewPdf] = useState()
 
-  var assignment = location.state.assignment;
-  var solutionPdf = assignment.solutionPdfDoc;
-  var peerReviewPdf = assignment.peerReviewPdfDoc;
-
-  console.log(assignment);
+  useEffect(() => {
+    if (assignment !== undefined && assignment.length !== 0) {
+      setSolutionPdf(assignment.solutionPdfDoc)
+      setPeerReviewPdf(assignment.peerReviewPdfDoc)
+      setLoading(false);
+    }
+  }, [assignment]);
+  useEffect(() => {
+    var assignmentID = location.state.assignmentID
+    getSpecificAssignment(assignmentID)
+    .then((value) => {
+      console.log(value);
+      setAssignment(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setIsLoading(false);
   }
-  //   const handlePreviewMode = () => {
-  //     setIsPreviewMode(false);
-  //   };
+
   const goToPreviousPage = () => {
     if (!isFirstPage) setPageNumber(pageNumber - 1);
   };
@@ -77,50 +93,48 @@ function AssignmentDisplay({ history, location }) {
     <CustomizedBody bg={bg}>
       <NavBar fixed></NavBar>
       <CustomizedContainer>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Stack direction="row" spacing={1}>
-          <Typography
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-           {assignment.title}
-          </Typography>
-          {assignment.draft === true ? (
-          <Typography
-            style={{
-              display: "flex",
-              color: "#777",
-              fontWeight: "500",
-              alignItems: "center",
-            }}
-            variant="h6"
-            component="div"
-          >
-           (Draft)
-          </Typography>
+      <>
+          {loading === true ? (
+            <Loading />
           ) : (
-            <></>
-          )}
+            <>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" spacing={1}>
+            <Typography
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontWeight: "600",
+              }}
+              variant="h6"
+              component="div"
+            >
+              {assignment.title}
+            </Typography>
+            {assignment.draft === true ? (
+              <Typography
+                style={{
+                  display: "flex",
+                  color: "#777",
+                  fontWeight: "500",
+                  alignItems: "center",
+                }}
+                variant="h6"
+                component="div"
+              >
+                (Draft)
+              </Typography>
+            ) : (
+              <></>
+            )}
           </Stack>
-          
+
           <Stack direction="row" spacing={2}>
             <CustomizedButtons
               type1
               onClick={() => {
                 history.push("/assignmentedit", {
-                  assignment: assignment,
+                  assignmentID: assignment.assignmentID,
                   courseID: assignment.courseID,
                 });
               }}
@@ -143,8 +157,7 @@ function AssignmentDisplay({ history, location }) {
               <></>
             )}
           </Stack>
-        </div>
-
+        </Stack>
         <CustomizedCard sx={{ margin: "20px 0" }}>
           <CardContent>
             <Grid container>
@@ -239,14 +252,11 @@ function AssignmentDisplay({ history, location }) {
             <CustomizedCard>
               <CardContent>
                 {solutionPdf && (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+                  <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    p={10}
                   >
                     <CustomizedButtons
                       model={"arrowL"}
@@ -264,24 +274,17 @@ function AssignmentDisplay({ history, location }) {
                       style={{ color: "black", marginBottom: "10px" }}
                       onClick={goToNextPage}
                     ></CustomizedButtons>
-                  </div>
+                  </Stack>
                 )}
               </CardContent>
             </CustomizedCard>
           </TabPanel>
           <TabPanel value={tab} index={1}>
-            <CustomizedCard>
+            <CustomizedCard s>
               <CardContent>
                 <>
                   {peerReviewPdf && (
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                    <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                     >
                       <CustomizedButtons
                         model={"arrowL"}
@@ -299,13 +302,15 @@ function AssignmentDisplay({ history, location }) {
                         style={{ color: "black", marginBottom: "10px" }}
                         onClick={goToNextPage}
                       ></CustomizedButtons>
-                    </div>
+                    </Stack>
                   )}
                 </>
               </CardContent>
             </CustomizedCard>
           </TabPanel>
-        </div>
+        </div></>
+          )}
+        </>
       </CustomizedContainer>
     </CustomizedBody>
   );
