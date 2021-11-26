@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="cpr-util" target="11" />
+      <module name="cpr-util" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

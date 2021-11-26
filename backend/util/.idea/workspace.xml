@@ -5,40 +5,278 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="741f949d-cad3-49fb-a21e-013d78282afe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20190722.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/SpecificCourseAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/SpecificCourseAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/csvImport.java" beforeDir="false" afterPath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/csvImport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../answer/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../answer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/src/main/java/edu/oswego/rest/controller/answer/AnswerAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/src/main/java/edu/oswego/rest/controller/answer/AnswerApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/src/main/java/edu/oswego/rest/controller/response/IResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/src/main/java/edu/oswego/rest/controller/response/ResponseModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../answer/src/main/liberty/config/server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../answer/src/main/liberty/config/server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/java/edu/oswego/rest/controller/assignment/AssignmentAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/java/edu/oswego/rest/controller/assignment/AssignmentApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/CourseAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/CourseApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/controller/course/SpecificCourseAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../course/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.settings/org.eclipse.core.resources.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.settings/org.eclipse.jdt.apt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/StudentApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/csvImport/csvImport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csvImport/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../database.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../database.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../database.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/teamManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/teamManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server-paths-linux.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server-paths-linux.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server-paths-windows.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../server-paths-windows.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../start-server.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../start-server.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../student/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../student/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.settings/org.eclipse.core.resources.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.settings/org.eclipse.jdt.apt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/StudentApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/java/edu/oswego/rest/teamManager/teamManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentDistributor/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/java/edu/oswego/rest/controller/question/QuestionAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/java/edu/oswego/rest/controller/question/QuestionApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../question/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/controller/review/ReviewAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/controller/review/ReviewApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/utility/QualityCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/java/edu/oswego/rest/utility/SD.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/Br00Mi99.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/a.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/a.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/profanity.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/total0.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/total1.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/total2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/total3.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/resources/total4.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../review/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../socialLogin/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../socialLogin/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../socialLogin/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../socialLogin/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../socialLogin/src/main/java/edu/oswego/rest/sociallogin/HelloServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../socialLogin/src/main/java/edu/oswego/rest/sociallogin/HelloServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../socialLogin/src/main/liberty/config/server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../socialLogin/src/main/liberty/config/server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/controller/student/StudentApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../student/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/byte.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/java/edu/oswego/rest/controller/submission/SubmissionAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/java/edu/oswego/rest/controller/submission/SubmissionApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/java/edu/oswego/rest/utility/QualityCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/resources/Br00Mi99.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/resources/profanity.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/resources/~$a.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../submission/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/java/edu/oswego/rest/controller/user/UserAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/java/edu/oswego/rest/controller/user/UserApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/java/edu/oswego/rest/health/HelloLivenessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/java/edu/oswego/rest/health/HelloReadinessCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/liberty/config/server.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/webapp/WEB-INF/beans.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/webapp/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/src/main/webapp/page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cpr-util.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cpr-util.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/GenericDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IAssignmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IAssignmentDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ICourseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ICourseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IReviewDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IReviewDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IStudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/IStudentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AbstractDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AbstractDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ISubmissionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/ISubmissionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AssignmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/AssignmentDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/CourseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/CourseDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/ReviewDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/ReviewDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/StudentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/StudentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/StudentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/StudentMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/SubmissionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/SubmissionDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/dao/impl/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/AssignmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/AssignmentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/CourseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/ReviewMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/ReviewMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/SubmissionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/mapper/SubmissionMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Assignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Course_Team_Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Course_Team_Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Encryptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Encryptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Submission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/objects/Submission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IAssignmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IAssignmentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ICourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ICourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IReviewService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IStudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/IStudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ISubmissionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/ISubmissionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/AssignmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/AssignmentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/ReviewService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/GenericDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/GenericDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/impl/AbstractDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/dao/impl/AbstractDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/mapper/StudentMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/mapper/StudentMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/edu/oswego/util/objects/Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/oswego/util/objects/Student.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/cpr-util.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/cpr-util.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/SubmissionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/service/impl/SubmissionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/utility/QualityCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/utility/QualityCheck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/oswego/util/utility/SD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/oswego/util/utility/SD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/components/Button.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/components/NavBar/NavBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/Home/HomePage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/Login/LoginPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/Professor/ProfessorHomeDashboard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/Test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/TestingPage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/styles/ButtonStyle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/styles/NavBarStyle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/styles/Style.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +304,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../documentDistributor" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../answer" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">

@@ -13,12 +13,6 @@ public class SubmissionMapper implements RowMapper<Submission>{
     public Submission mapRow(ResultSet rs) {
         try {
 
-            // if you want to see the output of pdf file, you can uncomment this code
-//            File outFile = new File("E:\\backup\\DATTRAN\\STUDY\\Oswego\\Fall2021\\CSC480\\output.pdf");
-//            FileOutputStream output = new FileOutputStream(outFile);
-//            byte[] input = rs.getBytes("pdfDoc");
-//            output.write(input);
-
             Submission submission = new Submission(
                     rs.getInt("submissionID"),
                     rs.getString("comments"),
@@ -26,7 +20,10 @@ public class SubmissionMapper implements RowMapper<Submission>{
                     rs.getBytes("pdfDoc"),
                     rs.getString("signOff"),
                     rs.getInt("teamID"),
-                    rs.getBoolean("seen")
+                    rs.getBoolean("seen"),
+                    rs.getString("listOfQCWordViolations"),
+                    rs.getInt("assId"),
+                    rs.getBoolean("isDeleted")
             );
             return submission;
         }catch(SQLException e)

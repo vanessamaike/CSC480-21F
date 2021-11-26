@@ -5,14 +5,12 @@ package edu.oswego.util.dao.impl;
 import edu.oswego.util.dao.IUserDAO;
 import edu.oswego.util.mapper.UserMapper;
 import edu.oswego.util.objects.User;
-import edu.oswego.util.dao.impl.AbstractDAO;
 import java.util.List;
 
 public class UserDAO extends AbstractDAO<User> implements IUserDAO {
     @Override
     public int generateUniqueRandomId()
     {
-
         String sql = "SELECT (IF( (select count(userId) from user) = 0," +
                 "(SELECT FLOOR(10000 + RAND() * 89999))," +
                 "(SELECT FLOOR(10000 + RAND() * 89999) AS random_number " +
@@ -60,6 +58,13 @@ public class UserDAO extends AbstractDAO<User> implements IUserDAO {
         String sql = "DELETE FROM user";
         update(sql);
     }
+    @Override
+    public User findOneWithEmail(String email) {
+        String sql = "SELECT * FROM user WHERE email = ?";
+        List<User> user = query(sql, new UserMapper(), email);
+        return user.isEmpty() ? null : user.get(0);
+    }
+
 
 
 }

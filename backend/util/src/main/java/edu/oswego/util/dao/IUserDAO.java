@@ -12,4 +12,5 @@ public interface IUserDAO {
     void delete(User user);
     void deleteAll();
     int generateUniqueRandomId();
+    User findOneWithEmail(String email);
 }

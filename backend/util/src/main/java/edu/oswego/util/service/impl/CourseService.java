@@ -41,6 +41,11 @@ public class CourseService implements ICourseService {
     }
 
     @Override
+    public List<Course> findCoursesByStudent_UserID(int userId){
+        return  courseDao.findCoursesByStudent_UserID(userId);
+    }
+
+    @Override
     public Course update(Course course) {
         courseDao.update(course);
         return courseDao.findOne(course.getCourseID());

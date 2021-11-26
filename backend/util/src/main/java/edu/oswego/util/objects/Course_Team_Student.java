@@ -7,12 +7,12 @@ public class Course_Team_Student {
     private int courseId;
 
     public Course_Team_Student(){
-        this.courseId = 0;
         this.userId = 0;
+        this.courseId = 0;
         this.teamId = 0;
     }
 
-    public Course_Team_Student(int userId, int teamId, int courseId){
+    public Course_Team_Student(int userId, int courseId, int teamId){
         this.userId = userId;
         this.courseId = courseId;
         this.teamId = teamId;

@@ -10,8 +10,12 @@ public interface ISubmissionDAO {
     List<Submission> findAll();
     List<Student> findAllStudents();
     Submission findOne(int submissionId);
+    Submission findTheLatestSubmissionByAssignmentIdAndTeamId(int assignmentId, int teamId);
+    List<Submission> findSubmissionsByAssignmentIdAndTeamId(int assignmentId, int teamId);
     void update(Submission submission);
     void delete(Submission submission);
     void deleteAll();
     int generateUniqueRandomId();
+
+    List<Submission> findAllByAssId(int assId);
 }

@@ -20,8 +20,11 @@ public class Course {
     private String sectionNumber;
     private  LocalDate endDate;
     private String settings;
+    private boolean isTeamed;
 
-    public Course(int courseID, int userID, String title, String code, String sectionNumber, LocalDate endDate, String settings){
+    private String semester;
+
+    public Course(int courseID, int userID, String title, String code, String sectionNumber, LocalDate endDate, String settings, boolean teamed , String semester){
         this.title = title;
         this.userID = userID;
         this.code = code;
@@ -29,6 +32,8 @@ public class Course {
         this.endDate = endDate;
         this.settings = settings;
         this.courseID = courseID;
+        this.isTeamed = teamed;
+        this.semester = semester;
     }
 
 
@@ -40,6 +45,8 @@ public class Course {
         this.sectionNumber = "";
         this.endDate = LocalDate.now();
         this.settings = "";
+        this.isTeamed = false;
+        this.semester = "";
     }
 
     public String getSectionNumber() {
@@ -105,20 +112,20 @@ public class Course {
         if(index < settings.length()) return settings.charAt(index);
         else return 0;
     }
-
-    public boolean updateSetting(int index, char setting){
-        String firstHalf = "";
-        if(index-1>0) firstHalf = settings.substring(0, index-1);
-        String lastHalf = "";
-        if(index+1<settings.length()) lastHalf = settings.substring(index+1);
-        settings = firstHalf+setting+lastHalf;
-        return true;
+    public boolean isTeamed() {
+        return isTeamed;
     }
 
+    public void setTeamed(boolean teamed) {
+        this.isTeamed = teamed;
+    }
 
-    public boolean updateAllSettings(String settings){
-        this.settings = settings;
-        return true;
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 
 }

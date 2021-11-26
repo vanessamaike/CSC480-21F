@@ -12,38 +12,51 @@ public class Encryptor {
     private KeysetHandle keysetHandle;
 
     //Create encryptor object from keyset file
-    public Encryptor(String filename) throws GeneralSecurityException {
+    public Encryptor() throws GeneralSecurityException {
+
+        File f;
+        try{
+            String fs = System.getProperty("file.separator");
+            String filename = "encryptionKey.txt";
+            f = new File(
+                    ".."+fs+".."+fs+".."+fs+".."+fs+".."+fs+
+                            ".."+fs+".."+fs+"encryptionKey.txt");
+        } catch (NullPointerException e){
+            f = createKey();
+        }
         try {
-            keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(new File(filename)));
+            keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(f));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        AeadConfig.register();
     }
 
     //create new json key file
-    public static void createKey(String filename) throws GeneralSecurityException {
+    private File createKey() throws GeneralSecurityException {
+        String filename = "encryptionKey.txt";
+        AeadConfig.register();
         KeysetHandle kh = KeysetHandle.generateNew(KeyTemplates.get("AES128_GCM"));
-        File f = new File(filename);
+        String fs = System.getProperty("file.separator");
+        File f = new File(".." + fs + ".." + fs + ".." + fs + ".." + fs + ".." + fs + ".." + fs + ".." + fs + "encryptionKey.txt");
+       //File f = new File(filename);
         try {
             CleartextKeysetHandle.write(kh, JsonKeysetWriter.withFile(f));
         } catch(IOException e) {
             e.printStackTrace();
         }
+        return f;
     }
 
     //encrypt string to byte array
     public byte[] encrypt(String plaintext) throws GeneralSecurityException {
         Aead aead = keysetHandle.getPrimitive(Aead.class);
-        byte[] ciphertext = aead.encrypt(plaintext.getBytes(),secret.getBytes());
-        return ciphertext;
+        return aead.encrypt(plaintext.getBytes(),secret.getBytes());
 
     }
 
     //byte array to string
     public String decrypt(byte[] encrypted) throws GeneralSecurityException {
         Aead aead = keysetHandle.getPrimitive(Aead.class);
-        byte[] decrypted = aead.decrypt(encrypted,secret.getBytes());
-        return new String(decrypted);
+        return new String(aead.decrypt(encrypted,secret.getBytes()));
     }
 }

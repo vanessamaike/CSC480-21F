@@ -27,17 +27,25 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
     }
 
     @Override
+    public List<Submission> findAllByAssId(int assId) {
+        String sql = "SELECT * FROM submission WHERE isDeleted = false and assId = ?";
+        List<Submission> submission = query(sql, new SubmissionMapper(), assId);
+        return submission.isEmpty() ? null : submission;
+    }
+
+    @Override
     public int save(Submission submission) {
         StringBuilder sql = new StringBuilder("INSERT INTO submission (submissionID, " +
-                "comments, submissionTime, pdfDoc, signOff, teamID, seen)");
-        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?)");
+                "comments, submissionTime, pdfDoc, signOff, teamID, seen, listOfQCWordViolations, assId, isDeleted)");
+        sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         int uniqueRandomId = generateUniqueRandomId();
 
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
 
         insert(sql.toString(), uniqueRandomId, submission.getComments(), submission.getSubmissionTime()
-                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen());
+                ,targetStream,submission.getSignOff(),submission.getTeamID(), submission.isSeen(),
+                submission.getListOfQCWordViolations(), submission.getAssignmentID(), submission.isDeleted());
         return uniqueRandomId;
     }
 
@@ -50,27 +58,49 @@ public class SubmissionDAO extends AbstractDAO<Submission> implements ISubmissio
 
     @Override
     public List<Submission> findAll() {
-        String sql = "SELECT * FROM submission";
+        String sql = "SELECT * FROM submission where isDeleted = false ";
         List<Submission> submission = query(sql, new SubmissionMapper());
         return submission.isEmpty() ? null : submission;
     }
 
     @Override
     public Submission findOne(int submissionId) {
-        String sql = "SELECT * FROM submission WHERE submissionID = ?";
+        String sql = "SELECT * FROM submission WHERE isDeleted = false and submissionID = ?";
         List<Submission> submission = query(sql, new SubmissionMapper(), submissionId);
         return submission.isEmpty() ? null : submission.get(0);
     }
 
     @Override
+    public Submission findTheLatestSubmissionByAssignmentIdAndTeamId(int assignmentId, int teamId)
+    {
+        String sql = "SELECT * FROM submission " +
+                "WHERE isDeleted = false and assId = ? and submissionTime = " +
+                "( SELECT MAX( submissionTime ) FROM submission where teamId = ? );";
+        List<Submission> submission = query(sql, new SubmissionMapper(), assignmentId, teamId);
+        return submission.isEmpty() ? null : submission.get(0);
+    }
+
+    @Override
+    public List<Submission> findSubmissionsByAssignmentIdAndTeamId(int assignmentId, int teamId)
+    {
+        String sql = "SELECT * FROM submission " +
+                "WHERE isDeleted = false and assId = ? and teamId = ? ;";
+        List<Submission> submission = query(sql, new SubmissionMapper(), assignmentId, teamId);
+        return submission.isEmpty() ? null : submission;
+    }
+
+
+    @Override
     public void update(Submission submission) {
         StringBuilder sql = new StringBuilder("UPDATE submission SET comments = ?, " +
-                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ? WHERE submissionID = ?");
+                "submissionTime = ?, pdfDoc = ?, signOff = ?, teamID = ? , seen = ?, " +
+                "listOfQCWordViolations = ?, assId = ? , isDeleted = ? WHERE submissionID = ?");
         InputStream targetStream = new ByteArrayInputStream(submission.getPdfDoc());
         update(sql.toString(), submission.getComments(),
                 submission.getSubmissionTime() ,targetStream,
                 submission.getSignOff(),submission.getTeamID(),
-                submission.isSeen(), submission.getSubmissionID());
+                submission.isSeen(), submission.getListOfQCWordViolations(),
+                submission.getAssignmentID(),submission.isDeleted(),submission.getSubmissionID());
     }
 
     @Override

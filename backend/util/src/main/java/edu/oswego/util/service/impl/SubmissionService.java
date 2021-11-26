@@ -28,15 +28,31 @@ public class SubmissionService implements ISubmissionService {
     }
 
     @Override
+    public List<Submission> findAllByAssId(int assId) {
+        return submissionDao.findAllByAssId(assId);
+    }
+
+    @Override
     public List<Student> findAllStudents() {
         return submissionDao.findAllStudents();
     }
-
 
     @Override
     public Submission findOne(int submissionId) {
         return submissionDao.findOne(submissionId);
     }
+
+
+    @Override
+    public Submission findTheLatestSubmissionByAssignmentIdAndTeamId(int assignmentId, int teamId){
+        return  submissionDao.findTheLatestSubmissionByAssignmentIdAndTeamId(assignmentId,teamId);
+    }
+
+    @Override
+    public List<Submission> findSubmissionsByAssignmentIdAndTeamId(int assignmentId, int teamId){
+        return  submissionDao.findSubmissionsByAssignmentIdAndTeamId(assignmentId,teamId);
+    }
+
 
     @Override
     public Submission update(Submission submission) {

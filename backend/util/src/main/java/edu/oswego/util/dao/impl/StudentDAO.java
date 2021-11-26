@@ -4,15 +4,20 @@ package edu.oswego.util.dao.impl;
 import edu.oswego.util.dao.IStudentDAO;
 import edu.oswego.util.mapper.Course_Team_Student_Mapper;
 import edu.oswego.util.mapper.StudentMapper;
+import edu.oswego.util.objects.Course;
 import edu.oswego.util.objects.Course_Team_Student;
+import edu.oswego.util.objects.Encryptor;
 import edu.oswego.util.objects.Student;
-import edu.oswego.util.dao.impl.AbstractDAO;
 
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
-
+    Encryptor e = null;
+    //ClassLoader classLoader = this.getClass().getClassLoader();
     public int generateUniqueRandomUserId()
     {
         String sql = "SELECT (IF( (select count(userId) from student) = 0," +
@@ -39,8 +44,14 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
         StringBuilder sql = new StringBuilder("INSERT INTO student (studentId, userId, firstName,lastName,email) ");
         sql.append(" VALUES(?, ?, ?, ?, ? )");
         int uniqueRandomUserId = generateUniqueRandomUserId();
-         insertString(sql.toString(), student.getStudentID(), uniqueRandomUserId,student.getFirstName(),
+        //Student student = encryptedStudent(student_);
+        insertString(sql.toString(), student.getStudentID(), uniqueRandomUserId, student.getFirstName(),
                 student.getLastName(), student.getEmail());
+
+        sql = new StringBuilder("INSERT INTO user (userId, email, role, settings)");
+        sql.append(" VALUES(?, ?, ?, ?)");
+        insert(sql.toString(), uniqueRandomUserId, student.getEmail(),"student","");
+
         return uniqueRandomUserId;
     }
 
@@ -70,15 +81,26 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     @Override
     public List<Student> findAll() {
         String sql = "SELECT * FROM student";
-        List<Student> students = query(sql, new StudentMapper());
-        return students;
+        List<Student> studentsDecrypted = query(sql, new StudentMapper());
+        //List<Student> studentsDecrypted = decryptedStudent(students);
+        return studentsDecrypted.isEmpty() ? null : studentsDecrypted;
     }
 
     @Override
-    public Student findOne(int userId) {
+    public Student findStudentByStudentId(Student student) {
+        String sql = "SELECT * FROM student WHERE studentId = ? and firstName = ? and lastName = ? and email = ?";
+        List<Student> studentsDecrypted = query(sql, new StudentMapper(), student.getStudentID(),
+                student.getFirstName(),student.getLastName(),student.getEmail());
+        //List<Student> studentsDecrypted = decryptedStudent(students);
+        return studentsDecrypted.isEmpty() ? null : studentsDecrypted.get(0);
+    }
+
+    @Override
+    public  Student findOne(int userId){
         String sql = "SELECT * FROM student WHERE userID = ?";
-        List<Student> student = query(sql, new StudentMapper(), userId);
-        return student.isEmpty() ? null : student.get(0);
+        List<Student> studentsDecrypted = query(sql, new StudentMapper(), userId);
+        //List<Student> studentsDecrypted = decryptedStudent(students);
+        return studentsDecrypted.isEmpty() ? null : studentsDecrypted.get(0);
     }
 
     @Override
@@ -118,15 +140,27 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
     }
 
     @Override
-    public void update(Student student) {
+    public Integer findDistinctTeamIDByCourseIDAndUserId(int courseId, int userId){
+        String sql = "SELECT DISTINCT teamID FROM course_team_student where courseID = ? and userId = ?";
+        List<Integer> distinctTeamIDs = queryInteger(sql,"teamID", courseId, userId);
+        return distinctTeamIDs.get(0);
+    }
+
+    @Override
+    public void update(Student student_) {
         StringBuilder sql = new StringBuilder("UPDATE student SET studentId = ?, firstName = ?, lastName = ?, " +
                 "email = ? , teamID = ? WHERE userId = ?");
-        update(sql.toString(), student.getStudentID(),student.getFirstName() ,student.getLastName(), student.getEmail(),student.getUserID());
+        Student student = encryptedStudent(student_);
+        update(sql.toString(), student.getStudentID(), student.getFirstName(),
+                student.getLastName(), student.getEmail(), student_.getUserID());
+        //update(sql.toString(), studentIDEncrypted, firstNameEncrypted , lastNameEncrypted, emailEncrypted, student.getUserID());
     }
 
     @Override
     public void delete(Student student) {
         String sql = "DELETE FROM student WHERE userID = ?";
+        update(sql, student.getUserID());
+        sql = "DELETE FROM course_team_student where userID = ?";
         update(sql, student.getUserID());
     }
 
@@ -136,5 +170,69 @@ public class StudentDAO extends AbstractDAO<Student> implements IStudentDAO {
         update(sql);
     }
 
+
+    public Student encryptedStudent(Student student)
+    {
+        String studentIDEncrypted;
+        String firstNameEncrypted;
+        String lastNameEncrypted;
+        String emailEncrypted;
+        Student encryptedStudent = new Student();
+
+            try {
+                e = new Encryptor();
+
+                studentIDEncrypted = Arrays.toString(e.encrypt(student.getStudentID()));
+                firstNameEncrypted = Arrays.toString(e.encrypt(student.getFirstName()));
+                lastNameEncrypted = Arrays.toString(e.encrypt(student.getLastName()));
+                emailEncrypted = Arrays.toString(e.encrypt(student.getEmail()));
+                encryptedStudent = new Student(studentIDEncrypted,0,firstNameEncrypted,lastNameEncrypted,emailEncrypted);
+            } catch (GeneralSecurityException ex) {
+                //In the event that the encryptor fails, values are stored as is.
+                //This could create database problems, but re-uploading the CSV / deleting and remaking
+                //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                studentIDEncrypted = student.getStudentID();
+                firstNameEncrypted = student.getFirstName();
+                lastNameEncrypted = student.getLastName();
+                emailEncrypted = student.getEmail();
+                encryptedStudent = new Student(studentIDEncrypted,0,firstNameEncrypted,lastNameEncrypted,emailEncrypted);
+                ex.printStackTrace();
+            }
+        return encryptedStudent;
+    }
+
+    public List<Student> decryptedStudent(List<Student> students){
+        List<Student> studentsDecrypted = new ArrayList<>();
+        for(Student s : students){
+            String studentIDDecrypted;
+            String firstNameDecrypted;
+            String lastNameDecrypted;
+            String emailDecrypted;
+            {
+                try {
+                    e = new Encryptor();
+                    studentIDDecrypted = e.decrypt(s.getStudentID().getBytes(StandardCharsets.UTF_8));
+                    firstNameDecrypted = e.decrypt(s.getFirstName().getBytes(StandardCharsets.UTF_8));
+                    lastNameDecrypted = e.decrypt(s.getLastName().getBytes(StandardCharsets.UTF_8));
+                    emailDecrypted = e.decrypt(s.getEmail().getBytes(StandardCharsets.UTF_8));
+                } catch (GeneralSecurityException ex) {
+                    //In the event that the encryptor fails, values are stored as is.
+                    //This could create database problems, but re-uploading the CSV / deleting and remaking
+                    //a course would be a way to "fix" the issue. Better than having personal info exposed.
+                    studentIDDecrypted = s.getStudentID();
+                    firstNameDecrypted = s.getFirstName();
+                    lastNameDecrypted = s.getLastName();
+                    emailDecrypted = s.getEmail();
+                    ex.printStackTrace();
+                }
+            }
+            s.setStudentID(studentIDDecrypted);
+            s.setFirstName(firstNameDecrypted);
+            s.setLastName(lastNameDecrypted);
+            s.setEmail(emailDecrypted);
+            studentsDecrypted.add(s);
+        }
+        return studentsDecrypted;
+    }
 
 }

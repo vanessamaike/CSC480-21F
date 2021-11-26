@@ -9,13 +9,16 @@ public class Submission {
     private byte[] pdfDoc;
     private int submissionID;
     private String comments;
-    @JsonbDateFormat(value = "MM-dd-yyyy'T'HH:mm:ss")
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime submissionTime;
     private boolean seen;
+    private String listOfQCWordViolations;
+    private int assignmentID;
+    private boolean isDeleted;
 
     public Submission(int submissionID , String comments,
                       LocalDateTime submissionTime , byte[] pdfDoc,
-                      String signOff, int teamID , boolean seen ){
+                      String signOff, int teamID , boolean seen, String v, int assignmentID, boolean isDeleted ){
         this.teamID = teamID;
         this.signOff = signOff;
         this.pdfDoc = pdfDoc;
@@ -23,6 +26,9 @@ public class Submission {
         this.comments = comments;
         this.submissionTime = submissionTime;
         this.seen = seen;
+        this.listOfQCWordViolations = v;
+        this.assignmentID = assignmentID;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -34,6 +40,8 @@ public class Submission {
         this.comments = "";
         this.submissionTime = LocalDateTime.now();
         this.seen = false;
+        this.assignmentID = 0;
+        this.isDeleted = false;
     }
 
     public int getSubmissionID() {
@@ -86,5 +94,29 @@ public class Submission {
 
     public void setSeen(boolean seen) {
         this.seen = seen;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public void setListOfQCWordViolations(String v){
+        this.listOfQCWordViolations = v;
+    }
+
+    public String getListOfQCWordViolations(){
+        return listOfQCWordViolations;
+    }
+
+    public void setAssignmentID(int id){
+        this.assignmentID = id;
+    }
+
+    public int getAssignmentID() {
+        return assignmentID;
     }
 }

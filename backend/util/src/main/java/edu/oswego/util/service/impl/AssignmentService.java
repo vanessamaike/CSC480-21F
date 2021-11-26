@@ -30,6 +30,11 @@ public class AssignmentService implements IAssignmentService {
     }
 
     @Override
+    public List<Assignment> findAssignmentsByCourseId(int courseId){
+        return assignmentDao.findAssignmentsByCourseId(courseId);
+    }
+
+    @Override
     public Assignment update(Assignment assignment) {
         assignmentDao.update(assignment);
         return assignmentDao.findOne(assignment.getAssignmentID());

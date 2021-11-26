@@ -18,7 +18,9 @@ public class CourseMapper implements RowMapper<Course>{
                     rs.getString("code"),
                     rs.getString("sectionNumber"),
                     rs.getObject("endDate", LocalDate.class),
-                    rs.getString("settings")
+                    rs.getString("settings"),
+                    rs.getBoolean("isTeamed"),
+                    rs.getString("semester")
             );
             return course;
         }catch(SQLException e)

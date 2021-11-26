@@ -16,8 +16,12 @@ public class AbstractDAO<T> implements GenericDAO<T> {
 
     public Connection getConnection() {
         try {
+            String fs = System.getProperty("file.separator");
             File file = new File(
-                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
+                    ".."+fs+".."+fs+".."+fs+".."+fs+".."+fs+
+                            ".."+fs+".."+fs+"database.txt");
+//            File file = new File(
+//                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
             Scanner sc = new Scanner(file);
 
             Class.forName("com.mysql.cj.jdbc.Driver");

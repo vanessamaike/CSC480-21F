@@ -32,6 +32,11 @@ public class StudentService implements IStudentService {
     }
 
     @Override
+    public Student findStudentByStudentId(Student student){
+        return studentDao.findStudentByStudentId(student);
+    }
+
+    @Override
     public Student update(Student student) {
         studentDao.update(student);
         return studentDao.findOne(student.getUserID());
@@ -62,7 +67,10 @@ public class StudentService implements IStudentService {
     public List<Integer> findDistinctTeamIDsByCourseID(int courseId) {
         return studentDao.findDistinctTeamIDsByCourseID(courseId);
     }
-
+    @Override
+    public Integer findDistinctTeamIDByCourseIDAndUserId(int courseId, int userId){
+        return studentDao.findDistinctTeamIDByCourseIDAndUserId(courseId, userId);
+    }
     @Override
     public int setCourseForStudent(int userId, int courseId){
         return studentDao.setCourseForStudent(userId,courseId);
