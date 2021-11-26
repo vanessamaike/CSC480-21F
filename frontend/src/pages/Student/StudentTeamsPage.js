@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { MdOutlineCancel } from "react-icons/md";
+import { FaUserCheck } from "react-icons/fa";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -165,7 +166,7 @@ function StudentTeamsPage({ history }) {
                                     onClick={handleClick(key)}
                                   >
                                     <ListItemText
-                                      primary={`Team ${key + 1}`}
+                                      primary={`Team ${team.teamName}`}
                                     />
                                     <ListItemText
                                       sx={{
@@ -189,6 +190,16 @@ function StudentTeamsPage({ history }) {
                                             button
                                             sx={{ pl: 4 }}
                                             divider
+                                            secondaryAction={
+                                              <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                              >
+                                                {(student.userID.toString() === localStorage.getItem('userID')) && (
+                                                   <FaUserCheck style={{color: "green"}}/>
+                                                )}
+                                              </IconButton>
+                                            }
                                           >
                                             <ListItemText
                                               primary={`${student.firstName} ${student.lastName}`}

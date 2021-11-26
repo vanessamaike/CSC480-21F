@@ -121,7 +121,7 @@ function AssignmentCreation({ history, location }) {
     } else {
       const json = JSON.stringify(newAssignment);
       console.log(json);
-      postNewAssignmentByProfessor(json)
+      postNewAssignmentByProfessor(newAssignment)
         .then(function (response) {
           console.log(response);
           history.push("/course");
@@ -143,7 +143,7 @@ function AssignmentCreation({ history, location }) {
       console.log(tempAss)
       const json = JSON.stringify(tempAss);
       console.log(json);
-      postNewAssignmentByProfessor(json)
+      postNewAssignmentByProfessor(tempAss)
         .then(function (response) {
           console.log(response);
           history.push("/course");

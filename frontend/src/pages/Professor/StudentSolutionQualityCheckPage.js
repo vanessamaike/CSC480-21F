@@ -39,8 +39,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
-import { getQualityCheckSolutionByProfessor, sendAssignReviewByProfessor } from "../../axios/APIRequests";
+import { getQualityCheckSolutionByProfessor, rejectSolutionByProfessor, sendReviewByProfessor,postNewSolutionByStudent } from "../../axios/APIRequests";
 import { handleConvertByteArrayToPdf } from "../../utils/byteArrayToPDF";
+import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,7 +65,8 @@ function StudentSolutionQualityCheckPage({ history, location }) {
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;
   const [openErrors, setOpenErrors] = React.useState(false);
-
+  const [submissionPdfFile, setSubmissionPdfFile] = useState();
+  const [solutionPdfFileName, setSolutionPdfFileName] = useState("");
   const handleClick = () => {
     setOpenErrors(!openErrors);
   };
@@ -93,25 +95,27 @@ function StudentSolutionQualityCheckPage({ history, location }) {
   const goToNextPage = () => {
     if (!isLastPage) setPageNumber(pageNumber + 1);
   };
-
+  const handleGetQualityCheckSolutionByProfessor = (assignmentID) => {
+    getQualityCheckSolutionByProfessor(assignmentID)
+    .then((value) => {
+      console.log(value);
+      setAssignment(value);
+      if (value !== undefined) {
+        setLoading(false);
+        setSubmittedTeam(value.teams.filter((team) => team.submission !== undefined).length)
+        setTotalTeam(value.teams.length)
+      }
+      console.log(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   useEffect(() => {
     if (location.state.assignmentID == undefined) return;
     var assignmentID = location.state.assignmentID;
     console.log(assignmentID);
-    getQualityCheckSolutionByProfessor(assignmentID)
-      .then((value) => {
-        console.log(value);
-        setAssignment(value);
-        if (value !== undefined) {
-          setLoading(false);
-          setSubmittedTeam(value.teams.filter((team) => team.submission !== undefined).length)
-          setTotalTeam(value.teams.length)
-        }
-        console.log(value);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    handleGetQualityCheckSolutionByProfessor(assignmentID)
   }, []);
   useEffect(() => {
     if(assignment === undefined) return
@@ -120,7 +124,7 @@ function StudentSolutionQualityCheckPage({ history, location }) {
     }
   }, [tab])
   const handleSendForReview = () => {
-    sendAssignReviewByProfessor(assignment.assignmentID)
+    sendReviewByProfessor(assignment.assignmentID)
     .then(function (response) {
       console.log(response);
       history.push("./courseresult");
@@ -128,15 +132,44 @@ function StudentSolutionQualityCheckPage({ history, location }) {
     .catch(function (error) {
       console.log(error);
     });
-    // if(submittedTeam !== totalTeam){
-    //   alert("There is a team that has not submitted yet!")
-    // }
-    // else {
-      
-     
-    // }
-    
   };
+  const handleReupload = (teamId) => {
+    if (submissionPdfFile.length === 0) {
+      alert("Please upload your pdf file before submitting !!!")
+    } else {
+      var newSubmission = {
+        teamID: teamId,
+        pdfDoc: submissionPdfFile,
+        seen: false,
+        assignmentID: assignment.assignmentID,
+      };
+
+      const json = JSON.stringify(newSubmission);
+      console.log(newSubmission);
+      postNewSolutionByStudent(newSubmission)
+        .then(function (response) {
+          console.log(response);
+          var assignmentID = location.state.assignmentID;
+          setSubmissionPdfFile()
+          setSolutionPdfFileName("")
+          handleGetQualityCheckSolutionByProfessor(assignmentID)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+  const handleReject = (teamID) => {
+    console.log(teamID);
+    rejectSolutionByProfessor(assignment.assignmentID,teamID)
+    .then(function (response) {
+      console.log(response);
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -152,38 +185,31 @@ function StudentSolutionQualityCheckPage({ history, location }) {
             <Loading />
           ) : (
             <>
-              <Grid
-                container
-                sx={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                spacing={9}
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={3}
               >
-                <Grid item xs={9}>
-                  <Typography
-                    style={{
-                      display: "flex",
-                      textAlign: "center",
-                      fontWeight: "600",
-                    }}
-                    variant="h6"
-                    component="div"
-                  >
-                    Solution Quality Check
-                  </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                  <CustomizedButtons
-                    type1
-                    model={"checked"}
-                    onClick={handleSendForReview}
-                  >
-                    Send for Reviews
-                  </CustomizedButtons>
-                </Grid>
-              </Grid>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                  variant="h6"
+                  component="div"
+                >
+                  Solution Quality Check
+                </Typography>
+                <CustomizedButtons
+                  type1
+                  model={"checked"}
+                  onClick={handleSendForReview}
+                >
+                  Send for Reviews
+                </CustomizedButtons>
+              </Stack>
               <div>
                 <CustomizedCard>
                   <CardContent
@@ -214,8 +240,8 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         component="div"
                       >
                         {`Submissions closed ${new Date(
-                            assignment.solutionDueDateTime
-                          ).toLocaleString()}`}
+                          assignment.solutionDueDateTime
+                        ).toLocaleString()}`}
                       </Typography>
                     </Stack>
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -223,12 +249,12 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                         style={{
                           display: "flex",
                           textAlign: "center",
-                          fontWeight: "600"
+                          fontWeight: "600",
                         }}
                         variant="body2"
                         component="div"
                       >
-                        {`${submittedTeam} out of ${totalTeam} teams submited`}
+                        {`${submittedTeam} out of ${totalTeam} teams submitted`}
                       </Typography>
                     </div>
                   </CardContent>
@@ -236,12 +262,16 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                 <Stack direction="row" justifyContent="space-between" mt={3}>
                   {assignment.teams.map((team, key) => {
                     return (
-                      <TabPanel value={tab} index={key} style={{ flex: 1}}>
+                      <TabPanel value={tab} index={key} style={{ flex: 1 }}>
                         <CustomizedCard>
                           {team.submission !== undefined ? (
                             <CardContent>
                               <Stack direction="column">
-                                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}
+                                <Stack
+                                  direction="row"
+                                  justifyContent="space-between"
+                                  alignItems="center"
+                                  mb={2}
                                 >
                                   <Stack direction="column" spacing={1}>
                                     <Typography
@@ -269,7 +299,11 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                       ).toLocaleString()}
                                     </Typography>
                                   </Stack>
-                                  <Stack direction="column" spacing={1} alignItems="flex-end" >
+                                  <Stack
+                                    direction="column"
+                                    spacing={1}
+                                    alignItems="flex-end"
+                                  >
                                     <CustomizedButtons
                                       type3
                                       model={"download"}
@@ -351,10 +385,31 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                         ))}
                                     </List>
                                     <Stack direction="row" spacing={3}>
-                                      <CustomizedButtons type1 height1>
-                                        Reupload PDF
+                                      {submissionPdfFile !== undefined && (
+                                        <CustomizedButtons
+                                        type1
+                                        height1
+                                        onClick={() => {
+                                          handleReupload(team.teamID);
+                                        }}
+                                      >
+                                        Submit
                                       </CustomizedButtons>
-                                      <CustomizedButtons type2 height1>
+                                      )}
+                                      <CustomizedPdfUploader
+                                        id="submission"
+                                        value={submissionPdfFile}
+                                        setPdfFile={setSubmissionPdfFile}
+                                        pdfFileName={solutionPdfFileName}
+                                        setPdfFileName={setSolutionPdfFileName}
+                                      ></CustomizedPdfUploader>
+                                      <CustomizedButtons
+                                        type2
+                                        height1
+                                        onClick={() => {
+                                          handleReject(team.teamID);
+                                        }}
+                                      >
                                         Reject PDF
                                       </CustomizedButtons>
                                     </Stack>
@@ -362,7 +417,12 @@ function StudentSolutionQualityCheckPage({ history, location }) {
                                 </Collapse>
                               </Stack>
                               {team.submission.pdfDoc && (
-                                <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
+                                <Stack
+                                  direction="row"
+                                  justifyContent="center"
+                                  alignItems="center"
+                                  p={1}
+                                  height={825}
                                 >
                                   <CustomizedButtons
                                     model={"arrowL"}

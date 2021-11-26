@@ -78,7 +78,7 @@ function NewSolutionAssignmentView({ history, location }) {
 
       const json = JSON.stringify(newSubmission);
       console.log(newSubmission);
-      postNewSolutionByStudent(json)
+      postNewSolutionByStudent(newSubmission)
         .then(function (response) {
           console.log(response);
           history.push("/seeallassignment");

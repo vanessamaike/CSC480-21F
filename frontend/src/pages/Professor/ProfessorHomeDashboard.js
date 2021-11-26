@@ -59,12 +59,14 @@ function CourseBar({ course, history }) {
                 {!assignment.isSolutionCompleted && (
                   <ListItem
                     button
+                    justifyContent="space-between"
                     onClick={() => history.push("/assignmentdisplay", {
                       assignmentID: assignment.assignmentID,
                     })}
                   >
                     
                     <ListItemText
+                      style={{width: "60%"}}
                       primary={
                         <Typography component="span" fontWeight="600" variant="body2">
                           {`${assignment.title} Solution`}
@@ -72,6 +74,7 @@ function CourseBar({ course, history }) {
                       }
                     />
                     <ListItemText
+                      direction="row" justifyContent="flex-end"
                       primary={`Due ${new Date(
                         assignment.solutionDueDateTime
                       ).toLocaleDateString()}`}
@@ -295,7 +298,7 @@ function ProfessorHomeDashBoard({ history }) {
                                         >
                                           <ListItemText
                                             sx={{ width: "30%" }}
-                                            primary={`${assignment.title}`}
+                                            primary={`${assignment.title} Peer Review`}
                                           />
                                           <ListItemText
                                             sx={{
@@ -310,6 +313,34 @@ function ProfessorHomeDashBoard({ history }) {
                                       ) : (
                                         <></>
                                       )}
+                                      <ListItem
+                                          button
+                                          divider
+                                          onClick={() =>
+                                            history.push(
+                                              "/studentsolutionqualitycheck", {assignmentID: assignment.assignmentID}
+                                            )
+                                          }
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            sx={{ width: "30%" }}
+                                            primary={`${assignment.title} Solution`}
+                                          />
+                                          <ListItemText
+                                            sx={{
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                            primary={`Due ${new Date(
+                                              assignment.solutionDueDateTime
+                                            ).toLocaleString()}`}
+                                          />
+                                        </ListItem>
                                     </>
                                   );
                                 })}

@@ -21,12 +21,9 @@ import TextField from "@mui/material/TextField";
 import CustomizedBody from "../../components/CustomizedBody";
 // Worker
 import { Document, Page, pdfjs } from "react-pdf";
-import { useSelector, useDispatch } from "react-redux";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedTextField from "../../components/CustomizedTextField";
-import CustomizedRadios from "../../components/CustomizedRadios";
 import CustomizedCard from "../../components/CustomizedCard";
-import AssignmentViewer from "./AssignmentViewer";
 import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -101,7 +98,7 @@ function AssignmentEdit({ history, location }) {
     } else {
       const json = JSON.stringify(newAssignment);
       console.log(json);
-      editAssignmentByProfessor(json)
+      editAssignmentByProfessor(newAssignment)
         .then(function (response) {
           history.push("/assignmentdisplay", {
             assignmentID: assignment.assignmentID,

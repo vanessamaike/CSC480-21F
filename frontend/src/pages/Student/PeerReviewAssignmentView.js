@@ -51,9 +51,9 @@ function PeerReviewAssignmentView({ history, location }) {
   const [loading, setLoading] = useState(true);
   const isFirstPage = pageNumber === 1;
   const isLastPage = pageNumber === numPages;
-  const [tab, setTab] = React.useState(0);
+  const [tab, setTab] = useState(0);
   // ========= main variable =======
-  const [score, setScore] = React.useState();
+  const [score, setScore] = useState();
   const [teamId, setTeamId] = useState(); 
   const [peerReviewInfo, setPeerReviewInfo] = useState();
   const [submissionPdfFile, setSubmissionPdfFile] = useState();
@@ -74,21 +74,10 @@ function PeerReviewAssignmentView({ history, location }) {
     var assignmentID = location.state.assignmentID;
     getSubmissionsToReviewByStudent(assignmentID)
       .then((value) => {
-        if (peerReviewInfo === undefined) {
-          setPeerReviewInfo(value);
-        } 
-        getTeamIdByStudentAndCourse(value.courseID)
-        .then((value) => {
-          setTeamId(value.teamID);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        
+        console.log(value)
         if (value !== undefined) {
-          setLinkDownload(handleConvertByteArrayToPdf(value.peerReviewPdfDoc));
-        }
-        let subArray = [];
+          setPeerReviewInfo(value);
+          let subArray = [];
         //initialize submission array
         value.teams.map((index) => {
           let sub = {
@@ -98,8 +87,20 @@ function PeerReviewAssignmentView({ history, location }) {
           };
           subArray.push(sub);
         });
-        setSubmissionArray(subArray);
-        setLoading(false);
+          setSubmissionArray(subArray);
+          setLoading(false);
+          getTeamIdByStudentAndCourse(value.courseID)
+          .then((value) => {
+            setTeamId(value.teamID);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+          
+          if (value !== undefined) {
+            setLinkDownload(handleConvertByteArrayToPdf(value.peerReviewPdfDoc));
+          }
+        } 
       })
       .catch((err) => {
         console.log(err);
@@ -144,7 +145,7 @@ function PeerReviewAssignmentView({ history, location }) {
       });
       const json = JSON.stringify(newSubArray);
       console.log(newSubArray);
-      postNewPeerReviewByStudent(json)
+      postNewPeerReviewByStudent(newSubArray)
         .then(function (response) {
           console.log(response);
            history.push("/seeallassignment");
@@ -152,9 +153,7 @@ function PeerReviewAssignmentView({ history, location }) {
         .catch(function (error) {
           console.log(error);
         });
-     
     }
-   
   };
 
   // for submit event
@@ -200,7 +199,7 @@ function PeerReviewAssignmentView({ history, location }) {
               </Grid>
             </Grid>
             <div>
-              <CustomizedCard style={{ marginTop: "20px" }}>
+              <CustomizedCard style={{ margin: "20px 0"  }}>
                 <CardContent>
                   <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
                     <Stack direction="row" spacing={1}>
@@ -240,22 +239,60 @@ function PeerReviewAssignmentView({ history, location }) {
                   </Stack>
                 </CardContent>
               </CustomizedCard>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: "20px",
-                }}
-              >
-                {peerReviewInfo.teams.map((team, key) => {
-                  return (
-                    <TabPanel value={tab} index={key} style={{ flex:1}}>
-                      <CustomizedCard >
-                        <CardContent>
-                          <Stack direction="row" justifyContent="space-between" alignItems="center"
-                          >
-                            <Stack direction="column" spacing={1}>
+              {peerReviewInfo.teams.length !== 0 ? (
+
+                <Stack direction="row" justifyContent="space-between" style={{flex:"1"}}>
+                  {peerReviewInfo.teams.map((team, key) => {
+                    return (
+                      <TabPanel value={tab} index={key} style={{ flex:1}}>
+                        <CustomizedCard >
+                          <CardContent>
+                            <Stack direction="row" justifyContent="space-between" alignItems="center"
+                            >
+                              <Stack direction="column" spacing={1}>
+                                <Typography
+                                  style={{
+                                    display: "flex",
+                                    textAlign: "center",
+                                    fontWeight: "600",
+                                  }}
+                                  variant="body1"
+                                  component="div"
+                                >
+                                  {`Submission ${key + 1}`}
+                                </Typography>
+                              </Stack>
+                              <CustomizedButtons
+                                type2
+                                model={"download"}
+                                href={submissionLinkDownload}
+                                download={"Solution.pdf"}
+                              >
+                                Download Peer Review PDF
+                              </CustomizedButtons>
+                            </Stack>
+                            {team.submission.pdfDoc && (
+                              <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
+                              >
+                                <CustomizedButtons
+                                  model={"arrowL"}
+                                  style={{ color: "black", marginBottom: "10px" }}
+                                  onClick={goToPreviousPage}
+                                ></CustomizedButtons>
+                                <Document
+                                  file={{ data: team.submission.pdfDoc }}
+                                  onLoadSuccess={onDocumentLoadSuccess}
+                                >
+                                  <Page pageNumber={pageNumber} scale={scale} />
+                                </Document>
+                                <CustomizedButtons
+                                  model={"arrow"}
+                                  style={{ color: "black", marginBottom: "10px" }}
+                                  onClick={goToNextPage}
+                                ></CustomizedButtons>
+                              </Stack>
+                            )}
+                            <Stack direction="column" spacing={3}>
                               <Typography
                                 style={{
                                   display: "flex",
@@ -265,107 +302,72 @@ function PeerReviewAssignmentView({ history, location }) {
                                 variant="body1"
                                 component="div"
                               >
-                                {`Submission ${key + 1}`}
+                                Score Submission:
                               </Typography>
-                            </Stack>
-                            <CustomizedButtons
-                              type2
-                              model={"download"}
-                              href={submissionLinkDownload}
-                              download={"Solution.pdf"}
-                            >
-                              Download Peer Review PDF
-                            </CustomizedButtons>
-                          </Stack>
-                          {team.submission.pdfDoc && (
-                            <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
-                            >
-                              <CustomizedButtons
-                                model={"arrowL"}
-                                style={{ color: "black", marginBottom: "10px" }}
-                                onClick={goToPreviousPage}
-                              ></CustomizedButtons>
-                              <Document
-                                file={{ data: team.submission.pdfDoc }}
-                                onLoadSuccess={onDocumentLoadSuccess}
-                              >
-                                <Page pageNumber={pageNumber} scale={scale} />
-                              </Document>
-                              <CustomizedButtons
-                                model={"arrow"}
-                                style={{ color: "black", marginBottom: "10px" }}
-                                onClick={goToNextPage}
-                              ></CustomizedButtons>
-                            </Stack>
-                          )}
-                          <Stack direction="column" spacing={3}>
-                            <Typography
-                              style={{
-                                display: "flex",
-                                textAlign: "center",
-                                fontWeight: "600",
-                              }}
-                              variant="body1"
-                              component="div"
-                            >
-                              Score Submission:
-                            </Typography>
 
-                            <Stack direction="row" spacing={3} alignItems="center">
-                              <FormControl sx={{width:"100px"}}>
-                                <InputLabel id="demo-simple-select-label">
-                                  Score
-                                </InputLabel>
-                                <Select
-                                  labelId="demo-simple-select-label"
-                                  id="demo-simple-select"
-                                  value={score}
-                                  label="Score"
-                                  onChange={handleChangeScore}
-                                >
-                                  {Array.from(Array(10).keys()).map((index, key)=>(
-                                    <MenuItem value={index} key={key}>{index}</MenuItem>
-                                  ))}
-                                </Select>
-                              </FormControl>
-                              <CustomizedPdfUploader
-                                id="submission"
-                                pdfFileName={submissionPdfFileName}
-                                setPdfFileName={setSubmissionPdfFileName}
-                                setPdfFile={setSubmissionPdfFile}
-                              ></CustomizedPdfUploader>
+                              <Stack direction="row" spacing={3} alignItems="center">
+                                <FormControl sx={{width:"100px"}}>
+                                  <InputLabel id="demo-simple-select-label">
+                                    Score
+                                  </InputLabel>
+                                  <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={score}
+                                    label="Score"
+                                    onChange={handleChangeScore}
+                                  >
+                                    {Array.from(Array(10).keys()).map((index, key)=>(
+                                      <MenuItem value={index} key={key}>{index}</MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                                <CustomizedPdfUploader
+                                  id="submission"
+                                  pdfFileName={submissionPdfFileName}
+                                  setPdfFileName={setSubmissionPdfFileName}
+                                  setPdfFile={setSubmissionPdfFile}
+                                ></CustomizedPdfUploader>
+                              </Stack>
                             </Stack>
-                          </Stack>
-                        </CardContent>
-                      </CustomizedCard>
-                    </TabPanel>
-                  );
-                })}
-                <CustomizedCard
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "250px",
-                    marginLeft: "20px",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Tabs
-                    value={tab}
-                    orientation="vertical"
-                    onChange={handleChange}
-                    variant="scrollable"
-                    scrollButtons
-                    allowScrollButtonsMobile
+                          </CardContent>
+                        </CustomizedCard>
+                      </TabPanel>
+                    );
+                  })}
+                  <CustomizedCard
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "250px",
+                      marginLeft: "20px",
+                      justifyContent: "center",
+                    }}
                   >
-                    {peerReviewInfo.teams.map((team, key) => (
-                      <Tab label={`Submission ${key + 1}`} />
-                    ))}
-                  </Tabs>
+                    <Tabs
+                      value={tab}
+                      orientation="vertical"
+                      onChange={handleChange}
+                      variant="scrollable"
+                      scrollButtons
+                      allowScrollButtonsMobile
+                    >
+                      {peerReviewInfo.teams.map((team, key) => (
+                        <Tab label={`Submission ${key + 1}`} />
+                      ))}
+                    </Tabs>
+                  </CustomizedCard>
+                </Stack>
+              ) : (
+                <CustomizedCard style={{flex:"1"}}>
+                  <CardContent>
+                    <Stack direction="row" justifyContent="space-between" >There is no submission to review</Stack>
+                  </CardContent>
                 </CustomizedCard>
-              </div>
+              )}
             </div>
-            <Stack
+            {peerReviewInfo.teams.length !== 0 && (
+              <Stack
               direction="row"
               justifyContent="flex-end"
               alignItems="center"
@@ -378,6 +380,7 @@ function PeerReviewAssignmentView({ history, location }) {
                 Submit
               </CustomizedButtons>
             </Stack>
+            )}
           </CustomizedContainer>
         </>
       )}

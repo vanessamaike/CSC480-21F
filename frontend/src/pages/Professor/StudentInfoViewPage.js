@@ -54,6 +54,10 @@ const AddStudentBox = (props) => {
   const {
     classes,
     handleAddStudent,
+    firstName,
+    lastName,
+    sID,
+    email,
     setFirstName,
     setLastName,
     setSID,
@@ -96,16 +100,16 @@ const AddStudentBox = (props) => {
               alignItems: "center",
             }}
           >
-            <CustomizedTextField handleTextFieldChange={setFirstName}>
+            <CustomizedTextField value={firstName} handleTextFieldChange={setFirstName}>
               First Name
             </CustomizedTextField>
-            <CustomizedTextField handleTextFieldChange={setLastName}>
+            <CustomizedTextField value={lastName} handleTextFieldChange={setLastName}>
               Last Name
             </CustomizedTextField>
-            <CustomizedTextField handleTextFieldChange={setSID}>
+            <CustomizedTextField value={sID} handleTextFieldChange={setSID}>
               Student ID
             </CustomizedTextField>
-            <CustomizedTextField handleTextFieldChange={setEmail}>
+            <CustomizedTextField value={email} handleTextFieldChange={setEmail}>
               Email
             </CustomizedTextField>
             <CustomizedButtons type1 height1 onClick={handleAddStudent}>
@@ -221,11 +225,11 @@ function StudentInfoViewPage({ history }) {
       email: email,
     };
     var json = {
-      courseID: 57964,
+      courseID: courses[tab].courseID,
       student: newStudent,
     };
     const json_ = JSON.stringify(json);
-    postNewStudentByProfessor(json_)
+    postNewStudentByProfessor(json)
       .then(function (response) {
         console.log(response);
       })
@@ -339,9 +343,13 @@ function StudentInfoViewPage({ history }) {
                                 <AddStudentBox
                                   handleAddStudent={handleAddStudent}
                                   setFirstName={setFirstName}
+                                  firstName={firstName}
                                   setLastName={setLastName}
+                                  lastName={lastName}
                                   setSID={setSID}
+                                  sID={sID}
                                   setEmail={setEmail}
+                                  email={email}
                                   handleCloseAddStudentBox={
                                     handleCloseAddStudentBox
                                   }
@@ -373,7 +381,7 @@ function StudentInfoViewPage({ history }) {
                                           handleOpenStudentModal()}}
                                       >
                                         <MdDelete style={{
-                                            color: "#347DEB",
+                                            color: "red",
                                             size: "1.5em",
                                           }}/>
                                       </IconButton>
@@ -454,13 +462,14 @@ function StudentInfoViewPage({ history }) {
                                             divider
                                             secondaryAction={
                                               <IconButton
+                                                style={{color:"red"}}
                                                 edge="end"
                                                 aria-label="delete"
                                                 onClick={()=>{
                                                   setDeletedStudentID(student.userID)
                                                   handleOpenStudentModal()}}
                                               >
-                                                <MdOutlineCancel />
+                                                <MdDelete />
                                               </IconButton>
                                             }
                                           >

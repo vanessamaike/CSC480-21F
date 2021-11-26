@@ -1,11 +1,10 @@
-import logo from './logo.svg';
+
 import './App.css';
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import PrivateRoute from './routing/PrivateRoute'
 import PublicRoute from './routing/PublicRoute'
 //Custom Pages
-import HomePage from "./pages/Home/HomePage"
 import LoginPage from './pages/Login/LoginPage';
 import ProfessorHomeDashboard from './pages/Professor/ProfessorHomeDashboard';
 //professor
@@ -36,7 +35,7 @@ function App() {
 
   return (
   <>
-    { isMobile == true ? (
+    { isMobile === true ? (
       <div> This content is unavailable on mobile</div>
     ) : (
       <Router>

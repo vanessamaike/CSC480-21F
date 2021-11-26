@@ -64,7 +64,7 @@ function AddCoursePage1({ history }) {
     }
     else{
     var newCourse = {
-      userID: 34189,
+      userID: localStorage.getItem('userID'),
       "title": title,
       "isTeamed": isTeamed,
       "code": title,
@@ -76,7 +76,7 @@ function AddCoursePage1({ history }) {
     };
     const json_ = JSON.stringify(json);
     
-    postNewCourseByProfessor(json_)
+    postNewCourseByProfessor(json)
       .then(function (response) {
         console.log(response);
         history.push("./course")

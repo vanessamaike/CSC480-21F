@@ -54,7 +54,7 @@ function TabPanel(props) {
 function ProfessorCourse({ history }) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
-
+  const [error, setError] = useState("")
   const { user, isAuthenticated, authLoading } = getUser;
   const [filterType, setFilterType] = React.useState("All");
   const [courses, setCourses] = React.useState();
@@ -73,21 +73,28 @@ function ProfessorCourse({ history }) {
     })
     .catch((err) => {
       console.log(err);
+      setError(err)
     });
   }
   useEffect(() => {
     var nameLists = [];
     console.log(courses);
-    if (courses !== undefined && courses.length !== 0) {
+    if (courses !== undefined) {
       courses.map((course) => {
         nameLists.push(course.code);
       });
       setCourseNames(nameLists);
       setLoading(false);
     }
+    return () => {
+      console.log("unmount");
+    };
   }, [courses]);
   useEffect(() => {
     handleGetAssignmentByProfessor()
+    return () => {
+      console.log("unmount");
+    };
   }, []);
  
   const handleDeleteAssignment = () => {
@@ -113,163 +120,158 @@ function ProfessorCourse({ history }) {
         </Breadcrumbs>
         <>
           {loading === true ? (
-            <Loading />
+            <Loading error={error}/>
           ) : (
             <>
-              <Grid container sx={{ marginBottom: "20px" }}>
-                <Grid
-                  item
-                  xs={8}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  <Typography
-                    style={{
-                      display: "flex",
-                      textAlign: "center",
-                      fontWeight: "600",
-                    }}
-                    variant="h6"
-                    component="div"
+              {courses.length === 0 ? (
+                <CustomizedCard>
+                  <CardContent>
+                  <Stack style={{flex:1}} alignItems="center">Please create a new course</Stack>
+                  </CardContent>
+                </CustomizedCard>
+              ) : (
+                <>
+                <Grid container sx={{ marginBottom: "20px" }}>
+                  <Grid
+                    item
+                    xs={8}
+                    sx={{ display: "flex", alignItems: "center" }}
                   >
-                    Courses and Assignments
-                  </Typography>
-                </Grid>
+                    <Typography
+                      style={{
+                        display: "flex",
+                        textAlign: "center",
+                        fontWeight: "600",
+                      }}
+                      variant="h6"
+                      component="div"
+                    >
+                      Courses and Assignments
+                    </Typography>
+                  </Grid>
 
-                <Grid
-                  item
-                  xs={4}
-                  sx={{ display: "flex", justifyContent: "flex-end" }}
-                >
-                  <Stack direction="row" spacing={2}>
-                    <CustomizedButtons
-                      type2
-                      model={"add"}
-                      onClick={() => history.push("/coursecreation")}
-                    >
-                      Create Course
-                    </CustomizedButtons>
-                    <CustomizedButtons
-                      type1
-                      onClick={() => history.push("/studentinfoview")}
-                    >
-                      View Student Info
-                    </CustomizedButtons>
-                  </Stack>
+                  <Grid
+                    item
+                    xs={4}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <Stack direction="row" spacing={2}>
+                      <CustomizedButtons
+                        type2
+                        model={"add"}
+                        onClick={() => history.push("/coursecreation")}
+                      >
+                        Create Course
+                      </CustomizedButtons>
+                      <CustomizedButtons
+                        type1
+                        onClick={() => history.push("/studentinfoview")}
+                      >
+                        View Student Info
+                      </CustomizedButtons>
+                    </Stack>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <div>
-                <CustomizedTabs
-                  type1
-                  setTab={setTab}
-                  tab={tab}
-                  fullWidth={"fullWidth"}
-                  labels={courseNames}
-                ></CustomizedTabs>
-                {courses.map((course, key) => {
-                  return (
-                    <TabPanel value={tab} index={key}>
-                      <CustomizedCard>
-                        <CardHeader
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                          }}
-                          title={
-                            <Grid container>
-                              <Grid item xs={6}>
-                                <CustomizedButtons
-                                  type2
-                                  model={"add"}
-                                  onClick={() =>
-                                    history.push("/assignmentcreation", {
-                                      courseID: course.courseID,
-                                    })
-                                  }
-                                >
-                                  Create New Assignment
-                                </CustomizedButtons>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={6}
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <CustomizedButtons
-                                  type3
-                                  model={"radio1"}
-                                  fullwidth
-                                  filterType={filterType}
-                                  setFilterType={setFilterType}
-                                >
-                                  Filter Assignment
-                                </CustomizedButtons>
-                              </Grid>
-                            </Grid>
-                          }
-                        ></CardHeader>
-                        <CardContent
-                          sx={{
-                            paddingTop: "0",
-                          }}
-                        >
-                          {course.assignments.map((assignment, key) => {
-                            return (
-                              <>
-                                {(filterType === "All" ||
-                                  (filterType === "Draft") ===
-                                    assignment.draft) && (
-                                  <ListItem
-                                    key={key}
-                                    button
-                                    divider
-                                    secondaryAction={
-                                      <IconButton edge="end">
-                                        <MdDelete
-                                          style={{
-                                            color: "red",
-                                            size: "1.5em",
-                                          }}
-                                          onClick={()=>{
-                                            handleOpenAssignmentModal()
-                                            setDeletedAssignmentID(assignment.assignmentID)
-                                          }}
-                                        />
-                                      </IconButton>
+                <div>
+                  <CustomizedTabs
+                    type1
+                    setTab={setTab}
+                    tab={tab}
+                    fullWidth={"fullWidth"}
+                    labels={courseNames}
+                  ></CustomizedTabs>
+                  {courses.map((course, key) => {
+                    return (
+                      <TabPanel value={tab} index={key}>
+                        <CustomizedCard>
+                          <CardHeader
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                            title={
+                              <Grid container>
+                                <Grid item xs={6}>
+                                  <CustomizedButtons
+                                    type2
+                                    model={"add"}
+                                    onClick={() =>
+                                      history.push("/assignmentcreation", {
+                                        courseID: course.courseID,
+                                      })
                                     }
                                   >
-                                    <ListItemText
-                                      onClick={() =>{
-                                        console.log("go")
-                                        history.push("/assignmentdisplay", {
-                                          assignmentID: assignment.assignmentID,
-                                        })}
+                                    Create New Assignment
+                                  </CustomizedButtons>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={6}
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <CustomizedButtons
+                                    type3
+                                    model={"radio1"}
+                                    fullwidth
+                                    filterType={filterType}
+                                    setFilterType={setFilterType}
+                                  >
+                                    Filter Assignment
+                                  </CustomizedButtons>
+                                </Grid>
+                              </Grid>
+                            }
+                          ></CardHeader>
+                          <CardContent
+                            sx={{
+                              paddingTop: "0",
+                            }}
+                          >
+                            {course.assignments.map((assignment, key) => {
+                              return (
+                                <>
+                                  {(filterType === "All" ||
+                                    (filterType === "Draft") ===
+                                      assignment.draft) && (
+                                    <ListItem
+                                      key={key}
+                                      button
+                                      divider
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <MdDelete
+                                            style={{
+                                              color: "red",
+                                              size: "1.5em",
+                                            }}
+                                            onClick={()=>{
+                                              handleOpenAssignmentModal()
+                                              setDeletedAssignmentID(assignment.assignmentID)
+                                            }}
+                                          />
+                                        </IconButton>
                                       }
-                                      sx={{ fontWeight: "800" }}
-                                      primary={
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                          }}
-                                        >
-                                          <Typography
+                                    >
+                                      <ListItemText
+                                        onClick={() =>{
+                                          console.log("go")
+                                          history.push("/assignmentdisplay", {
+                                            assignmentID: assignment.assignmentID,
+                                          })}
+                                        }
+                                        sx={{ fontWeight: "800" }}
+                                        primary={
+                                          <div
                                             style={{
                                               display: "flex",
+                                              justifyContent: "space-between",
                                               alignItems: "center",
-                                              fontWeight: "600",
                                             }}
-                                            variant="body1"
-                                            component="div"
                                           >
-                                           {assignment.title}
-                                          
-                                          </Typography>
-                                          <Stack direction="row">
                                             <Typography
                                               style={{
                                                 display: "flex",
@@ -279,75 +281,90 @@ function ProfessorCourse({ history }) {
                                               variant="body1"
                                               component="div"
                                             >
-                                              Preview
+                                            {assignment.title}
+                                            
                                             </Typography>
-                                          </Stack>
-                                        </div>
-                                      }
-                                      secondary={
-                                        <Grid container>
-                                          <Grid
-                                            item
-                                            xs={12}
-                                            sx={{
-                                              display: "flex",
-                                              justifyContent: "space-between",
-                                            }}
-                                          >
-                                            <Typography
-                                              variant="body2"
-                                              component="div"
+                                            <Stack direction="row">
+                                              <Typography
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  fontWeight: "600",
+                                                }}
+                                                variant="body1"
+                                                component="div"
+                                              >
+                                                Preview
+                                              </Typography>
+                                            </Stack>
+                                          </div>
+                                        }
+                                        secondary={
+                                          <Grid container>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                              }}
                                             >
-                                              Solution
-                                            </Typography>
-                                            <Typography
-                                              variant="body2"
-                                              component="div"
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Solution
+                                              </Typography>
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Due Date:{" "}
+                                                {new Date(
+                                                  assignment.solutionDueDateTime
+                                                ).toLocaleString()}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                              }}
                                             >
-                                              Due Date:{" "}
-                                              {new Date(
-                                                assignment.solutionDueDateTime
-                                              ).toLocaleString()}
-                                            </Typography>
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Peer Review
+                                              </Typography>
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Due Date:{" "}
+                                                {new Date(
+                                                  assignment.peerReviewDueDateTime
+                                                ).toLocaleString()}
+                                              </Typography>
+                                            </Grid>
                                           </Grid>
-                                          <Grid
-                                            item
-                                            xs={12}
-                                            sx={{
-                                              display: "flex",
-                                              justifyContent: "space-between",
-                                            }}
-                                          >
-                                            <Typography
-                                              variant="body2"
-                                              component="div"
-                                            >
-                                              Peer Review
-                                            </Typography>
-                                            <Typography
-                                              variant="body2"
-                                              component="div"
-                                            >
-                                              Due Date:{" "}
-                                              {new Date(
-                                                assignment.peerReviewDueDateTime
-                                              ).toLocaleString()}
-                                            </Typography>
-                                          </Grid>
-                                        </Grid>
-                                      }
-                                    />
-                                  </ListItem>
-                                )}
-                              </>
-                            );
-                          })}
-                        </CardContent>
-                      </CustomizedCard>
-                    </TabPanel>
-                  );
-                })}
-              </div>
+                                        }
+                                      />
+                                    </ListItem>
+                                  )}
+                                </>
+                              );
+                            })}
+                          </CardContent>
+                        </CustomizedCard>
+                      </TabPanel>
+                    );
+                  })}
+                </div>
+                </>
+              )}
             </>
           )}
         </>

@@ -40,11 +40,14 @@ import Loading from "../../components/Loading";
 import CustomizedBody from "../../components/CustomizedBody";
 import {
   getQualityCheckPeerReviewByProfesssor,
-  sendAssignReviewByProfessor,
+  sendFeedBackByProfessor,
+  rejectPeerReviewByProfessor,
+  postNewPeerReviewByStudent,
 } from "../../axios/APIRequests";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import { GrDocumentMissing } from "react-icons/gr";
 import { BsFillFileEarmarkExcelFill } from "react-icons/bs";
+import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -70,7 +73,6 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const [linkDownload, setLinkDownload] = useState();
-  const { user, isAuthenticated, authLoading } = getUser;
   const [openErrors, setOpenErrors] = React.useState(false);
   const [assignment, setAssignment] = useState();
   const [scale, setScale] = useState(1.0);
@@ -81,8 +83,9 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
   const [teamKeys, setTeamKeys] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [submittedTeam, setSubmittedTeam] = useState(0);
-  const [totalTeam, setTotalTeam] = useState(0);
+  const [submissionPdfFile, setSubmissionPdfFile] = useState();
+  const [peerReviewPdfFileName, setPeerReviewPdfFileName] = useState("");
+  const [submissionArray, setSubmissionArray] = useState([]);
   const handleClick = () => {
     setOpenErrors(!openErrors);
   };
@@ -102,7 +105,6 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
         setAssignment(value);
         if (value !== undefined) {
           setLoading(false);
-          setTotalTeam(value.teams.length);
         }
         console.log(value);
       })
@@ -136,6 +138,51 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
   const handleExpand = (key) => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
+  const handleSendForFeedBack = () => {
+    sendFeedBackByProfessor(assignment.assignmentID)
+      .then(function (response) {
+        console.log(response);
+        history.push("./courseresult");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  const handleReupload = (teamId) => {
+    // var newSubArray = [];
+    // if (submissionPdfFile.length === 0) {
+    //   alert("Please upload your pdf file before submitting !!!");
+    // } else {
+    //     var newSubmission = {
+    //       teamID: teamId,
+    //       assignmentID: peerReviewInfo.assignmentID,
+    //       pdfDoc: submission.pdfDoc,
+    //       score: submission.score,
+    //       submissionID: peerReviewInfo.teams[index].submission.submissionID,
+    //     };
+    //     newSubArray.push(newSubmission);
+    //   const json = JSON.stringify(newSubArray);
+    //   console.log(newSubArray);
+    //   postNewPeerReviewByStudent(newSubArray)
+    //     .then(function (response) {
+    //       console.log(response);
+    //       history.push("/seeallassignment");
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // }
+  };
+  const handleReject = (teamID) => {
+    console.log(teamID);
+    rejectPeerReviewByProfessor(assignment.assignmentID, teamID)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
@@ -151,40 +198,31 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
             <Loading />
           ) : (
             <>
-              <Grid
-                container
-                sx={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                spacing={9}
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={3}
               >
-                <Grid item xs={9}>
-                  <Typography
-                    style={{
-                      display: "flex",
-                      textAlign: "center",
-                      fontWeight: "600",
-                    }}
-                    variant="h6"
-                    component="div"
-                  >
-                    Peer Review Quality Check
-                  </Typography>
-                </Grid>
-                <Grid item xs={3}>
-                  <CustomizedButtons
-                    type1
-                    model={"checked"}
-                    onClick={() => {
-                      history.push("./courseresult");
-                    }}
-                  >
-                    Send Feedback
-                  </CustomizedButtons>
-                </Grid>
-              </Grid>
+                <Typography
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                  variant="h6"
+                  component="div"
+                >
+                  Peer Review Quality Check
+                </Typography>
+                <CustomizedButtons
+                  type1
+                  model={"checked"}
+                  onClick={handleSendForFeedBack}
+                >
+                  Send Feedback
+                </CustomizedButtons>
+              </Stack>
               <Stack>
                 <CustomizedCard style={{ marginBottom: "20px" }}>
                   <CardContent
@@ -226,7 +264,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                       href={viewPdf}
                       download={"PeerReviewInstructor.pdf"}
                     >
-                      Download Peer Review
+                      Download Peer Review Instruction
                     </CustomizedButtons>
                   </CardContent>
                 </CustomizedCard>
@@ -236,7 +274,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                       type3
                       setTab={setTab}
                       value={tab}
-                      labels={["Outlier Display", "Peer Reviews"]}
+                      labels={["Distributions", "Peer Reviews"]}
                     ></CustomizedTabs>
                     <TabPanel value={tab} index={0}>
                       <CustomizedCard>
@@ -255,8 +293,8 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                               variant="body1"
                               component="div"
                             >
-                              All reviews given and received, noted by team
-                              name.
+                              View each team's average score. Expand a team to
+                              view each peer review score received.
                             </Typography>
                             <List component="nav">
                               {assignment.outlier.map((team, key) => {
@@ -268,19 +306,23 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                                       divider
                                       secondaryAction={
                                         <>
-                                        {team.peerReview.length === 0 ? (
-                                          <BsFillFileEarmarkExcelFill style={{color:"red"}}/>
-                                        ) : (
-                                        <IconButton
-                                          edge="end"
-                                          aria-label="delete"
-                                        >
-                                          {open ? (
-                                            <IoIosArrowDropup />
+                                          {team.peerReview.length === 0 ? (
+                                            <BsFillFileEarmarkExcelFill
+                                              style={{ color: "red" }}
+                                            />
                                           ) : (
-                                            <IoIosArrowDropdown />
+                                            <IconButton
+                                              edge="end"
+                                              aria-label="delete"
+                                            >
+                                              {open ? (
+                                                <IoIosArrowDropup />
+                                              ) : (
+                                                <IoIosArrowDropdown />
+                                              )}
+                                            </IconButton>
                                           )}
-                                        </IconButton>)}</>
+                                        </>
                                       }
                                       onClick={handleExpand(key)}
                                     >
@@ -401,7 +443,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                                       {team.peerReview.map(
                                         (peerreview, key) => (
                                           <Tab
-                                            label={`Peer Review ${peerreview.reviewID}`}
+                                            label={`Peer Review ${key + 1}`}
                                           />
                                         )
                                       )}
@@ -439,7 +481,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                                                     variant="body1"
                                                     component="div"
                                                   >
-                                                    {`Team ${peerreview.teamID}`}
+                                                    {`Team ${team.teamName} Review of Team ${peerreview.solutionTeamName}`}
                                                   </Typography>
                                                   <Typography
                                                     style={{
@@ -547,15 +589,41 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                                                     direction="row"
                                                     spacing={3}
                                                   >
-                                                    <CustomizedButtons
-                                                      type1
-                                                      height1
-                                                    >
-                                                      Reupload PDF
-                                                    </CustomizedButtons>
+                                                    {/* {submissionPdfFile !==
+                                                      undefined && (
+                                                      <CustomizedButtons
+                                                        type1
+                                                        height1
+                                                        onClick={() => {
+                                                          handleReupload(
+                                                            team.teamID
+                                                          );
+                                                        }}
+                                                      >
+                                                        Submit
+                                                      </CustomizedButtons>
+                                                    )}
+                                                    <CustomizedPdfUploader
+                                                      id="submission"
+                                                      value={submissionPdfFile}
+                                                      setPdfFile={
+                                                        setSubmissionPdfFile
+                                                      }
+                                                      pdfFileName={
+                                                        peerReviewPdfFileName
+                                                      }
+                                                      setPdfFileName={
+                                                        setPeerReviewPdfFileName
+                                                      }
+                                                    ></CustomizedPdfUploader> */}
                                                     <CustomizedButtons
                                                       type2
                                                       height1
+                                                      onClick={() => {
+                                                        handleReject(
+                                                          team.teamID
+                                                        );
+                                                      }}
                                                     >
                                                       Reject PDF
                                                     </CustomizedButtons>
@@ -614,7 +682,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                                     justifyContent="center"
                                     alignItems="center"
                                   >
-                                    This team has not done Peer Review
+                                    This team has not submitted Peer Review yet.
                                   </Stack>
                                 )}
                               </TabPanel>

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { Stack, Typography } from "@mui/material";
-import CustomizedTextField from "./CustomizedTextField";
-import CustomizedButtons from "./CustomizedButtons";
-
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -123,9 +120,9 @@ function CustomizedCSVUploader(props) {
     </div>
   );
 
+
+}
   CustomizedCSVUploader.propTypes = {
     multipleCSV: PropTypes.bool,
   };
-}
-
 export default CustomizedCSVUploader;

@@ -109,7 +109,6 @@ function StudentHomeDashBoard({ history }) {
   const [assignmentCourses, setAssignmentCourses] = React.useState([]);
   const [resultCourses, setResultCourses] = React.useState([]);
   useEffect(() => {
-    console.log(assignmentCourses);
     if (assignmentCourses === undefined || assignmentCourses.length === 0) return
     if (resultCourses === undefined || resultCourses.length === 0) return
     setLoading(false);
@@ -117,11 +116,9 @@ function StudentHomeDashBoard({ history }) {
   useEffect(() => {
     getAssignmenstByStudent()
       .then((value) => {
-        console.log(value);
         setAssignmentCourses(value);
         getResultsByStudent()
           .then((value) => {
-            console.log(value);
             setResultCourses(value);
           })
           .catch((err) => {
@@ -132,8 +129,7 @@ function StudentHomeDashBoard({ history }) {
         console.log(err);
       });
   }, []);
-  console.log(assignmentCourses)
-  console.log(resultCourses)
+
   return (
     <CustomizedBody bg={bg}>
       <NavBar></NavBar>

@@ -32,7 +32,7 @@ export default function TransitionsModal({
 }) {
   return (
     <>
-      {modalType == "course" ? (
+      {modalType === "course" ? (
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -101,7 +101,7 @@ export default function TransitionsModal({
         </Modal>
       ) : (
         <>
-          {modalType == "assignment" ? (
+          {modalType === "assignment" ? (
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"

@@ -11,15 +11,16 @@ import CustomizedContainer from "../components/CustomizedContainer";
 import CustomizedCard from "../components/CustomizedCard";
 import { CircularProgress } from "@mui/material";
 
-function Loading({ history }) {
+function Loading({ history, error }) {
   const loading = LoadingStyle();
 
   return (
-    <CustomizedContainer >
-      <CustomizedCard >
+    <CustomizedContainer>
+      <CustomizedCard>
         <div className={loading.box}>
-        <img className={loading.logo} src={`${logo}`} />
-      <CircularProgress className={loading.loading}></CircularProgress>
+          <img className={loading.logo} src={`${logo}`} />
+          <div>{error}</div>
+          <CircularProgress className={loading.loading}></CircularProgress>
         </div>
       </CustomizedCard>
     </CustomizedContainer>

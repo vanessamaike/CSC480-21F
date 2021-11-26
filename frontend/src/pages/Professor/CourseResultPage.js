@@ -104,12 +104,7 @@ function CourseResultPage({ history }) {
             <Loading />
           ) : (
             <>
-              <Grid container spacing={15} sx={{ marginBottom: "20px" }}>
-                <Grid
-                  item
-                  xs={6}
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
+              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                   <Typography
                     style={{
                       display: "flex",
@@ -121,11 +116,8 @@ function CourseResultPage({ history }) {
                   >
                     Quality Check
                   </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <SuccessfulNotification />
-                </Grid>
-              </Grid>
+
+              </Stack>
               <div>
                 <CustomizedTabs
                   type3
@@ -211,7 +203,7 @@ function CourseResultPage({ history }) {
                                                   display: "flex",
                                                   justifyContent: "center",
                                                 }}
-                                                primary={`submissions closed ${new Date(
+                                                primary={`Due ${new Date(
                                                   assignment.solutionDueDateTime
                                                 ).toLocaleString()}`}
                                               />
