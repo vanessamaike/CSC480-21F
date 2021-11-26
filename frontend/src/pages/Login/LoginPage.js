@@ -58,6 +58,7 @@ function LoginPage({ history }) {
   const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
+    if(response.profileObj === undefined || response.tokenId === undefined) return
     dispatch(setUserName(response.profileObj.name));
     signIn(response.tokenId)
   };
