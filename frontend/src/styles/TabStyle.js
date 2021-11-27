@@ -2,9 +2,11 @@ import { makeStyles } from '@mui/styles';
 import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "./Style";
 const TabStyle = makeStyles((theme) => ({
   root: {
+
     fontWeight: "600",
     color: "#fff",
     "& .MuiTabs-indicator": {
+      
         display: "flex",
         height: "100%",
         justifyContent: "center",
