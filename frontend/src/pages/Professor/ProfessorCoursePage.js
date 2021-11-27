@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 // @mui components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { BsArrowRightCircle } from "react-icons/bs";
+import { TiDelete } from "react-icons/ti";
+import { MdDelete } from "react-icons/md";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
 import {
+  Breadcrumbs,
   CardContent,
   CardHeader,
   CircularProgress,
@@ -19,12 +21,19 @@ import {
   Stack,
 } from "@mui/material";
 import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedModal from "../../components/CustomizedModal";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import { selectCourses, getCoursesByUserId } from "../../features/coursesSlice";
-
+import Loading from "../../components/Loading";
+import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
+import {
+  getAssignmentsByProfessor,
+  deleteAssignmentByProfessor,
+} from "../../axios/APIRequests";
+import { MdOutlineCancel } from "react-icons/md";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -44,150 +53,329 @@ function TabPanel(props) {
 
 function ProfessorCourse({ history }) {
   const dispatch = useDispatch();
-  const getCourses = useSelector(selectCourses);
-  const { courses, loading, error } = getCourses;
   const getUser = useSelector(selectUser);
+  const [error, setError] = useState("")
   const { user, isAuthenticated, authLoading } = getUser;
-
+  const [filterType, setFilterType] = React.useState("All");
+  const [courses, setCourses] = React.useState();
+  const [loading, setLoading] = React.useState(true);
   const [tab, setTab] = React.useState(0);
   const [courseNames, setCourseNames] = React.useState([]);
-  useEffect(() => {
-    dispatch(getCoursesByUserId());
-  }, [dispatch]);
+  const [isAssignmentModalOpened, setIsAssignmentModalOpened] = useState(false);
+  const handleOpenAssignmentModal = () => setIsAssignmentModalOpened(true);
+  const handleCloseAssignmentModal = () => setIsAssignmentModalOpened(false);
+  const [deletedAssignmentID, setDeletedAssignmentID] = useState()
+  const handleGetAssignmentByProfessor = () => {
+    getAssignmentsByProfessor()
+    .then((value) => {
+      console.log(value);
+      setCourses(value);
+    })
+    .catch((err) => {
+      console.log(err);
+      setError(err)
+    });
+  }
   useEffect(() => {
     var nameLists = [];
-    if (courses != null) {
+    console.log(courses);
+    if (courses !== undefined) {
       courses.map((course) => {
         nameLists.push(course.code);
       });
       setCourseNames(nameLists);
+      setLoading(false);
     }
+    return () => {
+      console.log("unmount");
+    };
   }, [courses]);
-  console.log(loading)
+  useEffect(() => {
+    handleGetAssignmentByProfessor()
+    return () => {
+      console.log("unmount");
+    };
+  }, []);
+ 
+  const handleDeleteAssignment = () => {
+    deleteAssignmentByProfessor(deletedAssignmentID)
+      .then((value) => {
+        console.log(value);
+        handleGetAssignmentByProfessor()
+        handleCloseAssignmentModal(true)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={8}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Courses and Assignments
-            </Typography>
-          </Grid>
-
-          <Grid
-            item
-            xs={4}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Link
-                to="/coursecreation"
-                style={{ textDecoration: "none", color: "#000" }}
-              >
-                <CustomizedButtons type2 model={"add"}>
-                  Create Course
-                </CustomizedButtons>
-              </Link>
-              <Link
-                to="/studentinfoview"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <CustomizedButtons type1>View Student Info</CustomizedButtons>
-              </Link>
-            </Stack>
-          </Grid>
-        </Grid>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Course
+          </Typography>
+        </Breadcrumbs>
         <>
-          {error === true ? (
-            <CircularProgress />
+          {loading === true ? (
+            <Loading error={error}/>
           ) : (
-            <div>
-              <CustomizedTabs
-                type1
-                setTab={setTab}
-                tab={tab}
-                courseNames={courseNames}
-              ></CustomizedTabs>
-              {courses.map((course, key) => (
-                <TabPanel value={tab} index={key}>
-                  <CustomizedCard>
-                    <CardHeader
-                      sx={{
+            <>
+              {courses.length === 0 ? (
+                <CustomizedCard>
+                  <CardContent>
+                  <Stack style={{flex:1}} alignItems="center">Please create a new course</Stack>
+                  </CardContent>
+                </CustomizedCard>
+              ) : (
+                <>
+                <Grid container sx={{ marginBottom: "20px" }}>
+                  <Grid
+                    item
+                    xs={8}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Typography
+                      style={{
                         display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        textAlign: "center",
+                        fontWeight: "600",
                       }}
-                      title={
-                        <Grid container>
-                          <Grid item xs={7}>
-                            <Link
-                              to="/assignmentcreation"
-                              style={{ textDecoration: "none", color: "#000" }}
-                            >
-                              <CustomizedButtons type3 model={"add"}>
-                                Create New Assignment
-                              </CustomizedButtons>
-                            </Link>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={5}
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                          >
-                            <CustomizedButtons type3 model={"radio1"}>
-                              Filter Assignment
-                            </CustomizedButtons>
-                          </Grid>
-                        </Grid>
-                      }
-                    ></CardHeader>
-                    <CardContent
-                      sx={{
-                        paddingTop: "0",
-                      }}
+                      variant="h6"
+                      component="div"
                     >
-                      {[1, 2, 3].map((value) => (
-                        <ListItem
-                          button
-                          divider
-                          secondaryAction={
-                            <IconButton edge="end" aria-label="delete">
-                              <BsArrowRightCircle />
-                            </IconButton>
-                          }
-                        >
-                          <ListItemText primary="Solution 2" />
-                          <ListItemText
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                            primary="Due 10/01/21"
-                          />
-                        </ListItem>
-                      ))}
-                    </CardContent>
-                  </CustomizedCard>
-                </TabPanel>
-              ))}
-            </div>
+                      Courses and Assignments
+                    </Typography>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={4}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <Stack direction="row" spacing={2}>
+                      <CustomizedButtons
+                        type2
+                        model={"add"}
+                        onClick={() => history.push("/coursecreation")}
+                      >
+                        Create Course
+                      </CustomizedButtons>
+                      <CustomizedButtons
+                        type1
+                        onClick={() => history.push("/studentinfoview")}
+                      >
+                        View Student Info
+                      </CustomizedButtons>
+                    </Stack>
+                  </Grid>
+                </Grid>
+                <div>
+                  <CustomizedTabs
+                    type1
+                    setTab={setTab}
+                    tab={tab}
+                    fullWidth={"fullWidth"}
+                    labels={courseNames}
+                  ></CustomizedTabs>
+                  {courses.map((course, key) => {
+                    return (
+                      <TabPanel value={tab} index={key}>
+                        <CustomizedCard>
+                          <CardHeader
+                            sx={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                            title={
+                              <Grid container>
+                                <Grid item xs={6}>
+                                  <CustomizedButtons
+                                    type2
+                                    model={"add"}
+                                    onClick={() =>
+                                      history.push("/assignmentcreation", {
+                                        courseID: course.courseID,
+                                      })
+                                    }
+                                  >
+                                    Create New Assignment
+                                  </CustomizedButtons>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={6}
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <CustomizedButtons
+                                    type3
+                                    model={"radio1"}
+                                    fullwidth
+                                    filterType={filterType}
+                                    setFilterType={setFilterType}
+                                  >
+                                    Filter Assignment
+                                  </CustomizedButtons>
+                                </Grid>
+                              </Grid>
+                            }
+                          ></CardHeader>
+                          <CardContent
+                            sx={{
+                              paddingTop: "0",
+                            }}
+                          >
+                            {course.assignments.map((assignment, key) => {
+                              return (
+                                <>
+                                  {(filterType === "All" ||
+                                    (filterType === "Draft") ===
+                                      assignment.draft) && (
+                                    <ListItem
+                                      key={key}
+                                      button
+                                      divider
+                                      secondaryAction={
+                                        <IconButton edge="end">
+                                          <MdDelete
+                                            style={{
+                                              color: "red",
+                                              size: "1.5em",
+                                            }}
+                                            onClick={()=>{
+                                              handleOpenAssignmentModal()
+                                              setDeletedAssignmentID(assignment.assignmentID)
+                                            }}
+                                          />
+                                        </IconButton>
+                                      }
+                                    >
+                                      <ListItemText
+                                        onClick={() =>{
+                                          console.log("go")
+                                          history.push("/assignmentdisplay", {
+                                            assignmentID: assignment.assignmentID,
+                                          })}
+                                        }
+                                        sx={{ fontWeight: "800" }}
+                                        primary={
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              justifyContent: "space-between",
+                                              alignItems: "center",
+                                            }}
+                                          >
+                                            <Typography
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                fontWeight: "600",
+                                              }}
+                                              variant="body1"
+                                              component="div"
+                                            >
+                                            {assignment.title}
+                                            
+                                            </Typography>
+                                            <Stack direction="row">
+                                              <Typography
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  fontWeight: "600",
+                                                }}
+                                                variant="body1"
+                                                component="div"
+                                              >
+                                                Preview
+                                              </Typography>
+                                            </Stack>
+                                          </div>
+                                        }
+                                        secondary={
+                                          <Grid container>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                              }}
+                                            >
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Solution
+                                              </Typography>
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Due Date:{" "}
+                                                {new Date(
+                                                  assignment.solutionDueDateTime
+                                                ).toLocaleString()}
+                                              </Typography>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                              }}
+                                            >
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Peer Review
+                                              </Typography>
+                                              <Typography
+                                                variant="body2"
+                                                component="div"
+                                              >
+                                                Due Date:{" "}
+                                                {new Date(
+                                                  assignment.peerReviewDueDateTime
+                                                ).toLocaleString()}
+                                              </Typography>
+                                            </Grid>
+                                          </Grid>
+                                        }
+                                      />
+                                    </ListItem>
+                                  )}
+                                </>
+                              );
+                            })}
+                          </CardContent>
+                        </CustomizedCard>
+                      </TabPanel>
+                    );
+                  })}
+                </div>
+                </>
+              )}
+            </>
           )}
         </>
+        <CustomizedModal
+        modalType={"assignment"}
+        isAssignmentModalOpened={isAssignmentModalOpened}
+        handleCloseAssignmentModal={handleCloseAssignmentModal}
+        handleDeleteAssignment={handleDeleteAssignment}
+      />
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

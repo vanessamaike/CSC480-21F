@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import {
   Grid,
@@ -18,8 +18,9 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
+  Breadcrumbs,
 } from "@mui/material";
-
+import { CircularProgress } from "@mui/material";
 import { BiCheckCircle } from "react-icons/bi";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import bg from "../../images/multi_background_dashboard.jpg";
@@ -30,51 +31,114 @@ import CustomizedButtons from "../../components/CustomizedButtons";
 import CustomizedContainer from "../../components/CustomizedContainer";
 import CustomizedCard from "../../components/CustomizedCard";
 import CustomizedDivider from "../../components/CustomizedDivider";
-
-function CourseBar() {
+import CustomizedBody from "../../components/CustomizedBody";
+import axios from "axios";
+import Loading from "../../components/Loading";
+import {
+  getAssignmenstByStudent,
+  getResultsByStudent,
+} from "../../axios/APIRequests";
+import { BsArrowRightCircle } from "react-icons/bs";
+function CourseBar({ course, history }) {
   return (
     <Stack spacing={0}>
-      <CustomizedButtons type3 fullwidth model={"arrow"}>
-        CRN, Section, Semester
+      <CustomizedButtons
+        type3
+        fullwidth
+        
+        onClick={() => history.push("/studentresults")}
+      >
+        {`${course.title}, Section ${course.sectionNumber}, ${course.semester}`}
       </CustomizedButtons>
-      <List dense={true}>
-        <ListItem>
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                Solution 1
-              </Typography>
-            }
-          />
-          <ListItemText primary="Due 10/13/21" />
-        </ListItem>
-        <ListItem>
-          <ListItemText
-            primary={
-              <Typography component="span" fontWeight="600" variant="body2">
-                Peer Review 1
-              </Typography>
-            }
-          />
-          <ListItemText primary="Due 10/13/21" />
-        </ListItem>
+      <List dense={true} sx={{flex:1}}>
+        {course.assignments.map((assignment) => (
+          <>
+            {!assignment.draft && (
+              <>
+                {assignment.averageScore !== -1 ? (
+                  <ListItem
+                    button
+                    divider
+                    onClick={() =>
+                      history.push("/studentpeerreviewresultsdisplay", {
+                        assignmentID: assignment.assignmentID,
+                      })
+                    }
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <BsArrowRightCircle />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={`${assignment.title}`} />
+                    <ListItemText primary={"Completed"} />
+                    <ListItemText
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                      primary={"Score: " + `${Math.round(assignment.averageScore)}`}
+                    />
+                  </ListItem>
+                ) : (
+                  <ListItem
+                    button
+                    divider
+                    disabled
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <BsArrowRightCircle />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={`${assignment.title}`} />
+                    <ListItemText primary={"In process"} />
+                  </ListItem>
+                )}
+              </>
+            )}
+          </>
+        ))}
       </List>
     </Stack>
   );
 }
 
-function StudentHomeDashBoard() {
+function StudentHomeDashBoard({ history }) {
+  const [loading, setLoading] = React.useState(true);
+  const [assignmentCourses, setAssignmentCourses] = React.useState([]);
+  const [resultCourses, setResultCourses] = React.useState([]);
+  useEffect(() => {
+    if (assignmentCourses === undefined || assignmentCourses.length === 0) return
+    if (resultCourses === undefined || resultCourses.length === 0) return
+    setLoading(false);
+  }, [assignmentCourses,resultCourses ]);
+  useEffect(() => {
+    getAssignmenstByStudent()
+      .then((value) => {
+        setAssignmentCourses(value);
+        getResultsByStudent()
+          .then((value) => {
+            setResultCourses(value);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar></NavBar>
       <CustomizedContainer>
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary" style={{ fontWeight: "600" }}>
+            Home
+          </Typography>
+        </Breadcrumbs>
         <Grid
           container
           spacing={3}
@@ -82,10 +146,10 @@ function StudentHomeDashBoard() {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={4}>
+          <Grid item xs={4.7}>
             <CustomizedCard>
               <CardHeader
-                sx={{ paddingBottom: "0" }}
+                sx={{ paddingBottom: "8px" }}
                 title={
                   <List dense={true} sx={{ padding: "0", margin: "0" }}>
                     <ListItem>
@@ -100,7 +164,7 @@ function StudentHomeDashBoard() {
                           <Typography
                             component="span"
                             fontWeight="600"
-                            variant="body1"
+                            variant="h6"
                           >
                             Recent Results
                           </Typography>
@@ -110,15 +174,40 @@ function StudentHomeDashBoard() {
                   </List>
                 }
               ></CardHeader>
-              <CardContent sx={{ paddingTop: "0" }}>
-                <Stack spacing={2}>
-                  <CourseBar></CourseBar>
-                  <CourseBar></CourseBar>
-                </Stack>
+              <CustomizedDivider
+                type1
+                sx={{ marginBottom: "15px" }}
+              ></CustomizedDivider>
+              <CardContent
+                sx={{
+                  paddingTop: "0",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <>
+                  {loading === true ? (
+                    <CircularProgress
+                      className={loading.loading}
+                    ></CircularProgress>
+                  ) : (
+                    <Stack sx={{flex:1}} spacing={2}>
+                      {resultCourses.map((course, key) => {
+                        return (
+                          <CourseBar
+                            course={course}
+                            key={key}
+                            history={history}
+                          ></CourseBar>
+                        );
+                      })}
+                    </Stack>
+                  )}
+                </>
               </CardContent>
             </CustomizedCard>
           </Grid>
-          <Grid item container spacing={3} xs={8}>
+          <Grid item container spacing={3} xs={7.3}>
             <Grid item xs={12}>
               <CustomizedCard>
                 <CardHeader
@@ -127,12 +216,20 @@ function StudentHomeDashBoard() {
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
                       <ListItem
                         secondaryAction={
-                          <CustomizedButtons type1 height1>See All</CustomizedButtons>
+                          <CustomizedButtons
+                            type1
+                            height1
+                            onClick={() => {
+                              history.push("./seeallassignment");
+                            }}
+                          >
+                            See All
+                          </CustomizedButtons>
                         }
                       >
                         <ListItemIcon>
                           <FiberManualRecordIcon
-                            sx={{ color: "#0DC38D" }}
+                            sx={{ color: "#347DEB" }}
                             fontSize="medium"
                           />
                         </ListItemIcon>
@@ -141,7 +238,7 @@ function StudentHomeDashBoard() {
                             <Typography
                               component="span"
                               fontWeight="600"
-                              variant="body1"
+                              variant="h6"
                             >
                               Upcoming Assignments
                             </Typography>
@@ -151,45 +248,152 @@ function StudentHomeDashBoard() {
                     </List>
                   }
                 ></CardHeader>
-                <CustomizedDivider type1></CustomizedDivider>
-                <CardContent sx={{ paddingTop: 0 }}>
-                  <List>
-                    <ListItem
-                      disablePadding
-                      secondaryAction={
-                        <ListItemText primary="Final submissions completed on 10/05/21" />
-                      }
-                    >
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <BiCheckCircle size="1.5em"></BiCheckCircle>
-                        </ListItemIcon>
-                        <ListItemText primary="Peer Review" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem
-                      disablePadding
-                      secondaryAction={
-                        <ListItemText primary="Final submissions completed on 10/05/21" />
-                      }
-                    >
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <BiCheckCircle size="1.5em"></BiCheckCircle>
-                        </ListItemIcon>
-                        <ListItemText primary="Peer Review" />
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
+                <CustomizedDivider
+                  type1
+                  sx={{ marginBottom: "15px" }}
+                ></CustomizedDivider>
+                <CardContent
+                  sx={{
+                    paddingTop: 0,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loading === true ? (
+                    <CircularProgress
+                      className={loading.loading}
+                    ></CircularProgress>
+                  ) : (
+                    <List sx={{ width: "100%" }}>
+                      {assignmentCourses.map((course, key) => {
+                        return (
+                          <>
+                            {course.assignments.map((assignment, key) => {
+                              return (
+                                <>
+                                  {!assignment.draft && (
+                                    <>
+                                      {!assignment.isSolutionCompleted && (
+                                        <ListItem
+                                          key={key}
+                                          button
+                                          divider
+                                          onClick={() => {
+                                            history.push(
+                                              "./newsolutionassignmentview",
+                                              { assignment: assignment }
+                                            );
+                                          }}
+                                          secondaryAction={
+                                            <IconButton edge="end">
+                                              <BsArrowRightCircle />
+                                            </IconButton>
+                                          }
+                                        >
+                                          <ListItemText
+                                            primary={`${assignment.title} Solution`}
+                                          />
+                                          {assignment.isSolutionCompleted ? (
+                                            <ListItemText
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                              }}
+                                              primary={`Completed ${new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          ) : (
+                                            <ListItemText
+                                              sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                              }}
+                                              primary={`Due ${new Date(
+                                                assignment.solutionDueDateTime
+                                              ).toLocaleString()}`}
+                                            />
+                                          )}
+                                        </ListItem>
+                                      )}
+                                      {!assignment.isPeerReviewCompleted && (
+                                        <>
+                                          {assignment.reviewStage === true && (
+                                            <ListItem
+                                              key={key}
+                                              button
+                                              divider
+                                              onClick={() => {
+                                                history.push(
+                                                  "./peerreviewassignmentview",
+                                                  {
+                                                    assignmentID:
+                                                      assignment.assignmentID,
+                                                  }
+                                                );
+                                              }}
+                                              secondaryAction={
+                                                <IconButton edge="end">
+                                                  <BsArrowRightCircle />
+                                                </IconButton>
+                                              }
+                                            >
+                                              <ListItemText
+                                                primary={`${assignment.title} Peer Review`}
+                                              />
+                                              {assignment.isPeerReviewCompleted ? ( //assignment.peerreview.isCompleted === true
+                                                <ListItemText
+                                                  sx={{
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                  }}
+                                                  primary={`Completed ${new Date(
+                                                    assignment.peerReviewDueDateTime
+                                                  ).toLocaleString()}`}
+                                                />
+                                              ) : (
+                                                <ListItemText
+                                                  sx={{
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                  }}
+                                                  primary={`Due ${new Date(
+                                                    assignment.peerReviewDueDateTime
+                                                  ).toLocaleString()}`}
+                                                />
+                                              )}
+                                            </ListItem>
+                                          )}
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+                                </>
+                              );
+                            })}
+                          </>
+                        );
+                      })}
+                    </List>
+                  )}
                 </CardContent>
               </CustomizedCard>
             </Grid>
             <Grid item xs={12}>
               <CustomizedCard>
                 <CardHeader
+                  sx={{ paddingBottom: "8px" }}
                   title={
                     <List dense={true} sx={{ padding: "0", margin: "0" }}>
-                      <ListItem>
+                      <ListItem
+                        button
+                        onClick={() => history.push("/studentteams")}
+                        secondaryAction={
+                          <IconButton edge="end">
+                            <BsArrowRightCircle />
+                          </IconButton>
+                        }
+                      >
                         <ListItemIcon>
                           <FiberManualRecordIcon
                             sx={{ color: "#6F40DC" }}
@@ -201,7 +405,7 @@ function StudentHomeDashBoard() {
                             <Typography
                               component="span"
                               fontWeight="600"
-                              variant="body1"
+                              variant="h6"
                             >
                               Manage Teams
                             </Typography>
@@ -211,14 +415,17 @@ function StudentHomeDashBoard() {
                     </List>
                   }
                 ></CardHeader>
-                <CardContent sx={{ paddingTop: 0 }}>
-                </CardContent>
               </CustomizedCard>
             </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
+            ></Grid>
           </Grid>
         </Grid>
       </CustomizedContainer>
-    </div>
+    </CustomizedBody>
   );
 }
 

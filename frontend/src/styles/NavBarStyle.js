@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import { secondaryColor, primaryColor, fontColor, grayColor } from "./Style";
+import { secondaryColor, primaryColor, fontColor, grayColor, blueColor } from "./Style";
 const NavBarStyle = makeStyles((theme) => ({
   root: {
     flexGrow: "1"
@@ -35,7 +35,7 @@ const NavBarStyle = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     '&:hover': {
-      color: grayColor,
+      color: blueColor,
   },
   },
 }));

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // @mui components
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { MdOutlineCancel } from "react-icons/md";
+import { FaUserCheck } from "react-icons/fa";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -27,12 +28,15 @@ import {
   Modal,
   Fade,
   Collapse,
+  Breadcrumbs,
 } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
+import CustomizedBody from "../../components/CustomizedBody";
 import CustomizedCard from "../../components/CustomizedCard";
+import CustomizedTextField from "../../components/CustomizedTextField";
 import CustomizedContainer from "../../components/CustomizedContainer";
-import { Link } from "react-router-dom";
-import { withStyles } from "@mui/styles";
+import Loading from "../../components/Loading";
+import { getTeamsByProfessor, getTeamsByStudent } from "../../axios/APIRequests";
 
 const styles = (theme) => ({
   input: {
@@ -40,6 +44,7 @@ const styles = (theme) => ({
     paddingTop: "5px",
   },
 });
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,155 +64,165 @@ function TabPanel(props) {
 }
 
 function StudentTeamsPage({ history }) {
-  const [tab, setTab] = useState(0);
-  const [viewType, setViewType] = useState("Student List");
-  const [isOpenedAddStudentBox, setIsOpenedAddStudentBox] = useState(false);
-  const [isCourseModalOpened, setIsCourseModalOpened] = useState(false);
-  const [isStudentModalOpened, setIsStudentModalOpened] = useState(false);
-  const handleAddStudent = () => setIsOpenedAddStudentBox(false);
-  const handleOpenAddStudentBox = () => setIsOpenedAddStudentBox(true);
-  const handleOpenCourseModal = () => setIsCourseModalOpened(true);
-  const handleCloseCourseModal = () => setIsCourseModalOpened(false);
-  const handleOpenStudentModal = () => setIsStudentModalOpened(true);
-  const handleCloseStudentModal = () => setIsStudentModalOpened(false);
-  const [teamKeys, setTeamKeys] = useState({});
 
-  const handleClick = key => () => {
+  const [tab, setTab] = useState(0);
+  const [teamKeys, setTeamKeys] = useState({});
+  const [loading, setLoading] = React.useState(true);
+  const [courses, setCourses] = React.useState();
+  const [courseNames, setCourseNames] = React.useState([]);
+
+  useEffect(() => {
+    var courseNameLists = [];
+    if (courses !== undefined && courses.length !== 0) {
+      courses.map((course) => {
+        courseNameLists.push(course.code);
+      });
+      setCourseNames(courseNameLists);
+      console.log("`loading`");
+      setLoading(false);
+    }
+  }, [courses]);
+  useEffect(() => {
+    getTeamsByStudent()
+    .then((value) => {
+      console.log(value);
+      setCourses(value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }, []);
+  const handleClick = (key) => () => {
     setTeamKeys({ [key]: !teamKeys[key] });
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        height: "80vh",
-        backgroundSize: "cover",
-        paddingTop: "150px",
-      }}
-    >
+    <CustomizedBody bg={bg}>
       <NavBar fixed history={history}></NavBar>
       <CustomizedContainer>
-        <Grid container sx={{ marginBottom: "20px" }}>
-          <Grid item xs={9}>
-            <Typography
-              style={{
-                display: "flex",
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h6"
-              component="div"
-            >
-              Student Information
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <CustomizedButtons
-              type2
-              model={"add"}
-              onClick={handleOpenCourseModal}
-            >
-              Delete Course
-            </CustomizedButtons>
-          </Grid>
-        </Grid>
-        <div>
-          <CustomizedTabs type2 setValue={setTab} value={tab}></CustomizedTabs>
-          {[1, 2, 3, 4].map((id) => (
-            <TabPanel value={tab} index={id - 1}>
-              <CustomizedCard>
-                <CardHeader
-                  sx={{
-                    paddingBottom: "0",
-                  }}
-                  title={
-                    <>
-                    <Grid container>
-                        <Grid item xs={9}> 
-                            <div></div>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={3}
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                          >
-                            <CustomizedButtons
-                              type3
-                              model={"add"}
-                              onClick={handleOpenAddStudentBox}
-                            >
-                              Add Teammate
-                            </CustomizedButtons>
-                          </Grid>
-                    </Grid>   
-                    </>
-                  }
-                ></CardHeader>
-                <CardContent
-                  sx={{
-                    paddingTop: "0",
-                  }}
-                >
-                    <List component="nav" aria-label="mailbox folders">
-                        <ListItem
-                          button
-                          divider
-                          
-                        >
-                          <ListItemText primary="Team Name" />
-                          <ListItemText
-                            sx={{ display: "flex", justifyContent: "flex-end" }}
-                            primary="3 team members"
-                          />
+        <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+          <Typography color="text.primary">Home</Typography>
+          <Typography color="text.primary">Courses</Typography>
+          <Typography color="text.primary" style={{ fontWeight: "800" }}>
+            Students & Teams
+          </Typography>
+        </Breadcrumbs>
+        <>
+          {loading === true ? (
+            <Loading />
+          ) : (
+            <>
+              <Grid container sx={{ marginBottom: "20px" }}>
+                <Grid item xs={9}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      textAlign: "center",
+                      fontWeight: "600",
+                    }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Student Information
+                  </Typography>
+                </Grid>
+              </Grid>
+              <div>
+                <CustomizedTabs
+                  type2
+                  setTab={setTab}
+                  value={tab}
+                  labels={courseNames}
+                  fullWidth={"fullWidth"}
+                ></CustomizedTabs>
+                {courses.map((course, key) => (
+                  <TabPanel value={tab} index={key}>
+                    <CustomizedCard>
+                      <CardContent
+                        sx={{
+                          paddingTop: "0",
+                        }}
+                      >
+                       <List component="nav">
+                            {course.teams.map((team, key) => {
+                              const open = teamKeys[key] || false;
+                              return (
+                                <div key={key}>
+                                  <ListItem
+                                    button
+                                    divider
+                                    secondaryAction={
+                                      <IconButton
+                                        edge="end"
+                                        aria-label="delete"
+                                      >
+                                        {open ? (
+                                           <IoIosArrowDropup />
+                                        ) : (
+                                          <IoIosArrowDropdown />
+                                        )}
+                                      </IconButton>
+                                    }
+                                    onClick={handleClick(key)}
+                                  >
+                                    <ListItemText
+                                      primary={`Team ${team.teamName}`}
+                                    />
+                                    <ListItemText
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                      }}
+                                      primary={`${team.students.length} team members`}
+                                    />
+                                  </ListItem>
 
-                        </ListItem>
-                        
-                      <Collapse in={true} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                          <>
-                        {[1, 2, 3].map((value, key) => (
-                                <ListItem
-                                  key={key}
-                                  button
-                                  sx={{ pl: 4 }}
-                                  divider
-                                  secondaryAction={
-                                    <IconButton
-                                      edge="end"
-                                      aria-label="delete"
-                                      onClick={handleOpenStudentModal}
-                                    >
-                                      <MdOutlineCancel />
-                                    </IconButton>
-                                  }
-                                >
-                                  <ListItemText primary={`Student ${value} Name`} />
-                                </ListItem>
-                        ))}</>
-                        </List>
-                      </Collapse>
-                    </List>
-                </CardContent>
-              </CustomizedCard>
-            </TabPanel>
-          ))}
-        </div>
+                                  <Collapse
+                                    in={open}
+                                    timeout="auto"
+                                    unmountOnExit
+                                  >
+                                    <List component="div" disablePadding>
+                                      <>
+                                        {team.students.map((student, key) => (
+                                          <ListItem
+                                            key={key}
+                                            button
+                                            sx={{ pl: 4 }}
+                                            divider
+                                            secondaryAction={
+                                              <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                              >
+                                                {(student.userID.toString() === localStorage.getItem('userID')) && (
+                                                   <FaUserCheck style={{color: "green"}}/>
+                                                )}
+                                              </IconButton>
+                                            }
+                                          >
+                                            <ListItemText
+                                              primary={`${student.firstName} ${student.lastName}`}
+                                            />
+                                          </ListItem>
+                                        ))}
+                                      </>
+                                    </List>
+                                  </Collapse>
+                                </div>
+                              );
+                            })}
+                          </List>
+                      </CardContent>
+                    </CustomizedCard>
+                  </TabPanel>
+                ))}
+              </div>
+            </>
+          )}
+        </>
       </CustomizedContainer>
-      <CustomizedModal
-        modalType={"course"}
-        isCourseModalOpened={isCourseModalOpened}
-        handleCloseCourseModal={handleCloseCourseModal}
-      />
-      <CustomizedModal
-        modalType={"student"}
-        isStudentModalOpened={isStudentModalOpened}
-        handleCloseStudentModal={handleCloseStudentModal}
-      />
-    </div>
+    </CustomizedBody>
   );
 }
 

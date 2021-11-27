@@ -1,275 +1,341 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 // @mui components
 import {
-    Grid,
-    Card,
-    CardHeader,
-    CardContent,
-    Container,
-    Typography,
-    Box,
-    Stack,
-    Radio,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Container,
+  Typography,
+  Box,
+  Stack,
+  Radio,
+  Breadcrumbs,
 } from "@mui/material";
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import CustomizedButtons from "../../components/CustomizedButtons";
-import CustomizedRadios from "../../components/CustomizedRadios";
-import CustomizedTabs from "../../components/CustomizedTabs";
 import bg from "../../images/multi_background_dashboard.jpg";
-import TextField from '@mui/material/TextField'
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import { secondaryColor, primaryColor, darkColor, blueColor, greenColor, purpleColor } from "../../styles/Style";
+import TextField from "@mui/material/TextField";
+import CustomizedBody from "../../components/CustomizedBody";
+// Worker
+import { Document, Page, pdfjs } from "react-pdf";
+import { useSelector, useDispatch } from "react-redux";
+import CustomizedContainer from "../../components/CustomizedContainer";
+import CustomizedTextField from "../../components/CustomizedTextField";
+import CustomizedRadios from "../../components/CustomizedRadios";
+import CustomizedCard from "../../components/CustomizedCard";
+import AssignmentViewer from "./AssignmentViewer";
+import CustomizedPdfUploader from "../../components/CustomizedPdfUploader";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import { postNewAssignmentByProfessor } from "../../axios/APIRequests";
+import { ConsoleView } from "react-device-detect";
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+function AssignmentCreation({ history, location }) {
+  const [newAssignment, setNewAssignment] = useState();
+  const [title, setTitle] = useState("");
+  const [solutionPdfFile, setSolutionPdfFile] = useState([]);
+  const [peerReviewPdfFile, setPeerReviewPdfFile] = useState([]);
+  const [solutionDueDate, setSolutionDueDate] = useState(new Date());
+  const [prDueDate, setPRDueDate] = useState(new Date());
+  const [solutionPdfFileName, setSolutionPdfFileName] = useState("");
+  const [peerReviewPdfFileName, setPeerReviewPdfFileName] = useState("");
+  var ErrorMessage = "Please fill out !!!"
+  const [disablePublishBtn, setDisablePublishBtn] = useState(true)
+  useEffect(() => {
+    if (location.state.assignment == undefined) return
+      var assignment = location.state.assignment;
+      console.log(assignment)
+      setTitle(assignment.title);
+      setSolutionDueDate(new Date(assignment.solutionDueDateTime))
+      setPRDueDate(new Date(assignment.peerReviewDueDateTime))
+      setSolutionPdfFileName(assignment.solutionPdfFileName)
+      setPeerReviewPdfFileName(assignment.peerReviewPdfFileName)
+      setSolutionPdfFile(assignment.solutionPdfDoc)
+      setPeerReviewPdfFile(assignment.peerReviewPdfDoc)
 
-    return (
-        <div
-            sx={{ borderRadius: "10px" }}
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
+    if ( title === "" || solutionPdfFile.length === 0 ||  peerReviewPdfFile.length === 0) {
+      setDisablePublishBtn(true)  
+      return
+    }
+    setDisablePublishBtn(false)
+  }, []);
 
-function AssignDueDate() { }
+  useEffect(() => {
+    const generateAssignment = () => {
+      setNewAssignment({
+        courseID: location.state.courseID,
+        settings: "settings",
+        title: title,
+        draft: true,
+        solutionPdfDoc: solutionPdfFile,
+        peerReviewPdfDoc: peerReviewPdfFile,
+        solutionPdfFileName : solutionPdfFileName,
+        peerReviewPdfFileName:peerReviewPdfFileName,
+        solutionDueDateTime: solutionDueDate.toJSON().split(".")[0],
+        peerReviewDueDateTime: prDueDate.toJSON().split(".")[0],
+      });
+    };
+    
+    generateAssignment();
+  }, [title, solutionPdfFile, peerReviewPdfFile,solutionPdfFileName,peerReviewPdfFileName, solutionDueDate, prDueDate]);
 
+  const handlePreview = () => {
+    
+    if (
+      title === "" ||
+      solutionPdfFile.length === 0 ||
+      peerReviewPdfFile.length === 0
+    ) {
+        alert(ErrorMessage)
+    } else{
+      var assignment = {
+        courseID: location.state.courseID,
+        settings: "settings",
+        title: title,
+        solutionPdfDoc: solutionPdfFile,
+        peerReviewPdfDoc: peerReviewPdfFile,
+        solutionPdfFileName : solutionPdfFileName,
+        peerReviewPdfFileName:peerReviewPdfFileName,
+        solutionDueDateTime: solutionDueDate,
+        peerReviewDueDateTime: prDueDate,
+      }
+      console.log(assignment)
+        history.push("./assignmentviewer", {assignment: assignment , 
+          courseID: location.state.courseID 
+        })
+    }
+   
+  }
+  const handleSaveDraft = () => {
+    if (
+      title === "" ||
+      solutionPdfFile.length === 0 ||
+      peerReviewPdfFile.length === 0
+    ) {
+      alert(ErrorMessage)
+    } else {
+      const json = JSON.stringify(newAssignment);
+      console.log(json);
+      postNewAssignmentByProfessor(newAssignment)
+        .then(function (response) {
+          console.log(response);
+          history.push("/course");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
+  const handlePublish = () => {
+    if (
+      title === "" ||
+      solutionPdfFile.length === 0 ||
+      peerReviewPdfFile.length === 0
+    ) {
+      alert(ErrorMessage)
+    } else {
+      var tempAss = {...newAssignment, draft: false}
+      console.log(tempAss)
+      const json = JSON.stringify(tempAss);
+      console.log(json);
+      postNewAssignmentByProfessor(tempAss)
+        .then(function (response) {
+          console.log(response);
+          history.push("/course");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
 
-function AssignmentCreation() {
-    const [solutionDueDate, setSolutionDueDate] = useState('');
-    const [prDueDate, setPRDueDate] = useState('');
+  return (
+    <CustomizedBody bg={bg}>
+      <NavBar fixed></NavBar>
+      <>
+      <CustomizedContainer>
+            <Breadcrumbs aria-label="breadcrumb" mb={5} ml={2}>
+              <Typography color="text.primary">Home</Typography>
+              <Typography color="text.primary">Courses</Typography>
+              <Typography color="text.primary">Course Name</Typography>
+              <Typography color="text.primary" style={{ fontWeight: "600" }}>
+                New Assignment
+              </Typography>
+            </Breadcrumbs>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
 
-    // const handleChange = (event, newValue) => {
-    //     setValue(newValue);
-    // };
-    return (
-        <div
-            style={{
-                backgroundImage: `url(${bg})`,
-                height: "80vh",
-                backgroundSize: "cover",
-                paddingTop: "150px",
-            }}
-        >
-            <NavBar fixed ></NavBar>
-            <Container
-                maxWidth="lg"
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    // justifyContent: "space-around",
-                }}
-            >
-                <Grid
-                    container
-                    spacing={2}
+                <Typography
+                  style={{ fontWeight: "600" }}
+                  variant="body1"
+                  component="div"
                 >
-                    <Grid item xs={8}>
-                        <Typography
-                            style={{ fontWeight: "400" }}
-                            variant="h6"
-                            component="div"
-                        >
-                            New Assignment
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <CustomizedButtons type2 >Preview</CustomizedButtons>
-                    </Grid>
-                </Grid>
+                  Build New Assignment
+                </Typography>
+                <CustomizedButtons
+                  type2
+                  onClick={handlePreview}
+                >
+                  Preview
+                </CustomizedButtons>
+            </Stack>
 
-                {/* First Box */}
-                <Grid item xs={11.1}>
-                    <Card
-                        variant="outlined"
-                        sx={{
-                            overflow: "hidden",
-                            p: 2,
-                            border: "3px solid #fff",
-                            borderRadius: "10px",
-                            marginTop: "10px"
-                        }}
+            {/* First Box */}
+            <CustomizedCard sx={{ marginBottom: "30px", marginTop: "30px" }}>
+              <CardContent>
+                <Stack direction="column" spacing={2}>
+                  <Typography
+                    style={{
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Title Assignment:
+                  </Typography>
+                  <Stack direction="row" spacing={2}>
+                    <CustomizedTextField
+                      value={title}
+                      handleTextFieldChange={setTitle}
                     >
-                        <CardHeader
-                            title={
-                                <Stack>
-                                    <Typography
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            fontWeight: "300",
-                                            margin: "4px",
-                                        }}
-                                        variant="h6"
-                                        component="div"
-                                    >
-                                        Assign Due Dates:
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                        }}
-                                    >
-                                        <TextField onChange={(e) => setSolutionDueDate(e.target.value)}></TextField>
-                                        <Typography
-                                            style={{
-                                                display: "flex",
-                                                fontWeight: "600",
-                                                marginLeft: "10px",
-                                                alignItems: "center"
-                                            }}
-                                            variant="subtitle1"
-                                            component="div"> Solution Due Date</Typography>
-                                        <Grid xs={2}></Grid>
-                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
-                                        <Typography
-                                            style={{
-                                                display: "flex",
-                                                fontWeight: "600",
-                                                marginLeft: "10px",
-                                                alignItems: "center"
-                                            }}
-                                            variant="subtitle1"
-                                            component="div"> Peer Review Due Date</Typography>
-
-
-                                    </Box>
-                                </Stack>
-                            }
-                        ></CardHeader>
-                    </Card>
-                </Grid>
-
-                {/* second box */}
-                <Grid item xs={11.1}>
-                    <Card
-                        variant="outlined"
-                        sx={{
-                            overflow: "hidden",
-                            p: 2,
-                            border: "3px solid #fff",
-                            borderRadius: "10px",
-                            marginTop: "25px"
-                        }}
+                      Title
+                    </CustomizedTextField>
+                    <Typography
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontWeight: "600",
+                      }}
+                      variant="body1"
+                      component="div"
                     >
-                        <CardHeader
-                            title={
-                                <Stack>
-                                    <Typography
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            fontWeight: "300",
-                                            margin: "4px",
-                                        }}
-                                        variant="h6"
-                                        component="div"
-                                    >
-                                        PDF Attachments
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
+                      ‘Solution’ and ‘Peer Review’ will be added to title in
+                      their respective phases.
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </CustomizedCard>
 
-                                        }}
-                                    >
-                                        <TextField placeholder="Optional Comments" ></TextField>
-                                        <Box sx={{ p: 2 }}></Box>
-                                        <CustomizedButtons type1 model={"type1"}>Upload </CustomizedButtons>
-                                    </Box>
-                                </Stack>
-                            }
-                        ></CardHeader>
-                    </Card>
-                </Grid>
-
-                {/* third box */}
-                <Grid item xs={11.1}>
-                    <Card
-                        variant="outlined"
-                        sx={{
-                            overflow: "hidden",
-                            p: 1,
-                            border: "3px solid #fff",
-                            borderRadius: "10px",
-                            marginTop: "25px",
-                            marginBottom: "10px"
+            {/* second box */}
+            <CustomizedCard sx={{ marginBottom: "30px" }}>
+              <CardContent>
+                <Stack direction="column" spacing={2}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Solution Assignment Content:
+                  </Typography>
+                  <Typography variant="body2" component="div">
+                    Please set the due date and upload instruction PDFs to be
+                    displayed within solution assignment.
+                  </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        label="Solution Due Date"
+                        value={solutionDueDate}
+                        onChange={(newValue) => {
+                          setSolutionDueDate(newValue);
                         }}
-                    >
-                        <CardHeader
-                            title={
-                                <Stack>
-                                    <Typography
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            fontWeight: "300",
-                                            margin: "4px",
-                                        }}
-                                        variant="h6"
-                                        component="div"
-                                    >
-                                        Schedule Send Date:
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
+                      />
+                    </LocalizationProvider>
+                    <CustomizedPdfUploader
+                      id="solution"
+                      pdfFileName={solutionPdfFileName}
+                      setPdfFileName={setSolutionPdfFileName}
+                      setPdfFile={setSolutionPdfFile}
+                    ></CustomizedPdfUploader>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </CustomizedCard>
 
-                                        }}
-                                    >
-                                        <FormControl component="fieldset">
-                                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                                                <FormControlLabel value="Drafts" control={<Radio
-                                                    sx={{
-                                                        color: darkColor,
-                                                        '&.Mui-checked': {
-                                                            color: darkColor,
-                                                        },
-                                                    }}
-                                                />} label="Publish Now" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                        <TextField onChange={(e) => setPRDueDate(e.target.value)}></TextField>
-                                        <Typography
-                                            style={{
-                                                display: "flex",
-                                                fontWeight: "600",
-                                                marginLeft: "10px",
-                                                alignItems: "center"
-                                            }}
-                                            variant="subtitle1"
-                                            component="div"> Pre-Schedule</Typography>
-                                    </Box>
-                                </Stack>
-                            }
-                        ></CardHeader>
-                    </Card>
-                </Grid>
-                <Grid item xs={11} sx={{ display: "flex", justifyContent: "flex-end", margintop: "10px" }}>
-                    <CustomizedButtons type2 model={"type2"}> Save Draft  </CustomizedButtons>
-                    <Box sx={{ p: 2 }}></Box>
-                    <CustomizedButtons type1 model={"type2"}> Publish  </CustomizedButtons> </Grid>
+            {/* third box */}
+            <CustomizedCard sx={{ marginBottom: "30px" }}>
+              <CardContent>
+                <Stack direction="column" spacing={2}>
+                  <Typography
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      fontWeight: "600",
+                    }}
+                    variant="body1"
+                    component="div"
+                  >
+                    Peer Review Assignment Content:
+                  </Typography>
+                  <Typography variant="body2" component="div">
+                    Please set the due date and upload instruction PDFs to be
+                    displayed within Peer Review Assignment. Please note that
+                    peer reviews must be manually sent for review by professors
+                    after quality checking.
+                  </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        label="Peer Review Due Date"
+                        value={prDueDate}
+                        onChange={(newValue) => {
+                          setPRDueDate(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
+                    <CustomizedPdfUploader
+                      id="peerReview"
+                      pdfFileName={peerReviewPdfFileName}
+                      setPdfFileName={setPeerReviewPdfFileName}
+                      setPdfFile={setPeerReviewPdfFile}
+                    ></CustomizedPdfUploader>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </CustomizedCard>
 
-
-            </Container>
-        </div>
-    )
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                margintop: "10px",
+              }}
+            >
+              <Stack direction="row" spacing={2}>
+                <CustomizedButtons type2 model={"type2"} onClick={handleSaveDraft}>
+                Save Draft
+              </CustomizedButtons>
+              <CustomizedButtons onClick={handlePublish} type1 >
+                Publish
+              </CustomizedButtons>
+              </Stack>
+              
+            </Grid>
+          </CustomizedContainer>
+      </>
+    </CustomizedBody>
+  );
 }
 
-export default AssignmentCreation
+export default AssignmentCreation;

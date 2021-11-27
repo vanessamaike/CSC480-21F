@@ -4,9 +4,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-// @material-ui/core components
-import { makeStyles } from '@mui/styles'
-
 // core components
 import CardStyle from "../styles/CardStyle";
 import { Card } from "@mui/material";
