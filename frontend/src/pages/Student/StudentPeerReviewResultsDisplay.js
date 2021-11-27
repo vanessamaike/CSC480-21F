@@ -11,9 +11,6 @@ import {
 } from "@mui/material";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import assignmentPdf1 from "../../pdf/sample.pdf";
-import assignmentPdf2 from "../../pdf/sample.pdf";
-import assignmentPdf3 from "../../pdf/sample.pdf";
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -49,7 +46,6 @@ function TabPanel(props) {
   );
 }
 function StudentPeerReviewResultsDisplay({ history, location }) {
-  let reviews = [assignmentPdf1, assignmentPdf2, assignmentPdf3];
   const dispatch = useDispatch();
   const getUser = useSelector(selectUser);
   const { user, isAuthenticated, authLoading } = getUser;

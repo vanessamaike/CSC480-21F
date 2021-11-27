@@ -9,7 +9,7 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import viewPdf from "../../pdf/sample.pdf";
+
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
 import CustomizedButtons from "../../components/CustomizedButtons";
@@ -261,7 +261,7 @@ function StudentPeerReviewQualityCheckPage({ history, location }) {
                     <CustomizedButtons
                       type3
                       model={"download"}
-                      href={viewPdf}
+                      href={linkDownload}
                       download={"PeerReviewInstructor.pdf"}
                     >
                       Download Peer Review Instruction

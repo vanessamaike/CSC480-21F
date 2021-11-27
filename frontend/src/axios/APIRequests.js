@@ -3,7 +3,16 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../features/userSlice";
 
-const url = "http://192.168.0.71"
+const url = "http://pi.cs.oswego.edu"//"http://192.168.0.71"
+
+const PROFESSOR_PORT = "5682"
+
+const STUDENT_PORT = "5683"
+
+const LOGIN_PORT = "5681"
+
+const ULTILITY_PORT = "5680"
+
 const convertToJson_AddToken = (data) => {
 
   const token = localStorage.getItem('token');
@@ -31,7 +40,7 @@ export const getAssignmentsByProfessor = async () => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/professor/${userID}/course/assignment`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/${userID}/course/assignment`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -42,7 +51,7 @@ export const getAssignmentsByProfessor = async () => {
 export const getSpecificAssignment = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/assignment/${assignmentID}`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/assignment/${assignmentID}`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -51,7 +60,7 @@ export const getSpecificAssignment = async (assignmentID) => {
 export const deleteCourseByProfessor = async (courseID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/course/delete/${courseID}`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/course/delete/${courseID}`, json);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -62,7 +71,7 @@ export const getTeamsByProfessor = async () => {
     try {
       const json = convertToJson_AddToken()
       const userID = localStorage.getItem('userID');
-      const response = await axios.post(`${url}:9080/api/professor/${userID}/course/team`,json);
+      const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/${userID}/course/team`,json);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -71,7 +80,7 @@ export const getTeamsByProfessor = async () => {
 export const getQualityCheckSolutionByProfessor = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/professor/assignment/${assignmentID}/solution/qualityCheck`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/assignment/${assignmentID}/solution/qualityCheck`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -80,7 +89,7 @@ export const getQualityCheckSolutionByProfessor = async (assignmentID) => {
 export const getQualityCheckPeerReviewByProfesssor = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/professor/assignment/${assignmentID}/peerreview/qualityCheck`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/assignment/${assignmentID}/peerreview/qualityCheck`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -89,7 +98,7 @@ export const getQualityCheckPeerReviewByProfesssor = async (assignmentID) => {
 export const sendReviewByProfessor = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/professor/assignment/${assignmentID}/assignReview`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/assignment/${assignmentID}/assignReview`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -98,7 +107,7 @@ export const sendReviewByProfessor = async (assignmentID) => {
 export const sendFeedBackByProfessor = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/assignment/setResultStage/${assignmentID}`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/assignment/setResultStage/${assignmentID}`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -108,7 +117,7 @@ export const sendFeedBackByProfessor = async (assignmentID) => {
 export const postNewStudentByProfessor = async (data) => {
     try {
       const json = convertToJson_AddToken(data)
-      const response = await axios.post(`${url}:9080/api/student`, json);
+      const response = await axios.post(`${url}:${STUDENT_PORT}/api/student`, json);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -117,7 +126,7 @@ export const postNewStudentByProfessor = async (data) => {
 export const postNewAssignmentByProfessor = async (data) => {
   try {
     const json = convertToJson_AddToken(data)
-    const response = await axios.post(`${url}:9080/api/assignment`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/assignment`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -126,7 +135,7 @@ export const postNewAssignmentByProfessor = async (data) => {
 export const editAssignmentByProfessor = async (data) => {
   try {
     const json = convertToJson_AddToken(data)
-    const response = await axios.post(`${url}:9080/api/assignment/update`,json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/assignment/update`,json);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -136,7 +145,7 @@ export const editAssignmentByProfessor = async (data) => {
 export const deleteAssignmentByProfessor = async (assID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/assignment/delete/${assID}`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/assignment/delete/${assID}`, json);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -146,7 +155,7 @@ export const deleteAssignmentByProfessor = async (assID) => {
 export const postNewCourseByProfessor = async (data) => {
   try {
     const json = convertToJson_AddToken(data)
-    const response = await axios.post(`${url}:9080/api/parse`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/parse`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -155,7 +164,7 @@ export const postNewCourseByProfessor = async (data) => {
 export const deleteStudentByProfessor = async (stuID) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/student/delete/${stuID}`, json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/delete/${stuID}`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -167,7 +176,7 @@ export const rejectSolutionByProfessor = async (assID,teamID) => {
     console.log(assID);
     console.log(teamID);
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/professor/assignment/${assID}/team/${teamID}/reject/solution`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/assignment/${assID}/team/${teamID}/reject/solution`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -176,7 +185,7 @@ export const rejectSolutionByProfessor = async (assID,teamID) => {
 export const rejectPeerReviewByProfessor = async (assID,teamId, solutionId, solutionSubmissionName) => {
   try {
     const json = convertToJson_AddToken()
-    const response = await axios.post(`${url}:9080/api/professor/assignment/${assID}/team/${teamId}/reject/review/${solutionId}/solutionSubmissionName/${solutionSubmissionName}`, json);
+    const response = await axios.post(`${url}:${PROFESSOR_PORT}/api/professor/assignment/${assID}/team/${teamId}/reject/review/${solutionId}/solutionSubmissionName/${solutionSubmissionName}`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -188,7 +197,7 @@ export const getResultsByStudent = async () => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/student/${userID}/course/assignment/result/student`,json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/course/assignment/result/student`,json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -198,7 +207,7 @@ export const getPeerReviewResulttByStudent = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/student/${userID}/assignment/${assignmentID}/result/student`,json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/assignment/${assignmentID}/result/student`,json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -210,7 +219,7 @@ export const getAssignmenstByStudent = async () => {
       const json = convertToJson_AddToken()
       const userID = localStorage.getItem('userID');
       console.log(userID)
-      const response = await axios.post(`${url}:9080/api/student/${userID}/course/assignment/student`,json);
+      const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/course/assignment/student`,json);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -220,7 +229,7 @@ export const getSubmissionsToReviewByStudent = async (assignmentID) => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/student/${userID}/assignment/${assignmentID}/reviews`, json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/assignment/${assignmentID}/reviews`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -230,7 +239,7 @@ export const getTeamIdByStudentAndCourse = async (courseID) => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/student/${userID}/course/${courseID}/teamId`, json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/course/${courseID}/teamId`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -239,7 +248,7 @@ export const getTeamIdByStudentAndCourse = async (courseID) => {
 export const postNewSolutionByStudent = async (data) => {
   try {
     const json = convertToJson_AddToken(data)
-    const response = await axios.post(`${url}:9080/api/solution`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/solution`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -248,7 +257,7 @@ export const postNewSolutionByStudent = async (data) => {
 export const postNewPeerReviewByStudent = async (data) => {
   try {
     const json = convertToJson_AddToken(data)
-    const response = await axios.post(`${url}:9080/api/review`, json);
+    const response = await axios.post(`${url}:${ULTILITY_PORT}/api/review`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -258,7 +267,7 @@ export const getTeamsByStudent = async () => {
   try {
     const json = convertToJson_AddToken()
     const userID = localStorage.getItem('userID');
-    const response = await axios.post(`${url}:9080/api/student/${userID}/course/team/student`, json);
+    const response = await axios.post(`${url}:${STUDENT_PORT}/api/student/${userID}/course/team/student`, json);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -267,7 +276,7 @@ export const getTeamsByStudent = async () => {
 export const loginAuth = async (tokenId) => {
   console.log(tokenId)
   try {
-    const response = await axios.post(`${url}:9080/api/login`, tokenId);
+    const response = await axios.post(`${url}:${LOGIN_PORT}/api/login`, tokenId);
     console.log(response)
     return response.data;
   } catch (error) {
