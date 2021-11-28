@@ -1,8 +1,5 @@
 use CSC480database;    
 
-/home/dattran/CSC480-21F/backend/util/src/main/java/edu/oswego/util/dao/impl
-
-/home/dattran/CSC480-21F/backend/Login-microservice/src/main/java/edu/oswego/rest/controller/user
 CREATE TABLE submission(submissionId int NOT NULL,teamId int NOT NULL,submissionTime datetime NOT NULL,
     comments longtext NOT NULL,
     signOff VARCHAR(255) NOT NULL,

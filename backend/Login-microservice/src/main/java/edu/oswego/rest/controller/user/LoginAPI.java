@@ -47,8 +47,17 @@ public class LoginAPI {
         }
 
         User user = auth.getUser();
-        Student student = studentService.findOne(user.getUserID());
-        JSONObject userJSON = new JSONObject(student);
+        JSONObject userJSON = new JSONObject();
+        if (user.getRole() == "student")
+        {
+            Student student = studentService.findOne(user.getUserID());
+            userJSON = new JSONObject(student);
+        }
+        else{
+            userJSON = new JSONObject(user);
+        }
+
+
         userJSON.put("role",user.getRole());
         userJSON.put("token",token);
 
