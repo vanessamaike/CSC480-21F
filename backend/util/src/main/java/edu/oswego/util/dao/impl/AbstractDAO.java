@@ -20,12 +20,12 @@ public class AbstractDAO<T> implements GenericDAO<T> {
             File file = new File(
                     ".."+fs+".."+fs+".."+fs+".."+fs+".."+fs+
                             ".."+fs+".."+fs+"database.txt");
-//            File file = new File(
-//                    "..\\..\\..\\..\\..\\..\\..\\database.txt");
+
             Scanner sc = new Scanner(file);
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/CSC480database";
+            //String url = "jdbc:mysql://pi.cs.oswego.edu:3306/21F_peerset";
             String user = "";
             String password = "";
 
