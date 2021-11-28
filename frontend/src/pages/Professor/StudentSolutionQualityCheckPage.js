@@ -12,7 +12,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
 import PDFControlBar from "../../components/PDFhandling/PDFControlBar";
-import viewPdf from "../../pdf/sample.pdf";
+
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";

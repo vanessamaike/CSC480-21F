@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import assignmentPdf from "../../pdf/sample.pdf";
+
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
@@ -180,7 +180,7 @@ function NewSolutionAssignmentView({ history, location }) {
                         Download Instructions
                       </CustomizedButtons>
                     </div>
-                  {assignmentPdf && (
+                  {assignment.solutionPdfDoc && (
                     <Stack direction="row" justifyContent="center" alignItems="center" p={1} height={825}
                     >
                       <CustomizedButtons

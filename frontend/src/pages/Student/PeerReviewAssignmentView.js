@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 //PDF
 import { Document, Page, pdfjs } from "react-pdf";
-import assignmentPdf from "../../pdf/sample.pdf";
 
 // styled components
 import NavBar from "../../components/NavBar/NavBar";
