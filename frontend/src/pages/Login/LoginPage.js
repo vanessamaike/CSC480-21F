@@ -26,8 +26,6 @@ const CLIENT_ID = "637717333332-2fauonnc42evp1f3qfi7e4br0okm5cu8.apps.googleuser
 function LoginPage({ history }) {
   const dispatch = useDispatch();
   const responseGoogle = (response) => {
-    console.log(response);
-    console.log(response.profileObj);
     if(response.profileObj === undefined || response.tokenId === undefined) return
     dispatch(setUserName(response.profileObj.name));
     signIn(response.tokenId)
@@ -37,7 +35,6 @@ function LoginPage({ history }) {
     // setAuthToken()
     loginAuth(tokenId)
       .then(function (response) {
-        console.log(response);
         dispatch(setUser(response));
         localStorage.token = response.token;
         localStorage.userID = response.userID;

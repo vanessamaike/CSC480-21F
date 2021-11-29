@@ -1,21 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// @mui components
-import { makeStyles } from "@mui/styles";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Button, Collapse, Grid, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
-import { styled } from "@mui/material/styles";
-import studentLogo from "../../images/student_logo.png";
-import professorLogo from "../../images/professor_logo.png";
+import React from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { selectUser, selectUserName, setUser } from "../../features/userSlice";
+import professorLogo from "../../images/professor_logo.png";
+import studentLogo from "../../images/student_logo.png";
 // styled components
 import NavBarStyle from "../../styles/NavBarStyle";
-import { useSelector, useDispatch } from "react-redux";
-import { selectUser,selectUserName, setUser } from "../../features/userSlice";
-import { whiteColor, darkColor } from "../../styles/Style";
+import { darkColor, whiteColor } from "../../styles/Style";
 import CustomizedContainer from "../CustomizedContainer";
-import { Grid, Stack, Button, Menu, MenuItem, Collapse } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 function NavBar({ history }) {
   const dispatch = useDispatch();
   const nav = NavBarStyle();
