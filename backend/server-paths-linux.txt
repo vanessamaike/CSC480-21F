@@ -1,11 +1,4 @@
-/answer/
-/assignment/
-/course/
-/question/
-/csvImport/
-/documentDistributor/
-/review/
-/socialLogin/
-/student/
-/submission/
-/user/
+/Login-microservice/
+/Professor-microservice/
+/Student-microservice/
+/Utility-microservice/
