@@ -24,6 +24,11 @@ public class UserAPI {
     }
 
     @GET
+    public String getGood(){
+       return "Good !!";
+    }
+
+    @GET
     @Path("/{userId}")
     public String getSpecificUser(@PathParam("userId") String _userId){
         //TODO This method needs to ensure authentication
