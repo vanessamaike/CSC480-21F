@@ -71,11 +71,9 @@ public class Configure {
                     File f = new File(filepath);
                     try {
                         Scanner scone = new Scanner(f);
-                        String email = scone.nextLine();
                         System.out.println("Adding professors...");
-                        while (email!=null){
-                            addProfessor(useMe, email);
-                            email = scone.nextLine();
+                        while (scone.hasNext()){
+                            addProfessor(useMe, scone.nextLine());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
@@ -89,11 +87,9 @@ public class Configure {
                     File f = new File(filepath);
                     try {
                         Scanner scone = new Scanner(f);
-                        String email = scone.nextLine();
                         System.out.println("Removing professors...");
-                        while (email!=null){
-                            removeProfessor(useMe, email);
-                            email = scone.nextLine();
+                        while (scone.hasNext()){
+                            removeProfessor(useMe, scone.nextLine());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
