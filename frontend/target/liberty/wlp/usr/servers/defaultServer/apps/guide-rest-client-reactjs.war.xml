@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<archive>
-    <dir sourceOnDisk="/home/ductran/Desktop/CSC480-21F/frontend/src/main/webapp" targetInArchive="/"/>
-    <dir sourceOnDisk="/home/ductran/Desktop/CSC480-21F/frontend/target/classes" targetInArchive="/WEB-INF/classes"/>
-    <file sourceOnDisk="/home/ductran/Desktop/CSC480-21F/frontend/target/tmp/META-INF/MANIFEST.MF" targetInArchive="/META-INF/MANIFEST.MF"/>
-</archive>
