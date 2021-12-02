@@ -1,6 +1,6 @@
 # PeerSet
 
-![PeerSet logo](https://github.com/vanessamaike/CSC480-21F/main/frontend/src/images/logo.png)
+<img src="https://github.com/vanessamaike/CSC480-21F/blob/main/frontend/src/main/frontend/src/images/logo.png" alt="PeerSet Logo" title="PeerSet" width="350px">
 
 ## What is this Application?
 
