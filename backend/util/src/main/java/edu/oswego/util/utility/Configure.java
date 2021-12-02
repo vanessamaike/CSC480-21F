@@ -46,11 +46,11 @@ public class Configure {
             System.out.println(helpMessage);
             System.exit(1);
         }
+        putConfigs(makeConfig());
         if(args.length==1){
             switch (args[0]){
                 case "run":{
                     System.out.println("Beginning PeerSet...");
-                    start();
                     break;
                 }
                 case "end":{
@@ -174,9 +174,9 @@ public class Configure {
     /**
      * This method creates a new config file if one does not exist.
      * This new config file will have the default settings.
-     * This method also calls the startup commands.
+     * @return The config file
      */
-    private static void start(){
+    private static File makeConfig(){
         File f = new File("../../../../"+filename);
         if(!f.exists()){
             try {
@@ -195,11 +195,17 @@ public class Configure {
                 System.exit(1);
             }
         }
+        return f;
+    }
 
-        //Create the config files in the folders.
+    /**
+     * This method puts the config files in the right spots.
+     * @param configFile The config file.
+     */
+    private static void putConfigs(File configFile){
         try{
             StringBuilder manConfig = new StringBuilder();
-            Scanner scone = new Scanner(f);
+            Scanner scone = new Scanner(configFile);
             while(scone.hasNext()) manConfig.append(scone.nextLine());
             scone.close();
 
