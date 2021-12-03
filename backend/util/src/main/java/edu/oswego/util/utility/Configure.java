@@ -147,7 +147,7 @@ public class Configure {
     private static void addProfessor(String email){
         try{
             User user = new User(0, email, "professor", "");
-            if(useMe.findOneWithEmail(email)!=null) user = useMe.save(user);
+            if(useMe.findOneWithEmail(email)==null) user = useMe.save(user);
             if(user==null) System.out.println("Could not create an account for "+email+".");
             else System.out.println("Professor account created for "+email+".");
         } catch (Exception e){
