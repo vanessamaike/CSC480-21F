@@ -8,9 +8,12 @@ import java.util.Scanner;
 
 /**
  * @author Phoenix Boisnier
- * This handles startup, shutdown, and authorized professor management for PeerSet.
+ * This handles startup, shutdown, config generation, and authorized professor management for
+ * PeerSet.
  */
 public class Configure {
+
+    private static final UserService useMe = new UserService();
 
     private static final String fs = System.getProperty("file.separator");
     private static final String commonPath = "src"+fs+"main"+fs+"resources"+fs+"META-INF"+fs+"";
@@ -66,7 +69,6 @@ public class Configure {
         }
         if(args.length==2){
             String filepath = args[1];
-            UserService useMe = new UserService();
             switch (args[0]){
                 case "allow":{
                     System.out.println("Adding professor accounts using the file \n"+filepath);
@@ -75,11 +77,11 @@ public class Configure {
                         Scanner scone = new Scanner(f);
                         System.out.println("Adding professors...");
                         while (scone.hasNext()){
-                            addProfessor(useMe, scone.nextLine().trim());
+                            addProfessor(scone.nextLine().trim());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
-                        manualManipulation(useMe, true, filepath);
+                        manualManipulation(true, filepath);
                     }
                     System.out.println("Professors have been added!");
                     break;
@@ -91,11 +93,11 @@ public class Configure {
                         Scanner scone = new Scanner(f);
                         System.out.println("Removing professors...");
                         while (scone.hasNext()){
-                            removeProfessor(useMe, scone.nextLine().trim());
+                            removeProfessor(scone.nextLine().trim());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
-                        manualManipulation(useMe, false, filepath);
+                        manualManipulation(false, filepath);
                     }
                     System.out.println("Professors have been removed!");
                     break;
@@ -111,11 +113,10 @@ public class Configure {
     /**
      * This method offers a manual method of handling professor creation in the event the scanner
      * cannot connect, or the file cannot be found.
-     * @param u The user service object.
      * @param adding True if adding professors, else false.
      * @param filePath The filepath that cause this to happen, so that it may be shamed.
      */
-    private static void manualManipulation(UserService u, boolean adding, String filePath){
+    private static void manualManipulation(boolean adding, String filePath){
         System.out.print("The file could not be found for the path " +filePath+". Would you like to ");
         if(adding) System.out.print("add");
         else System.out.print("remove");
@@ -126,8 +127,8 @@ public class Configure {
             System.out.println("Enter the first professor's email address:");
             String input = scone.nextLine();
             while(!input.equalsIgnoreCase("q")){
-                if(adding) addProfessor(u, input);
-                else removeProfessor(u, input);
+                if(adding) addProfessor(input);
+                else removeProfessor(input);
                 System.out.println("Enter the next professor's email (or 'q' to quit):");
                 input = scone.nextLine();
             }
@@ -140,14 +141,13 @@ public class Configure {
     }
 
     /**
-     * This method adds a professor.
-     * @param u The user service.
+     * This method adds a professor if they are not already in the database.
      * @param email The new professor's gmail email address.
      */
-    private static void addProfessor(UserService u, String email){
+    private static void addProfessor(String email){
         try{
             User user = new User(0, email, "professor", "");
-            user = u.save(user);
+            if(useMe.findOneWithEmail(email)!=null) user = useMe.save(user);
             if(user==null) System.out.println("Could not create an account for "+email+".");
             else System.out.println("Professor account created for "+email+".");
         } catch (Exception e){
@@ -159,13 +159,12 @@ public class Configure {
 
     /**
      * This method removes a professor.
-     * @param u The user service.
      * @param email The new professor's gmail email address.
      */
-    private static void removeProfessor(UserService u, String email){
+    private static void removeProfessor(String email){
         try{
             User user = new User(0, email, "professor", "");
-            u.delete(user);
+            useMe.delete(user);
             System.out.println("Professor account deleted for "+email+".");
         } catch (Exception e){
             System.out.println("Something went wrong.");
