@@ -7,15 +7,17 @@ import java.io.*;
 import java.util.Scanner;
 
 /**
+ * @author Phoenix Boisnier
  * This handles startup, shutdown, and authorized professor management for PeerSet.
  */
 public class Configure {
 
-    private static final String commonPath = "src/main/resources/META-INF/";
-    private static final String loginPath = "backend/Login-microservice/";
-    private static final String profePath = "backend/Professor-microservice/";
-    private static final String studePath = "backend/Student-microservice/";
-    private static final String utiliPath = "backend/Utility-microservice/";
+    private static final String fs = System.getProperty("file.separator");
+    private static final String commonPath = "src"+fs+"main"+fs+"resources"+fs+"META-INF"+fs+"";
+    private static final String loginPath = "backend"+fs+"Login-microservice"+fs+"";
+    private static final String profePath = "backend"+fs+"Professor-microservice"+fs+"";
+    private static final String studePath = "backend"+fs+"Student-microservice"+fs+"";
+    private static final String utiliPath = "backend"+fs+"Utility-microservice"+fs+"";
     private static final String filename = "microprofile-properties.config";
     //TODO fill out the config contents.
     private static final String configContents = "this-is-a-variable=true";
@@ -73,7 +75,7 @@ public class Configure {
                         Scanner scone = new Scanner(f);
                         System.out.println("Adding professors...");
                         while (scone.hasNext()){
-                            addProfessor(useMe, scone.nextLine());
+                            addProfessor(useMe, scone.nextLine().trim());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
@@ -89,7 +91,7 @@ public class Configure {
                         Scanner scone = new Scanner(f);
                         System.out.println("Removing professors...");
                         while (scone.hasNext()){
-                            removeProfessor(useMe, scone.nextLine());
+                            removeProfessor(useMe, scone.nextLine().trim());
                         }
                         scone.close();
                     } catch (FileNotFoundException e) {
@@ -177,7 +179,7 @@ public class Configure {
      * @return The config file
      */
     private static File makeConfig(){
-        File f = new File("../../../../"+filename);
+        File f = new File(".."+fs+".."+fs+".."+fs+".."+fs+""+filename);
         if(!f.exists()){
             try {
                 if(f.createNewFile()) {
@@ -211,7 +213,7 @@ public class Configure {
 
             File thisAbsPath = new File("");
             String absPath = thisAbsPath.getAbsolutePath();
-            int backendIndex = absPath.indexOf("backend/");
+            int backendIndex = absPath.indexOf("backend"+fs+"");
             File loginConfig = new File(absPath.substring(0,backendIndex)+loginPath+commonPath+filename);
             File profeConfig = new File(absPath.substring(0,backendIndex)+profePath+commonPath+filename);
             File studeConfig = new File(absPath.substring(0,backendIndex)+studePath+commonPath+filename);
