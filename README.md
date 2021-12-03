@@ -6,7 +6,7 @@
 
 PeerSet is a web application that was designed to help college professors facilitate [Calibrated Peer Review (CPR)](http://cpr.molsci.ucla.edu/Home) in their classes. CPR is a method of peer review in which students are provided with grading instructions and examples of low, medium and high quality solutions to the assignments posed by their professors. These examples serve as a baseline for their evaluation of their peers’ work. 
 
-PeerSet was designed and developed by the CSC 480/HCI 521(Software Design) class during the Fall 2021 semester at SUNY Oswego. Students in the class were divided into teams, and each team had a specific role to play in the completion of the project. These roles included requirements elicitation and documentation, usability design and assessment, front end (GUI) development, and back end (engine, database and networking) development. The project was completed in collaboration with IBM, who provided technical resources and valuable assistance throughout the semester.
+PeerSet was designed and developed by the CSC 480/HCI 521 (Software Design) class during the Fall 2021 semester at SUNY Oswego. Students in the class were divided into teams, and each team had a specific role to play in the completion of the project. These roles included requirements elicitation and documentation, usability design and assessment, front end (GUI) development, and back end (engine, database and networking) development. The project was completed in collaboration with IBM, who provided technical resources and valuable assistance throughout the semester.
 
 ### Why PeerSet Was Built
 
