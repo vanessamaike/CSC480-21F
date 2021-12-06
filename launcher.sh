@@ -3,6 +3,10 @@ cd backend/util/;
 mvn package;
 wait;
 cd ../..;
+dir=$(pwd);
+pth="mysql-connector-java-8.0.27.jar";
+dirc="$dir/$pth";
+echo $dirc;
 if [ "$#" == 1 ]; then
 	cd backend/util/target/classes/;
 	java edu.oswego.util.utility.Configure $1;
@@ -10,7 +14,8 @@ if [ "$#" == 1 ]; then
 else 
 	if [ "$#" == 2 ]; then
 		cd backend/util/target/classes/;
-		java edu.oswego.util.utility.Configure $1 $2
+		java --class-path "$dir/backend/util/target/classes/":"$dir/backend/util/target/classes/mysql-connector-java-8.0.27.jar" edu.oswego.util.utility.Configure $1 $2
+		#java -cp "$dir":"$dir/backend/util/target/classes/" edu.oswego.util.utility.Configure $1 $2
 		wait;
 	else
 		cd backend/util/target/classes/;
