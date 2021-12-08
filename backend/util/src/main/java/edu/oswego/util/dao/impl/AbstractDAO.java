@@ -6,43 +6,37 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import edu.oswego.util.dao.GenericDAO;
 import edu.oswego.util.mapper.RowMapper;
+import edu.oswego.util.utility.ConfigReader;
+
+//import javax.inject.Inject;
+//import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class AbstractDAO<T> implements GenericDAO<T> {
 
-    public Connection getConnection() {
+    private final ConfigReader read = new ConfigReader();
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.util.dao.impl.AbstractDAO.url")
+    String url = read.getValueAsString("edu.oswego.util.dao.impl.AbstractDAO.url");
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.util.dao.impl.AbstractDAO.user")
+    String user = read.getValueAsString("edu.oswego.util.dao.impl.AbstractDAO.user");
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.util.dao.impl.AbstractDAO.password")
+    String password = read.getValueAsString("edu.oswego.util.dao.impl.AbstractDAO.password");
+
+    public Connection getConnection() throws SQLException {
         try {
-            String fs = System.getProperty("file.separator");
-            File file = new File(
-                    ".."+fs+".."+fs+".."+fs+".."+fs+".."+fs+
-                            ".."+fs+".."+fs+"database.txt");
-
-            Scanner sc = new Scanner(file);
-
+            //String url = "jdbc:mysql://localhost:3306/CSC480database";
+            // String url = "jdbc:mysql://pi.cs.oswego.edu:3306/21F_peerset";
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/CSC480database";
-            //String url = "jdbc:mysql://pi.cs.oswego.edu:3306/21F_peerset";
-            String user = "";
-            String password = "";
-
-            while (sc.hasNextLine())
-            {
-                user = sc.nextLine();
-                password = sc.nextLine();
-            }
-
-
-
-            Connection con =  DriverManager.getConnection(url,user,password);
-            return con;
+            return DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {
-            return null;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
             return null;
         }
     }
