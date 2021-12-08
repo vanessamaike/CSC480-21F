@@ -16,14 +16,27 @@ public class Configure {
     private static final UserService useMe = new UserService();
 
     private static final String fs = System.getProperty("file.separator");
-    private static final String commonPath = "src"+fs+"main"+fs+"resources"+fs+"META-INF"+fs+"";
-    private static final String loginPath = "backend"+fs+"Login-microservice"+fs+"";
-    private static final String profePath = "backend"+fs+"Professor-microservice"+fs+"";
-    private static final String studePath = "backend"+fs+"Student-microservice"+fs+"";
-    private static final String utiliPath = "backend"+fs+"Utility-microservice"+fs+"";
+    private static final String commonPath = "src"+fs+"main"+fs+"resources"+fs+"META-INF"+fs;
+    private static final String loginPath = "backend"+fs+"Login-microservice"+fs;
+    private static final String profePath = "backend"+fs+"Professor-microservice"+fs;
+    private static final String studePath = "backend"+fs+"Student-microservice"+fs;
+    private static final String utiliPath = "backend"+fs+"Utility-microservice"+fs;
+    private static final String utildPath = "backend"+fs+"util"+fs;
     private static final String filename = "microprofile-properties.config";
-    //TODO fill out the config contents.
-    private static final String configContents = "this-is-a-variable=true";
+
+    private static final String configContents = "config_ordinal=100\n" +
+            "\n" +
+            "edu.oswego.rest.util.utility.from = peerreview21@gmail.com\n" +
+            "edu.oswego.rest.util.utility.password = password\n" +
+            "edu.oswego.rest.util.utility.host = smtp.gmail.com\n" +
+            "\n" +
+            "edu.oswego.rest.util.objects.authObject.CLIENT_ID = \n" +
+            "\n" +
+            "edu.oswego.util.dao.impl.AbstractDAO.url = jdbc:mysql://pi.cs.oswego.edu:3306/21F_peerset\n" +
+            "edu.oswego.util.dao.impl.AbstractDAO.user = peerset_user\n" +
+            "edu.oswego.util.dao.impl.AbstractDAO.password = password\n" +
+            "\n" +
+            "edu.oswego.rest.util.utility.SD.dev = ";
 
     /**
      * The args will be either length 1 or 2, otherwise print help message and exit.
@@ -33,7 +46,7 @@ public class Configure {
 
         String helpMessage = "This script helps manage the PeerSet server." +
                 "\n\tThese are the following options for the syntax \"./launcher.sh [options]\":" +
-                "\n\t\"./launcher.sh --h\" : " + "Displays this help message." +
+                "\n\t\"./launcher.sh --h\" : " + "Displays this help message and restores the config file." +
                 "\n\t\"./launcher.sh run\" : Runs PeerSet with the current configurations." +
                 "\n\t\"./launcher.sh end\" : Ends PeerSet, ready to start again later." +
                 "\n\t\"./launcher.sh allow <filepath>\" : Creates user accounts with the professor role" +
@@ -49,9 +62,11 @@ public class Configure {
         if(args.length!=1 && args.length!=2) {
             System.out.println("Incorrect number of arguments. Required: 1 or 2.");
             System.out.println(helpMessage);
+            makeConfig();
             System.exit(1);
         }
-        putConfigs(makeConfig());
+        makeConfig();
+        //putConfigs(makeConfig());
         if(args.length==1){
             switch (args[0]){
                 case "run":{
@@ -64,6 +79,7 @@ public class Configure {
                 }
                 default:{
                     System.out.println(helpMessage);
+                    makeConfig();
                 }
             }
         }
@@ -175,10 +191,13 @@ public class Configure {
     /**
      * This method creates a new config file if one does not exist.
      * This new config file will have the default settings.
-     * @return The config file
      */
-    private static File makeConfig(){
-        File f = new File(".."+fs+".."+fs+".."+fs+".."+fs+""+filename);
+    public static void makeConfig(){
+
+        File thisAbsPath = new File("");
+        String absPath = thisAbsPath.getAbsolutePath();
+        int backendIndex = absPath.indexOf("backend");
+        File f = new File(absPath.substring(0,backendIndex)+filename);
         if(!f.exists()){
             try {
                 if(f.createNewFile()) {
@@ -187,6 +206,10 @@ public class Configure {
                     fw.flush();
                     fw.close();
                     System.out.println("The configuration file has been reborn.");
+                    System.out.println("It lives at "+f.getAbsolutePath());
+                    System.out.println("Please make sure the config file has the correct settings.");
+                    System.out.println("PeerSet will now exit.");
+                    System.exit(1);
                 }
             } catch (IOException e) {
                 System.out.println("Something went wrong when restoring the config file.");
@@ -195,60 +218,6 @@ public class Configure {
                         "\ninto a file named '"+filename+"' in this directory:\n"+configContents);
                 System.exit(1);
             }
-        }
-        return f;
-    }
-
-    /**
-     * This method puts the config files in the right spots.
-     * @param configFile The config file.
-     */
-    private static void putConfigs(File configFile){
-        try{
-            StringBuilder manConfig = new StringBuilder();
-            Scanner scone = new Scanner(configFile);
-            while(scone.hasNext()) manConfig.append(scone.nextLine());
-            scone.close();
-
-            File thisAbsPath = new File("");
-            String absPath = thisAbsPath.getAbsolutePath();
-            int backendIndex = absPath.indexOf("backend"+fs+"");
-            File loginConfig = new File(absPath.substring(0,backendIndex)+loginPath+commonPath+filename);
-            File profeConfig = new File(absPath.substring(0,backendIndex)+profePath+commonPath+filename);
-            File studeConfig = new File(absPath.substring(0,backendIndex)+studePath+commonPath+filename);
-            File utiliConfig = new File(absPath.substring(0,backendIndex)+utiliPath+commonPath+filename);
-
-            if(!loginConfig.exists()) System.out.println("LoginConfig: "+loginConfig.createNewFile());
-            if(!profeConfig.exists()) System.out.println("ProfessorConfig: "+profeConfig.createNewFile());
-            if(!studeConfig.exists()) System.out.println("StudentConfig: "+studeConfig.createNewFile());
-            if(!utiliConfig.exists()) System.out.println("UtilityConfig: "+utiliConfig.createNewFile());
-
-            FileWriter loginWrite = new FileWriter(loginConfig);
-            FileWriter profeWrite = new FileWriter(profeConfig);
-            FileWriter studeWrite = new FileWriter(studeConfig);
-            FileWriter utiliWrite = new FileWriter(utiliConfig);
-
-            loginWrite.write(manConfig.toString());
-            loginWrite.flush();
-            loginWrite.close();
-
-            profeWrite.write(manConfig.toString());
-            profeWrite.flush();
-            profeWrite.close();
-
-            studeWrite.write(manConfig.toString());
-            studeWrite.flush();
-            studeWrite.close();
-
-            utiliWrite.write(manConfig.toString());
-            utiliWrite.flush();
-            utiliWrite.close();
-
-        }
-        catch (IOException e) {
-            System.out.println("Something went wrong copying the configuration file.");
-            e.printStackTrace();
-            System.exit(1);
         }
     }
 
