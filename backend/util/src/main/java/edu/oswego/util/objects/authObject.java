@@ -1,5 +1,6 @@
 package edu.oswego.util.objects;
 
+//import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 
@@ -10,8 +11,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
-import com.ibm.websphere.security.jwt.JwtToken;
 import edu.oswego.util.service.impl.UserService;
+import edu.oswego.util.utility.ConfigReader;
+//import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,12 +21,17 @@ import java.util.Objects;
 
 public class authObject {
 
+
+    private final ConfigReader read = new ConfigReader();
+
     public User getUser() {
         return user;
     }
 
     private User user ;
-    private static final String CLIENT_ID = "637717333332-2fauonnc42evp1f3qfi7e4br0okm5cu8.apps.googleusercontent.com";
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.util.objects.authObject.CLIENT_ID")
+    String CLIENT_ID = read.getValueAsString("edu.oswego.util.objects.authObject.CLIENT_ID");
 
     public boolean isAuthenticated(String myJWT, List<String> roles) {
 
@@ -35,7 +42,7 @@ public class authObject {
             e.printStackTrace();
         }
 
-        if(roleCheck == "" || roleCheck == "NotAuthenticated")
+        if(roleCheck.equals("") || roleCheck.equals("NotAuthenticated"))
         {
             return false;
         }
@@ -46,13 +53,7 @@ public class authObject {
                     idx++;
                 }
             }
-            if(idx > 0)
-            {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return idx > 0;
         }
     }
 
@@ -60,7 +61,7 @@ public class authObject {
 
 
     @Consumes(MediaType.APPLICATION_JSON)
-    public String authUser(String token) throws Exception {
+    public String authUser(String token) {
 
         User userPopulated = new User();
         String role = "NotAuthenticated";
@@ -74,8 +75,7 @@ public class authObject {
         GoogleIdToken idToken = null;
         try {
             idToken = verifier.verify(token);
-        } catch (Exception e) {
-            idToken = null;
+        } catch (Exception ignored) {
         }
 
 
