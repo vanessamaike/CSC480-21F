@@ -1,29 +1,29 @@
 package edu.oswego.util.utility;
 
 import java.util.Properties;
-import java.util.*;
+//import javax.inject.Inject;
+//import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-
 public class SendingMail {
 
+    private final ConfigReader read = new ConfigReader();
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.rest.util.utility.SendingMail.from")
+    String from = read.getValueAsString("edu.oswego.rest.util.utility.SendingMail.from");
+
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.rest.util.utility.SendingMail.password")
+    String password = read.getValueAsString("edu.oswego.rest.util.utility.SendingMail.password");
+
+//    @Inject
+//    @ConfigProperty(name = "edu.oswego.rest.util.utility.SendingMail.host")
+    String host = read.getValueAsString("edu.oswego.rest.util.utility.SendingMail.host");
+
     void sendMail(String receiverEmail, String subjectHeader, String contentMessage){
-        //TODO add the username and password
-
-        // Sender's email ID needs to be mentioned
-        String from = "peerreview21@gmail.com";
-
-        String password = "alittlebubble";
-
-        // Recipient's email ID needs to be mentioned.
-        String to = receiverEmail;
-
-
-        // Assuming you are sending email from through gmails smtp
-        String host = "smtp.gmail.com";
-
-        // Get system properties
         Properties properties = System.getProperties();
 
         // Setup mail server
@@ -32,7 +32,8 @@ public class SendingMail {
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
 
-        // Get the Session object.// and pass username and password
+        // Get the Session object.
+        // and pass username and password
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -54,7 +55,7 @@ public class SendingMail {
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiverEmail));
 
             // Set Subject: header field
             message.setSubject(subjectHeader);
@@ -80,15 +81,11 @@ public class SendingMail {
         // The professor may have further reason for rejecting your submission, and if you have questions,
         // please contact your professor. Otherwise, resubmit your document by the deadline
 
-        StringBuilder subjectHeader = new StringBuilder();
-        StringBuilder content = new StringBuilder();
-
-        subjectHeader.append(courseTitle + ", " + assignmentTitle + " : Solution Submission Rejected");
-        content.append("Your professor has rejected your solution submission for the assignment " + assignmentTitle +
+        String content = "Your professor has rejected your solution submission for the assignment " + assignmentTitle +
                 " for the course " + courseTitle + " . The following errors were detected by the system: " + violations + " . " +
-                "The professor may have further reason for rejecting your solution submission, and if you have questions, please contact your professor. Otherwise, resubmit your solution by the deadline");
+                "The professor may have further reason for rejecting your solution submission, and if you have questions, please contact your professor. Otherwise, resubmit your solution by the deadline";
 
-        sendMail(receiverEmail,subjectHeader.toString(),content.toString());
+        sendMail(receiverEmail, courseTitle + ", " + assignmentTitle + " : Solution Submission Rejected", content);
     }
 
 
@@ -101,16 +98,22 @@ public class SendingMail {
         // The professor may have further reason for rejecting your submission, and if you have questions,
         // please contact your professor. Otherwise, resubmit your document by the deadline
 
-        StringBuilder subjectHeader = new StringBuilder();
-        StringBuilder content = new StringBuilder();
-
-        subjectHeader.append(courseTitle + ", " + assignmentTitle + " : PeerReview Submission Rejected");
-        content.append("Your professor has rejected your peer review submission for the " + solutionSubmissionName + " in the assignment " + assignmentTitle +
+        String content = "Your professor has rejected your peer review submission for the " + solutionSubmissionName + " in the assignment " + assignmentTitle +
                 " for the course " + courseTitle + " . The following errors were detected by the system: " + violations + " . " +
-                "The professor may have further reason for rejecting your solution submission, and if you have questions, please contact your professor. Otherwise, resubmit your peer review by the deadline");
+                "The professor may have further reason for rejecting your solution submission, and if you have questions, please contact your professor. Otherwise, resubmit your peer review by the deadline";
 
-        sendMail(receiverEmail,subjectHeader.toString(),content.toString());
+        sendMail(receiverEmail, courseTitle + ", " + assignmentTitle + " : PeerReview Submission Rejected", content);
     }
 
+    public void assignmentAvailable(String receiverEmail, String courseTitle, String assignmentTitle){
+        String content = "Your professor has made a new assignment available for your course, "+courseTitle+". Log " +
+                "in to view the assignment, "+assignmentTitle+", and complete it by the due date.";
+        sendMail(receiverEmail, courseTitle+", "+assignmentTitle+" : Now available", content);
+    }
 
+    public void reviewStageAvailable(String receiverEmail, String courseTitle, String assignmentTitle){
+        String content = "Your professor has started the review stage your assignment, "+assignmentTitle+". Log " +
+                "in to complete the peer reviews in the course, "+courseTitle+", and complete them by the due date.";
+        sendMail(receiverEmail, courseTitle+", "+assignmentTitle+" : Now reviewing", content);
+    }
 }
