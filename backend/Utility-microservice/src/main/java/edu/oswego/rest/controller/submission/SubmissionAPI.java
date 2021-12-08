@@ -1,18 +1,11 @@
 package edu.oswego.rest.controller.submission;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
-
-
 import edu.oswego.util.objects.authObject;
 import edu.oswego.util.service.IStudentService;
 import edu.oswego.util.service.impl.StudentService;
 import edu.oswego.util.utility.QualityCheck;
-
 import edu.oswego.util.service.ISubmissionService;
 import edu.oswego.util.service.impl.SubmissionService;
 import edu.oswego.util.utility.ResponseMessage;
@@ -20,64 +13,29 @@ import org.json.JSONObject;
 // Json-B
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-
 // JAX-RS
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Path("/solution")
 public class SubmissionAPI {
     private static final long serialVersionUID = 1L;
-    private ISubmissionService submissionService;
-    private IStudentService studentService;
-    private Jsonb jsonb = JsonbBuilder.create();
-    private authObject auth = new authObject();;
+    private final ISubmissionService submissionService;
+    private final IStudentService studentService;
+    private final Jsonb jsonb = JsonbBuilder.create();
+    private final authObject auth = new authObject();
 
-    private List<String> ROLE = Arrays.asList("professor","student");
+    private final List<String> ROLE = Arrays.asList("professor","student");
 
     public SubmissionAPI() {
         submissionService = new SubmissionService();
         studentService = new StudentService();
     }
 
-    @GET
-    public Response getAllSubmissions(){
-        //TODO This method needs to ensure authentication
-        try {
-            List<Submission> listOfAssignments = submissionService.findAll();
-            String res = jsonb.toJson(listOfAssignments);
-            if(listOfAssignments != null) return new ResponseMessage().sendMessage(res,200);
-            else return new ResponseMessage().sendMessage("Assignment ID provided was not formatted properly.",200);
-        } catch (NumberFormatException ne){
-            System.out.println("Assignment ID provided was not formatted properly.");
-        }
-        return null;
-    }
-
-    @GET
-    @Path("/{submissionId}")
-    public Response getSpecificSubmission(@PathParam("submissionId") String _submissionId){
-        //TODO This method needs to ensure authentication
-        try {
-            int submissionId = Integer.parseInt(_submissionId);
-            Submission submission = submissionService.findOne(submissionId);
-            String res = jsonb.toJson(submission);
-            if(submission != null) return new ResponseMessage().sendMessage(res,200);
-            else return new ResponseMessage().sendMessage(res,200);
-        } catch (NumberFormatException ne){
-            System.out.println("Submission ID provided was not formatted properly.");
-        }
-        return null;
-    }
     @POST
-    public Response postSubmission(String data) throws IOException {
+    public Response postSubmission(String data) {
 
         JSONObject obj = new JSONObject(data);
         JSONObject payloadJSON ;
@@ -96,7 +54,7 @@ public class SubmissionAPI {
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
@@ -125,6 +83,37 @@ public class SubmissionAPI {
 
         }
     }
+/*
+    @GET
+    public Response getAllSubmissions(){
+        //This method needs to ensure authentication
+        try {
+            List<Submission> listOfAssignments = submissionService.findAll();
+            String res = jsonb.toJson(listOfAssignments);
+            if(listOfAssignments != null) return new ResponseMessage().sendMessage(res,200);
+            else return new ResponseMessage().sendMessage("Assignment ID provided was not formatted properly.",200);
+        } catch (NumberFormatException ne){
+            System.out.println("Assignment ID provided was not formatted properly.");
+        }
+        return null;
+    }
+
+    @GET
+    @Path("/{submissionId}")
+    public Response getSpecificSubmission(@PathParam("submissionId") String _submissionId){
+        //This method needs to ensure authentication
+        try {
+            int submissionId = Integer.parseInt(_submissionId);
+            Submission submission = submissionService.findOne(submissionId);
+            String res = jsonb.toJson(submission);
+            if(submission != null) return new ResponseMessage().sendMessage(res,200);
+            else return new ResponseMessage().sendMessage(res,200);
+        } catch (NumberFormatException ne){
+            System.out.println("Submission ID provided was not formatted properly.");
+        }
+        return null;
+    }
+
 
     @PUT
     @Path("/setSeen/{submissionId}")
@@ -144,7 +133,7 @@ public class SubmissionAPI {
     @DELETE
     @Path("/{submissionId}")
     public Response deleteSpecificSubmission(@PathParam("submissionId") String _submissionId){
-        //TODO This method needs to ensure authentication
+        //This method needs to ensure authentication
         try {
 
             int submissionId = Integer.parseInt(_submissionId);
@@ -158,4 +147,6 @@ public class SubmissionAPI {
         }
         return null;
     }
+
+ */
 }
