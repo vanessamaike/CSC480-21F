@@ -46,6 +46,7 @@ public class UserService implements IUserService {
     public void deleteAll() {
         userDao.deleteAll();
     }
+
     public User findOneWithEmail(String email) {
         return userDao.findOneWithEmail(email);
     }
