@@ -16,11 +16,13 @@ public class StudentService implements IStudentService {
     {
         studentDao = new StudentDAO();
     }
+
     @Override
     public Student save(Student student) {
         int userId = studentDao.save(student);
         return studentDao.findOne(userId);
     }
+
     @Override
     public List<Student> findAll() {
         return studentDao.findAll();
@@ -67,18 +69,22 @@ public class StudentService implements IStudentService {
     public List<Integer> findDistinctTeamIDsByCourseID(int courseId) {
         return studentDao.findDistinctTeamIDsByCourseID(courseId);
     }
+
     @Override
     public Integer findDistinctTeamIDByCourseIDAndUserId(int courseId, int userId){
         return studentDao.findDistinctTeamIDByCourseIDAndUserId(courseId, userId);
     }
+
     @Override
     public int setCourseForStudent(int userId, int courseId){
         return studentDao.setCourseForStudent(userId,courseId);
     }
+
     @Override
     public int generateUniqueRandomTeamId(){
             return studentDao.generateUniqueRandomTeamId();
     }
+
     @Override
     public Course_Team_Student setTeamForStudentByUserIdAndCourseId(int userId, int courseId, int teamId) {
         return  studentDao.setTeamForStudentByUserIdAndCourseId(userId,courseId, teamId);
