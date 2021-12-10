@@ -10,5 +10,6 @@ public interface IUserService {
     User findOne(int userId);
     User update(User user);
     User delete(User user);
+    User findOneWithEmail(String email);
     void deleteAll();
 }
