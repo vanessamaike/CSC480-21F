@@ -32,6 +32,15 @@
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.jasypt/jasypt -->
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
@@ -88,6 +97,7 @@
             <scope>provided</scope>
         </dependency>
 
+
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
@@ -111,10 +121,8 @@
 <!--            <version>3.4.3</version>-->
 <!--        </dependency>-->
     </dependencies>
-
     <build>
         <finalName>cpr-util</finalName>
-
         <pluginManagement>
             <plugins>
 
