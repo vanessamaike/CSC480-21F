@@ -76,6 +76,37 @@ public class AssignmentAPI {
         }
         return null;
     }
+    
+    @POST
+    @Path("/update")
+        public Response updateAssignment(String data) throws JsonProcessingException {
+
+        JSONObject obj = new JSONObject(data);
+        JSONObject payloadJSON ;
+        try{
+            payloadJSON = obj.getJSONObject("data");
+        }
+        catch (Exception e)
+        {
+            payloadJSON = null;
+        }
+        String payload = "";
+        if(payloadJSON != null)
+        {
+            payload = payloadJSON.toString();
+        }
+
+        String token = obj.getString("token");
+
+        if(auth.isAuthenticated(token,ROLE) == false){
+            return new ResponseMessage().sendMessage("NotAuthenticated",404);
+        }
+
+        Assignment assignment =  jsonb.fromJson(payload, Assignment.class);
+        assignment = assignmentService.update(assignment);
+        String res = jsonb.toJson(assignment);
+        return new ResponseMessage().sendMessage(res,200);
+        }
 
     @POST
     @Path("/update")

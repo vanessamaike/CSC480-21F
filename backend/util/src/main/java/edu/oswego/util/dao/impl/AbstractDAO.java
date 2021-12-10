@@ -17,7 +17,7 @@ import edu.oswego.util.utility.ConfigReader;
 public class AbstractDAO<T> implements GenericDAO<T> {
 
     private final ConfigReader read = new ConfigReader();
-
+  
 //    @Inject
 //    @ConfigProperty(name = "edu.oswego.util.dao.impl.AbstractDAO.url")
     String url = read.getValueAsString("edu.oswego.util.dao.impl.AbstractDAO.url");

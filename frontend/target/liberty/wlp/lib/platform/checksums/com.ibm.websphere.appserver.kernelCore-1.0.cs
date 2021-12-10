@@ -1,0 +1,24 @@
+#Wed Nov 17 15:51:56 GMT 2021
+lib/com.ibm.ws.org.apache.aries.util_1.0.59.jar=1ccaabc6cd9a571e351abef5a8c5dcc7
+lib/com.ibm.ws.crypto.passwordutil_1.0.59.jar=b02803bb8da4b5505be15b6e6ae8a375
+lib/com.ibm.ws.org.apache.felix.scr_1.0.59.jar=9599d7d6d628ebe37ac770bb1a559eef
+lib/com.ibm.ws.kernel.service_1.3.59.jar=2ddcaf0ebf6c443268479055c6f77940
+lib/com.ibm.ws.kernel.metatype.helper_1.0.59.jar=faf95dba050f1d2e56f8e48197c06e48
+lib/com.ibm.ws.config_1.0.59.jar=ade34cabd7a142a31a053cc5583f34a3
+lib/com.ibm.ws.org.eclipse.equinox.coordinator_1.0.59.jar=b7fb46e1ae81e54420be11babe258c20
+lib/com.ibm.ws.threading_1.1.59.jar=66f666a63301b32c2a58ffff8409e316
+lib/com.ibm.ws.org.apache.aries.jmx.api_1.0.59.jar=1ec6fea07669e198db6fa4047cb9711d
+lib/platform/kernelCore-1.0.mf=e6a033cd53ff98099c1d7e0a427ad612
+lib/com.ibm.ws.org.jboss.jandex_1.0.59.jar=999415e2177c720b9befc5198de7726e
+lib/com.ibm.ws.runtime.update_1.0.59.jar=7df2461d6ca6e85f5c4796bc930706c2
+lib/com.ibm.ws.org.eclipse.equinox.region_1.0.59.jar=50db1d4217487704bf5568b83e4e7d41
+lib/org.eclipse.osgi_3.16.0.jar=774f6a0aeb8e6eeda6e2bdfaa7f1291e
+lib/com.ibm.ws.kernel.filemonitor_1.0.59.jar=28257bec810f18085fb91d63ba3bb4af
+lib/com.ibm.ws.kernel.equinox.module_1.0.59.jar=69041eb60a61fbc65aa4aea2ff460972
+lib/com.ibm.ws.jmx_1.0.59.jar=f1517158f1b8a814e9715afd7393e5cd
+lib/com.ibm.ws.kernel.feature_1.0.59.jar=4374ef50231a8ba13c237363fb35ae2f
+lib/com.ibm.ws.event_1.0.59.jar=340426c94d958eaaf474dc6f4a96d5fd
+lib/com.ibm.ws.org.apache.aries.jmx.core.whiteboard_1.0.59.jar=4360ae406ba5884e976d54ec82f53eb4
+lib/com.ibm.ws.org.objectweb.asm_1.0.59.jar=372b597a27b59661b753a1e7b881f86c
+lib/com.ibm.ws.org.eclipse.equinox.metatype_1.0.59.jar=4ebca6ae6818a6281e6b1f7d9335f838
+lib/com.ibm.ws.diagnostics_1.0.59.jar=4bac583f268a5df98d55cb868e5d3aeb

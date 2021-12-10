@@ -16,6 +16,7 @@ else
 		cd backend/util/target/classes/;
 		java --class-path "$dir/backend/util/target/classes/":"$dir/backend/util/target/classes/mysql-connector-java-8.0.27.jar" edu.oswego.util.utility.Configure $1 $2
 		#java -cp "$dir":"$dir/backend/util/target/classes/" edu.oswego.util.utility.Configure $1 $2
+		java edu.oswego.util.utility.Configure $1 $2
 		wait;
 	else
 		cd backend/util/target/classes/;

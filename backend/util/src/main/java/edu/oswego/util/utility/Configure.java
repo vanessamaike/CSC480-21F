@@ -46,7 +46,9 @@ public class Configure {
 
         String helpMessage = "This script helps manage the PeerSet server." +
                 "\n\tThese are the following options for the syntax \"./launcher.sh [options]\":" +
+
                 "\n\t\"./launcher.sh --h\" : " + "Displays this help message and restores the config file." +
+
                 "\n\t\"./launcher.sh run\" : Runs PeerSet with the current configurations." +
                 "\n\t\"./launcher.sh end\" : Ends PeerSet, ready to start again later." +
                 "\n\t\"./launcher.sh allow <filepath>\" : Creates user accounts with the professor role" +
@@ -62,11 +64,13 @@ public class Configure {
         if(args.length!=1 && args.length!=2) {
             System.out.println("Incorrect number of arguments. Required: 1 or 2.");
             System.out.println(helpMessage);
+
             makeConfig();
             System.exit(1);
         }
         makeConfig();
         //putConfigs(makeConfig());
+
         if(args.length==1){
             switch (args[0]){
                 case "run":{
@@ -198,6 +202,7 @@ public class Configure {
         String absPath = thisAbsPath.getAbsolutePath();
         int backendIndex = absPath.indexOf("backend");
         File f = new File(absPath.substring(0,backendIndex)+filename);
+
         if(!f.exists()){
             try {
                 if(f.createNewFile()) {
