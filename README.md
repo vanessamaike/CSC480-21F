@@ -38,6 +38,12 @@ The following resources were used to develop PeerSet:
 + [JSON Web Tokens](https://jwt.io/) are used to authenticate users and secure requests between services.
 + [OAuth2.0](https://oauth.net/2/) is the authorization protocol that was used.
 
+## Getting Started
+
+Instructions for downloading and running PeerSet are available in the Deployment Manual.
+
+Instructions for using PeerSet are available in the User Manual.
+
 ## Acknowledgements
 
 The CSC 480/HCI 521 Software Design class would like to thank Paul Austin and his team from IBM for their help throughout the semester.
