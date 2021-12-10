@@ -42,7 +42,7 @@ The following resources were used to develop PeerSet:
 
 Instructions for downloading and running PeerSet are available in the [Deployment Manual](https://github.com/vanessamaike/CSC480-21F/blob/main/documentation/Deployment%20Manual.pdf).
 
-Instructions for using PeerSet are available in the User Manual.
+Instructions for using PeerSet are available in the [User Manual](https://github.com/vanessamaike/CSC480-21F/blob/main/documentation/User%20Manual.pdf).
 
 ## Acknowledgements
 
