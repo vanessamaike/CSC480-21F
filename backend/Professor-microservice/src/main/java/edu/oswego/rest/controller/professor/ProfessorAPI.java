@@ -26,41 +26,30 @@ import java.util.List;
 public class ProfessorAPI{
 
     private static final long serialVersionUID = 1L;
-    private ICourseService courseService;
-    private IAnswerService answerService;
-    private IAssignmentService assignmentService;
-    private IStudentService studentService;
-    private IQuestionService questionService;
-    private IReviewService reviewService;
-    private ISubmissionService submissionService;
-    private IUserService userService;
-    private ISubmissionTeamService submissionTeamService;
-    private ITeamService teamService;
-    private Jsonb jsonb = JsonbBuilder.create();
-    private authObject auth ;
+    private final ICourseService courseService;
+    private final IAssignmentService assignmentService;
+    private final IStudentService studentService;
+    private final IReviewService reviewService;
+    private final ISubmissionService submissionService;
+    private final ISubmissionTeamService submissionTeamService;
+    private final ITeamService teamService;
+    private final Jsonb jsonb = JsonbBuilder.create();
+    private final authObject auth ;
 
-    private List<String> ROLE = Arrays.asList("professor");
+    private final List<String> ROLE = List.of("professor");
 
     public ProfessorAPI() {
         courseService = new CourseService();
-        answerService = new AnswerService();
+        IAnswerService answerService = new AnswerService();
         assignmentService = new AssignmentService();
         studentService = new StudentService();
-        questionService = new QuestionService();
+        IQuestionService questionService = new QuestionService();
         reviewService = new ReviewService();
         submissionService = new SubmissionService();
-        userService = new UserService();
+        IUserService userService = new UserService();
         submissionTeamService = new SubmissionTeamService();
         teamService = new TeamService();
         auth = new authObject();
-    }
-
-    @GET
-    @Path("/nah")
-    public void Poop(){
-
-        System.out.println("Poop");
-
     }
 
     @POST
@@ -84,12 +73,9 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
-
-
-        //TODO This method needs to ensure authentication
 
         List<Course> courses = courseService.findCoursesByUserId(userId);
         JSONArray listOfCoursesJSON = new JSONArray();
@@ -147,11 +133,10 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-                if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
-        //TODO This method needs to ensure authentication
         List<Course> courses = courseService.findCoursesByUserId(userId);
         JSONArray listOfCoursesJSON = new JSONArray();
         for(Course course : courses)
@@ -188,11 +173,9 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
-
-        //TODO This method needs to ensure authentication
 
         Assignment assignment = assignmentService.findOne(assignmentId);
         JSONObject json = new JSONObject(assignment);
@@ -328,12 +311,9 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
-
-
-        //TODO This method needs to ensure authentication
 
         Assignment assignment = assignmentService.findOne(assignmentId);
         JSONObject json = new JSONObject(assignment);
@@ -385,7 +365,7 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
@@ -406,7 +386,6 @@ public class ProfessorAPI{
 
         for(Student student : students)
         {
-            //TODO change tridat1vn@gmail.com to student.getEmail()
             sendingMail.rejectSolution(student.getEmail(),course.getTitle(),assignment.getTitle(),latestSubmission.getListOfQCWordViolations());
         }
 
@@ -436,7 +415,7 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
@@ -455,7 +434,6 @@ public class ProfessorAPI{
         List<Student> students = studentService.findStudentsByTeamID(teamId);
 
         for(Student student : students) {
-            //TODO change tridat1vn@gmail.com to student.getEmail()
             sendingMail.rejectReview(student.getEmail(),course.getTitle(),assignment.getTitle(),solutionSubmissionName,latestReview.getListOfQCWordViolations());
         }
         return new ResponseMessage().sendMessage("successfully",200);
@@ -482,7 +460,7 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
@@ -491,6 +469,12 @@ public class ProfessorAPI{
         Assignment assignment = assignmentService.findOne(assignmentId);
         assignment.setReviewStage(true);
         assignmentService.update(assignment);
+        int courseID = assignment.getCourseID();
+        ArrayList<Student> studs = (ArrayList<Student>) studentService.findStudentsByCourseID(courseID);
+        SendingMail mailer = new SendingMail();
+        for(Student stud : studs){
+            mailer.reviewStageAvailable(stud.getEmail(), courseService.findOne(courseID).getTitle(), assignment.getTitle());
+        }
         return new ResponseMessage().sendMessage("successfully",200);
     }
 
@@ -515,10 +499,9 @@ public class ProfessorAPI{
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
-
 
         try{
             Assignment assignment =  assignmentService.findOne(assignmentId);

@@ -42,15 +42,15 @@ import javax.json.bind.JsonbBuilder;
 @Path("/parse")
 public class csvImport {
 
-    private ICourseService courseService;
-    private IStudentService studentService;
-    private IUserService userService;
-    private ITeamService teamService;
-    private Jsonb jsonb = JsonbBuilder.create();
+    private final ICourseService courseService;
+    private final IStudentService studentService;
+    private final IUserService userService;
+    private final ITeamService teamService;
+    private final Jsonb jsonb = JsonbBuilder.create();
     Student student = new Student();
-    private authObject auth = new authObject() ;
+    private final authObject auth = new authObject() ;
 
-    private List<String> ROLE = Arrays.asList("professor");
+    private final List<String> ROLE = List.of("professor");
 
     public csvImport() {
         teamService = new TeamService();
@@ -80,7 +80,7 @@ public class csvImport {
 
         String token = obj.getString("token");
 
-        if(auth.isAuthenticated(token,ROLE) == false){
+        if(!auth.isAuthenticated(token, ROLE)){
             return new ResponseMessage().sendMessage("NotAuthenticated",404);
         }
 
@@ -112,19 +112,22 @@ public class csvImport {
                 JSONObject pay = studentsJSON.getJSONObject(i);
 
                 Student_CSV_Object studentCSVObject = jsonb.fromJson(pay.toString(),Student_CSV_Object.class);
-                    String sId = studentCSVObject.getStudentID();
-                    String fn =  studentCSVObject.getFirstName();
-                    String ln =  studentCSVObject.getLastName();
-                    String em = studentCSVObject.getEmail();
+                String sId = studentCSVObject.getStudentID();
+                String fn =  studentCSVObject.getFirstName();
+                String ln =  studentCSVObject.getLastName();
+                String em = studentCSVObject.getEmail();
+
+                User u = userService.findOneWithEmail(em);
                 Student studentToAdd = new Student(sId, 0, fn, ln, em); //userId will be changed in backend
                 // check If student existed in database
                 Student existStudent = studentService.findStudentByStudentId(studentToAdd);
-                if(existStudent == null)
+                if(existStudent == null||u==null)
                 {
                     studentToAdd = studentService.save(studentToAdd);
                     studentService.setCourseForStudent(studentToAdd.getUserID(), course.getCourseID());
                 }
                 else {
+                    existStudent.setUserID(u.getUserID());
                     studentService.setCourseForStudent(existStudent.getUserID(), course.getCourseID());
                 }
 
@@ -133,7 +136,7 @@ public class csvImport {
             }
 
         List<Student> students = studentService.findStudentsByCourseID(course.getCourseID());
-        if(course.isTeamed() == false) // Independent
+        if(!course.isTeamed()) // Independent
         {
             MakeTeamsAutomatically(students,students.size(),course.getCourseID());
         }
@@ -211,7 +214,7 @@ public class csvImport {
     public void AddTeamsToDatabase(boolean status, List<Student> students, int teamId, int courseId, int userId, int i, int teamName) {
 
 
-        if (status == true) { //if it is in the database, update the student object with the new teamId.
+        if (status) { //if it is in the database, update the student object with the new teamId.
 
 
             studentService.setTeamForStudentByUserIdAndCourseId(userId, courseId, teamId); //add tigers to two students

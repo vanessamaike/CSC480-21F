@@ -1,4 +1,4 @@
-package edu.oswego.util.utility;
+package edu.oswego.rest.utility;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
