@@ -1,11 +1,11 @@
 package edu.oswego.rest.controller.submission;
 
+import edu.oswego.rest.utility.QualityCheck;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.Submission;
 import edu.oswego.util.objects.authObject;
 import edu.oswego.util.service.IStudentService;
 import edu.oswego.util.service.impl.StudentService;
-import edu.oswego.util.utility.QualityCheck;
 import edu.oswego.util.service.ISubmissionService;
 import edu.oswego.util.service.impl.SubmissionService;
 import edu.oswego.util.utility.ResponseMessage;
