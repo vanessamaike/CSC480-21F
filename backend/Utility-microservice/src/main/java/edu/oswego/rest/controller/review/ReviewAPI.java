@@ -1,5 +1,6 @@
 package edu.oswego.rest.controller.review;
 
+import edu.oswego.rest.utility.QualityCheck;
 import edu.oswego.util.objects.Review;
 import edu.oswego.util.objects.Student;
 import edu.oswego.util.objects.authObject;
@@ -7,7 +8,6 @@ import edu.oswego.util.service.IReviewService;
 import edu.oswego.util.service.IStudentService;
 import edu.oswego.util.service.impl.ReviewService;
 import edu.oswego.util.service.impl.StudentService;
-import edu.oswego.util.utility.QualityCheck;
 import edu.oswego.util.utility.ResponseMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
