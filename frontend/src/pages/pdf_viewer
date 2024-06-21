@@ -1,0 +1,111 @@
+import React, { useState } from "react";
+// @mui components
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import GoogleLogin from "react-google-login";
+import axios from "axios";
+
+// styled components
+import NavBar from "../../components/NavBar/NavBar";
+import Button from "../../components/Button";
+import { Stack } from "@mui/material";
+
+
+import { Document, Page } from 'react-pdf';
+
+
+class MyApp extends Component {
+  state = {
+    numPages: null,
+    pageNumber: 1,
+  }
+
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
+  }
+
+  render() {
+    const { pageNumber, numPages } = this.state;
+
+    return (
+      <div>
+        <Document
+          file="somefile.pdf"
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <p>Page {pageNumber} of {numPages}</p>
+      </div>
+ 
+ <div>
+        <Document
+          file="somefile.pdf"
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <p>Page {pageNumber} of {numPages}</p>
+      </div>
+
+  <div>
+        <Document
+          file="somefile.pdf"
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <p>Page {pageNumber} of {numPages}</p>
+      </div>
+
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* was unsure if we needed to convert to json
+
+/* Base 64 encode the data */
+pdfFile = BASE64-ENCODE(mData).
+COPY-LOB FROM pdfFile TO mb64Data.
+
+/* Create the JSON object and copy the base 64 encoded data as an attribute*/
+jObj = NEW JsonObject ( ).
+isOK = jObj:add ( "PDFdata":u, mb64Data ).
+
+/* Write the JSON object out as a file with the embedded base 64 encoded data */
+isOK = jObj:WriteFile("JsonPDFOut.json").
+
+
+/* Parse the file into a JSON object */ 
+myParser = NEW ObjectModelParser( ).
+JObj = CAST(myParser:ParseFile("JsonPDFOut.json"), jsonObject).
+
+/* Copy the JSON object base 64-encoded data to a Memptr */
+mb64Data = JObj:GetMemptr("PDFdata":U).
+
+/* Base 64-decode the data */
+COPY-LOB FROM mb64Data TO pdf64File.
+mData = BASE64-DECODE(pdf64File).
+
+/* Create output .pdf file */ 
+COPY-LOB FROM mData TO FILE "out.pdf".
+
+*/
